@@ -1,7 +1,9 @@
 
 # Videos
+*.mp4
 Group_8.mp4
 Slides_6-8.mp4
+ATSA_Presentation_updated.mp4
 
 # Markdown
 WaveCatBoost_18_20_Slide_Content.md
@@ -11,3 +13,7 @@ ATSA_Presentation.pptx
 
 # Python
 __pycache__/
+
+# Experiment noise
+results/run_log.txt
+results/conformal_log.txt

@@ -1,0 +1,457 @@
+---
+title: "WaveCatBoost in R: an EDA-driven implementation"
+subtitle: "Reproducing and extending Borah et al., IEEE Sensors Letters 2025"
+author: "Applied Time Series Analysis"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    theme: flatly
+    highlight: tango
+    df_print: paged
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE,
+                      fig.width = 9, fig.height = 4.2, dpi = 120)
+source("R/load_all.R")
+
+series_path <- file.path(PROC_DIR, "series.rds")
+if (file.exists(series_path)) {
+  packed <- readRDS(series_path)
+  raw <- packed$raw
+  series <- packed$series
+} else {
+  raw <- load_raw_datasets()
+  series <- prepare_all_series(raw)
+}
+
+scores <- if (file.exists(file.path(RES_DIR, "scores.rds")))
+  readRDS(file.path(RES_DIR, "scores.rds")) else NULL
+hparams <- if (file.exists(file.path(RES_DIR, "hparams.rds")))
+  readRDS(file.path(RES_DIR, "hparams.rds")) else NULL
+conf <- if (file.exists(file.path(RES_DIR, "conformal.rds")))
+  readRDS(file.path(RES_DIR, "conformal.rds")) else NULL
+eda_sum <- if (file.exists(file.path(RES_DIR, "eda_summary.rds")))
+  readRDS(file.path(RES_DIR, "eda_summary.rds")) else NULL
+
+theme_set(theme_minimal(base_size = 13))
+```
+
+# 1. Setup and data collection
+
+This document implements the WaveCatBoost pipeline of Borah et al. (IEEE Sensors Letters, 2025) entirely in R, then **extends** it. The paper's method is Haar MODWT + one CatBoost model per wavelet component + inverse reconstruction + conformal prediction intervals. Around that we add:
+
+- classical AR / SARIMA forecasts
+- XGBoost and LightGBM, with and without MODWT
+- seasonal naive as the MASE reference
+- an EDA trail that **justifies** lag $p$, seasonal period, decomposition depth $J$, and scaling
+
+Data are the authors' public files ([WaveCatBoost-Time-Series-Model](https://github.com/jborah2/WaveCatBoost-Time-Series-Model)): `CPCB.csv` and `ID1 1H resampled_main.csv`.
+
+**Choice: use the released hourly CSVs, not a new CPCB scrape.** That is the only way to stay comparable to the paper. Both files are already hourly (median gap = 1 hour). The paper describes 15-minute raw samples that were then averaged; the GitHub ID1 file is even named `1H resampled`. We do **not** invent 15-minute values.
+
+**Choice: univariate series, one pollutant at a time.** That matches the paper. CPCB also records air temperature and relative humidity; we plot them in EDA and leave them out of the models (the paper's own future-work note is spatial dependence, not meteorology).
+
+```{r data-glimpse}
+cpcb <- raw$CPCB
+id1 <- raw$ID1
+tibble::tibble(
+  sensor = c("CPCB", "ID1"),
+  start = c(min(cpcb$Datetime), min(id1$Datetime)),
+  end = c(max(cpcb$Datetime), max(id1$Datetime)),
+  n = c(nrow(cpcb), nrow(id1)),
+  median_gap_hours = c(sampling_hours(cpcb$Datetime), sampling_hours(id1$Datetime)),
+  extra_columns = c("AT, RH", "AT (Temp), RH")
+)
+```
+
+`r if (isTRUE(get0("CATBOOST_AVAILABLE", ifnotfound = FALSE))) "The CatBoost R package loaded; Ordered boosting is used." else "**CatBoost is not installed.** `catboost` / `wavecatboost` fall back to XGBoost. The WaveXGB ablation still isolates the MODWT effect."`
+
+# 2. Exploratory analysis
+
+The controls below pick a series. Every later modelling choice is written as a **Decision** that points back to a plot or test here.
+
+```{r eda-controls, echo=FALSE}
+inputPanel(
+  selectInput("sensor", "Sensor", SENSORS, selected = "CPCB"),
+  selectInput("pollutant", "Pollutant", POLLUTANTS, selected = "PM2.5"),
+  sliderInput("lagmax", "ACF / PACF max lag (hours)", min = 24, max = 168, value = 72, step = 1),
+  sliderInput("lagk", "Scatter lag k (hours)", min = 1, max = 72, value = 1, step = 1),
+  sliderInput("jlev", "MODWT detail level to overlay", min = 1, max = 8, value = 1, step = 1)
+)
+```
+
+```{r eda-series, echo=FALSE}
+s_re <- reactive({
+  series[[paste(input$sensor, input$pollutant, sep = "_")]]
+})
+```
+
+## 2.1 Time plot
+
+```{r eda-ts, echo=FALSE}
+renderPlotly({
+  s <- s_re()
+  df <- tibble(Datetime = s$times, value = s$y)
+  p <- ggplot(df, aes(Datetime, value)) +
+    geom_line(colour = "#1F3A5F", linewidth = 0.3) +
+    labs(y = input$pollutant, x = NULL,
+         title = paste(input$sensor, input$pollutant))
+  ggplotly(p, tooltip = c("x", "y"))
+})
+```
+
+Hour-of-day and day-of-week boxes. A U-shape or commute peaks means a **daily seasonal period of 24**.
+
+```{r eda-boxes, echo=FALSE}
+renderPlot({
+  s <- s_re()
+  df <- tibble(Datetime = s$times, value = s$y) %>%
+    mutate(hour = lubridate::hour(Datetime),
+           dow = lubridate::wday(Datetime, label = TRUE, week_start = 1))
+  par(mfrow = c(1, 2), mar = c(4, 4, 2, 1))
+  boxplot(value ~ hour, data = df, outline = FALSE, xlab = "Hour of day",
+          ylab = input$pollutant, main = "Hour of day", col = "#EEF1F5")
+  boxplot(value ~ dow, data = df, outline = FALSE, xlab = NULL,
+          ylab = input$pollutant, main = "Day of week", col = "#EEF1F5")
+})
+```
+
+**Decision.** Seasonal period $S = 24$ for snaive, SARIMA, and the MASE denominator. Weekly effects exist but are weaker than the daily cycle on these Meghalaya series, so we do not force $S = 168$ in SARIMA (that order space is huge and unstable at hourly frequency).
+
+## 2.2 Missingness
+
+The GitHub CPCB file is already filled: long runs of identical values at the start of July 2022 are almost certainly **pre-imputed**, not true constant air. ID1 is closer to a real low-cost record.
+
+```{r eda-missing}
+missing_tbl <- dplyr::bind_rows(lapply(series, function(s) {
+  tibble(sensor = s$sensor, pollutant = s$pollutant,
+         n = length(s$y), n_missing_in_file = s$n_missing,
+         n_clipped_impossible = s$n_impossible,
+         n_flat_runs_ge6h = {
+           r <- rle(round(s$y, 6))
+           sum(r$lengths >= 6)
+         })
+}))
+missing_tbl
+```
+
+**Decision.** If a file has no `NA`s we do not re-impute (re-interpolation would only smooth already-smoothed values). Remaining `NA`s, if any, are filled with seasonal interpolation (`imputeTS::na_seadec`) because EDA shows a 24-hour cycle. Negative concentrations are treated as sensor faults and set to missing before that step. Genuine pollution spikes are **not** winsorised.
+
+## 2.3 Stationarity
+
+```{r eda-adf, echo=FALSE}
+renderTable({
+  s <- s_re()
+  y <- s$y
+  adf <- tryCatch(tseries::adf.test(y, alternative = "stationary"), error = function(e) NULL)
+  kpss <- tryCatch(urca::ur.kpss(y, type = "mu"), error = function(e) NULL)
+  tibble(
+    test = c("ADF (H0: unit root)", "KPSS statistic (H0: level stationary)"),
+    statistic = c(if (is.null(adf)) NA else unname(adf$statistic),
+                  if (is.null(kpss)) NA else kpss@teststat),
+    p_or_cv = c(if (is.null(adf)) NA else adf$p.value,
+                if (is.null(kpss)) NA else kpss@cval[2])
+  )
+})
+```
+
+**Decision.** These series are not covariance-stationary (shifting mean, daily cycle, occasional spikes). That is why a plain AR on the raw series is a weak baseline, why SARIMA is allowed a seasonal difference, and why MODWT (local in time **and** scale) is the paper's feature step rather than a global Fourier filter.
+
+## 2.4 ACF, PACF, and lag scatter
+
+Move **max lag** and **scatter lag $k$** in the panel at the top.
+
+```{r eda-acf, echo=FALSE}
+renderPlot({
+  s <- s_re()
+  y <- s$y
+  lag.max <- input$lagmax
+  par(mfrow = c(1, 2), mar = c(4, 4, 2, 1))
+  acf(y, lag.max = lag.max, main = paste("ACF", input$pollutant), na.action = na.pass)
+  pacf(y, lag.max = lag.max, main = paste("PACF", input$pollutant), na.action = na.pass)
+})
+```
+
+```{r eda-scatter, echo=FALSE}
+renderPlotly({
+  s <- s_re()
+  k <- input$lagk
+  y <- s$y
+  df <- tibble(y_lag = y[1:(length(y) - k)], y_now = y[(k + 1):length(y)])
+  p <- ggplot(df, aes(y_lag, y_now)) +
+    geom_point(alpha = 0.15, size = 0.6, colour = "#1F3A5F") +
+    geom_smooth(method = "loess", se = FALSE, colour = "#A64B2A", linewidth = 0.9) +
+    labs(x = paste0("y(t-", k, ")"), y = "y(t)",
+         title = paste("Lag", k, "scatter"))
+  ggplotly(p)
+})
+```
+
+```{r eda-pacf-cutoff, echo=FALSE}
+renderText({
+  s <- s_re()
+  cut <- pacf_cutoff(s$y, max_lag = input$lagmax)
+  paste0("PACF cutoff on this series (95% band, max lag ", input$lagmax,
+         "): p = ", cut, " hours.")
+})
+```
+
+**Decision.** Tree models use lag window $p = 24$ as the default (one full daily cycle). If the PACF cutoff is much larger we also try $p = 48$ in the time-based grid (Section 7). AR uses the same $p$. We do **not** pick $p$ on the test window.
+
+## 2.5 STL and wavelet energy
+
+```{r eda-stl, echo=FALSE}
+renderPlot({
+  s <- s_re()
+  yts <- ts(s$y, frequency = 24)
+  st <- stl(yts, s.window = "periodic", robust = TRUE)
+  plot(st, main = paste("STL", input$sensor, input$pollutant))
+})
+```
+
+```{r eda-energy, echo=FALSE}
+renderPlot({
+  s <- s_re()
+  pick <- choose_J(s$y)
+  en <- pick$energy
+  barplot(en$share, names.arg = en$component, las = 2, col = "#1F3A5F",
+          ylab = "Energy share",
+          main = sprintf("MODWT energy  |  paper J = %s, elbow J = %s",
+                         pick$J_paper, pick$J_elbow))
+})
+```
+
+```{r eda-mra, echo=FALSE}
+renderPlot({
+  s <- s_re()
+  J <- max(input$jlev, 3)
+  mra <- haar_mra(s$y, J)
+  rec <- mra_reconstruct(mra)
+  t <- s$times
+  j <- input$jlev
+  layout(matrix(1:3, ncol = 1), heights = c(1, 1, 1))
+  par(mar = c(2, 4, 2, 1))
+  plot(t, s$y, type = "l", col = "#1F3A5F", ylab = "Y(t)", xlab = NA,
+       main = "Original (Haar MRA adds back to this)")
+  plot(t, mra$D[[j]], type = "l", col = "#A64B2A", ylab = paste0("D", j), xlab = NA)
+  plot(t, mra$S, type = "l", col = "#2E6B4F", ylab = paste0("S", J), xlab = "Time")
+})
+```
+
+```{r eda-recon, echo=FALSE}
+renderText({
+  s <- s_re()
+  J <- max(3L, input$jlev)
+  mra <- haar_mra(s$y, J)
+  err <- max(abs(mra_reconstruct(mra) - s$y))
+  paste0("Max reconstruction error at J = ", J, ": ", signif(err, 3),
+         " (should be ~0; Haar MRA is additive).")
+})
+```
+
+**Decision.** Use Haar, as in Algorithm 1 of the paper. Use $J$ from the energy elbow (typically 4–6 on these hourly series) rather than blindly $K = \ln N \approx 9$: extra levels add CatBoost models that mostly fit residual noise. We still report the paper's $\ln N$ value in the energy figure.
+
+# 3. Preprocessing
+
+Paper order: missing values → hourly averages → min-max to $[0,1]$.
+
+| Step | What we do | Why |
+|---|---|---|
+| Hourly average | Skip | Files are already hourly |
+| Impossible values | Negatives and absurd caps → NA | Sensor faults, not spikes |
+| Imputation | Seasonal interpolation if any NA remain | Preserves the 24 h cycle |
+| Min-max | **Train only**, trees and Wave\* trees | Paper; invert after forecast |
+| AR / SARIMA / snaive | Original units | Likelihood / MASE denominator live on the data scale |
+| Split | Last $h$ hours = test | Paper horizons 1 / 7 / 14 / 31 days |
+
+```{r preprocess-demo}
+demo <- series[["CPCB_PM2.5"]]
+sp <- chrono_split(demo$y, demo$times, HORIZONS[["7d"]])
+sc <- minmax_fit(sp$y_train)
+tibble(
+  train_n = length(sp$y_train),
+  test_n = length(sp$y_test),
+  train_min = sc$min,
+  train_max = sc$max,
+  test_min = min(sp$y_test),
+  test_max = max(sp$y_test),
+  note = "Test min/max are NOT used in the scaler (no leakage)."
+)
+```
+
+# 4. MODWT as the feature step
+
+Ordinary DWT downsamples and is shift-variant, so lag features $D_{j,t-1}$ would not line up with $Y_t$. MODWT does not downsample: every component has length $N$. Haar filters in the MODWT convention are $\tilde h = (1/2,-1/2)$ and $\tilde g = (1/2,1/2)$. The MRA identity used for forecasting is
+
+$$
+Y_t = \sum_{j=1}^{J} D_{j,t} + S_{J,t}.
+$$
+
+The paper writes an IMODWT of forecasted coefficients; for MRA details that **is** a sum. We therefore forecast each $D_j$ and $S_J$ and add.
+
+**Circular leakage.** The pyramid uses periodic extension, so coefficients near time $N$ can see the start of the series. **Decision:** decompose the **training** series only. Test actuals never enter the transform. Recursive multi-step forecasts of each component stay in component space; we never rebuild MRA from a series that already contains test observations.
+
+Optional wavelet family: Haar is the paper default. A smoother wavelet (`la8`) is only worth trying if Haar energy is smeared across many levels (the energy bar plot). On these series Haar concentrates enough that we keep it.
+
+# 5. Models without MODWT
+
+Shared protocol: recursive one-step forecasts out to horizon $h$ (paper Algorithm 1, step 14). Chronological validation inside train (last 14 days) for early stopping.
+
+- **Seasonal naive**, $S=24$: the MASE reference.
+- **AR($p$)**: $p$ from the PACF cutoff / grid.
+- **SARIMA**: `auto.arima` with period 24, stepwise, small $(p,q,P,Q)$ caps. Hourly SARIMA is fragile; this is a baseline, not a fishing expedition.
+- **XGBoost, LightGBM, CatBoost** on lag-$p$ features. CatBoost uses `boosting_type = "Ordered"` so gradients for time $t$ do not use the target at $t$ (the paper's leakage argument). If the CatBoost R binary is missing, this slot falls back to XGBoost and is labelled as such.
+
+# 6. Wave hybrids, including WaveCatBoost
+
+For each training series: Haar MRA → one model per component → recursive component forecasts → sum.
+
+- WaveSARIMA: does MODWT help a **linear** model?
+- WaveXGB / WaveLGBM: does MODWT help boosting regardless of Ordered vs default?
+- **WaveCatBoost**: the paper method.
+
+All Wave\* models share the same $J$ and $p$ as the non-wave trees, so the ablation is the transform, not a hidden extra lag.
+
+# 7. Hyperparameters
+
+The letter never publishes `iterations`, depth, learning rate, or lag $p$. We refuse to copy silent Python defaults. A small expanding-window grid is run **once** on CPCB PM2.5, 1-day split, using only the training prefix (last 24 h of that prefix as validation). Chosen $(p, \text{depth}, \eta, J)$ are then frozen for every pollutant, sensor, and horizon.
+
+```{r hparams}
+if (is.null(hparams)) {
+  cat("No results/hparams.rds yet. Run run_experiments.R from the project root.\n")
+} else {
+  cat(hparams$reason, "\n")
+  if (!is.null(hparams$grid_lgb)) {
+    knitr::kable(head(hparams$grid_lgb, 8), digits = 3,
+                 caption = "LightGBM time-based grid (train only), best first")
+  }
+  if (!is.null(hparams$grid_wave)) {
+    knitr::kable(hparams$grid_wave, digits = 3,
+                 caption = "WaveLGBM J grid at the winning lag/depth/eta")
+  }
+}
+```
+
+Starting grid: $p \in \{24,48\}$, depth $\in \{4,6\}$, $\eta \in \{0.05,0.1\}$, 150 boosting rounds with early stopping, $J \in \{\text{energy elbow}, \lfloor \ln N \rfloor\}$. Modelling then **caps $J$ at 5** (scale $2^5=32$ hours, one daily cycle). A $J=9$ trial trained ten CatBoost models per series and was several times slower without changing the daily-scale story in EDA.
+
+# 8. Forecasts and conformal intervals
+
+The authors' `Conformal Prediction.R` uses `caretForecast::conformalRegressor` on absolute residuals. That is **not** the paper. We implement the letter's weighted score
+
+$$
+CS_t = \frac{|Y_t - \hat Y_t|}{\hat U_t}, \qquad
+PI_t = \hat Y_t \pm CQ_t\,\hat U_t,
+$$
+
+with $\hat U_t$ a rolling MAE (the paper's unspecified uncertainty model), $CQ_t$ the $(1-\alpha)$ quantile of $CS$ on a trailing window of length $\kappa$, and $\alpha = 0.05$. $\kappa$ is chosen in $\{24,168,336\}$ so calibration coverage is closest to 95%. Test actuals are not used to build the band.
+
+**Decision rule (ours, not the paper).** If the mean of the PM2.5 **lower** bound over the horizon exceeds the WHO (15 µg/m³) or India NAAQS (60 µg/m³) 24-hour guide, we flag “exceedance likely”. That is a conservative alert: even the optimistic end of the interval is already above the guide.
+
+```{r conformal-plot, echo=FALSE}
+if (is.null(conf)) {
+  cat("No results/conformal.rds yet. Run run_experiments.R.\n")
+} else {
+  inputPanel(
+    selectInput("conf_sensor", "Conformal series", names(conf), selected = names(conf)[1])
+  )
+}
+```
+
+```{r conformal-fig, echo=FALSE}
+if (!is.null(conf)) {
+  renderPlotly({
+    z <- conf[[input$conf_sensor]]
+    df <- tibble(Datetime = z$t_test, actual = z$y_test, pred = z$yhat,
+                 lo = z$lower, hi = z$upper)
+    p <- ggplot(df, aes(Datetime)) +
+      geom_ribbon(aes(ymin = lo, ymax = hi), fill = "#1F3A5F", alpha = 0.18) +
+      geom_line(aes(y = actual, colour = "Actual")) +
+      geom_line(aes(y = pred, colour = "WaveCatBoost")) +
+      scale_colour_manual(values = c(Actual = "#1F3A5F", WaveCatBoost = "#A64B2A")) +
+      labs(y = "PM2.5", x = NULL, colour = NULL,
+           title = sprintf("%s PM2.5 7-day  |  kappa = %s  |  test coverage = %.0f%%",
+                           z$sensor, z$kappa, 100 * z$coverage_test))
+    ggplotly(p)
+  })
+}
+```
+
+```{r conformal-alert}
+if (!is.null(conf)) {
+  dplyr::bind_rows(lapply(conf, function(z) {
+    dplyr::mutate(z$alert, sensor = z$sensor, coverage_test = z$coverage_test,
+                  mean_width = z$width, kappa = z$kappa)
+  }))
+}
+```
+
+These bands are **prediction intervals**, not confidence intervals for a mean.
+
+# 9. Comparison
+
+Run `run_experiments.R` to fill this section. MASE uses seasonality 24, matching the paper. MAE and RMSE are on original units after inverting min-max.
+
+```{r scores-table}
+if (is.null(scores) || !nrow(scores)) {
+  cat("No results/scores.rds yet. From the project root run:\n",
+      "  Rscript run_experiments.R        # full 6 x 2 x 4 bake-off\n",
+      "  Rscript run_experiments.R quick  # 1-day, snaive/sarima/lgb/wavelgb\n")
+} else {
+  DT::datatable(scores %>% dplyr::mutate(dplyr::across(c(MASE, MAE, RMSE), ~round(., 3))),
+                caption = "All cached forecasts", options = list(pageLength = 12))
+}
+```
+
+```{r scores-wide}
+if (!is.null(scores) && nrow(scores)) {
+  wide <- scores %>%
+    dplyr::select(sensor, pollutant, horizon, method, MASE) %>%
+    tidyr::pivot_wider(names_from = method, values_from = MASE)
+  knitr::kable(wide, digits = 3, caption = "MASE (lower is better)")
+}
+```
+
+Ablations to read off the table:
+
+1. **CatBoost vs WaveCatBoost** (or LGB vs WaveLGB if CatBoost fell back): value of MODWT.
+2. **WaveXGB vs WaveCatBoost**: value of Ordered boosting after the transform is fixed.
+3. **SARIMA vs WaveSARIMA**: whether the transform helps a linear model, or only trees.
+
+```{r mcb}
+if (!is.null(scores) && nrow(scores) > 4) {
+  mcb <- tryCatch(mcb_from_table(scores), error = function(e) NULL)
+  if (!is.null(mcb)) {
+    knitr::kable(mcb, digits = 3,
+                 caption = "MCB / Nemenyi mean ranks across pollutant–sensor–horizon cases")
+    renderPlot({
+      rng <- range(c(mcb$lo, mcb$hi))
+      plot(mcb$mean_rank, seq_len(nrow(mcb)), pch = 16, xlim = rng,
+           yaxt = "n", xlab = "Mean rank (lower is better)", ylab = NA,
+           main = "MCB-style ranks")
+      axis(2, at = seq_len(nrow(mcb)), labels = mcb$model, las = 1)
+      segments(mcb$lo, seq_len(nrow(mcb)), mcb$hi, seq_len(nrow(mcb)))
+      abline(v = min(mcb$mean_rank) + unique(mcb$critical_distance) / 2,
+             lty = 2, col = "#A64B2A")
+    })
+  }
+}
+```
+
+## Limitations (do not over-claim)
+
+- GitHub hourly files are not the original 15-minute traces; CPCB looks pre-imputed.
+- MASE will **not** match paper Table 1. We omitted deep-learning baselines (by design), and the letter never published boosting hyperparameters.
+- Circular MODWT splits scales; it does not “remove all noise”.
+- Recursive multi-step forecasts accumulate error at 14- and 31-day horizons.
+- The alert rule is a course-level extra, not part of the letter.
+
+Full bake-off:
+
+```
+"C:/Program Files/R/R-4.5.1/bin/Rscript.exe" run_experiments.R
+```
+
+Then re-open this file in RStudio (Run Document) so the tables and conformal figure populate.
