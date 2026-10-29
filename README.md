@@ -6,6 +6,7 @@ Data: [jborah2/WaveCatBoost-Time-Series-Model](https://github.com/jborah2/WaveCa
 
 ## Files
 
+- `WaveCatBoost.ipynb` — code notebook (R kernel). Open in Cursor / Jupyter and run from the project root.
 - `analysis.Rmd` — interactive report (`runtime: shiny`). Open in RStudio and click **Run Document**.
 - `run_experiments.R` — bake-off (6 pollutants × 2 sensors × 4 horizons). Writes `results/`.
 - `R/` — helpers (MODWT, models, conformal, metrics).
@@ -18,6 +19,6 @@ Data: [jborah2/WaveCatBoost-Time-Series-Model](https://github.com/jborah2/WaveCa
 "C:\Program Files\R\R-4.5.1\bin\Rscript.exe" run_experiments.R
 ```
 
-Then open `analysis.Rmd` in RStudio.
+Then open `WaveCatBoost.ipynb` (R kernel) or `analysis.Rmd` in RStudio.
 
 CatBoost’s R package is not on CRAN. If it is missing, CatBoost slots fall back to XGBoost; WaveLGBM / WaveXGB still measure the MODWT effect.
