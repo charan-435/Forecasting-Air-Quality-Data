@@ -43,6 +43,13 @@ try_install_catboost <- function() {
 }
 
 ensure_packages()
+# EMD is only used in the extension section; skip quietly if CRAN is unreachable.
+if (!"EMD" %in% rownames(installed.packages())) {
+  try(install.packages("EMD", repos = "https://cloud.r-project.org"), silent = TRUE)
+}
+if ("EMD" %in% rownames(installed.packages())) {
+  suppressPackageStartupMessages(library(EMD))
+}
 CATBOOST_AVAILABLE <- has_catboost() || try_install_catboost()
 if (CATBOOST_AVAILABLE) {
   suppressPackageStartupMessages(library(catboost))

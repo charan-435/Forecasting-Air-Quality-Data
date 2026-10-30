@@ -1,6 +1,5 @@
 # MODWT / IMODWT / MRA — paper method: Haar (Percival pyramid).
-# Extension: generic_mra() supports Haar, D4 (Daubechies-4), LA8 (Least-Asymmetric-8)
-#            via the waveslim package (modwt / mra functions).
+# Extension: generic_mra() also supports D4, LA8 (waveslim), Fourier bands, and EMD.
 # Circular convolution: decompose TRAIN only so test values never leak into coefficients.
 
 roll_right <- function(x, s) {
@@ -97,43 +96,88 @@ mra_forecast_sum <- function(comp_fc) {
   Reduce(`+`, comp_fc)
 }
 
-# ── Extension: multi-filter MRA via waveslim ─────────────────────────────────
-# Supported filter families (paper = "haar"; extensions = "d4", "la8"):
-#   haar  – Haar wavelet (paper default)
-#   d4    – Daubechies-4 (4-tap, smoother than Haar, better frequency separation)
-#   la8   – Least-asymmetric-8 (near-linear phase, good for slowly-varying signals)
-#
-# The waveslim::modwt() function handles the pyramid internally with periodic
-# boundary (same as our Haar implementation). waveslim::mra() returns an
-# additive MRA identical in structure to haar_mra() above.
-#
-# Usage:
-#   mra_obj  <- generic_mra(x, J, filter = "haar")  # or "d4" / "la8"
-#   mra_obj$D   – named list D1..DJ  (detail components)
-#   mra_obj$S   – smooth component SJ
-#   mra_obj$J   – decomposition depth used
-#   mra_obj$filter – which filter was used
+# Octave-band Fourier split with the same additive layout as Haar MRA:
+#   D_k  = inverse FFT of frequencies whose period sits in [2^k, 2^{k+1})
+#   S_K  = DC + leftover low frequencies
+# Reconstruction is exact because the bins partition the spectrum.
+fourier_mra <- function(x, J) {
+  x  <- as.numeric(x)
+  n  <- length(x)
+  Xf <- fft(x)
+  Dspec <- lapply(seq_len(J), function(i) complex(length.out = n))
+  Sspec <- complex(length.out = n)
+  Sspec[1] <- Xf[1]  # DC
 
-generic_mra <- function(x, J, filter = c("haar", "d4", "la8")) {
+  half <- floor(n / 2)
+  for (k in seq_len(half)) {
+    per <- n / k
+    j <- NA_integer_
+    for (jj in seq_len(J)) {
+      if (per >= 2^jj && per < 2^(jj + 1)) {
+        j <- jj
+        break
+      }
+    }
+    bins <- unique(c(k + 1L, n - k + 1L))
+    bins <- bins[bins >= 1L & bins <= n]
+    if (is.na(j)) {
+      Sspec[bins] <- Xf[bins]
+    } else {
+      Dspec[[j]][bins] <- Xf[bins]
+    }
+  }
+
+  D <- lapply(seq_len(J), function(j) Re(fft(Dspec[[j]], inverse = TRUE)) / n)
+  names(D) <- paste0("D", seq_len(J))
+  S <- Re(fft(Sspec, inverse = TRUE)) / n
+  list(D = D, S = S, J = J, filter = "fourier")
+}
+
+# EMD mapped onto the paper's (D_1..D_K, S_K) slots.
+# IMF 1 is the fastest oscillation -> D_1; leftover IMFs fold into S_K.
+emd_mra <- function(x, J) {
+  if (!requireNamespace("EMD", quietly = TRUE))
+    stop("Install the EMD package to use this decomposition.")
+  x  <- as.numeric(x)
+  n  <- length(x)
+  tt <- seq_len(n)
+  emd_out <- EMD::emd(x, tt, boundary = "periodic")
+  n_imf <- if (is.null(emd_out$imf)) 0L else ncol(emd_out$imf)
+  D <- vector("list", J)
+  names(D) <- paste0("D", seq_len(J))
+  for (j in seq_len(J)) {
+    D[[j]] <- if (j <= n_imf) as.numeric(emd_out$imf[, j]) else rep(0, n)
+  }
+  S <- as.numeric(emd_out$residue)
+  if (n_imf > J) {
+    for (j in (J + 1L):n_imf) S <- S + as.numeric(emd_out$imf[, j])
+  }
+  list(D = D, S = S, J = J, filter = "emd")
+}
+
+# ── generic_mra: paper Haar, plus D4 / LA8 / Fourier / EMD ──────────────────
+#   haar    – paper default (our pyramid)
+#   d4      – Daubechies-4 (extension)
+#   la8     – Least-Asymmetric-8 (extension)
+#   fourier – octave-band FFT (cross-question)
+#   emd     – Empirical Mode Decomposition (extension)
+
+generic_mra <- function(x, J, filter = c("haar", "d4", "la8", "fourier", "emd")) {
   filter <- match.arg(filter)
 
-  # Haar: use our own pyramid (no extra dependency, exact match to paper).
   if (filter == "haar") {
     obj <- haar_mra(x, J)
     obj$filter <- "haar"
     return(obj)
   }
+  if (filter == "fourier") return(fourier_mra(x, J))
+  if (filter == "emd")     return(emd_mra(x, J))
 
-  # For D4 and LA8 we delegate to waveslim, which is already in 00_packages.R.
   if (!requireNamespace("waveslim", quietly = TRUE))
     stop("waveslim package is required for D4 / LA8 filter families.")
 
-  # waveslim::mra returns a list with J detail components + 1 smooth component.
-  # boundary = "periodic" mirrors the circular convolution in our Haar code.
   wm <- waveslim::mra(x, wf = filter, J = J, method = "modwt",
                       boundary = "periodic")
-
-  # waveslim names the components "D1".."DJ" and "SJ". Map into our structure.
   D <- vector("list", J)
   names(D) <- paste0("D", seq_len(J))
   for (j in seq_len(J)) {
@@ -146,7 +190,6 @@ generic_mra <- function(x, J, filter = c("haar", "d4", "la8")) {
   if (!S_key %in% names(wm))
     stop(sprintf("waveslim mra did not return smooth component '%s'.", S_key))
   S <- as.numeric(wm[[S_key]])
-
   list(D = D, S = S, J = J, filter = filter)
 }
 

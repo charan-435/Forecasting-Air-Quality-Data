@@ -14,6 +14,11 @@ ATSA_Presentation.pptx
 # Python
 __pycache__/
 
+# Vonter full-year CPCB dumps (600MB+); keep the Shillong extract in data/processed/
+data/raw/vonter/*.parquet
+data/raw/vonter/*.zip
+data/raw/vonter/*.csv
+
 # Experiment noise
 results/run_log.txt
 results/conformal_log.txt

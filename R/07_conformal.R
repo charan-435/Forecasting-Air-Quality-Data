@@ -45,7 +45,8 @@ tree_insample <- function(fit, y_train) {
 }
 
 wave_insample <- function(wave_fit, y_train) {
-  mra <- haar_mra(y_train, wave_fit$J)
+  filt <- if (!is.null(wave_fit$filter)) wave_fit$filter else "haar"
+  mra <- generic_mra(y_train, wave_fit$J, filter = filt)
   comps <- c(mra$D, list(S = mra$S))
   parts <- lapply(names(comps), function(nm) {
     fit <- wave_fit$models[[nm]]
