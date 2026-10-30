@@ -1,6 +1,9 @@
 # Point-forecast models. Recursive 1-step iteration out to horizon h.
 # Tree models share the same lag-p design matrix. AR/SARIMA use original scale.
 
+# Null-coalescing helper (avoids importing magrittr for one operator).
+`%||%` <- function(a, b) if (!is.null(a)) a else b
+
 default_tree_params <- function() {
   list(
     p = 24L,
@@ -53,7 +56,7 @@ fit_sarima_auto <- function(y_train, season = SEASONALITY) {
 
 fit_xgb <- function(y_train, params = default_tree_params()) {
   sup <- supervised_from_series(y_train, params$p)
-  sp <- split_val(sup$X, sup$y, params$val_hours)
+  sp  <- split_val(sup$X, sup$y, params$val_hours)
   dtr <- xgboost::xgb.DMatrix(sp$X_tr, label = sp$y_tr)
   dva <- xgboost::xgb.DMatrix(sp$X_va, label = sp$y_va)
   watch <- list(train = dtr, eval = dva)
@@ -83,7 +86,7 @@ predict_xgb_row <- function(fit, row) {
 
 fit_lgb <- function(y_train, params = default_tree_params()) {
   sup <- supervised_from_series(y_train, params$p)
-  sp <- split_val(sup$X, sup$y, params$val_hours)
+  sp  <- split_val(sup$X, sup$y, params$val_hours)
   dtr <- lightgbm::lgb.Dataset(sp$X_tr, label = sp$y_tr)
   dva <- lightgbm::lgb.Dataset.create.valid(dtr, sp$X_va, label = sp$y_va)
   model <- lightgbm::lgb.train(
@@ -113,31 +116,33 @@ predict_lgb_row <- function(fit, row) {
 
 # ---- CatBoost (Ordered) or XGBoost fallback -------------------------------
 
-fit_cat <- function(y_train, params = default_tree_params(), catboost_ok = isTRUE(get0("CATBOOST_AVAILABLE", ifnotfound = FALSE))) {
+fit_cat <- function(y_train, params = default_tree_params(),
+                    catboost_ok = isTRUE(get0("CATBOOST_AVAILABLE",
+                                              ifnotfound = FALSE))) {
   if (!catboost_ok) {
     out <- fit_xgb(y_train, params)
-    out$family <- "cat_fallback_xgb"
+    out$family   <- "cat_fallback_xgb"
     out$fallback <- TRUE
     return(out)
   }
-  sup <- supervised_from_series(y_train, params$p)
-  sp <- split_val(sup$X, sup$y, params$val_hours)
-  pool_tr <- catboost::catboost.load_pool(sp$X_tr, label = sp$y_tr)
-  pool_va <- catboost::catboost.load_pool(sp$X_va, label = sp$y_va)
-  model <- catboost::catboost.train(
+  sup      <- supervised_from_series(y_train, params$p)
+  sp       <- split_val(sup$X, sup$y, params$val_hours)
+  pool_tr  <- catboost::catboost.load_pool(sp$X_tr, label = sp$y_tr)
+  pool_va  <- catboost::catboost.load_pool(sp$X_va, label = sp$y_va)
+  model    <- catboost::catboost.train(
     pool_tr, pool_va,
     params = list(
-      loss_function = "RMSE",
-      iterations = params$nrounds,
-      depth = params$max_depth,
-      learning_rate = params$eta,
-      boosting_type = "Ordered",
-      od_type = "Iter",
-      od_wait = params$early_stopping,
-      random_seed = 7,
-      verbose = 0,
+      loss_function      = "RMSE",
+      iterations         = params$nrounds,
+      depth              = params$max_depth,
+      learning_rate      = params$eta,
+      boosting_type      = "Ordered",
+      od_type            = "Iter",
+      od_wait            = params$early_stopping,
+      random_seed        = 7,
+      verbose            = 0,
       allow_writing_files = FALSE,
-      thread_count = 1
+      thread_count       = 1
     )
   )
   list(model = model, p = params$p, family = "cat", fallback = FALSE)
@@ -153,39 +158,41 @@ predict_cat_row <- function(fit, row) {
 
 predict_tree_row <- function(fit, row) {
   switch(fit$family,
-    xgb = predict_xgb_row(fit, row),
-    lgb = predict_lgb_row(fit, row),
-    cat = predict_cat_row(fit, row),
+    xgb              = predict_xgb_row(fit, row),
+    lgb              = predict_lgb_row(fit, row),
+    cat              = predict_cat_row(fit, row),
     cat_fallback_xgb = predict_xgb_row(fit, row),
     stop("Unknown tree family: ", fit$family)
   )
 }
 
 recursive_tree_forecast <- function(fit, y_hist, h) {
-  y <- as.numeric(y_hist)
-  p <- fit$p
+  y  <- as.numeric(y_hist)
+  p  <- fit$p
   fc <- numeric(h)
   for (i in seq_len(h)) {
-    row <- last_lag_row(y, p)
+    row   <- last_lag_row(y, p)
     fc[i] <- predict_tree_row(fit, row)
-    y <- c(y, fc[i])
+    y     <- c(y, fc[i])
   }
   fc
 }
 
 # ---- Wave hybrids: one model per MRA component, then sum ------------------
+# filter: "haar" (paper default), "d4", "la8"  — passed to generic_mra().
 
-wave_fit_components <- function(y_train, J, fitter, params) {
-  mra <- haar_mra(y_train, J)
-  comps <- c(mra$D, list(S = mra$S))
+wave_fit_components <- function(y_train, J, fitter, params, filter = "haar") {
+  mra    <- generic_mra(y_train, J, filter = filter)
+  comps  <- c(mra$D, list(S = mra$S))
   models <- lapply(comps, function(comp) fitter(comp, params))
-  list(models = models, J = J, names = names(comps))
+  list(models = models, J = J, names = names(comps), filter = filter)
 }
 
 wave_forecast_components <- function(wave_fit, y_train, h, fitter_kind = "tree") {
-  mra <- haar_mra(y_train, wave_fit$J)
+  filt  <- wave_fit$filter %||% "haar"
+  mra   <- generic_mra(y_train, wave_fit$J, filter = filt)
   comps <- c(mra$D, list(S = mra$S))
-  fc <- vector("list", length(comps))
+  fc    <- vector("list", length(comps))
   names(fc) <- names(comps)
   for (nm in names(comps)) {
     if (fitter_kind == "tree") {
@@ -197,9 +204,9 @@ wave_forecast_components <- function(wave_fit, y_train, h, fitter_kind = "tree")
   list(components = fc, yhat = mra_forecast_sum(fc))
 }
 
-wave_fit_sarima <- function(y_train, J) {
-  mra <- haar_mra(y_train, J)
-  comps <- c(mra$D, list(S = mra$S))
+wave_fit_sarima <- function(y_train, J, filter = "haar") {
+  mra    <- generic_mra(y_train, J, filter = filter)
+  comps  <- c(mra$D, list(S = mra$S))
   models <- lapply(comps, function(comp) {
     # Detail series are closer to stationary; still use auto.arima.
     forecast::auto.arima(
@@ -208,12 +215,16 @@ wave_fit_sarima <- function(y_train, J) {
       max.p = 3, max.q = 1, max.d = 1, trace = FALSE
     )
   })
-  list(models = models, J = J, names = names(comps), family = "wave_sarima")
+  list(models = models, J = J, names = names(comps), family = "wave_sarima",
+       filter = filter)
 }
 
 # ---- One-shot dispatcher --------------------------------------------------
 
-fit_and_forecast <- function(method, y_train, h, params = default_tree_params(), J = 5L) {
+fit_and_forecast <- function(method, y_train, h,
+                              params = default_tree_params(),
+                              J = 5L,
+                              filter = "haar") {
   method <- tolower(method)
   if (method == "snaive") {
     return(list(yhat = forecast_snaive(y_train, h), method = method))
@@ -228,35 +239,42 @@ fit_and_forecast <- function(method, y_train, h, params = default_tree_params(),
   }
   if (method == "xgb") {
     fit <- fit_xgb(y_train, params)
-    return(list(yhat = recursive_tree_forecast(fit, y_train, h), method = method, fit = fit))
+    return(list(yhat = recursive_tree_forecast(fit, y_train, h),
+                method = method, fit = fit))
   }
   if (method == "lgb") {
     fit <- fit_lgb(y_train, params)
-    return(list(yhat = recursive_tree_forecast(fit, y_train, h), method = method, fit = fit))
+    return(list(yhat = recursive_tree_forecast(fit, y_train, h),
+                method = method, fit = fit))
   }
   if (method == "catboost") {
     fit <- fit_cat(y_train, params)
-    return(list(yhat = recursive_tree_forecast(fit, y_train, h), method = method, fit = fit))
+    return(list(yhat = recursive_tree_forecast(fit, y_train, h),
+                method = method, fit = fit))
   }
   if (method == "wavexgb") {
-    wf <- wave_fit_components(y_train, J, fit_xgb, params)
+    wf <- wave_fit_components(y_train, J, fit_xgb, params, filter = filter)
     fc <- wave_forecast_components(wf, y_train, h, "tree")
-    return(list(yhat = fc$yhat, method = method, fit = wf, components = fc$components))
+    return(list(yhat = fc$yhat, method = method, fit = wf,
+                components = fc$components))
   }
   if (method == "wavelgb") {
-    wf <- wave_fit_components(y_train, J, fit_lgb, params)
+    wf <- wave_fit_components(y_train, J, fit_lgb, params, filter = filter)
     fc <- wave_forecast_components(wf, y_train, h, "tree")
-    return(list(yhat = fc$yhat, method = method, fit = wf, components = fc$components))
+    return(list(yhat = fc$yhat, method = method, fit = wf,
+                components = fc$components))
   }
   if (method == "wavecatboost") {
-    wf <- wave_fit_components(y_train, J, fit_cat, params)
+    wf <- wave_fit_components(y_train, J, fit_cat, params, filter = filter)
     fc <- wave_forecast_components(wf, y_train, h, "tree")
-    return(list(yhat = fc$yhat, method = method, fit = wf, components = fc$components))
+    return(list(yhat = fc$yhat, method = method, fit = wf,
+                components = fc$components))
   }
   if (method == "wavesarima") {
-    wf <- wave_fit_sarima(y_train, J)
+    wf <- wave_fit_sarima(y_train, J, filter = filter)
     fc <- wave_forecast_components(wf, y_train, h, "sarima")
-    return(list(yhat = fc$yhat, method = method, fit = wf, components = fc$components))
+    return(list(yhat = fc$yhat, method = method, fit = wf,
+                components = fc$components))
   }
   stop("Unknown method: ", method)
 }

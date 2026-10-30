@@ -1,4 +1,6 @@
-# Haar MODWT / IMODWT / MRA (Percival pyramid, matching modwt_report/haar_modwt.py).
+# MODWT / IMODWT / MRA — paper method: Haar (Percival pyramid).
+# Extension: generic_mra() supports Haar, D4 (Daubechies-4), LA8 (Least-Asymmetric-8)
+#            via the waveslim package (modwt / mra functions).
 # Circular convolution: decompose TRAIN only so test values never leak into coefficients.
 
 roll_right <- function(x, s) {
@@ -83,7 +85,7 @@ choose_J <- function(x, max_J = 9, energy_cut = 0.02) {
   shares <- en$share[seq_len(J_paper)]
   keep <- which(shares >= energy_cut)
   J_from_energy <- if (length(keep)) max(keep) else J_paper
-  # Level j ≈ scale 2^j hours. J = 5 covers 32 h (the daily cycle from EDA).
+  # Level j ~ scale 2^j hours. J = 5 covers 32 h (the daily cycle from EDA).
   # Extra levels beyond that add a CatBoost model each and mostly fit noise.
   J_elbow <- max(3L, min(J_from_energy, 5L, J_paper))
   list(J_paper = J_paper, J_elbow = J_elbow, energy = en)
@@ -93,4 +95,68 @@ choose_J <- function(x, max_J = 9, energy_cut = 0.02) {
 mra_forecast_sum <- function(comp_fc) {
   # comp_fc: list of numeric vectors of equal length h
   Reduce(`+`, comp_fc)
+}
+
+# ── Extension: multi-filter MRA via waveslim ─────────────────────────────────
+# Supported filter families (paper = "haar"; extensions = "d4", "la8"):
+#   haar  – Haar wavelet (paper default)
+#   d4    – Daubechies-4 (4-tap, smoother than Haar, better frequency separation)
+#   la8   – Least-asymmetric-8 (near-linear phase, good for slowly-varying signals)
+#
+# The waveslim::modwt() function handles the pyramid internally with periodic
+# boundary (same as our Haar implementation). waveslim::mra() returns an
+# additive MRA identical in structure to haar_mra() above.
+#
+# Usage:
+#   mra_obj  <- generic_mra(x, J, filter = "haar")  # or "d4" / "la8"
+#   mra_obj$D   – named list D1..DJ  (detail components)
+#   mra_obj$S   – smooth component SJ
+#   mra_obj$J   – decomposition depth used
+#   mra_obj$filter – which filter was used
+
+generic_mra <- function(x, J, filter = c("haar", "d4", "la8")) {
+  filter <- match.arg(filter)
+
+  # Haar: use our own pyramid (no extra dependency, exact match to paper).
+  if (filter == "haar") {
+    obj <- haar_mra(x, J)
+    obj$filter <- "haar"
+    return(obj)
+  }
+
+  # For D4 and LA8 we delegate to waveslim, which is already in 00_packages.R.
+  if (!requireNamespace("waveslim", quietly = TRUE))
+    stop("waveslim package is required for D4 / LA8 filter families.")
+
+  # waveslim::mra returns a list with J detail components + 1 smooth component.
+  # boundary = "periodic" mirrors the circular convolution in our Haar code.
+  wm <- waveslim::mra(x, wf = filter, J = J, method = "modwt",
+                      boundary = "periodic")
+
+  # waveslim names the components "D1".."DJ" and "SJ". Map into our structure.
+  D <- vector("list", J)
+  names(D) <- paste0("D", seq_len(J))
+  for (j in seq_len(J)) {
+    key <- paste0("D", j)
+    if (!key %in% names(wm))
+      stop(sprintf("waveslim mra did not return component '%s'. Check J.", key))
+    D[[j]] <- as.numeric(wm[[key]])
+  }
+  S_key <- paste0("S", J)
+  if (!S_key %in% names(wm))
+    stop(sprintf("waveslim mra did not return smooth component '%s'.", S_key))
+  S <- as.numeric(wm[[S_key]])
+
+  list(D = D, S = S, J = J, filter = filter)
+}
+
+# Compare energy profiles across filter families at the same J.
+# Returns a tidy tibble with columns: filter, component, energy, share.
+compare_filter_energy <- function(x, J, filters = c("haar", "d4", "la8")) {
+  dplyr::bind_rows(lapply(filters, function(f) {
+    mra <- generic_mra(x, J, filter = f)
+    en  <- energy_by_level(mra)
+    en$filter <- f
+    en
+  }))
 }
