@@ -67,7 +67,7 @@ tibble::tibble(
 )
 ```
 
-`r if (isTRUE(get0("CATBOOST_AVAILABLE", ifnotfound = FALSE))) "The CatBoost R package loaded; Ordered boosting is used." else "**CatBoost is not installed.** `catboost` / `wavecatboost` fall back to XGBoost. The WaveXGB ablation still isolates the MODWT effect."`
+`r if (isTRUE(get0("CATBOOST_AVAILABLE", ifnotfound = FALSE))) "The CatBoost R package loaded; Ordered boosting is used." else "**CatBoost is not installed.** catboost / wavecatboost fall back to XGBoost. The WaveXGB ablation still isolates the MODWT effect."`
 
 # 2. Exploratory analysis
 
