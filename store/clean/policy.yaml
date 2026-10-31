@@ -1,0 +1,11 @@
+target_must_be_scorable: yes
+exclude_training_row_if_frac_filled_24h_gt: 0.5
+skip_origin_if_frac_filled_24h_gt: 0.25
+skip_origin_if_in_long_gap: yes
+long_gap_hours: 72
+min_daily_hours: 18
+notes:
+- A training or evaluation target must be is_scorable.
+- Exclude a training row if frac_filled_24h at its input time is > 0.5.
+- Skip a forecast origin if frac_filled_24h at the origin is > 0.25, or if in_long_gap
+  is true at the origin.

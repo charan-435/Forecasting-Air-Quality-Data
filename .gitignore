@@ -14,7 +14,7 @@ ATSA_Presentation.pptx
 # Python
 __pycache__/
 
-# Vonter full-year CPCB dumps (600MB+); keep the Shillong extract in data/processed/
+# Vonter full-year CPCB dumps (600MB+); keep small station extracts
 data/raw/vonter/*.parquet
 data/raw/vonter/*.zip
 data/raw/vonter/*.csv
@@ -22,3 +22,11 @@ data/raw/vonter/*.csv
 # Experiment noise
 results/run_log.txt
 results/conformal_log.txt
+
+# Upstream letter repo (cloned only to compare protocol)
+_orig_wavecatboost/
+_orig_nb_cells.txt
+_inspect_orig_nb.py
+_fix_protocol_cache.R
+_check_s8.R
+_patch_bands.R

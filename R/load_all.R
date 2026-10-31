@@ -5,6 +5,9 @@ local({
   if (!dir.exists(this_dir) && dir.exists("R")) this_dir <- "R"
   files <- c(
     "00_packages.R", "01_constants.R", "02_data.R", "03_preprocess.R",
+    "20_ingest.R", "21_quality.R", "22_impute.R", "23_store_clean.R",
+    "30_decomp_registry.R", "31_decomp_causal.R", "32_decomp_trailing.R",
+    "33_decomp_diagnostics.R", "34_decomp_screen.R", "35_decomp_io.R",
     "04_modwt.R", "05_features.R", "06_models.R", "07_conformal.R",
     "08_metrics.R", "09_hparams.R"
   )

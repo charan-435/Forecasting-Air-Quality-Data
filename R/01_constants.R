@@ -14,8 +14,17 @@ PROC_DIR <- file.path(PROJECT_ROOT, "data", "processed")
 RES_DIR <- file.path(PROJECT_ROOT, "results")
 
 POLLUTANTS <- c("NO2", "O3", "CO", "SO2", "PM2.5", "PM10")
-SENSORS <- c("CPCB", "ID1")
+# Four pollutants used for IMODWT actual-vs-predicted panels.
+FOUR_POLLUTANTS <- c("PM2.5", "PM10", "NO2", "O3")
+# CPCB / ID1 are the letter's already-hourly files (skip quality/imputation).
+# Extra groups (Shillong, Delhi) are 15-min CAAQMS and run Phase 1a preprocess.
+SENSORS_PAPER <- c("CPCB", "ID1")
+NEW_SENSOR <- "SHILLONG"
+SENSORS_SHILLONG <- c("Lumpyngngad", "JN_Stadium")
+SENSORS_DELHI <- c("ITO", "RK_Puram")
+SENSORS <- c(SENSORS_PAPER, NEW_SENSOR, SENSORS_SHILLONG, SENSORS_DELHI)
 SEASONALITY <- 24L  # hourly data, daily cycle
+VAL_HOURS <- 14L * 24L  # last 14 days of the pre-test window; early stopping only
 
 HORIZONS <- list(
   `1d`  = 24L,

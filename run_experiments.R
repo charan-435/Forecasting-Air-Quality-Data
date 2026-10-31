@@ -42,7 +42,7 @@ save_cache <- function(obj, path) {
 
 # ---- 1. Data --------------------------------------------------------------
 message("Loading raw datasets...")
-raw <- load_raw_datasets()
+raw <- load_raw_datasets(include_new = FALSE)
 series <- prepare_all_series(raw)
 saveRDS(list(raw = raw, series = series), series_path)
 
@@ -219,7 +219,7 @@ if (file.exists(conformal_path)) {
   conf_out <- readRDS(conformal_path)
 } else conf_out <- list()
 if (!file.exists(conformal_path)) {
-for (sensor in SENSORS) {
+for (sensor in SENSORS_PAPER) {
   key_fc <- paste(sensor, "PM2.5", "7d", "wavecatboost", sep = "|")
   s <- series[[paste(sensor, "PM2.5", sep = "_")]]
   if (is.null(s)) next

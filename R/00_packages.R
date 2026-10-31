@@ -6,7 +6,8 @@
   "lubridate", "ggplot2", "plotly", "shiny", "DT",
   "forecast", "tseries", "urca", "imputeTS", "zoo",
   "xgboost", "lightgbm", "waveslim",
-  "future", "furrr", "scales", "jsonlite"
+  "future", "future.apply", "furrr", "scales", "jsonlite",
+  "yaml", "arrow", "digest"
 )
 
 ensure_packages <- function(pkgs = .project_packages, install_missing = TRUE) {

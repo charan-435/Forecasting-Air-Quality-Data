@@ -1,0 +1,113 @@
+# Leak-free hourly preprocessing.
+# Switch datasets with `active`, or:  Rscript run_preprocess.R delhi
+#
+#   paper    — CPCB.csv / ID1.csv (already hourly). Quality, imputation and
+#              gap-filling are skipped; values are stored as-is.
+#   delhi    — 15-min CPCB CAAQMS (ITO, R K Puram). Full causal pipeline.
+#   shillong — 15-min CPCB CAAQMS (Lumpyngngad, JN Stadium). Full causal pipeline.
+
+active: paper   # paper | delhi | shillong
+
+canonical_units:
+  PM2.5: ug/m3
+  PM10: ug/m3
+  NO2: ug/m3
+  SO2: ug/m3
+  O3: ug/m3
+  CO: mg/m3
+  AT: degC
+  RH: pct
+
+bounds:
+  PM2.5: [0, 1000]
+  PM10: [0, 2000]
+  NO2: [0, 1000]
+  SO2: [0, 1000]
+  O3: [0, 1000]
+  CO: [0, 50]
+  AT: [-10, 50]
+  RH: [0, 100]
+
+min_subhour_coverage: 0.75
+min_daily_hours: 18
+stuck_hours:
+  default: 6
+pm_ratio_max: 1.1
+spike:
+  window_h: 24
+  k_mad: 6
+  mask: false
+long_gap_hours: 72
+selection_end: "2023-10-01 00:00"   # imputation fit/benchmark use data before this (IST)
+n_artificial_gaps: 500
+
+sources:
+  - id: paper_cpcb
+    group: paper
+    path: data/raw/CPCB.csv
+    adapter: paper_cpcb_csv
+    station: CPCB
+    tz: Asia/Kolkata
+    native_freq_min: 60
+    time_label: end
+    skip_preprocess: true
+    units: {PM2.5: ug/m3, PM10: ug/m3, NO2: ug/m3, SO2: ug/m3, O3: ug/m3, CO: ug/m3, AT: degC, RH: pct}
+
+  - id: paper_id1
+    group: paper
+    path: data/raw/ID1.csv
+    adapter: paper_id1_csv
+    station: ID1
+    tz: Asia/Kolkata
+    native_freq_min: 60
+    time_label: end
+    skip_preprocess: true
+    units: {PM2.5: ug/m3, PM10: ug/m3, NO2: ug/m3, SO2: ug/m3, O3: ug/m3, CO: mg/m3, AT: degC, RH: pct}
+
+  - id: delhi_ito
+    group: delhi
+    path: data/raw/delhi/cpcb_delhi_2023.parquet
+    adapter: vonter_parquet
+    station: ITO
+    station_id: site_117
+    tz: Asia/Kolkata
+    native_freq_min: 15
+    time_label: start
+    skip_preprocess: false
+    units: {PM2.5: ug/m3, PM10: ug/m3, NO2: ug/m3, SO2: ug/m3, O3: ug/m3, CO: mg/m3, AT: degC, RH: pct}
+
+  - id: delhi_rkpuram
+    group: delhi
+    path: data/raw/delhi/cpcb_delhi_2023.parquet
+    adapter: vonter_parquet
+    station: RK_Puram
+    station_id: site_124
+    tz: Asia/Kolkata
+    native_freq_min: 15
+    time_label: start
+    skip_preprocess: false
+    units: {PM2.5: ug/m3, PM10: ug/m3, NO2: ug/m3, SO2: ug/m3, O3: ug/m3, CO: mg/m3, AT: degC, RH: pct}
+
+  - id: shillong_lumpyngngad
+    group: shillong
+    path: data/raw/shillong/shillong_15min_2023.parquet
+    adapter: vonter_parquet
+    station: Lumpyngngad
+    station_id: site_5131
+    tz: Asia/Kolkata
+    native_freq_min: 15
+    time_label: start
+    skip_preprocess: false
+    units: {PM2.5: ug/m3, PM10: ug/m3, NO2: ug/m3, SO2: ug/m3, O3: ug/m3, CO: mg/m3, AT: degC, RH: pct}
+
+  - id: shillong_jnstadium
+    group: shillong
+    path: data/raw/shillong/shillong_15min_2023.parquet
+    adapter: vonter_parquet
+    station: JN_Stadium
+    station_id: site_5593
+    tz: Asia/Kolkata
+    native_freq_min: 15
+    time_label: start
+    skip_preprocess: false
+    units: {PM2.5: ug/m3, PM10: ug/m3, NO2: ug/m3, SO2: ug/m3, O3: ug/m3, CO: mg/m3, AT: degC, RH: pct}

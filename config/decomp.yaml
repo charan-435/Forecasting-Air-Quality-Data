@@ -1,0 +1,201 @@
+# Leak-free decomposition store (Phase 1b).
+#   Rscript run_decomp.R
+# Test period after selection_end is never used by diagnostics D3 or the screen.
+
+window_h: 2048
+checkpoint_every: 500
+max_hours_per_method_scale: 6
+n_benchmark_windows: 50
+ar_pad: 48
+n_imf: 6
+n_d3_samples: 300
+d3_horizon: 512
+
+# Clipped to each series' last timestamp. Null = use config/preprocess.yaml.
+selection_end: null
+
+ceemdan:
+  ensemble: 50
+  noise: 0.2
+vmd:
+  alpha: 2000
+  tau: 0
+  DC: false
+  tol: 1.0e-7
+
+screen:
+  lookback_days: 60
+  horizons: [1, 6, 24, 72, 168]
+  lgb:
+    objective: regression_l1
+    num_leaves: 31
+    learning_rate: 0.05
+    nrounds: 500
+    min_data_in_leaf: 50
+    feature_fraction: 0.8
+    seed: 7
+  bootstrap_block: 7
+  bootstrap_reps: 199
+
+methods:
+  - id: coef_haar_J10
+    family: causal_full
+    fn: decomp_coef_haar
+    additive: true
+    params: {J: 10, filter: haar}
+    warmup_rule: "L_j = (2^j - 1)(L - 1) + 1 with L = 2"
+    variables: all
+
+  - id: coef_d4_J9
+    family: causal_full
+    fn: decomp_coef_modwt
+    additive: false
+    params: {J: 9, filter: d4}
+    warmup_rule: "L_j = (2^j - 1)(L - 1) + 1 with L = 4"
+    variables: all
+
+  - id: coef_la8_J8
+    family: causal_full
+    fn: decomp_coef_modwt
+    additive: false
+    params: {J: 8, filter: la8}
+    warmup_rule: "L_j = (2^j - 1)(L - 1) + 1 with L = 8"
+    variables: all
+
+  - id: mra_haar_J5
+    family: trailing
+    fn: decomp_mra_haar
+    additive: true
+    params: {J: 5, filter: haar, pad: 0}
+    warmup_rule: "t >= window_h"
+    variables: pollutants
+
+  - id: mra_haar_J9
+    family: trailing
+    fn: decomp_mra_haar
+    additive: true
+    params: {J: 9, filter: haar, pad: 0}
+    warmup_rule: "t >= window_h"
+    variables: pollutants
+
+  - id: mra_d4_J5
+    family: trailing
+    fn: decomp_mra_waveslim
+    additive: true
+    params: {J: 5, filter: d4, pad: 0}
+    warmup_rule: "t >= window_h"
+    variables: pollutants
+
+  - id: mra_d4_J8
+    family: trailing
+    fn: decomp_mra_waveslim
+    additive: true
+    params: {J: 8, filter: d4, pad: 0}
+    warmup_rule: "t >= window_h"
+    variables: pollutants
+
+  - id: mra_la8_J5
+    family: trailing
+    fn: decomp_mra_waveslim
+    additive: true
+    params: {J: 5, filter: la8, pad: 0}
+    warmup_rule: "t >= window_h"
+    variables: pollutants
+
+  - id: mra_la8_J8
+    family: trailing
+    fn: decomp_mra_waveslim
+    additive: true
+    params: {J: 8, filter: la8, pad: 0}
+    warmup_rule: "t >= window_h"
+    variables: pollutants
+
+  - id: vmd_K6_pad0
+    family: trailing
+    fn: decomp_vmd
+    additive: true
+    params: {K: 6, pad: 0}
+    warmup_rule: "t >= window_h"
+    variables: pollutants
+    optional: true
+
+  - id: vmd_K6_pad48
+    family: trailing
+    fn: decomp_vmd
+    additive: true
+    params: {K: 6, pad: 48}
+    warmup_rule: "t >= window_h"
+    variables: pollutants
+    optional: true
+
+  - id: vmd_K8_pad0
+    family: trailing
+    fn: decomp_vmd
+    additive: true
+    params: {K: 8, pad: 0}
+    warmup_rule: "t >= window_h"
+    variables: pollutants
+    optional: true
+
+  - id: vmd_K8_pad48
+    family: trailing
+    fn: decomp_vmd
+    additive: true
+    params: {K: 8, pad: 48}
+    warmup_rule: "t >= window_h"
+    variables: pollutants
+    optional: true
+
+  - id: emd_pad0
+    family: trailing
+    fn: decomp_emd
+    additive: true
+    params: {pad: 0}
+    warmup_rule: "t >= window_h"
+    variables: pollutants
+    optional: true
+
+  - id: emd_pad48
+    family: trailing
+    fn: decomp_emd
+    additive: true
+    params: {pad: 48}
+    warmup_rule: "t >= window_h"
+    variables: pollutants
+    optional: true
+
+  - id: ceemdan_pad0
+    family: trailing
+    fn: decomp_ceemdan
+    additive: true
+    params: {pad: 0}
+    warmup_rule: "t >= window_h"
+    variables: pollutants
+    optional: true
+
+  - id: ceemdan_pad48
+    family: trailing
+    fn: decomp_ceemdan
+    additive: true
+    params: {pad: 48}
+    warmup_rule: "t >= window_h"
+    variables: pollutants
+    optional: true
+
+  - id: mstl
+    family: trailing
+    fn: decomp_mstl
+    additive: true
+    params: {pad: 0}
+    warmup_rule: "t >= window_h"
+    variables: pollutants
+    optional: true
+
+  - id: ssa_L168
+    family: trailing
+    fn: decomp_ssa
+    additive: true
+    params: {L: 168, n_rc: 8, pad: 0}
+    warmup_rule: "t >= window_h"
+    variables: pollutants
+    optional: true

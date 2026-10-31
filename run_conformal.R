@@ -1,62 +1,58 @@
-# WaveCatBoost conformal intervals (paper §II-C) with a true forecast
-# calibration window — not in-sample fitted residuals.
+# WaveCatBoost conformal intervals (paper §II-C).
+# Split conformal + 1-step walk-forward on PM2.5, 7-day window, all sensors.
 
 file_arg <- grep("^--file=", commandArgs(trailingOnly = FALSE), value = TRUE)
 if (length(file_arg)) setwd(dirname(normalizePath(sub("^--file=", "", file_arg))))
+if (!file.exists("R/load_all.R")) stop("Run from the project root.")
 source("R/load_all.R")
 
-packed <- readRDS(file.path(PROC_DIR, "series.rds"))
-series <- packed$series
-hp <- readRDS(file.path(RES_DIR, "hparams.rds"))
-params <- hp$params
-params$nrounds <- min(params$nrounds, 120L)
-J_use <- min(as.integer(hp$J), 5L)
-
-conf_out <- list()
-for (sensor in SENSORS) {
-  s <- series[[paste(sensor, "PM2.5", sep = "_")]]
-  h <- HORIZONS[["7d"]]
-  split <- chrono_split(s$y, s$times, h)
-  ntr <- length(split$y_train)
-  cal_h <- min(168L, max(48L, floor(ntr / 8)))
-  y_pre <- split$y_train[seq_len(ntr - cal_h)]
-  y_cal <- split$y_train[(ntr - cal_h + 1):ntr]
-
-  sc_pre <- minmax_fit(y_pre)
-  message("Calibration forecast: ", sensor, " PM2.5, ", cal_h, " hours")
-  fit_cal <- fit_and_forecast(
-    "wavecatboost", minmax_apply(y_pre, sc_pre), h = cal_h,
-    params = params, J = J_use
-  )
-  yhat_cal <- minmax_invert(fit_cal$yhat, sc_pre)
-
-  sc <- minmax_fit(split$y_train)
-  message("Test forecast: ", sensor, " PM2.5 7d")
-  fit <- fit_and_forecast(
-    "wavecatboost", minmax_apply(split$y_train, sc), h = h,
-    params = params, J = J_use
-  )
-  yhat_test <- minmax_invert(fit$yhat, sc)
-
-  kappas <- unique(c(24L, 168L, as.integer(cal_h)))
-  cands <- lapply(kappas, function(k) {
-    conformal_from_residuals(y_cal, yhat_cal, yhat_test, alpha = 0.05, kappa = k)
-  })
-  covs <- vapply(cands, `[[`, numeric(1), "coverage_cal")
-  best <- cands[[which.min(abs(covs - 0.95))]]
-  conf_out[[sensor]] <- list(
-    sensor = sensor, pollutant = "PM2.5", horizon = "7d",
-    t_test = split$t_test, y_test = split$y_test, yhat = yhat_test,
-    lower = best$lower, upper = best$upper,
-    cq = best$cq, kappa = best$kappa,
-    coverage_cal = best$coverage_cal,
-    coverage_test = interval_coverage(split$y_test, best$lower, best$upper),
-    width = interval_width(best$lower, best$upper),
-    alert = alert_from_interval("PM2.5", best$lower, best$upper, yhat_test)
-  )
-  message("  kappa=", best$kappa,
-          " cal_cov=", round(best$coverage_cal, 3),
-          " test_cov=", round(conf_out[[sensor]]$coverage_test, 3))
+packed <- {
+  p <- file.path(PROC_DIR, "series.rds")
+  if (file.exists(p)) readRDS(p) else {
+    raw <- load_raw_datasets(include_new = FALSE)
+    list(raw = raw, series = prepare_all_series(raw))
+  }
 }
-saveRDS(conf_out, file.path(RES_DIR, "conformal.rds"))
-message("Wrote results/conformal.rds")
+series <- packed$series
+sh <- ensure_new_dataset()
+if (!is.null(sh$hourly)) {
+  for (p in POLLUTANTS) {
+    if (!p %in% names(sh$hourly)) next
+    series[[paste(NEW_SENSOR, p, sep = "_")]] <- prepare_series(sh$hourly, p, NEW_SENSOR)
+  }
+}
+
+hp <- if (file.exists(file.path(RES_DIR, "hparams.rds"))) {
+  readRDS(file.path(RES_DIR, "hparams.rds"))
+} else {
+  list(params = default_tree_params(), J = 5L)
+}
+params <- hp$params
+params$nrounds <- min(params$nrounds %||% 120L, 120L)
+J_use <- min(as.integer(hp$J %||% 5L), 5L)
+
+conf_path <- file.path(RES_DIR, "conformal.rds")
+conf_out <- if (file.exists(conf_path)) readRDS(conf_path) else list()
+
+sensors <- intersect(SENSORS, unique(vapply(series, `[[`, character(1), "sensor")))
+for (sensor in sensors) {
+  s <- series[[paste(sensor, "PM2.5", sep = "_")]]
+  if (is.null(s)) next
+  message("Conformal 1-step: ", sensor, " PM2.5 7d")
+  z <- tryCatch(
+    conformal_wavecatboost_1step(s, params, J_use),
+    error = function(e) {
+      message("  ERROR: ", e$message)
+      NULL
+    }
+  )
+  if (is.null(z)) next
+  conf_out[[sensor]] <- z
+  message("  kappa=", z$kappa,
+          " cal_cov=", round(z$coverage_cal, 3),
+          " test_cov=", round(z$coverage_test, 3),
+          " width=", round(z$width, 2))
+  saveRDS(conf_out, conf_path)
+}
+saveRDS(conf_out, conf_path)
+message("Wrote ", conf_path)
