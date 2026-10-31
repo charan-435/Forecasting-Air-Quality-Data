@@ -16,11 +16,17 @@ clip_impossible <- function(x, pollutant) {
 # Kept so v1 run_experiments.R still reproduces archived scores.
 impute_hourly <- function(x, period = SEASONALITY) {
   x <- as.numeric(x)
-  if (!anyNA(x)) return(x)
+  n_ok <- sum(is.finite(x))
+  if (n_ok == length(x) || n_ok < 2L) return(x)
   # Seasonal Kalman if the gap pattern is short enough; linear fallback.
   out <- tryCatch(
     imputeTS::na_seadec(stats::ts(x, frequency = period), algorithm = "interpolation"),
-    error = function(e) imputeTS::na_interpolation(x, option = "linear")
+    error = function(e) {
+      tryCatch(
+        imputeTS::na_interpolation(x, option = "linear"),
+        error = function(e2) x
+      )
+    }
   )
   as.numeric(out)
 }

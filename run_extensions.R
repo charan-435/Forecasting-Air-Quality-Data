@@ -42,11 +42,10 @@ filter_scores <- if (file.exists(filter_score_path)) readRDS(filter_score_path) 
 DECOMPS <- c("haar", "d4", "la8", "fourier")
 POLLS   <- c("PM2.5", "NO2")
 HORIZ   <- HORIZONS["1d"]
-SENS    <- SENSORS
+SENS    <- SENSORS_PAPER
 
-# EMD on ~8k hourly points is slow; set to c("CPCB_PM2.5") to score it.
-# The Rmd still shows EMD on a 500-hour window.
-EMD_KEYS <- character(0)
+# EMD on the full hourly train is slow; CPCB / ID1 PM2.5 only (Section 10.3 table).
+EMD_KEYS <- c("CPCB_PM2.5", "ID1_PM2.5")
 
 cache <- load_cache(ext_cache_path)
 

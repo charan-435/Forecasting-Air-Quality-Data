@@ -12,7 +12,7 @@ output:
 runtime: shiny
 ---
 
-> **v1 results are archived and invalid.** See [`audit/AUDIT.md`](audit/AUDIT.md) (F1–F9). Cached bake-off scores live in `results/v1_archive/` and must not be cited. Phase 1a clean hours live in `store/clean/`; Phase 1b causal decompositions in `store/decomp/`. Section 8 walk-forward numbers are the **paper notebook protocol: leaky rolling 1-step (full-series MODWT, teacher forcing)**.
+> **v1 results are archived and invalid.** See [`audit/AUDIT.md`](audit/AUDIT.md). Section 8 uses the **paper notebook protocol: leaky rolling 1-step (full-series MODWT, teacher forcing)**.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
@@ -29,10 +29,17 @@ if (file.exists(series_path)) {
   series <- prepare_all_series(raw)
 }
 
-# Extra 15-min groups (Shillong, Delhi) are attached on demand from the Dataset
-# dropdown. Original paper CSVs skip quality/imputation. Extra groups run the
-# Phase 1a leak-free pipeline into store/<group>/clean/ (paper store is untouched).
-.decomp_listed <- tryCatch(list_methods(), error = function(e) tibble::tibble())
+# SHILLONG hourly CSV (paper 15-min → hour) — fast path, already cached.
+sh_setup <- tryCatch(ensure_new_dataset(force = FALSE), error = function(e) NULL)
+if (!is.null(sh_setup$hourly)) {
+  raw[[NEW_SENSOR]] <- sh_setup$hourly
+  for (p in intersect(POLLUTANTS, names(sh_setup$hourly))) {
+    n_ok <- sum(is.finite(sh_setup$hourly[[p]]))
+    if (n_ok < 2L) next
+    series[[paste(NEW_SENSOR, p, sep = "_")]] <-
+      prepare_series(sh_setup$hourly, p, NEW_SENSOR)
+  }
+}
 
 ARCH_DIR <- file.path(PROJECT_ROOT, "results", "v1_archive")
 .res_file <- function(name) {
@@ -174,11 +181,11 @@ plotly_slot <- function(id, n_panels) {
 
 # 1. Setup and data
 
-This report follows Borah et al. (IEEE Sensors Letters, 2025) in order: missing-value handling, hourly averaging, min-max to $[0,1]$, Haar MODWT **on the training window**, one CatBoost per component, inverse MODWT (additive reconstruction), then conformal intervals.
+This report follows Borah et al. (IEEE Sensors Letters, 2025): missing values, hourly averages, train-only min-max, Haar MODWT on **train**, one CatBoost per component, IMODWT, conformal intervals.
 
-**Dataset menu.** **Original (paper)** is `CPCB.csv` / `ID1.csv` — already hourly, so quality flags and causal imputation are **skipped**. **Extra: Shillong** and **Extra: Delhi** are 15-min CPCB CAAQMS extracts; selecting them runs the Phase 1a leak-free pipeline (end-labelled hourly mean, causal fill, no test-period leak) into `store/<group>/clean/` so the paper store is not overwritten. AT and RH are plotted in EDA and left out of the models — the letter is univariate.
+**Dataset menu.** **Original** is CPCB, ID1, and SHILLONG (hourly; SHILLONG is the cached 15-min → hour CSV). **Extra: Shillong / Delhi** are 15-min CAAQMS groups; the first load writes `store/<group>/clean/` and `data/processed/<group>_group_series.rds`, later loads read that cache. AT and RH are EDA-only.
 
-Sections 1–9 stay on the letter pipeline (Section 4.2 two-sided MRA is the paper plot; AUDIT F1). Section 4.3 reads the Phase 1b **causal** decomposition store. Section 10 holds the extensions (Fourier vs MODWT, other wavelet filters, EMD).
+Sections 1–9 are the letter pipeline. Section 10 is Fourier / other wavelets / EMD.
 
 ```{r data-glimpse}
 pp <- tryCatch(pp_cfg(), error = function(e) NULL)
@@ -227,7 +234,7 @@ inputPanel(
 shiny::observeEvent(input$dataset_group, {
   grp <- input$dataset_group
   ch <- sensors_in_group(grp)
-  if (!length(ch)) ch <- SENSORS_PAPER
+  if (!length(ch)) ch <- c(SENSORS_PAPER, NEW_SENSOR)
   sel <- if (!is.null(input$sensor) && input$sensor %in% ch) input$sensor else ch[[1]]
   shiny::updateSelectInput(session, "sensor", choices = ch, selected = sel)
 }, ignoreNULL = TRUE)
@@ -250,24 +257,25 @@ s_re <- reactive({
   pol <- input$pollutant
   shiny::req(sensor, pol)
   if (identical(grp, "paper")) {
-    series[[paste(sensor, pol, sep = "_")]]
-  } else {
-    packed <- tryCatch({
-      run_extra <- function() ensure_dataset_group(grp)
-      if (isTRUE(shiny::isRunning())) {
-        shiny::withProgress(
-          message = paste("Preprocessing", grp),
-          detail = "15-min → hourly, quality flags, causal fill (once per group)",
-          run_extra()
-        )
-      } else run_extra()
-    }, error = function(e) {
-      shiny::showNotification(conditionMessage(e), type = "error", duration = 10)
-      NULL
-    })
-    shiny::req(packed, !is.null(packed$series))
-    packed$series[[paste(sensor, pol, sep = "_")]]
+    return(series[[paste(sensor, pol, sep = "_")]])
   }
+  packed <- tryCatch({
+    run_extra <- function() ensure_dataset_group(grp)
+    if (extra_group_is_cached(grp) || !isTRUE(shiny::isRunning())) {
+      run_extra()
+    } else {
+      shiny::withProgress(
+        message = paste("Preprocessing", grp, "(once, then cached)"),
+        detail = "15-min → hourly; later visits load the store",
+        run_extra()
+      )
+    }
+  }, error = function(e) {
+    shiny::showNotification(conditionMessage(e), type = "error", duration = 10)
+    NULL
+  })
+  shiny::req(packed, !is.null(packed$series))
+  packed$series[[paste(sensor, pol, sep = "_")]]
 })
 split_re <- reactive({
   s <- s_re()
@@ -369,9 +377,9 @@ renderPlot({
 
 The 24-hour cycle in the boxes fixes $S = 24$ for snaive, SARIMA, and the MASE denominator. Weekly effects are weaker here, so $S = 168$ is not forced.
 
-## 2.2 Missing values (paper)
+## 2.2 Missing values
 
-The letter's chain is **missing-value handling → hourly averages → min-max**. Negative concentrations are treated as sensor faults and set to NA before filling. Genuine spikes are not clipped.
+Negatives and absurd caps are set to NA (sensor faults). Spikes are kept. CPCB / ID1 / SHILLONG are already hourly, so this table is residual NAs in the file — not a second preprocess.
 
 ```{r eda-missing}
 missing_tbl <- dplyr::bind_rows(lapply(series, function(s) {
@@ -381,8 +389,6 @@ missing_tbl <- dplyr::bind_rows(lapply(series, function(s) {
 }))
 missing_tbl
 ```
-
-The GitHub CPCB file arrives with no NAs. Long identical stretches at the start of July 2022 look pre-filled; we leave them as they are so the series stays the one the letter used. Remaining NAs (mainly ID1) are filled in Section 3.
 
 ## 2.3 Stationarity
 
@@ -511,97 +517,33 @@ At $k = 1$ the cloud is tight: the next hour is close to this hour. At $k = 24$ 
 
 # 3. Preprocessing
 
-Paper order: missing values → hourly averages → min-max to $[0,1]$.
+Paper order: NAs → hourly mean (15-min sources only) → min-max on **train**:
 
 $$
-x_{\text{hour}} = \frac{x_1+x_2+x_3+x_4}{4}, \qquad
-x' = \frac{x - x_{\min}}{x_{\max} - x_{\min}} \in [0,1].
+x' = \frac{x - x_{\min}^{\mathrm{train}}}{x_{\max}^{\mathrm{train}} - x_{\min}^{\mathrm{train}}}.
 $$
 
-The **Dataset** menu decides whether this chain runs:
+CPCB, ID1, and SHILLONG skip the 15-min step. Extra groups run it once and reuse the parquet/RDS cache.
 
-- **Original (paper)** — CPCB and ID1 are already hourly. Quality masks and causal imputation are **skipped**; values are stored as-is (`skip_preprocess: true`).
-- **Extra: Shillong / Delhi** — 15-min CAAQMS. Selecting the group runs Phase 1a: end-labelled hourly mean, bounds/stuck/spike flags, and a **causal** fill fit only before `selection_end`. Output is `store/<group>/clean/` so `store/clean/` (paper) is not overwritten. Full-series `na_seadec` is not used (AUDIT F10).
-
-Min-max is never stored in those files — it is fit on **train only** after the split below.
-
-| Step | Original (CPCB / ID1) | Extra (Shillong / Delhi) |
-|---|---|---|
-| Clip / quality flags | Skip | Bounds, stuck, PM ratio, spikes |
-| Hourly average | Skip — files are already hourly | Mean of 15-min samples in $(t-1\text{h}, t]$ |
-| Imputation | Skip | Causal methods M1–M8, train-only fit |
-| Stored file | `data/raw/CPCB.csv`, `data/raw/ID1.csv` and `store/clean/` | `store/shillong/clean/` or `store/delhi/clean/` |
-| Split | Train / val / test, time order only | Same cut |
-| Min-max | **Train only**, inverted after the forecast | Same |
-| Haar MRA (Section 4.2) | **Train only** (letter plot; two-sided) | Same |
-| Causal decomp (Section 4.3) | `store/decomp/` | Not stored until `run_decomp.R` on that group |
-
-```{r preprocess-status, echo=FALSE}
-renderTable({
-  grp <- input$dataset_group
-  if (is.null(grp) || !nzchar(grp)) grp <- "paper"
-  sensor <- input$sensor
-  shiny::req(sensor)
-  s <- s_re()
-  shiny::req(s)
-  skip <- identical(grp, "paper") || !sensor_needs_preprocess(sensor)
-  tibble::tibble(
-    dataset = grp,
-    sensor = sensor,
-    status = if (skip)
-      "original hourly file — quality flags and causal imputation skipped"
-    else
-      "extra 15-min source — Phase 1a leak-free preprocess (hourly mean + causal fill)",
-    n_hourly = if (!is.null(s$n_hourly)) s$n_hourly else length(s$y),
-    n_source_na = s$n_missing,
-    n_filled = if (!is.null(s$n_filled)) s$n_filled else NA_integer_,
-    start = as.character(min(s$times)),
-    end = as.character(max(s$times))
-  )
-})
-```
-
-```{r preprocess-extra-na, echo=FALSE}
-renderTable({
-  grp <- input$dataset_group
-  if (is.null(grp) || identical(grp, "paper")) return(NULL)
-  packed <- tryCatch(ensure_dataset_group(grp), error = function(e) NULL)
-  if (is.null(packed) || is.null(packed$long)) return(NULL)
-  long <- packed$long
-  long %>%
-    dplyr::group_by(station, variable) %>%
-    dplyr::summarise(
-      n = dplyr::n(),
-      n_source_na = sum(.data$is_na_source, na.rm = TRUE),
-      n_masked = sum(.data$is_masked, na.rm = TRUE),
-      n_filled = sum(!is.na(.data$fill_method)),
-      pct_scorable = round(100 * mean(.data$is_scorable, na.rm = TRUE), 1),
-      .groups = "drop"
-    )
-})
-```
+**Test hours outside the training range.** $x_{\min},x_{\max}$ are never updated with val or test. If $x_{\mathrm{test}} > x_{\max}^{\mathrm{train}}$ then $x'>1$; if $x_{\mathrm{test}} < x_{\min}^{\mathrm{train}}$ then $x'<0$. We do **not** clip $x'$ to $[0,1]$ — that would flatten a real peak. Inverse uses the same train min/max, $\hat Y = \hat x'(x_{\max}-x_{\min})+x_{\min}$, then clip $\hat Y \ge 0$ because concentrations cannot be negative.
 
 ```{r preprocess-demo, echo=FALSE}
 renderTable({
   sp <- split_re()
   sc <- minmax_fit(sp$y_train)
-tibble(
+  tibble(
     train_n = sp$n_train,
     val_n   = sp$n_val,
     test_n  = sp$n_test,
-    train_start = as.character(min(sp$t_train)),
-    val_start   = as.character(min(sp$t_val)),
-    test_start  = as.character(min(sp$t_test)),
-  train_min = sc$min,
-  train_max = sc$max,
-    val_min   = min(sp$y_val),
-  test_min  = min(sp$y_test),
-    test_max  = max(sp$y_test)
+    train_min = sc$min,
+    train_max = sc$max,
+    test_min  = min(sp$y_test),
+    test_max  = max(sp$y_test),
+    n_test_gt_train_max = sum(sp$y_test > sc$max, na.rm = TRUE),
+    n_test_lt_train_min = sum(sp$y_test < sc$min, na.rm = TRUE)
   )
 })
 ```
-
-Val is not used to set $x_{\min}, x_{\max}$. If a test hour falls outside the training range it is clipped to $[0,1]$ on the normalised scale. That is what a deployed scaler would do.
 
 # 4. MODWT (paper: Haar)
 
@@ -628,7 +570,7 @@ $$
 
 and the point forecast is reconstructed from those component forecasts (Section 5).
 
-The pyramid wraps the series (periodic boundary). That is the **letter plot** (AUDIT F1: two-sided circular MRA). The split still holds test $Y$ out of this figure; the last $2^K-1$ training rows remain wrap-contaminated. Production features are the causal store in Section 4.3, not these panels. Use the filter menu and depth slider to redraw $D_1,\ldots,D_K$ and $S_K$.
+The pyramid wraps the series (periodic boundary). That is the **letter plot** (AUDIT F1: two-sided circular MRA). Test $Y$ is held out of this figure. Use the filter menu and depth slider to redraw $D_1,\ldots,D_K$ and $S_K$.
 
 ## 4.2 Components $D_k$ and $S_K$
 
@@ -689,89 +631,6 @@ renderText({
 ```
 
 A spike in $Y_t$ appears at the same clock time in $D_1$. That is why a lag of $D_1$ is a usable feature, and why the letter can train $f_k$ separately on each band. Modelling uses $K = 5$ (scale $2^5 = 32$ h, one daily cycle) rather than $K = \ln N \approx 9$: extra levels add one CatBoost each and mostly fit leftover noise.
-
-## 4.3 Leak-free decomposition store (Phase 1b)
-
-Every stored component at hour $t$ is computed from `value_filled_causal` at hours $\le t$ only (AUDIT F1). Two families:
-
-- **Causal coefficients** (`coef_haar_J10`, `coef_d4_J9`, `coef_la8_J8`) — one pass over the series. Haar is additive: $x_t = V_{J,t} + \sum_{j\le J} W_{j,t}$. D4/LA8 use a backward à trous filter (`waveslim` periodic MODWT fails the D1 bump test and is not stored).
-- **Trailing-window MRA / MSTL** — two-sided method on the last 2048 hours ending at $t$; only the last row is kept.
-
-Files: `store/decomp/method=<id>__<scale>/station=<s>/variable=<v>.parquet`. The paper group (CPCB, ID1) is in the store. Extra Shillong/Delhi stations are not decomposed until `Rscript run_decomp.R` is run on that group's clean series.
-
-```{r decomp-store-table, echo=FALSE}
-if (is.null(.decomp_listed) || !nrow(.decomp_listed)) {
-  cat("No decomposition manifests yet. From the project root: `Rscript run_decomp.R`.\n")
-} else {
-  knitr::kable(.decomp_listed, digits = 1,
-               caption = "Phase 1b store (method × scale). partial = cost cap, PM2.5/PM10 only.")
-}
-```
-
-```{r decomp-controls, echo=FALSE}
-.decomp_ids <- if (!is.null(.decomp_listed) && nrow(.decomp_listed))
-  unique(.decomp_listed$method_id) else "coef_haar_J10"
-inputPanel(
-  selectInput("decomp_method", "Stored method", .decomp_ids, selected = .decomp_ids[[1]]),
-  selectInput("decomp_scale", "Scale", c("raw", "log"), selected = "raw"),
-  selectInput("decomp_validity", "Validity", c("basic", "strict"), selected = "basic")
-)
-```
-
-```{r decomp-store-plot, echo=FALSE}
-uiOutput("decomp_slot")
-```
-
-```{r decomp-store-server, echo=FALSE}
-output$decomp_slot <- renderUI(plotly_slot("decomp_plot", 6L))
-output$decomp_plot <- renderPlotly({
-  grp <- input$dataset_group
-  if (!identical(grp, "paper")) {
-    return(plotly::plotly_empty(type = "scatter") %>%
-             plotly::layout(
-               title = "Causal store is built for the paper group (CPCB / ID1). Extra datasets need run_decomp.R after preprocess.",
-               height = stack_px(6L)))
-  }
-  stn <- input$sensor
-  pol <- input$pollutant
-  mid <- input$decomp_method
-  sc  <- input$decomp_scale
-  val <- input$decomp_validity
-  shiny::req(stn, pol, mid, sc)
-  df <- tryCatch(
-    get_decomp(stn, pol, mid, sc, validity = val),
-    error = function(e) NULL
-  )
-  if (is.null(df) || !nrow(df)) {
-    return(plotly::plotly_empty(type = "scatter") %>%
-             plotly::layout(title = "No stored file for this station / method / scale.",
-                            height = stack_px(6L)))
-  }
-  drop <- c("timestamp", "valid_warmup", "valid_basic", "valid_strict",
-            "frac_filled_window", "resid", "n_imf_raw", ".valid")
-  drop <- c(drop, grep("^valid_warmup_", names(df), value = TRUE))
-  comps <- setdiff(names(df), drop)
-  comps <- comps[seq_len(min(5L, length(comps)))]
-  keep <- isTRUE(df$.valid)
-  tt <- df$timestamp[keep]
-  figs <- vector("list", length(comps) + 1L)
-  titles <- character(length(comps) + 1L)
-  s <- s_re()
-  y <- s$y[match(tt, s$times)]
-  figs[[1]] <- line_panel(tt, y, "Y(t)", NAVY, pol)
-  titles[1] <- sprintf("%s %s  ·  %s__%s  ·  validity=%s  n=%d",
-                       stn, pol, mid, sc, val, sum(keep))
-  cols <- grDevices::colorRampPalette(c(RUST, GREEN))(length(comps))
-  for (i in seq_along(comps)) {
-    figs[[i + 1L]] <- line_panel(tt, df[[comps[i]]][keep], comps[i],
-                                 cols[i], comps[i])
-    titles[i + 1L] <- comps[i]
-  }
-  stack_panels(figs, titles, n_panels = length(comps) + 1L)
-})
-```
-
-`valid_basic` is the warm-up mask. `valid_strict` also drops hours with `frac_filled_24h > 0.5` or `in_long_gap` (Phase 1a policy). Diagnostics (D1 causality, D2 additivity, D3 edge fidelity) and the cheap LightGBM screen are written to `store/decomp/DIAGNOSTICS.md` and `store/decomp/SCREEN.md`.
 
 # 5. IMODWT
 
@@ -842,7 +701,7 @@ Starting grid: $p \in \{24,48\}$, depth $\in \{4,6\}$, $\eta \in \{0.05,0.1\}$, 
 
 # 8. Forecasts and conformal intervals
 
-The letter's public notebook ([Wave CatBoost.ipynb](https://github.com/jborah2/WaveCatBoost-Time-Series-Model/blob/main/Wave%20CatBoost.ipynb)) Haar-MODWT the **full** series ($K=\ln N$), fits `CatBoost(lags=24, iterations=1000, auto $\eta$)` on each $W_j,V_K$, then Darts `historical_forecasts` (walk-forward 1-step, observed lags, `retrain=False`), then IMODWT. Section 8.1–8.3 use that protocol on CPCB, ID1, and SHILLONG (`Rscript run_paper_protocol.R`). The archived recursive path is the other dropdown item; it is not Fig. 2.
+The letter's public notebook ([Wave CatBoost.ipynb](https://github.com/jborah2/WaveCatBoost-Time-Series-Model/blob/main/Wave%20CatBoost.ipynb)) Haar-MODWT the **full** series ($K=\ln N$), fits `CatBoost(lags=24, iterations=1000, auto $\eta$)` on each $W_j,V_K$, then Darts `historical_forecasts` (walk-forward 1-step, observed lags, `retrain=False`), then IMODWT. Section 8 uses that protocol on CPCB, ID1, and SHILLONG (`Rscript run_paper_protocol.R`). Extra-group station names (Lumpyngngad, …) are mapped to those three caches so 8.1 stays visible.
 
 The conformal score (no Gaussian assumption):
 
@@ -853,20 +712,6 @@ $$
 
 with $\hat U_t$ a rolling MAE, $CQ_t$ the $(1-\alpha)$ quantile of $CS$ on a trailing window of length $\kappa$, and $\alpha = 0.05$. $\kappa$ is chosen from $\{24,168,336\}$ so calibration coverage is closest to 95%. Lower and upper edges are $L_t = \hat Y_t - CQ_t \hat U_t$ and $U_t = \hat Y_t + CQ_t \hat U_t$.
 
-```{r s8-controls, echo=FALSE}
-  inputPanel(
-  selectInput("s8_method", "Model",
-              c("WaveCatBoost" = "wavecatboost", "CatBoost" = "catboost",
-                "LightGBM" = "lgb", "XGBoost" = "xgb",
-                "SARIMA" = "sarima", "snaive" = "snaive"),
-              selected = "wavecatboost"),
-  selectInput("s8_view", "Predicted path",
-              c("paper notebook: rolling 1-step, K=ln N, 1000 trees" = "wf7",
-                "Test window (v1 recursive, archived)" = "cache"),
-              selected = "wf7")
-)
-```
-
 ## 8.1 WaveCatBoost: forecast components, IMODWT, vs test
 
 Same protocol as the letter notebook: Haar MODWT on the **full** series ($K=\ln N$), one CatBoost (1000 trees, auto $\eta$, lags 24) per coefficient $W_j,V_K$, rolling **1-step** forecasts with observed lags, then IMODWT. The four panels are the **7-day** test window for PM2.5, PM10, NO2, and O3 on the sensor in the dropdown. Empty panels mean `Rscript run_paper_protocol.R` has not cached that series yet.
@@ -876,7 +721,17 @@ uiOutput("s8_four_slot")
 ```
 
 ```{r s8-four-server, echo=FALSE}
+.s8_sensor <- function(sensor = NULL) {
+  s <- sensor %||% input$sensor
+  if (is.null(s) || !nzchar(s)) return("CPCB")
+  if (s %in% c(NEW_SENSOR, SENSORS_SHILLONG)) return(NEW_SENSOR)
+  if (s %in% SENSORS_PAPER || identical(s, NEW_SENSOR)) return(s)
+  if (s %in% names(paper8)) return(s)
+  "CPCB"
+}
+
 .paper_wave_slot <- function(sensor, pol) {
+  sensor <- .s8_sensor(sensor)
   if (identical(pol, "PM2.5") && !is.null(paper8[[sensor]]$methods$wavecatboost$yhat) &&
       !isTRUE(paper8[[sensor]]$methods$wavecatboost$error)) {
     z <- paper8[[sensor]]
@@ -890,7 +745,7 @@ uiOutput("s8_four_slot")
 
 output$s8_four_slot <- renderUI(plotly_slot("s8_four", 4L))
 output$s8_four <- renderPlotly({
-  sensor <- input$sensor
+  sensor <- .s8_sensor()
   pols <- FOUR_POLLUTANTS
   figs <- vector("list", 4L)
   titles <- character(4L)
@@ -924,140 +779,11 @@ output$s8_four <- renderPlotly({
 })
 ```
 
-## 8.2 Actual vs predicted (selected series)
-
-Train / val / test are the same cuts as Section 2. **Predicted values are drawn on test only.** Haar, the scaler, and early stopping never see those hours. MASE in the title is test-only.
-
-```{r s8-avp, echo=FALSE}
-uiOutput("s8_avp_slot")
-```
-
-```{r s8-avp-server, echo=FALSE}
-output$s8_avp_slot <- renderUI(plotly_slot("s8_avp", 2L))
-output$s8_avp <- renderPlotly({
-  sp  <- split_re()
-  met <- input$s8_method
-  view <- input$s8_view
-  yhat <- NULL
-  t_hat <- NULL
-  lo <- hi <- NULL
-  tag <- NULL
-
-  if (identical(view, "wf7") && !is.null(paper8[[input$sensor]]$methods[[met]]) &&
-      !isTRUE(paper8[[input$sensor]]$methods[[met]]$error)) {
-    z <- paper8[[input$sensor]]
-    w <- z$methods[[met]]
-    yhat <- w$yhat
-    t_hat <- z$t_test
-    lo <- w$lower
-    hi <- w$upper
-    tag <- sprintf("leaky rolling 1-step  |  MASE = %.3f", w$scores$MASE)
-  } else {
-    key <- paste(input$sensor, input$pollutant, input$horizon, met, sep = "|")
-    z <- if (!is.null(fc_cache)) fc_cache[[key]] else NULL
-    if (!is.null(z) && !isTRUE(z$error)) {
-      yhat <- z$yhat
-      t_hat <- z$t_test
-      tag <- sprintf("test %s  |  MASE = %.3f", input$horizon, z$scores$MASE)
-    }
-  }
-
-  p <- plotly::plot_ly() %>%
-    plotly::add_lines(x = sp$t_train, y = sp$y_train, name = "train actual",
-                      line = list(color = NAVY, width = 0.7)) %>%
-    plotly::add_lines(x = sp$t_val, y = sp$y_val, name = "val actual",
-                      line = list(color = "#C4A35A", width = 0.8)) %>%
-    plotly::add_lines(x = sp$t_test, y = sp$y_test, name = "test actual",
-                      line = list(color = "black", width = 1.0))
-  if (!is.null(yhat) && !is.null(t_hat)) {
-    if (!is.null(lo) && !is.null(hi) && length(lo) == length(yhat)) {
-      p <- p %>%
-        plotly::add_ribbons(x = t_hat, ymin = lo, ymax = hi, name = "PI",
-                            line = list(color = "transparent"),
-                            fillcolor = "rgba(166,75,42,0.18)")
-    }
-    p <- p %>%
-      plotly::add_lines(x = t_hat, y = yhat, name = paste0(pretty_method(met), " (test)"),
-                        line = list(color = RUST, width = 1.1))
-  }
-  ttl <- sprintf("%s %s  |  %s  |  %s",
-                 input$sensor, input$pollutant, pretty_method(met),
-                 if (is.null(tag)) "no cached forecast — run run_experiments.R" else tag)
-  p %>%
-    plotly::layout(
-      title = list(text = ttl, font = list(size = 13, color = NAVY),
-                   x = 0, xanchor = "left"),
-      yaxis = list(title = input$pollutant, automargin = TRUE),
-      xaxis = list(title = "", automargin = TRUE),
-      legend = list(orientation = "h", y = 1.08),
-      height = stack_px(2L), autosize = TRUE,
-      margin = list(l = 64, r = 24, t = 72, b = 44),
-      hovermode = "x unified"
-    ) %>%
-    plotly::config(scrollZoom = TRUE, displaylogo = FALSE)
-})
-```
-
-Same window, several models on one sensor, so the paths can be compared.
-
-```{r s8-overlay, echo=FALSE}
-uiOutput("s8_ov_slot")
-```
-
-```{r s8-overlay-server, echo=FALSE}
-output$s8_ov_slot <- renderUI(plotly_slot("s8_ov", 2L))
-output$s8_ov <- renderPlotly({
-  sensor <- input$sensor
-  pol    <- input$pollutant
-  hn     <- input$horizon
-  want <- c("snaive", "lgb", "catboost", "wavecatboost")
-  rows <- list()
-  if (identical(input$s8_view, "wf7") && !is.null(paper8[[sensor]]$methods)) {
-    z <- paper8[[sensor]]
-    rows[[1]] <- tibble(Datetime = z$t_test, value = z$y_test, series = "test actual")
-    for (m in want) {
-      w <- z$methods[[m]]
-      if (is.null(w) || isTRUE(w$error) || is.null(w$yhat)) next
-      rows[[length(rows) + 1L]] <- tibble(Datetime = z$t_test, value = w$yhat,
-                                          series = pretty_method(m))
-    }
-    ttl <- paste(sensor, pol, "·  paper notebook protocol: leaky rolling 1-step (full-series MODWT, teacher forcing)")
-  } else if (!is.null(fc_cache)) {
-    sp <- split_re()
-    rows[[1]] <- tibble(Datetime = sp$t_test, value = sp$y_test, series = "test actual")
-    for (m in want) {
-      z <- fc_cache[[paste(sensor, pol, hn, m, sep = "|")]]
-      if (is.null(z) || isTRUE(z$error)) next
-      rows[[length(rows) + 1L]] <- tibble(Datetime = z$t_test, value = z$yhat,
-                                          series = pretty_method(m))
-    }
-    ttl <- sprintf("%s %s  ·  test %s (train/val held out of Ŷ)", sensor, pol, hn)
-  } else {
-    return(plotly::plotly_empty(type = "scatter"))
-  }
-  df <- dplyr::bind_rows(rows)
-  pal <- c(`test actual` = "black", snaive = unname(METHOD_COLS["snaive"]),
-           LGB = unname(METHOD_COLS["lgb"]), CatBoost = unname(METHOD_COLS["catboost"]),
-           WaveCatBoost = RUST)
-  p <- ggplot(df, aes(Datetime, value, colour = series)) +
-    geom_line(linewidth = 0.55) +
-    scale_colour_manual(values = pal) +
-    labs(y = "PM2.5", x = NULL, colour = NULL, title = ttl) +
-    theme(plot.title = element_text(hjust = 0, colour = NAVY, size = 13),
-          legend.position = "top")
-  ggplotly(p) %>%
-    plotly::layout(height = stack_px(2L), autosize = TRUE,
-                   margin = list(l = 64, r = 24, t = 56, b = 44),
-                   legend = list(orientation = "h", y = 1.08)) %>%
-    plotly::config(scrollZoom = TRUE, displaylogo = FALSE)
-})
-```
-
 ```{r s8-alert}
 if (!is.null(paper8) || !is.null(conf)) {
   wf <- NULL
   if (!is.null(paper8)) {
-    wf <- dplyr::bind_rows(lapply(setdiff(names(paper8), "scores"), function(s) {
+    wf <- dplyr::bind_rows(lapply(setdiff(names(paper8), c("scores", "four")), function(s) {
       w <- paper8[[s]]$methods$wavecatboost
       if (is.null(w) || isTRUE(w$error)) return(NULL)
       tibble(source = "leaky rolling 1-step", sensor = s,
@@ -1080,71 +806,75 @@ if (!is.null(conf)) {
 
 The table mixes two protocols. **Split conformal** bands (`run_conformal.R` / `run_new_dataset.R`) are calibrated on a hold-out 1-step window that does not include the plotted test hours; lower bounds are clipped at 0. The leaky rolling 1-step row is the letter-notebook residual quantile on the plotted window — about 95% coverage by construction, not a deployed interval.
 
-## 8.3 Seven-day conformal intervals (PM2.5)
+## 8.2 Seven-day conformal intervals (PM2.5)
 
-Paper Fig. 2 layout: actual PM2.5, WaveCatBoost rolling 1-step $\hat Y$, and the 95% band from $|Y-\hat Y|$ on this window (same construction as their `Conformal Prediction.R`). (a) CPCB, (b) ID1, (c) SHILLONG. Prefers the notebook protocol (`K=\ln N`, 1000 trees) when `run_paper_protocol.R` has been run.
+Each station is its own plot so CPCB, ID1, and SHILLONG keep independent y-scales. Actual, WaveCatBoost rolling 1-step $\hat Y$, and the 95% band from $|Y-\hat Y|$ on this window.
 
 ```{r s8-conf-ui, echo=FALSE}
-uiOutput("s8_conf_slot")
+uiOutput("s8_conf_a_slot")
+uiOutput("s8_conf_b_slot")
+uiOutput("s8_conf_c_slot")
 ```
 
 ```{r s8-conf-server, echo=FALSE}
-output$s8_conf_slot <- renderUI(plotly_slot("s8_conf", 3L))
-output$s8_conf <- renderPlotly({
-  sensors <- c("CPCB", "ID1", "SHILLONG")
-  figs <- vector("list", 3L)
-  titles <- character(3L)
-  letters <- c("(a)", "(b)", "(c)")
-  for (i in seq_along(sensors)) {
-    sname <- sensors[[i]]
-    w <- paper8[[sname]]$methods$wavecatboost
-    z <- NULL
-    t_hat <- y_obs <- NULL
-    if (!is.null(w) && !isTRUE(w$error) && !is.null(w$yhat)) {
-      z <- w
-      t_hat <- paper8[[sname]]$t_test
-      y_obs <- paper8[[sname]]$y_test
-    } else if (!is.null(conf[[sname]]$yhat)) {
-      z <- conf[[sname]]
-      t_hat <- z$t_test
-      y_obs <- z$y_test
-    }
-    titles[i] <- sprintf("%s  %s  PM2.5  7-day", letters[i], sname)
-    if (is.null(z) || is.null(z$yhat)) {
-      figs[[i]] <- plotly::plotly_empty(type = "scatter")
-      titles[i] <- paste0(titles[i], "  — run Rscript run_paper_protocol.R")
-      next
-    }
-    fig <- plotly::plot_ly()
-    if (!is.null(z$lower) && !is.null(z$upper)) {
-      fig <- fig %>%
-        plotly::add_ribbons(x = t_hat, ymin = z$lower, ymax = z$upper,
-                            name = "95% PI", legendgroup = "pi",
-                            showlegend = i == 1L,
-                            line = list(color = "transparent"),
-                            fillcolor = "rgba(166,75,42,0.22)")
-    }
-    fig <- fig %>%
-      plotly::add_lines(x = t_hat, y = y_obs, name = "actual",
-                        legendgroup = "act", showlegend = i == 1L,
-                        line = list(color = "black", width = 1.05)) %>%
-      plotly::add_lines(x = t_hat, y = z$yhat, name = "WaveCatBoost",
-                        legendgroup = "hat", showlegend = i == 1L,
-                        line = list(color = RUST, width = 1.15))
-    cov <- if (!is.null(z$coverage_test)) sprintf("cov=%.0f%%", 100 * z$coverage_test) else ""
-    wid <- if (!is.null(z$width)) sprintf("  width=%.2f", z$width) else ""
-    titles[i] <- sprintf("%s  %s  PM2.5  7d  %s%s", letters[i], sname, cov, wid)
-    figs[[i]] <- fig %>%
-      plotly::layout(
-        yaxis = list(title = list(text = "PM2.5", standoff = 8, font = list(size = 12)),
-                     automargin = TRUE, zeroline = FALSE)
-      )
+.s8_conf_fig <- function(sname, letter) {
+  w <- paper8[[sname]]$methods$wavecatboost
+  z <- NULL
+  t_hat <- y_obs <- NULL
+  if (!is.null(w) && !isTRUE(w$error) && !is.null(w$yhat)) {
+    z <- w
+    t_hat <- paper8[[sname]]$t_test
+    y_obs <- paper8[[sname]]$y_test
+  } else if (!is.null(conf[[sname]]$yhat)) {
+    z <- conf[[sname]]
+    t_hat <- z$t_test
+    y_obs <- z$y_test
   }
-  stack_panels(figs, titles, n_panels = 3L, xlab = "Test time")
-})
+  h <- stack_px(1L)
+  ttl <- sprintf("%s  %s  PM2.5  7-day", letter, sname)
+  if (is.null(z) || is.null(z$yhat)) {
+    return(plotly::plotly_empty(type = "scatter") %>%
+             plotly::layout(title = paste(ttl, "— run Rscript run_paper_protocol.R"),
+                            height = h))
+  }
+  cov <- if (!is.null(z$coverage_test)) sprintf("cov=%.0f%%", 100 * z$coverage_test) else ""
+  wid <- if (!is.null(z$width)) sprintf("  width=%.2f", z$width) else ""
+  fig <- plotly::plot_ly()
+  if (!is.null(z$lower) && !is.null(z$upper)) {
+    fig <- fig %>%
+      plotly::add_ribbons(x = t_hat, ymin = z$lower, ymax = z$upper,
+                          name = "95% PI", showlegend = TRUE,
+                          line = list(color = "transparent"),
+                          fillcolor = "rgba(166,75,42,0.22)")
+  }
+  fig %>%
+    plotly::add_lines(x = t_hat, y = y_obs, name = "actual",
+                      line = list(color = "black", width = 1.05)) %>%
+    plotly::add_lines(x = t_hat, y = z$yhat, name = "WaveCatBoost",
+                      line = list(color = RUST, width = 1.15)) %>%
+    plotly::layout(
+      title = list(text = sprintf("%s  %s%s", ttl, cov, wid),
+                   font = list(size = 13, color = NAVY), x = 0, xanchor = "left"),
+      yaxis = list(title = "PM2.5", automargin = TRUE, zeroline = FALSE,
+                   autorange = TRUE),
+      xaxis = list(title = "Test time", automargin = TRUE),
+      legend = list(orientation = "h", y = 1.08),
+      height = h, autosize = TRUE,
+      margin = list(l = 64, r = 24, t = 72, b = 44),
+      hovermode = "x unified"
+    ) %>%
+    plotly::config(scrollZoom = TRUE, displaylogo = FALSE)
+}
+
+output$s8_conf_a_slot <- renderUI(plotly_slot("s8_conf_a", 1L))
+output$s8_conf_b_slot <- renderUI(plotly_slot("s8_conf_b", 1L))
+output$s8_conf_c_slot <- renderUI(plotly_slot("s8_conf_c", 1L))
+output$s8_conf_a <- renderPlotly(.s8_conf_fig("CPCB", "(a)"))
+output$s8_conf_b <- renderPlotly(.s8_conf_fig("ID1", "(b)"))
+output$s8_conf_c <- renderPlotly(.s8_conf_fig("SHILLONG", "(c)"))
 ```
 
-## 8.4 Model comparison (MASE)
+## 8.3 Model comparison (MASE)
 
 MCB plots match the letter's Fig. 1 layout: mean rank across 1-day cases on that sensor, grey band = models not distinguishable from the best at the Nemenyi 5% distance. 7-day recursive ranks on CPCB are omitted here because every method collapsed to MASE $\approx 1.50$.
 
@@ -1188,7 +918,7 @@ if (!is.null(scores) && nrow(scores)) {
 }
 ```
 
-## 8.5 Top models
+## 8.4 Top models
 
 Lowest MASE per sensor × pollutant × horizon, then mean MASE by method (lower is better).
 
@@ -1517,14 +1247,19 @@ output$emd_plot <- renderPlotly({
 
 ```{r emd-scores}
 fs <- ext_scores
-if (!is.null(fs) && nrow(fs) && "emd" %in% fs$filter) {
+if (is.null(fs) || !nrow(fs)) fs <- filter_scores
+has_emd <- !is.null(fs) && nrow(fs) && "emd" %in% fs$filter
+if (isTRUE(has_emd)) {
   sub <- fs %>%
-    dplyr::filter(filter %in% c("haar", "emd"), horizon == "1d") %>%
+    dplyr::filter(filter %in% c("haar", "emd"), horizon == "1d",
+                  pollutant == "PM2.5") %>%
     dplyr::select(sensor, pollutant, filter, MASE, MAE, RMSE)
   knitr::kable(sub, digits = 3,
-               caption = "WaveLGB, 1-day: Haar MODWT vs EMD")
+               caption = "WaveLGB, 1-day: Haar MODWT vs EMD (PM2.5)")
 } else {
-  cat("EMD scores appear after run_extensions.R (CPCB PM2.5, 1-day only).\n")
+  cat("EMD scores are not in the cache yet. From the project root:\n",
+      "  Rscript run_extensions.R\n",
+      "That scores CPCB and ID1 PM2.5 with the same WaveLGB head as Haar.\n")
 }
 ```
 

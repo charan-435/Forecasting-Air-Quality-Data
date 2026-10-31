@@ -22,6 +22,8 @@ data/raw/vonter/*.csv
 # Experiment noise
 results/run_log.txt
 results/conformal_log.txt
+results/paper_protocol_log.txt
+data/processed/*_group_series.rds
 
 # Upstream letter repo (cloned only to compare protocol)
 _orig_wavecatboost/

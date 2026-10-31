@@ -1,7 +1,7 @@
 # Load and standardise the GitHub datasets, plus extra 15-min CAAQMS groups.
 
 dataset_group_choices <- function() {
-  c("Original (paper CPCB / ID1)" = "paper",
+  c("Original (paper CPCB / ID1 / SHILLONG)" = "paper",
     "Extra: Shillong (15-min CAAQMS)" = "shillong",
     "Extra: Delhi (15-min CAAQMS)" = "delhi")
 }
@@ -16,7 +16,12 @@ sources_in_group <- function(active, cfg = NULL) {
 
 sensors_in_group <- function(active, cfg = NULL) {
   srcs <- sources_in_group(active, cfg)
-  unique(vapply(srcs, function(s) as.character(s$station), character(1)))
+  st <- unique(vapply(srcs, function(s) as.character(s$station), character(1)))
+  if (identical(active, "paper")) {
+    st <- unique(c(st, SENSORS_PAPER))
+    if (file.exists(new_dataset_paths()$csv)) st <- unique(c(st, NEW_SENSOR))
+  }
+  st
 }
 
 sensor_source <- function(sensor, cfg = NULL) {
@@ -32,7 +37,8 @@ sensor_source <- function(sensor, cfg = NULL) {
 
 sensor_needs_preprocess <- function(sensor) {
   st <- as.character(sensor)
-  if (identical(st, NEW_SENSOR)) return(TRUE)
+  # SHILLONG.csv is already hourly (paper 15-min → hour cache).
+  if (identical(st, NEW_SENSOR)) return(FALSE)
   src <- sensor_source(st)
   if (is.null(src)) return(FALSE)
   !isTRUE(src$skip_preprocess)
@@ -79,6 +85,31 @@ series_from_clean_long <- function(long) {
 
 .extra_group_cache <- new.env(parent = emptyenv())
 
+extra_group_rds <- function(active) {
+  file.path(PROC_DIR, paste0(active, "_group_series.rds"))
+}
+
+extra_group_is_cached <- function(active) {
+  active <- as.character(active)
+  if (identical(active, "paper")) return(TRUE)
+  exists(active, envir = .extra_group_cache, inherits = FALSE) ||
+    file.exists(extra_group_rds(active)) ||
+    file.exists(file.path(group_store_dir(active), "series.parquet"))
+}
+
+.pack_extra_group <- function(active, store_dir, long, from_cache) {
+  packed <- series_from_clean_long(long)
+  packed$kind <- "extra"
+  packed$skipped_preprocess <- FALSE
+  packed$active <- active
+  packed$store_dir <- store_dir
+  packed$from_cache <- isTRUE(from_cache)
+  dir.create(PROC_DIR, recursive = TRUE, showWarnings = FALSE)
+  saveRDS(packed, extra_group_rds(active))
+  assign(active, packed, envir = .extra_group_cache)
+  packed
+}
+
 ensure_dataset_group <- function(active, force = FALSE) {
   active <- as.character(active)
   if (identical(active, "paper")) {
@@ -86,6 +117,20 @@ ensure_dataset_group <- function(active, force = FALSE) {
   }
   if (!force && exists(active, envir = .extra_group_cache, inherits = FALSE))
     return(get(active, envir = .extra_group_cache))
+
+  rds_cache <- extra_group_rds(active)
+  if (!force && file.exists(rds_cache)) {
+    packed <- readRDS(rds_cache)
+    assign(active, packed, envir = .extra_group_cache)
+    return(packed)
+  }
+
+  store_dir <- group_store_dir(active)
+  ser <- file.path(store_dir, "series.parquet")
+  if (!force && file.exists(ser)) {
+    long <- tibble::as_tibble(arrow::read_parquet(ser))
+    return(.pack_extra_group(active, store_dir, long, from_cache = TRUE))
+  }
 
   cfg <- pp_cfg()
   srcs <- sources_in_group(active, cfg)
@@ -104,19 +149,11 @@ ensure_dataset_group <- function(active, force = FALSE) {
   if (length(missing))
     stop("Raw files missing for ", active, ": ", paste(unique(missing), collapse = ", "))
 
-  store_dir <- group_store_dir(active)
   run_preprocess(active = active, force = isTRUE(force), store_dir = store_dir)
-  ser <- file.path(store_dir, "series.parquet")
   if (!file.exists(ser))
     stop("Preprocess did not write ", ser)
   long <- tibble::as_tibble(arrow::read_parquet(ser))
-  packed <- series_from_clean_long(long)
-  packed$kind <- "extra"
-  packed$skipped_preprocess <- FALSE
-  packed$active <- active
-  packed$store_dir <- store_dir
-  assign(active, packed, envir = .extra_group_cache)
-  packed
+  .pack_extra_group(active, store_dir, long, from_cache = FALSE)
 }
 
 .read_paper_csv <- function(path, sensor) {
