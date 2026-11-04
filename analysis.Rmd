@@ -12,7 +12,7 @@ output:
 runtime: shiny
 ---
 
-> **v1 results are archived and invalid.** See [`audit/AUDIT.md`](audit/AUDIT.md). Section 8 uses the **paper notebook protocol: leaky rolling 1-step (full-series MODWT, teacher forcing)**.
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
@@ -184,9 +184,8 @@ plotly_slot <- function(id, n_panels) {
 
 This report follows Borah et al. (IEEE Sensors Letters, 2025): missing values, hourly averages, train-only min-max, Haar MODWT on **train**, one CatBoost per component, IMODWT, conformal intervals.
 
-**Dataset menu.** **Original** is CPCB, ID1, and SHILLONG (hourly; SHILLONG is the cached 15-min → hour CSV). **Extra: Shillong / Delhi** are 15-min CAAQMS groups; the first load writes `store/<group>/clean/` and `data/processed/<group>_group_series.rds`, later loads read that cache. AT and RH are EDA-only.
+**Dataset menu.** **Original** is CPCB, ID1, and SHILLONG (hourly; SHILLONG is the cached 15-min → hour CSV). **Extra: Shillong / Delhi** are 15-min CAAQMS groups.
 
-Sections 1–9 are the letter pipeline. Section 10 is Fourier / other wavelets / EMD.
 
 ```{r data-glimpse}
 pp <- tryCatch(pp_cfg(), error = function(e) NULL)
@@ -241,7 +240,6 @@ shiny::observeEvent(input$dataset_group, {
 }, ignoreNULL = TRUE)
 ```
 
-Drag **Graph size** to enlarge every stacked plot. On Plotly figures, box-zoom or scroll-zoom, then double-click to reset.
 
 ```{r plot-css, echo=FALSE}
 shiny::tags$style(HTML("
