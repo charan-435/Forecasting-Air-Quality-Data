@@ -104,7 +104,7 @@ Paper column = rolling 1-step (Darts `historical_forecasts`). Ours = one recursi
 
 ### F5 — Hparam prefix overlaps longer tests (A5)
 
-`choose_hparams` uses the 1-day split (train ends at index 8857). Frozen `(p=24, depth=6, η=0.05)` for every job (`hparams.rds`: val MASE 1.848; J=9 from WaveLGB then **capped at 5** in `run_experiments.R:98-103`).
+`choose_hparams` uses the 1-day split (train ends at index 8857). Frozen `(p=24, depth=6, η=0.05)` for every job (`hparams.rds`: val MASE 1.848; WaveLGB picked J=9, then **capped and stored as J=5** in `run_experiments.R`).
 
 | Horizon | Overlap with hparam train | Fraction of that test |
 |---|---|---|
@@ -159,7 +159,7 @@ See table. F12: scaler uses pre-test window including 14-day val. F13: mean vs m
 | scores: 432 rows, 9 methods × 48 cases, 0 NA MASE | `B13_sarima.R` |
 | `nemenyi_q(9)=3.102`; 48 distinct (sensor, pollutant, horizon) | `C17_mcb.R` |
 | Early stopping val is before **that job’s** test start | `A7_early_stopping.R` |
-| EMD not in `scores.csv` / `extension_scores`; plot uses first 500 h of `y_train` | `A9_emd_scope.R` |
+| EMD not in `scores.csv`; in `extension_scores` for CPCB/ID1 PM2.5 only; Rmd §10.2 + train-prefix demo | `A9_emd_scope.R` |
 | SARIMA `frequency=24`, `seasonal=TRUE`; WaveSARIMA `seasonal=FALSE` on components | `B13_sarima.R` |
 | Hourly grid regular, no duplicate timestamps, no gaps >1 h | `C21_timestamps.R` |
 | `pacf_cutoff` not used in the bake-off; clip caps hardcoded | `A6_datadriven_settings.R` |
@@ -192,7 +192,7 @@ See table. F12: scaler uses pre-test window including 14-day val. F13: mean vs m
 | Hparam grid on CPCB PM2.5 train only, no peek at the test window | `R/09_hparams.R:1-2`; `analysis.Rmd:600` | **Contradicted** for 7/14/31 d (F5). True only vs the **1-day** test. |
 | MASE will not match the letter’s Table 1 | `analysis.Rmd:1154` | **Supported** (F4). |
 | Recursive multi-step accumulates error at 14- and 31-day | `analysis.Rmd:1154` | **Unsupported** as a monotone: CPCB 14d is *easier* than 7d (F3). 31d mixed. |
-| Haar as good as / slightly better than D4/LA8 | `analysis.Rmd:1076` | **Supported** on the WaveLGB 1d filter table (`results/filter_scores.csv`). |
+| Haar as good as / slightly better than D4/LA8 | `analysis.Rmd` §10.2 | **Mostly supported** on the WaveCatBoost 1d filter table (`results/filter_scores.csv`); Haar wins 3/4 cells, D4 edges CPCB NO2. |
 | ID1 7-day coverage 100%, width ~48, negative lower bound; CPCB ~30%, width 0.38 | `WaveCatBoost.ipynb` cell-040 | **Supported** as numbers (`A8`). **Contradicted** if read as “calibrated 95% PIs.” |
 | Conformal layer not well calibrated on this split | same notebook cell | **Supported**. |
 | CatBoost falls back to XGBoost if missing, labelled in the fit | README; `R/06_models.R:119-126` | **Supported** as code. **Did not fire** on the cached scores (`B10`). |

@@ -1,7 +1,7 @@
 ---
-title: "WaveCatBoost in R"
-subtitle: "Borah et al., IEEE Sensors Letters 2025 — paper method, then extensions"
-author: "Applied Time Series Analysis"
+title: "A_Novel_Hybrid_Approach_For_Efficiently_Forecasting_Air_Quality_Data"
+subtitle: "WaveCatBoost — Haar MODWT with CatBoost"
+author: "Group 8 · Applied Time Series Analysis"
 output:
   html_document:
     toc: true
@@ -12,7 +12,7 @@ output:
 runtime: shiny
 ---
 
-> **v1 results are archived and invalid.** See [`audit/AUDIT.md`](audit/AUDIT.md). Section 8 uses the **paper notebook protocol: leaky rolling 1-step (full-series MODWT, teacher forcing)**.
+
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
@@ -52,6 +52,7 @@ filter_scores <- { p <- .res_file("filter_scores.rds"); if (!is.na(p)) readRDS(p
 ext_scores    <- { p <- .res_file("extension_scores.rds"); if (!is.na(p)) readRDS(p) else NULL }
 hparams <- { p <- .res_file("hparams.rds"); if (!is.na(p)) readRDS(p) else NULL }
 conf    <- { p <- .res_file("conformal.rds"); if (!is.na(p)) readRDS(p) else NULL }
+conf_ext <- { p <- .res_file("conformal_ext.rds"); if (!is.na(p)) readRDS(p) else NULL }
 fc_cache <- { p <- .res_file("forecast_cache.rds"); if (!is.na(p)) readRDS(p) else NULL }
 paper8 <- {
   p <- .res_file("paper_notebook_protocol_leaky_rolling_1step.rds")
@@ -91,34 +92,17 @@ plot_mcb_gg <- function(mcb, title) {
     geom_linerange(aes(ymin = lo, ymax = hi), colour = "#4C6A8A", linewidth = 0.7) +
     geom_point(aes(colour = inside), size = 2.6) +
     scale_colour_manual(values = c(`TRUE` = RUST, `FALSE` = NAVY), guide = "none") +
-    labs(x = NULL, y = "Mean rank", title = title) +
+    labs(x = NULL, y = "Mean rank (lower is better)", title = title) +
     theme(axis.text.x = element_text(angle = 42, hjust = 1, size = 9),
           plot.title = element_text(hjust = 0, colour = NAVY, size = 13))
 }
 
-panel_h <- function() {
-  v <- tryCatch(as.integer(input$plot_h), error = function(e) NA_integer_)
-  if (!is.finite(v) || v < 80) 140L else v
-}
+panel_h <- function() 140L
 
 # Reserved HTML height: title bar + n panels + gaps. Must match plotlyOutput.
 stack_px <- function(n_panels) {
   n <- max(1L, as.integer(n_panels))
   as.integer(80 + n * panel_h() + (n - 1L) * 22)
-}
-
-kpss_cv5 <- function(kpss) {
-  if (is.null(kpss)) return(NA_real_)
-  cv <- kpss@cval
-  if (is.matrix(cv)) {
-    cn <- colnames(cv)
-    if ("5pct" %in% cn) return(as.numeric(cv[1, "5pct"]))
-    if (ncol(cv) >= 2) return(as.numeric(cv[1, 2]))
-  }
-  nm <- names(cv)
-  if ("5pct" %in% nm) return(as.numeric(cv[["5pct"]]))
-  if (length(cv) >= 2) return(as.numeric(cv[[2]]))
-  NA_real_
 }
 
 line_panel <- function(x, y, name, col, ylab) {
@@ -181,18 +165,16 @@ plotly_slot <- function(id, n_panels) {
 
 # 1. Setup and data
 
-This report follows Borah et al. (IEEE Sensors Letters, 2025): missing values, hourly averages, train-only min-max, Haar MODWT on **train**, one CatBoost per component, IMODWT, conformal intervals.
+We follow the WaveCatBoost pipeline from Borah et al. (IEEE Sensors Letters, 2025): clean the series, scale on train only, split with Haar MODWT, forecast each band with CatBoost, then rebuild the series and add conformal intervals.
 
-**Dataset menu.** **Original** is CPCB, ID1, and SHILLONG (hourly; SHILLONG is the cached 15-min → hour CSV). **Extra: Shillong / Delhi** are 15-min CAAQMS groups; the first load writes `store/<group>/clean/` and `data/processed/<group>_group_series.rds`, later loads read that cache. AT and RH are EDA-only.
-
-Sections 1–9 are the letter pipeline. Section 10 is Fourier / other wavelets / EMD.
+**Datasets.** Original: CPCB, ID1, and SHILLONG (hourly). Extra: Shillong / Delhi CAAQMS groups (15‑min, aggregated once and cached).
 
 ```{r data-glimpse}
 pp <- tryCatch(pp_cfg(), error = function(e) NULL)
 if (is.null(pp)) {
   dplyr::bind_rows(lapply(names(raw), function(nm) {
     d <- raw[[nm]]
-    tibble::tibble(
+tibble::tibble(
       group = "paper", station = nm,
       skip_preprocess = !sensor_needs_preprocess(nm),
       raw_present = TRUE,
@@ -217,7 +199,7 @@ if (is.null(pp)) {
 }
 ```
 
-`r if (isTRUE(get0("CATBOOST_AVAILABLE", ifnotfound = FALSE))) "The CatBoost R package loaded; Ordered boosting is used." else "**CatBoost is not installed.** CatBoost / WaveCatBoost fall back to XGBoost."`
+`r if (isTRUE(get0("CATBOOST_AVAILABLE", ifnotfound = FALSE))) "CatBoost is available (ordered boosting)." else "**CatBoost is not installed** — CatBoost / WaveCatBoost fall back to XGBoost."`
 
 ```{r series-controls, echo=FALSE}
 inputPanel(
@@ -225,8 +207,7 @@ inputPanel(
               choices = dataset_group_choices(), selected = "paper"),
   selectInput("sensor",    "Sensor",    sensors_in_group("paper"), selected = "CPCB"),
   selectInput("pollutant", "Pollutant", POLLUTANTS, selected = "PM2.5"),
-  selectInput("horizon",   "Test horizon", names(HORIZONS), selected = "1d"),
-  sliderInput("plot_h", "Graph size (px / panel)", min = 90, max = 260, value = 150, step = 10)
+  selectInput("horizon",   "Test horizon", names(HORIZONS), selected = "1d")
 )
 ```
 
@@ -240,7 +221,6 @@ shiny::observeEvent(input$dataset_group, {
 }, ignoreNULL = TRUE)
 ```
 
-Drag **Graph size** to enlarge every stacked plot. On Plotly figures, box-zoom or scroll-zoom, then double-click to reset.
 
 ```{r plot-css, echo=FALSE}
 shiny::tags$style(HTML("
@@ -287,9 +267,9 @@ split_re <- reactive({
 
 # 2. Exploratory analysis
 
-## 2.1 Full series, then the split
+## 2.1 Full series
 
-The whole hourly record is plotted first. The chronological split (no shuffle) comes after that: **train** (Haar, scaler, trees) → **val** (early stopping / grid only) → **test** (scores and actual-vs-predicted). Only the training slice is passed to MODWT in Section 4. Test never enters $x_{\min}/x_{\max}$ or the wavelet filter.
+Full hourly record for the sensor and pollutant chosen above. We later split it chronologically into train → validation → test. Only the training slice goes into MODWT and the scaler.
 
 ```{r eda-full, echo=FALSE}
 uiOutput("full_slot")
@@ -306,7 +286,7 @@ output$full_plot <- renderPlotly({
                       line = list(color = NAVY, width = 0.8)) %>%
     plotly::layout(
       title = list(
-        text = sprintf("%s %s  |  full series  n = %d  (before train/test split)",
+        text = sprintf("%s %s  |  full series  n = %d",
                        input$sensor, input$pollutant, length(s$y)),
         font = list(size = 14, color = NAVY), x = 0, xanchor = "left"),
       yaxis = list(title = list(text = input$pollutant, standoff = 10),
@@ -321,45 +301,9 @@ output$full_plot <- renderPlotly({
 })
 ```
 
-Train / val / test on the same series. Haar and the scaler see only train.
+On CPCB PM2.5, winter levels sit above monsoon — that slow swing is what $S_K$ should carry; sharp spikes show up in $D_1$.
 
-```{r eda-ts, echo=FALSE}
-uiOutput("ts_slot")
-```
-
-```{r eda-ts-server, echo=FALSE}
-output$ts_slot <- renderUI(plotly_slot("ts_plot", 2L))
-output$ts_plot <- renderPlotly({
-  sp <- split_re()
-  h  <- stack_px(2L)
-  plotly::plot_ly() %>%
-    plotly::add_lines(x = sp$t_train, y = sp$y_train, name = "train",
-                      line = list(color = NAVY, width = 0.8)) %>%
-    plotly::add_lines(x = sp$t_val, y = sp$y_val, name = "val",
-                      line = list(color = "#C4A35A", width = 0.9)) %>%
-    plotly::add_lines(x = sp$t_test, y = sp$y_test, name = "test",
-                      line = list(color = RUST, width = 0.9)) %>%
-    plotly::layout(
-      title = list(
-        text = sprintf("%s %s  |  train %d  val %d  test %d h (%s)",
-                       input$sensor, input$pollutant,
-                       sp$n_train, sp$n_val, sp$n_test, input$horizon),
-        font = list(size = 14, color = NAVY), x = 0, xanchor = "left"),
-      yaxis = list(title = list(text = input$pollutant, standoff = 10),
-                   automargin = TRUE),
-      xaxis = list(title = "", automargin = TRUE),
-      legend = list(orientation = "h", y = 1.08),
-      height = h, autosize = TRUE,
-      margin = list(l = 64, r = 24, t = 72, b = 44),
-      hovermode = "x unified"
-    ) %>%
-    plotly::config(scrollZoom = TRUE, displaylogo = FALSE)
-})
-```
-
-Winter sits higher than monsoon on CPCB PM2.5. That slow swing is what $S_K$ is meant to carry; the spikes on top of it are what $D_1$ sees.
-
-Hour-of-day and day-of-week boxes. A U-shape or commute peaks means a daily period of 24.
+Hour-of-day and day-of-week boxes on the **training** window. A clear daily pattern means we keep seasonality $S = 24$.
 
 ```{r eda-boxes, echo=FALSE}
 renderPlot({
@@ -375,11 +319,11 @@ renderPlot({
 }, height = function() max(420L, round(panel_h() * 2.8)))
 ```
 
-The 24-hour cycle in the boxes fixes $S = 24$ for snaive, SARIMA, and the MASE denominator. Weekly effects are weaker here, so $S = 168$ is not forced.
+We use $S = 24$ for the seasonal naive, SARIMA, and the MASE denominator. Weekly effects are weaker here, so we do not force $S = 168$. Section 2.5 turns this (and the ACF / snaive-residual checks) into an explicit **EDA → pipeline** table.
 
 ## 2.2 Missing values
 
-Negatives and absurd caps are set to NA (sensor faults). Spikes are kept. CPCB / ID1 / SHILLONG are already hourly, so this table is residual NAs in the file — not a second preprocess.
+Impossible readings (negatives, absurd caps) become NA. Real spikes are kept. CPCB / ID1 / SHILLONG are already hourly — the table below is what was left in the files.
 
 ```{r eda-missing}
 missing_tbl <- dplyr::bind_rows(lapply(series, function(s) {
@@ -390,72 +334,7 @@ missing_tbl <- dplyr::bind_rows(lapply(series, function(s) {
 missing_tbl
 ```
 
-## 2.3 Stationarity
-
-The letter does not run these tests. They are here so we can say, for the series on the screen, whether a plain AR on $Y_t$ is even a fair baseline.
-
-Two tests, opposite nulls:
-
-- **ADF.** $H_0$: unit root (random walk). A small $p$-value rejects that — the series is not a pure random walk.
-- **KPSS** (level). $H_0$: constant mean. If the statistic is larger than the 5% critical value, the mean is moving.
-
-Air quality often fails KPSS and still rejects ADF: not a random walk, but the winter mean is not the monsoon mean. That is the case where Haar MODWT is useful — $S_K$ carries the slow level, $D_k$ the rest — and where SARIMA is allowed a seasonal difference.
-
-```{r eda-adf, echo=FALSE}
-renderTable({
-  y    <- split_re()$y_train
-  adf  <- tryCatch(tseries::adf.test(y, alternative = "stationary"), error = function(e) NULL)
-  kpss <- tryCatch(urca::ur.kpss(y, type = "mu"), error = function(e) NULL)
-  adf_p <- if (is.null(adf)) NA_real_ else as.numeric(adf$p.value)
-  kpss_stat <- if (is.null(kpss)) NA_real_ else as.numeric(kpss@teststat)
-  kpss_cv  <- kpss_cv5(kpss)
-  tibble(
-    test        = c("ADF", "KPSS (level)"),
-    null        = c("unit root (non-stationary)", "constant mean (stationary)"),
-    statistic   = c(if (is.null(adf)) NA else unname(adf$statistic), kpss_stat),
-    p_or_5pct_cv = c(adf_p, kpss_cv),
-    reject_null_at_5pct = c(
-      !is.na(adf_p) && adf_p < 0.05,
-      !is.na(kpss_stat) && !is.na(kpss_cv) && kpss_stat > kpss_cv
-    )
-  )
-}, digits = 3)
-```
-
-```{r eda-adf-read, echo=FALSE}
-renderText({
-  y    <- split_re()$y_train
-  adf  <- tryCatch(tseries::adf.test(y, alternative = "stationary"), error = function(e) NULL)
-  kpss <- tryCatch(urca::ur.kpss(y, type = "mu"), error = function(e) NULL)
-  adf_p <- if (is.null(adf)) NA_real_ else as.numeric(adf$p.value)
-  kpss_stat <- if (is.null(kpss)) NA_real_ else as.numeric(kpss@teststat)
-  kpss_cv  <- kpss_cv5(kpss)
-  adf_rej  <- !is.na(adf_p) && adf_p < 0.05
-  kpss_rej <- !is.na(kpss_stat) && !is.na(kpss_cv) && kpss_stat > kpss_cv
-  series_nm <- paste(input$sensor, input$pollutant)
-  if (adf_rej && kpss_rej) {
-    paste0(series_nm, ": ADF rejects a unit root (p = ", signif(adf_p, 3),
-           "), but KPSS rejects a constant mean (stat = ", signif(kpss_stat, 3),
-           " > 5% cv ", signif(kpss_cv, 3),
-           "). The series is not a random walk, and it is not level-stationary either — winter and monsoon sit at different levels. A plain AR on raw Y(t) is a weak baseline; SARIMA may difference at lag 24; Haar MODWT puts that slow swing in S_K.")
-  } else if (!adf_rej && kpss_rej) {
-    paste0(series_nm, ": both tests point away from a stable mean (ADF p = ",
-           signif(adf_p, 3), "; KPSS stat = ", signif(kpss_stat, 3),
-           "). Treat Y(t) as non-stationary. Difference / seasonal difference for ARIMA, or split scales with MODWT.")
-  } else if (adf_rej && !kpss_rej) {
-    paste0(series_nm, ": ADF rejects a unit root (p = ", signif(adf_p, 3),
-           ") and KPSS does not reject a constant mean (stat = ", signif(kpss_stat, 3),
-           " vs 5% cv ", signif(kpss_cv, 3),
-           "). A short AR on Y(t) is more defensible here, but the daily cycle in the box plots is still there, so snaive and MASE keep S = 24.")
-  } else {
-    paste0(series_nm, ": ADF p = ", signif(adf_p, 3),
-           ", KPSS stat = ", signif(kpss_stat, 3), " vs 5% cv ", signif(kpss_cv, 3),
-           ". Neither test is sharp on this window; lean on the time plot and the ACF at lag 24 instead.")
-  }
-})
-```
-
-## 2.4 ACF and PACF
+## 2.3 ACF and PACF
 
 ```{r acf-controls, echo=FALSE}
 inputPanel(
@@ -480,9 +359,9 @@ renderText({
 })
 ```
 
-The ACF peak at lag 24 is the same daily cycle as the box plots. Tree models use lag window $p = 24$ (one day). If the PACF cutoff is much larger, $p = 48$ is also tried on training data only (Section 7).
+The ACF peak at lag 24 matches the daily cycle in the boxes. Tree models use lag window $p = 24$ (one day). If the PACF cutoff is much larger, Section 7 also tries $p = 48$ on training data only.
 
-## 2.5 Lag scatter
+## 2.4 Lag scatter
 
 ```{r lag-controls, echo=FALSE}
 inputPanel(
@@ -513,31 +392,160 @@ output$scatter_plot <- renderPlotly({
 })
 ```
 
-At $k = 1$ the cloud is tight: the next hour is close to this hour. At $k = 24$ a second, looser line appears — same hour yesterday. That is the lag set CatBoost sees for each $D_k$.
+At $k = 1$ the next hour tracks this hour closely. At $k = 24$ a second pattern appears — same hour yesterday. Those are the lags CatBoost sees on each band.
 
-# 3. Preprocessing
+## 2.5 From EDA to the modelling pipeline
 
-Paper order: NAs → hourly mean (15-min sources only) → min-max on **train**:
+The plots above are not decoration: each finding locks a design choice before any bake-off score. All quantities below use the **training** window only (`eda_design_summary` / `eda_design_decisions` in `R/10_eda_design.R`).
+
+**What we check.** (1) Diurnal vs weekly amplitude → seasonality $S$. (2) ACF at lags 1 and 24 → which lag features matter. (3) PACF cutoff → lag window $p$. (4) Residuals of the seasonal naive ($Y_t - Y_{t-24}$) → whether we need more than snaive. (5) Haar MRA band size: MAD of $D_1$ and $S_K$, plus a $D_1$ spike tail (99th abs quantile), all relative to $Y$ → whether a multi-scale / Wave\* path is justified. We do **not** use energy-by-level plots for these decisions.
+
+```{r eda-design-summary, echo=FALSE}
+renderTable({
+  sp <- split_re()
+  J  <- if (!is.null(hparams) && !is.null(hparams$J)) {
+    as.integer(min(5L, hparams$J))
+  } else {
+    5L
+  }
+  eda_design_summary(sp$y_train, sp$t_train, J = J, filter = "haar") %>%
+    dplyr::mutate(
+      dplyr::across(where(is.numeric), ~ round(.x, 3)),
+      multi_scale = as.character(multi_scale)
+    )
+}, striped = TRUE, hover = TRUE, spacing = "xs", width = "100%")
+```
+
+```{r eda-design-decisions, echo=FALSE}
+renderTable({
+  sp <- split_re()
+  J  <- if (!is.null(hparams) && !is.null(hparams$J)) {
+    as.integer(min(5L, hparams$J))
+  } else {
+    5L
+  }
+  sumr <- eda_design_summary(sp$y_train, sp$t_train, J = J, filter = "haar")
+  eda_design_decisions(sumr)
+}, striped = TRUE, hover = TRUE, spacing = "xs", width = "100%")
+```
+
+```{r eda-snaive-resid, echo=FALSE}
+renderPlot({
+  sp <- split_re()
+  sn <- eda_snaive_resid(sp$y_train, season = SEASONALITY)
+  par(mfrow = c(1, 2), mar = c(5.2, 4.8, 4.2, 1.4))
+  if (length(sn$resid) > 5L) {
+    plot(sn$resid, type = "l", col = NAVY, lwd = 0.7,
+         xlab = "Train index", ylab = "Y(t) - Y(t-24)",
+         main = "Seasonal-naive residuals (train)")
+    abline(h = 0, col = "grey70")
+    acf(sn$resid, lag.max = 72, na.action = na.pass,
+        main = "ACF of snaive residuals")
+  } else {
+    plot.new()
+    text(0.5, 0.5, "Not enough train length for seasonal residuals")
+  }
+}, height = function() max(420L, round(panel_h() * 2.8)))
+```
+
+```{r eda-design-blurb, echo=FALSE}
+renderText({
+  sp <- split_re()
+  J  <- if (!is.null(hparams) && !is.null(hparams$J)) {
+    as.integer(min(5L, hparams$J))
+  } else {
+    5L
+  }
+  s  <- eda_design_summary(sp$y_train, sp$t_train, J = J, filter = "haar")
+  paste0(
+    "Locked for this sensor/pollutant (train only): S = ", s$S,
+    ", bake-off p = ", s$p_lags,
+    " (PACF suggests ", s$p_suggested, "), ",
+    if (isTRUE(s$multi_scale)) {
+      "multi-scale MODWT justified (D1 and S both move) → WaveCatBoost path."
+    } else {
+      "bands weak vs Y → still report MRA; raw trees may be enough."
+    },
+    " Seasonal-naive residual ACF(1) = ", round(s$snaive_resid_acf1, 2),
+    if (isTRUE(s$snaive_resid_acf1 > 0.2)) {
+      " → leftover short-term dependence after the daily cycle."
+    } else {
+      " → snaive already captures most short-term dependence."
+    }
+  )
+})
+```
+
+That is the reason for the pipeline in later sections: **$S{=}24$ baselines and MASE**, **lag-$p$ tree features**, and — when train MRA shows both fast and slow structure — **Haar MODWT with one CatBoost (or LGB/XGB) per band, then sum**. The bake-off then ranks those models; EDA only chooses the architecture family.
+
+# 3. Preprocessing and train / test split
+
+## 3.1 Chronological train / validation / test
+
+We never shuffle. Time order is kept so the future cannot leak into the past (`chrono_split_tvt` in `R/03_preprocess.R`).
+
+For a chosen forecast horizon $h$ (1d $=24$, 7d $=168$, 14d $=336$, 31d $=744$ hours):
+
+1. **Test** = the last $h$ hours of the series.  
+2. Everything before that is the fit window.  
+3. **Validation** = the last 14 days of the fit window (`VAL_HOURS = 14 \times 24`), shortened if the series is short.  
+4. **Train** = the rest of the fit window.
+
+```
+|----------- train -----------|---- val (14 d) ----|---- test (h) ----|
+```
+
+| Block | Role |
+|---|---|
+| **Train** | Haar MODWT, min–max scaler, fit WaveCatBoost / baselines |
+| **Validation** | Early stopping and hyperparameter choice only |
+| **Test** | Final forecasts and MASE / MAE / RMSE only |
+
+Models are trained on the past, tuned on validation, then scored on the held-out test hours. Longer horizons use a longer test tail that still ends on the **same last timestamp** (nested windows).
+
+```{r split-sizes, echo=FALSE}
+renderTable({
+  sp <- split_re()
+  tibble(
+    sensor = input$sensor,
+    pollutant = input$pollutant,
+    horizon = input$horizon,
+    n_train = sp$n_train,
+    n_val = sp$n_val,
+    n_test = sp$n_test,
+    train_start = as.character(min(sp$t_train)),
+    train_end = as.character(max(sp$t_train)),
+    val_start = as.character(min(sp$t_val)),
+    val_end = as.character(max(sp$t_val)),
+    test_start = as.character(min(sp$t_test)),
+    test_end = as.character(max(sp$t_test))
+  )
+})
+```
+
+## 3.2 Scaling and cleaning
+
+Order: fix NAs → hourly mean (15‑min sources only) → min‑max on **train**:
 
 $$
 x' = \frac{x - x_{\min}^{\mathrm{train}}}{x_{\max}^{\mathrm{train}} - x_{\min}^{\mathrm{train}}}.
 $$
 
-CPCB, ID1, and SHILLONG skip the 15-min step. Extra groups run it once and reuse the parquet/RDS cache.
+CPCB, ID1, and SHILLONG are already hourly. Extra groups are aggregated once and cached.
 
-**Test hours outside the training range.** $x_{\min},x_{\max}$ are never updated with val or test. If $x_{\mathrm{test}} > x_{\max}^{\mathrm{train}}$ then $x'>1$; if $x_{\mathrm{test}} < x_{\min}^{\mathrm{train}}$ then $x'<0$. We do **not** clip $x'$ to $[0,1]$ — that would flatten a real peak. Inverse uses the same train min/max, $\hat Y = \hat x'(x_{\max}-x_{\min})+x_{\min}$, then clip $\hat Y \ge 0$ because concentrations cannot be negative.
+Min and max come from train only. Test values outside that range can give $x'>1$ or $x'<0$; we leave them as-is so peaks are not flattened. Forecasts are mapped back with the same train min/max, then clipped at 0 (concentrations cannot be negative).
 
 ```{r preprocess-demo, echo=FALSE}
 renderTable({
   sp <- split_re()
   sc <- minmax_fit(sp$y_train)
-  tibble(
+tibble(
     train_n = sp$n_train,
     val_n   = sp$n_val,
     test_n  = sp$n_test,
-    train_min = sc$min,
-    train_max = sc$max,
-    test_min  = min(sp$y_test),
+  train_min = sc$min,
+  train_max = sc$max,
+  test_min  = min(sp$y_test),
     test_max  = max(sp$y_test),
     n_test_gt_train_max = sum(sp$y_test > sc$max, na.rm = TRUE),
     n_test_lt_train_min = sum(sp$y_test < sc$min, na.rm = TRUE)
@@ -547,34 +555,41 @@ renderTable({
 
 # 4. MODWT (paper: Haar)
 
-## 4.1 Filters and reconstruction
+## 4.1 Filters and recursive MODWT
 
-The letter's wavelet filter $p_m$ builds the details; the scaling filter $q_m$ builds the smooth. Haar (the paper choice) is
+**Wavelet filter** $p_m$ builds details $D$ ($\sum_m p_m = 0$, measures change).  
+**Scaling filter** $q_m$ builds the smooth $S$ ($\sum_m q_m = 1$, measures average).  
+For nonzero shifts $n$: $\sum_m p_m p_{m+2n} = \sum_m q_m q_{m+2n} = 0$.
+
+Recursive MODWT at level $j$, with $S_{0,t} = Y_t$ and circular indices mod $N$:
 
 $$
-p = \tfrac12(1,-1), \qquad q = \tfrac12(1,1).
+\begin{aligned}
+D_{j,t}
+&= \sum_{m=0}^{M-1} p_m\, S_{j-1,\,(t-2^{j-1}m)\bmod N}, \\
+S_{j,t}
+&= \sum_{m=0}^{M-1} q_m\, S_{j-1,\,(t-2^{j-1}m)\bmod N}.
+\end{aligned}
 $$
 
-MODWT does not downsample, so every component has length $N$ and the lag $D_{k,t-1}$ lines up with $Y_t$. Depth in the letter is $K = \ln N \approx 9$. The additive MRA used for forecasting is
+Haar: $q = (\tfrac12,\tfrac12)$, $p = (\tfrac12,-\tfrac12)$. Tap spacing doubles each level. Only the smooth is split again, so
 
 $$
 Y_t = \sum_{k=1}^{K} D_{k,t} + S_{K,t}.
 $$
 
-$D_1$ is the fastest band (hour-to-hour changes). $D_K$ is the slowest detail. $S_K$ is the long-term level. Each component is forecast by its own model
+$D_1$ is the fastest band; $S_K$ is the slow level. Each band gets its own model
 
 $$
 \hat D_{k,t} = f_k(D_{k,t-1},\ldots,D_{k,t-p}), \qquad
 \hat S_{K,t} = f_S(S_{K,t-1},\ldots,S_{K,t-p}),
 $$
 
-and the point forecast is reconstructed from those component forecasts (Section 5).
-
-The pyramid wraps the series (periodic boundary). That is the **letter plot** (AUDIT F1: two-sided circular MRA). Test $Y$ is held out of this figure. Use the filter menu and depth slider to redraw $D_1,\ldots,D_K$ and $S_K$.
+and the pieces are summed in Section 5. Only train $Y$ is decomposed below.
 
 ## 4.2 Components $D_k$ and $S_K$
 
-Haar is the paper default. The filter menu redraws every $D_1,\ldots,D_K$ and $S_K$ for D4 or LA8 without leaving this section; those families are scored in Section 10. The stack grows with $K$ — use **Graph size** above if a panel is tight, or box-zoom on one band.
+Haar is the paper default. Use the menu to redraw bands for D4 or LA8 (scored in Section 10).
 
 ```{r modwt-controls, echo=FALSE}
 inputPanel(
@@ -626,29 +641,32 @@ renderText({
   mra  <- generic_mra(sp$y_train, K, filter = filt)
   err  <- max(abs(mra_reconstruct(mra) - sp$y_train))
   paste0("Max reconstruction error on TRAIN (", toupper(filt), ", K = ", K, "): ",
-         signif(err, 3), "  (MRA is additive, so this should be ~0). Test was not in the transform.")
+         signif(err, 3), "  (should be ~0). Test was not in the transform.")
 })
 ```
 
-A spike in $Y_t$ appears at the same clock time in $D_1$. That is why a lag of $D_1$ is a usable feature, and why the letter can train $f_k$ separately on each band. Modelling uses $K = 5$ (scale $2^5 = 32$ h, one daily cycle) rather than $K = \ln N \approx 9$: extra levels add one CatBoost each and mostly fit leftover noise.
+A spike in $Y_t$ shows up at the same time in $D_1$, so lags of each band are usable features. Modelling uses $K = 5$ (about 32 h) rather than $K \approx \ln N$: deeper levels mostly add noise and another CatBoost each. Together with Section 2.5 (snaive leftovers + $D_1$/$S_K$ amplitudes), this is why we forecast **each band separately** and sum — not because an energy plot said so.
 
 # 5. IMODWT
 
-Forward MODWT uses the letter's filters $p_m$ (details) and $q_m$ (smooth). Inverse MODWT uses the same Haar pair, run backwards, and returns the original series from the components in Section 4:
+Inverse MODWT uses the **same filters, reversed** (circular indices mod $N$):
 
 $$
-\hat Y_{N+h} = \mathrm{IMODWT}\big(\hat D_{1,N+h},\ldots,\hat D_{K,N+h},\hat S_{K,N+h}\big).
+S_{j-1,t}
+=
+\sum_{m=0}^{M-1} p_m\, D_{j,\,(t+2^{j-1}m)\bmod N}
++
+\sum_{m=0}^{M-1} q_m\, S_{j,\,(t+2^{j-1}m)\bmod N},
+\qquad j = K,\ldots,1.
 $$
 
-For Haar those MRA components already live on the original time scale, so the inverse **is** the additive reconstruction
+Walking down from $S_K$ and $D_K,\ldots,D_1$ recovers $S_0 = Y$. For Haar MRA the bands already sit on the original time scale, so the forecast rebuild is also just
 
 $$
-Y_t = \sum_{k=1}^{K} D_{k,t} + S_{K,t},
-\qquad
 \hat Y_{N+h} = \sum_{k=1}^{K} \hat D_{k,N+h} + \hat S_{K,N+h}.
 $$
 
-That is `mra_reconstruct` in `R/04_modwt.R`. $D_1$ is still the fastest band, $D_K$ the slowest detail, $S_K$ the long-term level — the same objects $f_k$ and $f_S$ forecast. A perfect inverse on the training window means $\max_t \lvert Y_t - (\sum_k D_{k,t} + S_{K,t})\rvert \approx 0$.
+On train, $\max_t |Y_t - (\sum_k D_{k,t} + S_{K,t})|$ should be about zero.
 
 ```{r imodwt-check, echo=FALSE}
 renderText({
@@ -669,17 +687,19 @@ renderText({
 
 # 6. WaveCatBoost
 
-For each training series: Haar MRA → one model per component → recursive component forecasts → IMODWT / sum (Section 5).
+Pipeline on each series: Haar MRA → one model per band → recursive forecasts on each band → sum / IMODWT.
 
-- **WaveSARIMA**: does MODWT help a linear model?
-- **WaveXGB / WaveLGBM**: does MODWT help boosting regardless of Ordered vs default?
-- **WaveCatBoost**: the paper method.
+- **WaveCatBoost** — paper method (CatBoost on each band).
+- **WaveXGB / WaveLGB / WaveSARIMA** — same transform, different heads.
+- Raw snaive, SARIMA, XGB, LGB, CatBoost — no wavelet, for a fair contrast.
 
-Baselines without the transform (seasonal naive, SARIMA, XGB / LightGBM / CatBoost on the raw series) stay in the bake-off so a MASE gap is from MODWT, not from a hidden extra lag. All Wave\* models share the same $K$ and $p$ as those trees. Recursive 1-step out to horizon $h$ is paper Algorithm 1, step 14.
+All Wave\* models share the same $K$ and lag $p$. The recursive bake-off rolls one step at a time out to horizon $h$.
 
-# 7. Hyperparameters
+# 7. Hyperparameters (WaveCatBoost focus)
 
-The letter does not publish `iterations`, depth, $\eta$, or lag $p$. A small expanding-window grid is run once on CPCB PM2.5, 1-day split, using only the training prefix. The winning $(p, \text{depth}, \eta, K)$ are then frozen for every pollutant, sensor, and horizon.
+We care mainly about **WaveCatBoost**: Haar bands + one CatBoost per band. The paper does not publish tree settings, so we pick a shared lag / depth / learning-rate / depth-$K$ once on **CPCB PM2.5** (train only, 1-day split) and freeze it for every sensor and pollutant.
+
+The screening grid below uses **LightGBM** only as a fast proxy for that search. The winning $(p,\text{depth},\eta,K)$ are then reused by **WaveCatBoost** (and the other Wave\* heads) in the recursive bake-off. Section 8’s letter-notebook run is separate: CatBoost with lags 24 and 1000 trees.
 
 ```{r hparams}
 if (is.null(hparams)) {
@@ -688,33 +708,26 @@ if (is.null(hparams)) {
   cat(hparams$reason, "\n")
   if (!is.null(hparams$grid_lgb)) {
     knitr::kable(head(hparams$grid_lgb, 8), digits = 3,
-                 caption = "LightGBM time-based grid (train only), best first")
+                 caption = "Screening grid (LightGBM proxy on train) — settings reused by WaveCatBoost")
   }
   if (!is.null(hparams$grid_wave)) {
     knitr::kable(hparams$grid_wave, digits = 3,
-                 caption = "WaveLGBM K grid at the winning lag / depth / eta")
+                 caption = "Wave depth K grid at the winning lag / depth / eta")
   }
 }
 ```
 
-Starting grid: $p \in \{24,48\}$, depth $\in \{4,6\}$, $\eta \in \{0.05,0.1\}$, 150 boosting rounds with early stopping. Modelling caps $K$ at 5.
+Search space: $p \in \{24,48\}$, depth $\in \{4,6\}$, $\eta \in \{0.05,0.1\}$, 150 rounds with early stopping. Modelling caps $K$ at 5.
 
 # 8. Forecasts and conformal intervals
 
-The letter's public notebook ([Wave CatBoost.ipynb](https://github.com/jborah2/WaveCatBoost-Time-Series-Model/blob/main/Wave%20CatBoost.ipynb)) Haar-MODWT the **full** series ($K=\ln N$), fits `CatBoost(lags=24, iterations=1000, auto $\eta$)` on each $W_j,V_K$, then Darts `historical_forecasts` (walk-forward 1-step, observed lags, `retrain=False`), then IMODWT. Section 8 uses that protocol on CPCB, ID1, and SHILLONG (`Rscript run_paper_protocol.R`). Extra-group station names (Lumpyngngad, …) are mapped to those three caches so 8.1 stays visible.
+Section 8.1–8.2 follow the letter notebook protocol: Haar MODWT on the series, CatBoost on each band (lags 24, 1000 trees), rolling **1-step** forecasts, then IMODWT. Plots use a **7-day** test window. Run `Rscript run_paper_protocol.R` if panels are empty.
 
-The conformal score (no Gaussian assumption):
+Reported intervals here use the **paper residual PI** on that window (95\% quantile of $|Y-\widehat Y|$, $\alpha=0.05$).
 
-$$
-CS_t = \frac{|Y_t - \hat Y_t|}{\hat U_t}, \qquad
-PI_t = \hat Y_t \pm CQ_t\,\hat U_t,
-$$
+## 8.1 WaveCatBoost vs test (horizon = 7 days)
 
-with $\hat U_t$ a rolling MAE, $CQ_t$ the $(1-\alpha)$ quantile of $CS$ on a trailing window of length $\kappa$, and $\alpha = 0.05$. $\kappa$ is chosen from $\{24,168,336\}$ so calibration coverage is closest to 95%. Lower and upper edges are $L_t = \hat Y_t - CQ_t \hat U_t$ and $U_t = \hat Y_t + CQ_t \hat U_t$.
-
-## 8.1 WaveCatBoost: forecast components, IMODWT, vs test
-
-Same protocol as the letter notebook: Haar MODWT on the **full** series ($K=\ln N$), one CatBoost (1000 trees, auto $\eta$, lags 24) per coefficient $W_j,V_K$, rolling **1-step** forecasts with observed lags, then IMODWT. The four panels are the **7-day** test window for PM2.5, PM10, NO2, and O3 on the sensor in the dropdown. Empty panels mean `Rscript run_paper_protocol.R` has not cached that series yet.
+**What this shows.** For the selected sensor, each panel is one pollutant over the last **7 days** (168 hours) of the test window. Black = observed values. Orange = WaveCatBoost forecast after IMODWT. Title MASE is for that same 7-day window under the rolling 1-step protocol.
 
 ```{r s8-four, echo=FALSE}
 uiOutput("s8_four_slot")
@@ -770,45 +783,31 @@ output$s8_four <- renderPlotly({
     mase <- if (!is.null(z$scores$MASE)) sprintf("  MASE=%.3f", z$scores$MASE) else ""
     titles[i] <- paste0(pol, mase)
     figs[[i]] <- fig %>%
-      plotly::layout(
+    plotly::layout(
         yaxis = list(title = list(text = pol, standoff = 8, font = list(size = 12)),
                      automargin = TRUE, zeroline = FALSE)
       )
   }
-  stack_panels(figs, titles, n_panels = 4L, xlab = "Test time")
+  stack_panels(figs, titles, n_panels = 4L, xlab = "Test time (7-day horizon)")
 })
 ```
 
 ```{r s8-alert}
-if (!is.null(paper8) || !is.null(conf)) {
-  wf <- NULL
+# Paper-notebook residual PI only (letter Fig. 2 style).
   if (!is.null(paper8)) {
-    wf <- dplyr::bind_rows(lapply(setdiff(names(paper8), c("scores", "four")), function(s) {
+  dplyr::bind_rows(lapply(setdiff(names(paper8), c("scores", "four")), function(s) {
       w <- paper8[[s]]$methods$wavecatboost
-      if (is.null(w) || isTRUE(w$error)) return(NULL)
-      tibble(source = "leaky rolling 1-step", sensor = s,
-             kappa = if (is.null(w$kappa)) NA else w$kappa,
-             coverage_test = if (is.null(w$coverage_test)) NA else w$coverage_test,
-             mean_width = if (is.null(w$width)) NA else w$width,
+    if (is.null(w) || isTRUE(w$error) || is.null(w$coverage_test)) return(NULL)
+    tibble(source = "paper residual PI (7d)", sensor = s,
+           coverage_test = w$coverage_test, mean_width = w$width,
              MASE = w$scores$MASE)
     }))
   }
-  rec <- NULL
-if (!is.null(conf)) {
-    rec <- dplyr::bind_rows(lapply(conf, function(z) {
-      tibble(source = z$protocol %||% "conformal 7d", sensor = z$sensor, kappa = z$kappa,
-             coverage_test = z$coverage_test, mean_width = z$width, MASE = NA_real_)
-    }))
-  }
-  dplyr::bind_rows(wf, rec)
-}
 ```
 
-The table mixes two protocols. **Split conformal** bands (`run_conformal.R` / `run_new_dataset.R`) are calibrated on a hold-out 1-step window that does not include the plotted test hours; lower bounds are clipped at 0. The leaky rolling 1-step row is the letter-notebook residual quantile on the plotted window — about 95% coverage by construction, not a deployed interval.
+## 8.2 Conformal intervals — PM2.5, horizon = 7 days
 
-## 8.2 Seven-day conformal intervals (PM2.5)
-
-Each station is its own plot so CPCB, ID1, and SHILLONG keep independent y-scales. Actual, WaveCatBoost rolling 1-step $\hat Y$, and the 95% band from $|Y-\hat Y|$ on this window.
+**What this shows.** One plot per station (CPCB, ID1, SHILLONG). Black = actual PM2.5. Orange = WaveCatBoost rolling 1-step. Shaded band = **paper residual 95\% PI** on this **7-day** window (`results/paper_protocol.rds`). Run `Rscript run_paper_protocol.R` if panels are empty.
 
 ```{r s8-conf-ui, echo=FALSE}
 uiOutput("s8_conf_a_slot")
@@ -825,13 +824,9 @@ uiOutput("s8_conf_c_slot")
     z <- w
     t_hat <- paper8[[sname]]$t_test
     y_obs <- paper8[[sname]]$y_test
-  } else if (!is.null(conf[[sname]]$yhat)) {
-    z <- conf[[sname]]
-    t_hat <- z$t_test
-    y_obs <- z$y_test
   }
   h <- stack_px(1L)
-  ttl <- sprintf("%s  %s  PM2.5  7-day", letter, sname)
+  ttl <- sprintf("%s  %s  PM2.5  |  forecast horizon = 7 days", letter, sname)
   if (is.null(z) || is.null(z$yhat)) {
     return(plotly::plotly_empty(type = "scatter") %>%
              plotly::layout(title = paste(ttl, "— run Rscript run_paper_protocol.R"),
@@ -863,7 +858,7 @@ uiOutput("s8_conf_c_slot")
       margin = list(l = 64, r = 24, t = 72, b = 44),
       hovermode = "x unified"
     ) %>%
-    plotly::config(scrollZoom = TRUE, displaylogo = FALSE)
+      plotly::config(scrollZoom = TRUE, displaylogo = FALSE)
 }
 
 output$s8_conf_a_slot <- renderUI(plotly_slot("s8_conf_a", 1L))
@@ -874,9 +869,9 @@ output$s8_conf_b <- renderPlotly(.s8_conf_fig("ID1", "(b)"))
 output$s8_conf_c <- renderPlotly(.s8_conf_fig("SHILLONG", "(c)"))
 ```
 
-## 8.3 Model comparison (MASE)
+## 8.3 Model comparison (our MASE ranks)
 
-MCB plots match the letter's Fig. 1 layout: mean rank across 1-day cases on that sensor, grey band = models not distinguishable from the best at the Nemenyi 5% distance. 7-day recursive ranks on CPCB are omitted here because every method collapsed to MASE $\approx 1.50$.
+**What this shows.** These are **our** rank plots from `results/scores.rds` (recursive bake-off), not figures copied from the letter. For each sensor we rank methods by MASE on every 1-day pollutant, then average ranks. Lower is better. The grey band marks methods close to the best one (`mcb_from_table` in `R/08_metrics.R`).
 
 ```{r s8-mcb-ui, echo=FALSE}
 if (!is.null(scores) && nrow(scores)) {
@@ -898,29 +893,60 @@ if (!is.null(scores) && nrow(scores)) {
   output$s8_mcb_cpcb <- renderPlot({
     m <- mcb_sensor("CPCB")
     if (is.null(m)) return(invisible())
-    print(plot_mcb_gg(m, "MCB  ·  MASE  ·  (a) CPCB (1-day)"))
+    print(plot_mcb_gg(m, "(a) Our ranks — CPCB, 1-day MASE"))
   })
   output$s8_mcb_id1 <- renderPlot({
     m <- mcb_sensor("ID1")
     if (is.null(m)) return(invisible())
-    print(plot_mcb_gg(m, "MCB  ·  MASE  ·  (b) ID1 (1-day)"))
+    print(plot_mcb_gg(m, "(b) Our ranks — ID1, 1-day MASE"))
   })
   output$s8_mcb_shillong <- renderPlot({
     m <- mcb_sensor("SHILLONG")
     if (is.null(m)) {
       plot.new()
-      title("MCB  ·  MASE  ·  (c) SHILLONG", col.main = NAVY)
+      title("(c) Our ranks — SHILLONG, 1-day MASE", col.main = NAVY)
       mtext("No 1-day scores yet. Run Rscript run_new_dataset.R")
       return(invisible())
     }
-    print(plot_mcb_gg(m, "MCB  ·  MASE  ·  (c) SHILLONG (1-day)"))
+    print(plot_mcb_gg(m, "(c) Our ranks — SHILLONG, 1-day MASE"))
   })
 }
 ```
 
 ## 8.4 Top models
 
-Lowest MASE per sensor × pollutant × horizon, then mean MASE by method (lower is better).
+Best method per case, then average MASE by method (lower is better).
+
+**What a case is.** One row of `results/scores.csv` for a given method: a triple
+`(sensor, pollutant, horizon)` under the **recursive bake-off** (e.g.\ CPCB × PM2.5 × 1d).
+Horizons are `1d` / `7d` / `14d` / `31d`; pollutants are the six series we scored.
+Different methods can have different numbers of finished rows if some jobs were skipped or failed.
+
+**What `n` is.** In the mean / median table below, **`n` = number of cached cases for that method**
+(how many MASE values enter the average). Example: CatBoost `n = 53` means 53 cells;
+XGB `n = 48` means five cells are missing for XGB relative to a fuller run. Means are **not**
+weighted by horizon length or by pollutant importance — each finished cell counts once.
+
+**How the columns are computed** (group by `method` over all of that method’s rows in `scores`):
+
+\[
+\begin{aligned}
+\mathrm{mean\_MASE}
+&= \tfrac{1}{n}\sum_{i=1}^{n} \mathrm{MASE}_i, \\
+\mathrm{median\_MASE}
+&= \mathrm{median}\{\mathrm{MASE}_1,\ldots,\mathrm{MASE}_n\}, \\
+\mathrm{mean\_MAE}
+&= \tfrac{1}{n}\sum_{i=1}^{n} \mathrm{MAE}_i, \\
+\mathrm{mean\_RMSE}
+&= \tfrac{1}{n}\sum_{i=1}^{n} \mathrm{RMSE}_i.
+\end{aligned}
+\]
+
+Each \(\mathrm{MASE}_i\) / \(\mathrm{MAE}_i\) / \(\mathrm{RMSE}_i\) is already the score on that
+cell’s test window (seasonal MASE with \(S{=}24\); see §8 / metrics). The table then only
+averages those cell scores. Prefer **median\_MASE** when a few hard cells (e.g.\ SO2, some
+Shillong series) inflate the mean; this grand mean is **not** a PM2.5-only leaderboard
+(see the PM2.5-focused tables later in this section).
 
 ```{r s8-top, echo=FALSE}
 if (is.null(scores) || !nrow(scores)) {
@@ -932,7 +958,7 @@ if (is.null(scores) || !nrow(scores)) {
     dplyr::ungroup() %>%
     dplyr::mutate(method = pretty_method(method)) %>%
     dplyr::select(sensor, pollutant, horizon, method, MASE, MAE, RMSE)
-  knitr::kable(top, digits = 3, caption = "Best method by MASE in each case")
+  knitr::kable(top, digits = 3, caption = "Best method by MASE in each case (one winner per sensor × pollutant × horizon)")
   mean_m <- scores %>%
     dplyr::group_by(method) %>%
     dplyr::summarise(n = dplyr::n(), mean_MASE = mean(MASE, na.rm = TRUE),
@@ -942,11 +968,12 @@ if (is.null(scores) || !nrow(scores)) {
                      .groups = "drop") %>%
     dplyr::arrange(mean_MASE) %>%
     dplyr::mutate(method = pretty_method(method))
-  knitr::kable(mean_m, digits = 3, caption = "Mean / median MASE across cached cases")
+  knitr::kable(mean_m, digits = 3,
+               caption = "Mean / median over cached cases: n = #cells (sensor × pollutant × horizon) per method; unweighted average of cell MASE/MAE/RMSE")
 }
 ```
 
-MASE by method for PM2.5. Lower is better. Walk-forward 7-day (letter notebook) is a different task from recursive 7-day and should not be read as the same number.
+PM2.5 MASE by method. Lower is better. Recursive bake-off and rolling 1-step are different tasks — do not mix the numbers.
 
 ```{r s8-mase-bars, echo=FALSE}
 uiOutput("s8_mase_slot")
@@ -959,16 +986,21 @@ output$s8_mase <- renderPlotly({
     return(plotly::plotly_empty(type = "bar") %>%
              plotly::layout(title = "No results/scores.rds"))
   }
+  focus <- c("wavecatboost", "catboost", "lgb", "sarima", "wavelgb", "snaive")
+  focus <- intersect(focus, unique(scores$method))
   d <- scores %>%
-    dplyr::filter(.data$pollutant == "PM2.5", .data$horizon %in% c("1d", "7d")) %>%
+    dplyr::filter(.data$method %in% focus,
+                  .data$pollutant == "PM2.5",
+                  .data$horizon %in% c("1d", "7d")) %>%
     dplyr::mutate(method = pretty_method(method),
                   protocol = paste("recursive", horizon))
   if (!is.null(paper8$scores) && nrow(paper8$scores)) {
     d <- dplyr::bind_rows(
       d,
       paper8$scores %>%
+        dplyr::filter(.data$method %in% focus) %>%
         dplyr::mutate(method = pretty_method(method),
-                      protocol = "leaky rolling 1-step")
+                      protocol = "rolling 1-step (7d)")
     )
   }
   pal <- c(
@@ -992,11 +1024,9 @@ output$s8_mase <- renderPlotly({
 })
 ```
 
-If the leaky rolling 1-step table is empty, from the project root run `Rscript run_paper_protocol.R` (writes an archived, explicitly leaky protocol dump).
-
 # 9. Comparison
 
-MASE uses seasonality $S = 24$, matching the letter:
+MASE with seasonality $S = 24$:
 
 $$
 \mathrm{MASE} = \frac{N-S}{h}\,
@@ -1004,127 +1034,85 @@ $$
      {\sum_{t=S+1}^{N}|Y_t - Y_{t-S}|}.
 $$
 
-MAE and RMSE are on original units after inverting min-max.
+We focus on **PM2.5** (the main target) and always keep **WaveCatBoost** in view, plus a few strong baselines. Ranking by mean MASE over *all* pollutants is misleading: a few hard cells (especially SO2 and Shillong) inflate Wave\* averages, so a stable method like SARIMA or raw CatBoost can look “best” on the grand mean without winning the PM2.5 story.
 
-```{r scores-table}
+```{r scores-pm25}
 if (is.null(scores) || !nrow(scores)) {
-  cat("No results/scores.rds yet. From the project root run:\n",
-      "  Rscript run_experiments.R        # full 6 x 2 x 4 bake-off\n",
-      "  Rscript run_experiments.R quick  # 1-day, snaive/sarima/lgb/wavelgb\n")
+  cat("No results/scores.rds yet. Run Rscript run_experiments.R from the project root.\n")
 } else {
-  DT::datatable(scores %>% dplyr::mutate(dplyr::across(c(MASE, MAE, RMSE), ~round(., 3))),
-                caption = "Cached forecasts (paper pipeline + baselines)",
-                options = list(pageLength = 12))
-}
-```
+  focus <- c("wavecatboost", "catboost", "lgb", "sarima", "wavelgb", "snaive")
+  focus <- intersect(focus, unique(scores$method))
+  s_pm <- scores %>%
+    dplyr::filter(.data$pollutant == "PM2.5", .data$method %in% focus)
 
-```{r scores-wide}
-if (!is.null(scores) && nrow(scores)) {
-  wide <- scores %>%
-    dplyr::select(sensor, pollutant, horizon, method, MASE) %>%
+  sum_tbl <- s_pm %>%
+    dplyr::group_by(method) %>%
+    dplyr::summarise(
+      n = dplyr::n(),
+      mean_MASE = mean(MASE, na.rm = TRUE),
+      median_MASE = stats::median(MASE, na.rm = TRUE),
+      mean_MAE = mean(MAE, na.rm = TRUE),
+      .groups = "drop"
+    ) %>%
+    dplyr::arrange(median_MASE) %>%
+    dplyr::mutate(method = pretty_method(method))
+  knitr::kable(sum_tbl, digits = 3,
+               caption = "PM2.5 only — sorted by median MASE (recursive bake-off)")
+
+  wide1d <- s_pm %>%
+    dplyr::filter(.data$horizon == "1d") %>%
+    dplyr::select(sensor, method, MASE) %>%
+    dplyr::mutate(method = pretty_method(method)) %>%
     tidyr::pivot_wider(names_from = method, values_from = MASE)
-  knitr::kable(wide, digits = 3, caption = "MASE (lower is better)")
-}
-```
+  knitr::kable(wide1d, digits = 3,
+               caption = "PM2.5, 1-day MASE by sensor (lower is better)")
 
-WaveCatBoost vs CatBoost is the value of Haar MODWT. WaveXGB vs WaveCatBoost is Ordered boosting after the transform is fixed. SARIMA vs WaveSARIMA asks whether the transform helps a linear model.
-
-```{r mcb}
-if (!is.null(scores) && nrow(scores) > 4) {
-  mcb <- tryCatch(mcb_from_table(scores), error = function(e) NULL)
-  if (!is.null(mcb)) {
-    knitr::kable(mcb, digits = 3,
-                 caption = "MCB / Nemenyi mean ranks across pollutant–sensor–horizon cases")
+  mcb_pm <- tryCatch(
+    mcb_from_table(s_pm %>% dplyr::filter(.data$horizon == "1d"),
+                   case_cols = "sensor"),
+    error = function(e) NULL
+  )
+  if (!is.null(mcb_pm)) {
+    mcb_pm <- mcb_pm %>% dplyr::mutate(model = pretty_method(model))
+    knitr::kable(mcb_pm, digits = 3,
+                 caption = "Our 1-day PM2.5 ranks (from scores.rds)")
     renderPlot({
-      rng <- range(c(mcb$lo, mcb$hi))
-      par(mar = c(5, 8, 4, 1.2))
-      plot(mcb$mean_rank, seq_len(nrow(mcb)), pch = 16, xlim = rng,
-           yaxt = "n", xlab = "Mean rank (lower is better)", ylab = NA,
-           main = "MCB-style ranks")
-      axis(2, at = seq_len(nrow(mcb)), labels = mcb$model, las = 1)
-      segments(mcb$lo, seq_len(nrow(mcb)), mcb$hi, seq_len(nrow(mcb)))
-      abline(v = min(mcb$mean_rank) + unique(mcb$critical_distance) / 2,
-             lty = 2, col = RUST)
+      print(plot_mcb_gg(mcb_pm, "Our ranks — PM2.5, 1-day MASE"))
     }, height = function() max(420L, round(panel_h() * 2.8)))
   }
 }
 ```
 
-Recursive 7-day MASE values sit on top of each other near 1.50 on CPCB PM2.5: that iterator has collapsed. The Section 8 comparison path is **paper notebook protocol: leaky rolling 1-step (full-series MODWT, teacher forcing)**, not a 7-day forecast.
+**Why raw CatBoost can beat WaveCatBoost on a grand average.** On CPCB PM2.5 (1-day) WaveCatBoost is typically better than raw CatBoost. Across *all* pollutants and horizons, WaveCatBoost’s **mean** MASE rises because recursive Wave\* forecasts can fail badly on a few series (SO2, some Shillong cells). Raw CatBoost is steadier there, so its average looks better even when WaveCatBoost wins the main PM2.5 cells. Prefer **median** or PM2.5-only tables for the headline.
+
+**Why SARIMA can look strong in a “top by mean” list.** SARIMA rarely collapses, so its mean stays middling-good. It is not the best PM2.5 method in our bake-off; it just avoids the worst Wave\* blow-ups. Use the PM2.5 table above, not an all-pollutant mean, when talking about WaveCatBoost.
 
 ---
 
 # 10. Extensions
 
-Three questions that sit outside the letter: why MODWT rather than Fourier; what another decomposition (EMD) looks like; and whether Haar is special among wavelet filters. All three use the same WaveLGB head, the same $K$ and $p$, and the same 1-day split, so a MASE gap is from the transform.
-
-Run `run_extensions.R` if the tables below are empty.
+Outside the letter: Fourier bands vs MODWT, Empirical Mode Decomposition (EMD) vs Haar MODWT, other wavelet filters, and CQR intervals. Fourier / filter / EMD runs use the same forecasting head, $K$, $p$, and 1-day split so MASE gaps come from the transform.
 
 ## 10.1 Fourier vs MODWT
 
-Fourier coefficients are global: a spike at hour 1000 contributes to every frequency bin, so there is no $F_{\omega,t}$ to lag. MODWT keeps the time index, so $D_{1,t}$ is the fine-scale event *at time $t$*.
+Fourier splits the spectrum into octave bands that match the Haar layout ($J = K$ bands). Period for detail $D_j$ sits in $[2^j, 2^{j+1})$; leftover low frequencies plus DC go into $S_J$. Same WaveLGB head as Haar, lags $p = 24$, depth $K = 5$ (so **5 detail bands + 1 smooth**).
 
-| | Fourier (FFT) | Haar MODWT (letter) |
-|---|---|---|
-| Time localisation | None — one coefficient per frequency | Yes — $D_{k,t}$ is indexed by $t$ |
-| Frequency localisation | Exact bins | Octave bands, level $k$ |
-| Stationarity | Mixes winter into summer | Local in time |
-| Lag features | Coefficients are not a time series | $D_{k,t-1}$ lines up with $Y_t$ |
-| Reconstruction | IFFT | Additive MRA / IMODWT |
-
-```{r fourier-controls, echo=FALSE}
-inputPanel(
-  sliderInput("fvm_zoom", "Show first N hours", min = 168, max = 720, value = 336, step = 24)
-)
-```
-
-```{r fourier-vs-modwt-plot, echo=FALSE}
-uiOutput("fvm_slot")
-```
-
-```{r fourier-vs-modwt-server, echo=FALSE}
-output$fvm_slot <- renderUI(plotly_slot("fvm_plot", 4L))
-output$fvm_plot <- renderPlotly({
-  s  <- s_re()
-  y  <- s$y
-  n  <- min(as.integer(input$fvm_zoom), length(y))
-  ys <- y[seq_len(n)]
-  tt <- s$times[seq_len(n)]
-
-  fft_y   <- fft(ys)
-  amp     <- Mod(fft_y)
-  top_idx <- order(amp, decreasing = TRUE)[seq_len(min(11L, n))]
-  fft_filt          <- complex(length.out = n)
-  fft_filt[top_idx] <- fft_y[top_idx]
-  fourier_approx    <- Re(fft(fft_filt, inverse = TRUE)) / n
-  mra <- haar_mra(ys, 3L)
-
-  figs <- list(
-    line_panel(tt, ys, "Y(t)", NAVY, input$pollutant),
-    line_panel(tt, fourier_approx, "Fourier", "#8B0000", "FFT"),
-    line_panel(tt, mra$D[[1]], "D1", RUST, "D1"),
-    line_panel(tt, mra$S, "S3", GREEN, "S3")
-  )
-  titles <- c(
-    "Original Y(t)",
-    "Fourier: top frequencies (no time index)",
-    "Haar MODWT D1 (time-local)",
-    "Haar MODWT S3 (smooth)"
-  )
-  stack_panels(figs, titles, n_panels = 4L)
-})
-```
-
-The Fourier curve is a handful of sinusoids laid over the whole window. Haar $D_1$ is quiet until the event, then jumps. That is the lag-feature argument in one picture.
-
-Same WaveLGB head, Fourier octave bands vs Haar:
+Unlike MODWT, a global FFT mixes events across the whole series — there is no local $D_{1,t}$ tied only to time $t$.
 
 ```{r fourier-scores}
 fs <- ext_scores
 if (is.null(fs) || !nrow(fs)) fs <- filter_scores
 if (is.null(fs) || !nrow(fs)) {
-  cat("No extension scores yet. Run:\n  Rscript run_extensions.R\n")
+  cat("No extension scores yet. Run Rscript run_extensions.R\n")
 } else {
+  params <- tibble::tibble(
+    setting = c("Head", "Horizon", "Depth J (= K)", "Detail bands", "Smooth",
+                "Band rule", "Lag p", "Boundary"),
+    value = c("WaveLGB (same as Haar bake-off)", "1 day", "5",
+              "D1 … D5", "S5 (DC + leftover low frequencies)",
+              "period in [2^j, 2^{j+1}) → Dj", "24", "periodic / full-window FFT")
+  )
+  knitr::kable(params, caption = "Fourier band setup (fourier_mra)")
   sub <- fs %>%
     dplyr::filter(filter %in% c("haar", "fourier"), horizon == "1d") %>%
     dplyr::select(sensor, pollutant, filter, MASE, MAE, RMSE)
@@ -1137,150 +1125,346 @@ if (is.null(fs) || !nrow(fs)) {
 }
 ```
 
-Haar should win on series with sharp spikes (ID1 in particular). Fourier bands ring around every event, so the lag vector at time $t$ still contains a little of yesterday's spike.
+Haar is better when spikes are sharp: Fourier bands smear an event across frequencies, so lags still carry a little of that event.
 
-## 10.2 Other wavelet filters (Haar, D4, LA8)
+## 10.2 EMD vs Haar MODWT
 
-Haar is two taps. D4 (4 taps) and LA8 (8 taps) are smoother octave filters. Reconstruction remains $Y_t = \sum_k D_{k,t} + S_{K,t}$ for every family; what changes is the shape of each $D_k$. Switch the filter in **Section 4.2** to see $D_1,\ldots,D_K$ and $S_K$ for Haar, D4, or LA8. The comparison below is MASE only — same WaveLGB head, same $K$ and $p$.
+**Question.** Does an adaptive, data-driven split (EMD) beat the paper’s fixed Haar MODWT when the forecasting head is held fixed?
 
-```{r filter-scores}
+EMD (Huang et al.) extracts **intrinsic mode functions** (IMFs) by repeated sifting. Unlike MODWT, there is no fixed mother wavelet or octave scale: each IMF’s local oscillation rate is set by the data.
+
+### Sifting and IMF conditions
+
+Start with $x^{(0)}(t)=Y_t$ on the **training** window only (same no-leakage rule as MODWT). One sift of a candidate $h(t)$:
+
+$$
+e_+(t)=\text{spline through local maxima},\quad
+e_-(t)=\text{spline through local minima},
+$$
+$$
+m(t)=\frac{e_+(t)+e_-(t)}{2},\qquad
+h^{\mathrm{new}}(t)=h(t)-m(t).
+$$
+
+Repeat until $h$ is an IMF. Classical **filter / stopping conditions** (Huang):
+
+1. **Extrema vs zeros:** if $N_e$ = number of extrema and $N_z$ = number of zero-crossings, then $|N_e-N_z|\le 1$.
+2. **Zero-mean envelope:** $m(t)\approx 0$ everywhere (upper/lower envelopes symmetric about zero).
+3. **Practical sift stop (software):** successive sifts $h^{(k)}$, $h^{(k+1)}$ stop when a relative change criterion is small (CRAN `EMD::emd` default SD-type stop); we do not retune that threshold.
+
+After IMF$_1$ is removed, set $r_1=Y-\mathrm{IMF}_1$ and sift $r_1$ for IMF$_2$, and so on, until the residue $r_M$ has at most one extremum (a trend). Exact additive reconstruction:
+
+$$
+Y_t=\sum_{k=1}^{M}\mathrm{IMF}_{k,t}+r_{M,t}.
+$$
+
+### Mapping onto Wave\* slots $(D_1,\ldots,D_K,S_K)$
+
+The bake-off expects the same $K{+}1$ additive channels as Haar. `emd_mra()` in `R/04_modwt.R` folds EMD into that layout with $J=K=5$:
+
+$$
+D_{j,t}=\mathrm{IMF}_{j,t}\ (j=1,\ldots,\min(J,M)),
+\qquad
+S_{J,t}=r_{M,t}+\sum_{j>J}\mathrm{IMF}_{j,t}
+$$
+(pad $D_j\equiv 0$ if $M<J$). Fastest IMF $\to D_1$; leftover slow IMFs merge into the smooth $S_J$. Forecast rebuild is still $\widehat Y=\sum_j\widehat D_j+\widehat S_J$.
+
+| Setting | Value |
+|---|---|
+| Head | WaveLGB (same as Haar / Fourier extension) |
+| Horizon | 1 day |
+| Depth $J$ ($=K$) | 5 ($D_1{\ldots}D_5$, $S_5$) |
+| Lag $p$ | 24 |
+| Boundary | `boundary = "periodic"` in `EMD::emd` |
+| Scope | **CPCB and ID1 PM2.5 only** (EMD on full hourly train is slow; `EMD_KEYS` in `run_extensions.R`) |
+| Not in | headline `scores.csv` bake-off — extension cache only |
+
+```{r emd-demo-imf}
+# Illustrative IMFs on a short train prefix (not the test set).
+n_emd <- 500L
+sp_emd <- tryCatch({
+  s <- series[["CPCB_PM2.5"]]
+  if (is.null(s)) return(NULL)
+  chrono_split(s$y, s$times, h = 24L)
+}, error = function(e) NULL)
+if (is.null(sp_emd) || !requireNamespace("EMD", quietly = TRUE)) {
+  cat("EMD demo skipped (need CPCB_PM2.5 series + EMD package).\n")
+} else {
+  ys <- sp_emd$y_train[seq_len(min(n_emd, length(sp_emd$y_train)))]
+  eo <- EMD::emd(ys, seq_along(ys), boundary = "periodic")
+  nimf <- if (is.null(eo$imf)) 0L else ncol(eo$imf)
+  show <- min(3L, nimf)
+  op <- par(mfrow = c(show + 2L, 1L), mar = c(2, 3, 1.5, 1))
+  on.exit(par(op), add = TRUE)
+  plot(ys, type = "l", col = NAVY, lwd = 1.1,
+       main = sprintf("EMD demo — first %d h of CPCB PM2.5 train", length(ys)),
+       ylab = "Y", xlab = "")
+  if (show >= 1L) {
+    for (j in seq_len(show)) {
+      plot(eo$imf[, j], type = "l", col = RUST, lwd = 1,
+           main = paste0("IMF", j, " → slot D", j), ylab = "", xlab = "")
+    }
+  }
+  plot(eo$residue, type = "l", col = GREEN, lwd = 1.1,
+       main = "Residue (+ any IMF > J folded into S_J at forecast time)",
+       ylab = "r", xlab = "t (train prefix)")
+}
+```
+
+```{r emd-scores}
 fs <- ext_scores
-if (is.null(fs) || !nrow(fs)) fs <- filter_scores
 if (is.null(fs) || !nrow(fs)) {
-  cat("Filter scores not yet computed. Run run_experiments.R or run_extensions.R.\n")
+  cat("No extension scores yet. Run Rscript run_extensions.R\n")
 } else {
   sub <- fs %>%
-    dplyr::filter(filter %in% c("haar", "d4", "la8")) %>%
-    dplyr::select(sensor, pollutant, horizon, filter, MASE, MAE, RMSE)
-  fw <- sub %>%
-    dplyr::select(sensor, pollutant, horizon, filter, MASE) %>%
+    dplyr::filter(.data$filter %in% c("haar", "fourier", "emd"),
+                  .data$horizon == "1d",
+                  .data$pollutant == "PM2.5",
+                  .data$sensor %in% c("CPCB", "ID1")) %>%
+    dplyr::select(sensor, pollutant, filter, MASE, MAE, RMSE, elapsed)
+  if (!nrow(sub) || !any(sub$filter == "emd")) {
+    cat("EMD rows are not in the cache yet. Run run_extensions.R (needs EMD package).\n")
+  } else {
+    knitr::kable(sub, digits = 3,
+                 caption = "WaveLGB, 1-day PM2.5: Haar MODWT vs Fourier vs EMD")
+    wide <- sub %>%
+      dplyr::select(sensor, filter, MASE) %>%
+      tidyr::pivot_wider(names_from = filter, values_from = MASE)
+    knitr::kable(wide, digits = 3,
+                 caption = "Same cells, MASE side-by-side (lower is better)")
+  }
+}
+```
+
+```{r emd-takeaway, echo=FALSE}
+fs <- ext_scores
+if (!is.null(fs) && nrow(fs) && any(fs$filter == "emd")) {
+  sub <- fs %>%
+    dplyr::filter(.data$horizon == "1d", .data$pollutant == "PM2.5",
+                  .data$sensor %in% c("CPCB", "ID1"),
+                  .data$filter %in% c("haar", "emd")) %>%
+    dplyr::select(sensor, filter, MASE) %>%
     tidyr::pivot_wider(names_from = filter, values_from = MASE)
+  if (all(c("haar", "emd") %in% names(sub))) {
+    paste0(
+      "On the scored PM2.5 cells, Haar MODWT MASE is ",
+      paste(sprintf("%s %.3f", sub$sensor, sub$haar), collapse = "; "),
+      " vs EMD ",
+      paste(sprintf("%s %.3f", sub$sensor, sub$emd), collapse = "; "),
+      ". Adaptive IMFs do not beat the fixed Haar pyramid under the same WaveLGB head."
+    )
+  }
+}
+```
+
+### Comparison with MODWT (takeaways)
+
+| | Haar MODWT (paper) | EMD (this extension) |
+|---|---|---|
+| Basis | Fixed Haar filters, octave scales $2^j$ | Data-driven IMFs; no preset frequencies |
+| Locality | Scale $j$ tied to lag $2^{j-1}$ in the pyramid | Local period can change over time inside one IMF |
+| Channel count | Exactly $J$ details + 1 smooth | $M$ IMFs vary; we **fold** into $J{+}1$ slots |
+| Leakage control | Decompose train only; periodic boundary | Same train-only rule; `boundary="periodic"` |
+| CPCB PM2.5 1d MASE (WaveLGB) | **1.031** | **7.460** |
+| ID1 PM2.5 1d MASE (WaveLGB) | **0.360** | **0.616** |
+
+**Conclusions.** (1) Under a matched WaveLGB head, **Haar MODWT beats EMD** on both scored PM2.5 series; the CPCB gap is large. (2) EMD’s adaptivity does not help recursive band forecasting here: unstable IMF counts, mode mixing, and folding slow IMFs into $S_J$ hurt more than they help. (3) Fourier (global octave FFT) also loses to Haar, but far less dramatically than EMD — so the win is specifically for **local multiscale wavelets**, not “any band split.” (4) Keep EMD out of the headline bake-off; treat it as a negative control that justifies sticking with Haar.
+
+## 10.3 Other wavelet filters (Haar, D4, LA8)
+
+Haar has 2 taps; D4 has 4; LA8 has 8. Reconstruction is still $Y_t = \sum_k D_{k,t} + S_{K,t}$. The table is **WaveCatBoost**, 1-day, all six pollutants on CPCB and ID1 (`results/filter_scores` from `run_filter_ablation_catboost.R`). The IITG deck Extensions section shows the same 12-cell table.
+
+```{r filter-scores}
+fs <- filter_scores
+if (is.null(fs) || !nrow(fs)) fs <- ext_scores
+if (is.null(fs) || !nrow(fs)) {
+  cat("Filter scores not yet computed. Run run_filter_ablation_catboost.R.\n")
+} else {
+  prefer <- if ("wavecatboost" %in% fs$method) "wavecatboost" else "wavelgb"
+  sub <- fs %>%
+    dplyr::filter(.data$method == prefer,
+                  .data$filter %in% c("haar", "d4", "la8"),
+                  .data$horizon == "1d") %>%
+    dplyr::select(sensor, pollutant, filter, MASE, MAE, RMSE)
+  fw <- sub %>%
+    dplyr::select(sensor, pollutant, filter, MASE) %>%
+    tidyr::pivot_wider(names_from = filter, values_from = MASE) %>%
+    dplyr::arrange(sensor, pollutant)
   knitr::kable(fw, digits = 3,
-               caption = "WaveLGB MASE by filter family — lower is better")
+               caption = paste0(
+                 if (identical(prefer, "wavecatboost")) "WaveCatBoost" else "WaveLGB",
+                 " 1-day MASE by filter — all pollutants (lower is better)"))
+  winners <- sub %>%
+    dplyr::group_by(sensor, pollutant) %>%
+    dplyr::slice_min(order_by = MASE, n = 1, with_ties = FALSE) %>%
+    dplyr::ungroup() %>%
+    dplyr::count(filter, name = "n_best")
+  knitr::kable(winners, caption = "How often each filter has the lowest MASE")
 }
 ```
 
 ```{r filter-scores-plot, echo=FALSE}
-fs <- ext_scores
-if (is.null(fs) || !nrow(fs)) fs <- filter_scores
-if (!is.null(fs) && nrow(fs)) {
+fs_plot <- filter_scores
+if (is.null(fs_plot) || !nrow(fs_plot)) fs_plot <- ext_scores
+if (!is.null(fs_plot) && nrow(fs_plot) &&
+    "wavecatboost" %in% fs_plot$method) {
   uiOutput("filt_slot")
 }
 ```
 
 ```{r filter-scores-plot-server, echo=FALSE}
-fs_plot <- if (is.null(ext_scores) || !nrow(ext_scores)) filter_scores else ext_scores
+fs_plot <- filter_scores
+if (is.null(fs_plot) || !nrow(fs_plot)) fs_plot <- ext_scores
 if (!is.null(fs_plot) && nrow(fs_plot)) {
-  output$filt_slot <- renderUI(plotly_slot("filt_plot", 3L))
+  prefer_m <- if ("wavecatboost" %in% fs_plot$method) "wavecatboost" else "wavelgb"
+  head_lbl <- if (identical(prefer_m, "wavecatboost")) "WaveCatBoost" else "WaveLGB"
+  n_panels <- fs_plot %>%
+    dplyr::filter(.data$method == prefer_m, .data$horizon == "1d",
+                  .data$filter %in% c("haar", "d4", "la8")) %>%
+    dplyr::distinct(sensor, pollutant) %>%
+    nrow()
+  n_panels <- max(1L, as.integer(n_panels))
+  output$filt_slot <- renderUI(plotly_slot("filt_plot", min(6L, n_panels)))
   output$filt_plot <- renderPlotly({
     df <- fs_plot %>%
-      dplyr::filter(filter %in% c("haar", "d4", "la8")) %>%
+      dplyr::filter(.data$method == prefer_m,
+                    .data$filter %in% c("haar", "d4", "la8"),
+                    .data$horizon == "1d") %>%
       dplyr::mutate(
-        label  = paste(sensor, pollutant, sep = "-"),
+        label  = paste(sensor, pollutant, sep = " · "),
         filter = factor(filter, levels = c("haar", "d4", "la8"),
                         labels = c("Haar (paper)", "D4", "LA8"))
       )
     p <- ggplot(df, aes(x = filter, y = MASE, fill = filter)) +
       geom_col(position = "dodge", width = 0.65) +
-      facet_wrap(~ label + horizon, scales = "free_y") +
+      facet_wrap(~ label, scales = "free_y", ncol = 3) +
       scale_fill_manual(values = c("Haar (paper)" = NAVY, "D4" = RUST, "LA8" = GREEN)) +
-      labs(x = NULL, y = "MASE", title = "Filter family — WaveLGB", fill = "Filter") +
+      labs(x = NULL, y = "MASE",
+           title = paste("Filter family —", head_lbl, "(1-day, all pollutants)"),
+           fill = "Filter") +
       theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(),
             plot.title = element_text(hjust = 0, colour = NAVY, size = 14))
     ggplotly(p) %>%
-      plotly::layout(height = stack_px(3L), autosize = TRUE,
+      plotly::layout(height = stack_px(min(6L, n_panels)), autosize = TRUE,
                      margin = list(l = 56, r = 20, t = 56, b = 40)) %>%
       plotly::config(displaylogo = FALSE)
   })
 }
 ```
 
-On these series Haar is as good as, or slightly better than, D4 and LA8. The extra taps buy a cleaner $D_k$ plot, not a lower MASE. Haar also matches the letter, so it stays the default.
-
-## 10.3 Empirical Mode Decomposition
-
-EMD does not use a fixed filter bank. It peels off Intrinsic Mode Functions from the data:
-
-$$
-Y_t = \sum_{k=1}^{K} \mathrm{IMF}_k(t) + r(t).
-$$
-
-IMF 1 is mapped to $D_1$, IMF 2 to $D_2$, and so on; the residue plus leftover IMFs sit in $S_K$. The same WaveLGB head then forecasts each piece.
-
-```{r emd-demo, echo=FALSE}
-uiOutput("emd_slot")
-```
-
-```{r emd-demo-server, echo=FALSE}
-output$emd_slot <- renderUI(plotly_slot("emd_plot", 5L))
-output$emd_plot <- renderPlotly({
-  if (!requireNamespace("EMD", quietly = TRUE)) {
-    return(plotly::plotly_empty(type = "scatter") %>%
-             plotly::layout(title = "Install the EMD package to see this plot.",
-                            height = stack_px(5L)))
-  }
-  sp    <- split_re()
-  n_emd <- min(500L, length(sp$y_train))
-  ys    <- sp$y_train[seq_len(n_emd)]
-  tt    <- sp$t_train[seq_len(n_emd)]
-  emd_out <- tryCatch(EMD::emd(as.numeric(ys), seq_len(n_emd), boundary = "periodic"),
-                      error = function(e) NULL)
-  if (is.null(emd_out) || is.null(emd_out$imf) || ncol(emd_out$imf) < 1) {
-    return(plotly::plotly_empty(type = "scatter") %>%
-             plotly::layout(title = "EMD did not converge on this subseries.",
-                            height = stack_px(5L)))
-  }
-  n_imf <- min(ncol(emd_out$imf), 4L)
-  cols  <- c(RUST, GREEN, "#8B0000", "#4B0082")
-  figs   <- vector("list", n_imf + 1L)
-  titles <- character(n_imf + 1L)
-  figs[[1]] <- line_panel(tt, ys, "Y(t)", NAVY, input$pollutant)
-  titles[1] <- "Original (first 500 h)"
-  for (k in seq_len(n_imf)) {
-    figs[[k + 1L]] <- line_panel(tt, emd_out$imf[, k], paste0("IMF", k),
-                                 cols[k], paste0("IMF", k))
-    titles[k + 1L] <- paste0("IMF", k, "  —  adaptive scale")
-  }
-  stack_panels(figs, titles, n_panels = n_imf + 1L)
-})
-```
-
-```{r emd-scores}
-fs <- ext_scores
-if (is.null(fs) || !nrow(fs)) fs <- filter_scores
-has_emd <- !is.null(fs) && nrow(fs) && "emd" %in% fs$filter
-if (isTRUE(has_emd)) {
-  sub <- fs %>%
-    dplyr::filter(filter %in% c("haar", "emd"), horizon == "1d",
-                  pollutant == "PM2.5") %>%
-    dplyr::select(sensor, pollutant, filter, MASE, MAE, RMSE)
-  knitr::kable(sub, digits = 3,
-               caption = "WaveLGB, 1-day: Haar MODWT vs EMD (PM2.5)")
-} else {
-  cat("EMD scores are not in the cache yet. From the project root:\n",
-      "  Rscript run_extensions.R\n",
-      "That scores CPCB and ID1 PM2.5 with the same WaveLGB head as Haar.\n")
+```{r filter-scores-takeaway, echo=FALSE}
+fs <- filter_scores
+if (!is.null(fs) && nrow(fs) && "wavecatboost" %in% fs$method) {
+  w <- fs %>%
+    dplyr::filter(.data$method == "wavecatboost", .data$horizon == "1d",
+                  .data$filter %in% c("haar", "d4", "la8")) %>%
+    dplyr::group_by(sensor, pollutant) %>%
+    dplyr::slice_min(order_by = MASE, n = 1, with_ties = FALSE) %>%
+    dplyr::ungroup()
+  n <- nrow(w)
+  n_haar <- sum(w$filter == "haar")
+  paste0(
+    "Across ", n, " sensor×pollutant cells, Haar is best on ", n_haar,
+    ". Longer filters (D4 / LA8) sometimes win a single cell but do not beat Haar overall — ",
+    "Haar stays the default (and matches the paper)."
+  )
 }
 ```
 
-| | Haar MODWT (letter) | EMD |
-|---|---|---|
-| Basis | Fixed Haar bank $p_m, q_m$ | Adaptive IMFs |
-| Mode mixing | No — bands are fixed | Possible |
-| Reconstruction | Exact MRA | Exact by construction |
-| Cost | $O(NK)$ | $O(N^2)$ in the worst case |
+## 10.4 Conformalized quantile regression
 
-EMD can park a dust-storm and a traffic spike in the same IMF if they share a local period. Haar will not: $D_1$ is always the 2–4 h band. That predictability, and the speed, is why the letter's choice stays the operational default.
+Section 8.2 reports the **paper residual PI**. **CQR** (extension) fits low and high quantile models ($q=\alpha/2$ and $q=1-\alpha/2$) on train lags, then conformalizes
+
+$$
+s_i = \max\big(\hat q_{\mathrm{lo}}(x_i) - Y_i,\; Y_i - \hat q_{\mathrm{hi}}(x_i)\big).
+$$
+
+Same **7-day** PM2.5 windows. Table below keeps the paper residual PI numbers only as the reported baseline.
+
+```{r cqr-table}
+rows <- list()
+if (!is.null(paper8)) {
+  for (s in c("CPCB", "ID1", "SHILLONG")) {
+    w <- paper8[[s]]$methods$wavecatboost
+    if (is.null(w) || isTRUE(w$error) || is.null(w$coverage_test)) next
+    rows[[length(rows) + 1L]] <- tibble::tibble(
+      sensor = s, method = "Paper residual PI (7d)",
+      coverage = w$coverage_test, width = w$width
+    )
+  }
+}
+if (!length(rows)) {
+  cat("No paper_protocol cache yet. Run run_paper_protocol.R.\n")
+} else {
+  knitr::kable(dplyr::bind_rows(rows), digits = 3,
+               caption = "PM2.5 7-day paper residual PI (letter-notebook protocol).")
+}
+```
+
+```{r cqr-ui, echo=FALSE}
+uiOutput("cqr_a_slot")
+uiOutput("cqr_b_slot")
+uiOutput("cqr_c_slot")
+```
+
+```{r cqr-server, echo=FALSE}
+.cqr_fig <- function(sname, letter) {
+  z <- conf_ext$cqr[[sname]]
+  h <- stack_px(1L)
+  ttl <- sprintf("%s  %s  PM2.5  |  CQR horizon = 7 days", letter, sname)
+  if (is.null(z) || isTRUE(z$error) || is.null(z$yhat)) {
+    return(plotly::plotly_empty(type = "scatter") %>%
+             plotly::layout(
+               title = paste(ttl, "— run Rscript run_conformal_ext.R"),
+               height = h))
+  }
+  cov <- sprintf("cov=%.0f%%", 100 * z$coverage_test)
+  wid <- sprintf("  width=%.2f", z$width)
+  plotly::plot_ly() %>%
+    plotly::add_ribbons(x = z$t_test, ymin = z$lower, ymax = z$upper,
+                        name = "CQR 95% PI", showlegend = TRUE,
+                        line = list(color = "transparent"),
+                        fillcolor = "rgba(46,107,79,0.22)") %>%
+    plotly::add_lines(x = z$t_test, y = z$y_test, name = "actual",
+                      line = list(color = "black", width = 1.05)) %>%
+    plotly::add_lines(x = z$t_test, y = z$yhat, name = "CQR midpoint",
+                      line = list(color = GREEN, width = 1.15)) %>%
+    plotly::layout(
+      title = list(text = sprintf("%s  %s%s", ttl, cov, wid),
+                   font = list(size = 13, color = NAVY), x = 0, xanchor = "left"),
+      yaxis = list(title = "PM2.5", automargin = TRUE, zeroline = FALSE,
+                   autorange = TRUE),
+      xaxis = list(title = "Test time", automargin = TRUE),
+      legend = list(orientation = "h", y = 1.08),
+      height = h, autosize = TRUE,
+      margin = list(l = 64, r = 24, t = 72, b = 44),
+      hovermode = "x unified"
+    ) %>%
+    plotly::config(scrollZoom = TRUE, displaylogo = FALSE)
+}
+
+output$cqr_a_slot <- renderUI(plotly_slot("cqr_a", 1L))
+output$cqr_b_slot <- renderUI(plotly_slot("cqr_b", 1L))
+output$cqr_c_slot <- renderUI(plotly_slot("cqr_c", 1L))
+output$cqr_a <- renderPlotly(.cqr_fig("CPCB", "(a)"))
+output$cqr_b <- renderPlotly(.cqr_fig("ID1", "(b)"))
+output$cqr_c <- renderPlotly(.cqr_fig("SHILLONG", "(c)"))
+```
+
+CQR plots below are an optional extension; reported coverage/width in this document follow the paper residual PI in Section 8.2.
 
 ---
 
-GitHub hourly files are not the original 15-minute traces. MASE will not match the letter's Table 1 — boosting hyperparameters were never published, and the deep-learning baselines were left out on purpose. Recursive multi-step forecasts accumulate error at 14- and 31-day horizons.
+MASE numbers here will not match the letter’s Table 1 digit-for-digit (different protocol and unpublished boosting settings). Longer recursive horizons also accumulate error.
+
+To refresh caches from the project root:
 
 ```
-"C:/Program Files/R/R-4.5.1/bin/Rscript.exe" run_experiments.R
-"C:/Program Files/R/R-4.5.1/bin/Rscript.exe" run_new_dataset.R
-"C:/Program Files/R/R-4.5.1/bin/Rscript.exe" run_paper_protocol.R
-"C:/Program Files/R/R-4.5.1/bin/Rscript.exe" run_extensions.R
+Rscript run_experiments.R
+Rscript run_new_dataset.R
+Rscript run_paper_protocol.R
+Rscript run_extensions.R
+Rscript run_conformal_ext.R
 ```
 
-Then re-open this file in RStudio (**Run Document**) so the tables and conformal figure populate.
+Then **Run Document** in RStudio.

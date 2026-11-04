@@ -1,0 +1,165 @@
+% Extensions (from analysis.Rmd §10) — last content section
+
+\begin{frame}{Extensions --- overview}
+  {\footnotesize
+  Outside the letter bake-off. Filter / Fourier / EMD use a matched head and
+  1-day split (\texttt{analysis.Rmd} §10). Shillong A0--C3 is a separate
+  CAAQMS architecture bake-off.
+  }
+  \vspace{0.35em}
+  \begin{itemize}\setlength\itemsep{0.4em}
+    \item \textbf{Other wavelet filters:} Haar vs D4 vs LA8 (WaveCatBoost).
+    \item \textbf{Fourier bands} vs Haar MODWT (WaveLGB).
+    \item \textbf{EMD} vs Haar MODWT (WaveLGB, PM$_{2.5}$).
+    \item \textbf{Shillong A0--C3:} input / decomp designs on Lumpyngngad PM$_{2.5}$.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Haar vs D4 vs LA8 (WaveCatBoost, 1-day MASE)}
+  {\scriptsize
+  All 12 CPCB/ID1 $\times$ pollutant cells from \texttt{filter\_scores}
+  (\texttt{run\_filter\_ablation\_catboost.R} / Rmd §10.3).
+  }
+  \vspace{0.2em}
+  {\tiny
+  \centering
+  \resizebox{0.98\linewidth}{!}{%
+  \begin{tabular}{llccc llccc}
+    \toprule
+    Sensor & Pol. & Haar & D4 & LA8 &
+    Sensor & Pol. & Haar & D4 & LA8 \\
+    \midrule
+    CPCB & NO$_2$     & 0.541 & \textbf{0.510} & 0.529 &
+    ID1  & NO$_2$     & \textbf{1.252} & 1.346 & 1.330 \\
+    CPCB & PM$_{2.5}$ & \textbf{0.727} & 0.909 & 0.955 &
+    ID1  & PM$_{2.5}$ & \textbf{0.421} & 0.457 & 0.502 \\
+    CPCB & O$_3$      & \textbf{1.014} & 1.212 & 1.119 &
+    ID1  & O$_3$      & \textbf{0.935} & 0.940 & 0.964 \\
+    CPCB & CO         & \textbf{0.885} & 0.993 & 1.200 &
+    ID1  & CO         & \textbf{0.798} & 1.001 & 1.170 \\
+    CPCB & SO$_2$     & 6.232 & 6.041 & \textbf{5.972} &
+    ID1  & SO$_2$     & \textbf{1.320} & 1.390 & 1.379 \\
+    CPCB & PM$_{10}$  & 0.535 & \textbf{0.524} & 0.538 &
+    ID1  & PM$_{10}$  & \textbf{0.368} & 0.445 & 0.462 \\
+    \bottomrule
+  \end{tabular}%
+  }
+  }
+  \vspace{0.35em}
+  \begin{exampleblock}{Takeaway}
+    Haar best on \textbf{9/12} cells; D4 on 2 (CPCB NO$_2$, PM$_{10}$);
+    LA8 on 1 (CPCB SO$_2$). Haar stays the default.
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Fourier vs Haar MODWT (WaveLGB, 1-day)}
+  {\footnotesize
+  Octave FFT bands matched to Haar layout ($J{=}5$, $p{=}24$).
+  Global sinusoids --- no local $D_{1,t}$ (\texttt{extension\_scores}, Rmd §10.1).
+  }
+  \vspace{0.35em}
+  {\scriptsize
+  \centering
+  \begin{tabular}{llcc}
+    \toprule
+    Sensor & Pollutant & Haar & Fourier \\
+    \midrule
+    CPCB & NO$_2$     & \textbf{0.518} & 0.692 \\
+    CPCB & PM$_{2.5}$ & \textbf{1.031} & 1.272 \\
+    ID1  & NO$_2$     & \textbf{1.259} & 1.438 \\
+    ID1  & PM$_{2.5}$ & \textbf{0.360} & 0.473 \\
+    \bottomrule
+  \end{tabular}
+  }
+  \vspace{0.45em}
+  \begin{itemize}
+    \item Haar wins every scored cell.
+    \item Fourier smears spikes across frequencies; lags still carry a little of the event.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{EMD vs Haar MODWT (WaveLGB, 1-day PM$_{2.5}$)}
+  {\footnotesize
+  Adaptive IMFs folded into $D_1{\ldots}D_5,S_5$ slots (Rmd §10.2).
+  Same WaveLGB head as Haar / Fourier.
+  }
+  \vspace{0.35em}
+  {\scriptsize
+  \centering
+  \begin{tabular}{lcc}
+    \toprule
+    Sensor & Haar & EMD \\
+    \midrule
+    CPCB PM$_{2.5}$ & \textbf{1.031} & 7.460 \\
+    ID1  PM$_{2.5}$ & \textbf{0.360} & 0.616 \\
+    \bottomrule
+  \end{tabular}
+  }
+  \vspace{0.45em}
+  \begin{alertblock}{Takeaway}
+    Adaptive IMFs do \emph{not} beat fixed Haar under a matched head.
+    Unstable IMF counts / mode mixing hurt recursive band forecasts ---
+    keep EMD as a negative control.
+  \end{alertblock}
+\end{frame}
+
+\begin{frame}{Shillong A0--C3 --- architecture bake-off}
+  {\footnotesize
+  CAAQMS stations (mainly \textbf{Lumpyngngad}): different \emph{input designs}
+  for PM$_{2.5}$, not the letter WaveCatBoost head.
+  }
+  \vspace{0.25em}
+  {\scriptsize
+  \centering
+  \begin{tabular}{cl}
+    \toprule
+    Code & Design \\
+    \midrule
+    A0 & Univariate --- only PM$_{2.5}$'s own 24 lags \\
+    A1 & A0 $+$ weather (RH, wind, rain, \ldots) \\
+    A2 & Multivariate --- 24 lags of all usable pollutants \\
+    A3 & A2 $+$ weather \\
+    B0--B3 & Same ideas after Haar decomp (predict bands, then sum) \\
+    C1--C3 & Decomposed $+$ cross-band / cross-pollutant inputs \\
+    \bottomrule
+  \end{tabular}
+  }
+\end{frame}
+
+\begin{frame}{Shillong A0--C3 --- Lumpyngngad takeaways}
+  \begin{itemize}\setlength\itemsep{0.55em}
+    \item \textbf{A2 beats A0:} other pollutants' lags help PM$_{2.5}$.
+    \item \textbf{Decomposed B/C does not beat A2:} Haar on top of multivariate
+          lags adds no gain at Lumpyngngad.
+    \item Weather (A1 / A3) is secondary to the multivariate-lag signal.
+    \item Contrast with the letter path: there Haar$+$CatBoost-per-band wins on
+          CPCB/ID1; here multivariate raw lags win the Shillong bake-off.
+  \end{itemize}
+  \vspace{0.35em}
+  \begin{exampleblock}{Role in the deck}
+    Extension only --- does not replace the headline WaveCatBoost model.
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Future work}
+  {\footnotesize
+  Experiments we ran (extend / harden next):
+  }
+  \vspace{0.25em}
+  {\scriptsize
+  \begin{itemize}\setlength\itemsep{0.28em}
+    \item \textbf{Recursive bake-off:} WaveCatBoost vs snaive / LGB / CatBoost
+          (1-day MASE, CPCB \& ID1).
+    \item \textbf{Letter residual PI:} 7-day 95\% bands on WaveCatBoost
+          (CPCB, ID1, Shillong).
+    \item \textbf{Filter ablation:} Haar vs D4 vs LA8 under WaveCatBoost
+          (12 sensor$\times$pollutant cells).
+    \item \textbf{Fourier bands} vs Haar MODWT (WaveLGB, 1-day).
+    \item \textbf{EMD} vs Haar MODWT (WaveLGB, PM$_{2.5}$).
+    \item \textbf{Shillong A0--C3:} univariate / weather / multivariate /
+          Haar-decomp / cross-band inputs on Lumpyngngad PM$_{2.5}$.
+    \item \textbf{Next:} causal MODWT, more stations, tighter UQ, and push
+          A2-style multivariate features into the letter WaveCatBoost path.
+  \end{itemize}
+  }
+\end{frame}

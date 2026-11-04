@@ -1,0 +1,61 @@
+\documentclass{beamer}
+\usetheme{Boadilla}
+\usecolortheme{seahorse}
+\usefonttheme{professionalfonts}
+\usepackage{lmodern}
+
+\usepackage{graphicx,xcolor}
+\usepackage{amsmath,amssymb,amsfonts,bm}
+\usepackage{booktabs,array,tabularx}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric,fit,calc}
+\usepackage{hyperref}
+
+\setbeamertemplate{caption}[numbered]
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{title page}[default]
+\graphicspath{{images/}{images/eda/}{images/modwt/}{images/results/}{images/paper/}{images/logo/}{images/illustrate/}}
+
+\title[WaveCatBoost]{WaveCatBoost: Hybrid Air Quality Forecasting}
+\subtitle{Applied Time Series Analysis --- Course Project\\[0.4em]\textbf{Group 8}}
+\author[Group 8]{%
+  \texorpdfstring{%
+    \begin{tabular}{@{}c@{\hspace{2.2em}}c@{}}
+      Kumar Utkarsh & P~Sai Deva Charan \\[-0.15em]
+      {\footnotesize 240150016} & {\footnotesize 240150024} \\[0.85em]
+      M~Charan Sree Teja & D~Lalit Santosh \\[-0.15em]
+      {\footnotesize 240150018} & {\footnotesize 240150044}
+    \end{tabular}%
+  }{Group 8}%
+}
+\date{}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\section{Problem and Approach}
+\input{segments/1_intro}
+
+\section{Datasets and Preprocessing}
+\input{segments/2_build}
+
+\section{MODWT Decomposition}
+\input{segments/3_argue}
+
+\section{WaveCatBoost and Conformal Prediction}
+\input{segments/4_conclude}
+
+\section{Extensions}
+\input{segments/6_extensions}
+
+\section*{References}
+\begin{frame}[allowframebreaks]
+  \frametitle{References}
+  \bibliographystyle{ieeetr}
+  \bibliography{ref.bib}
+\end{frame}
+
+\end{document}

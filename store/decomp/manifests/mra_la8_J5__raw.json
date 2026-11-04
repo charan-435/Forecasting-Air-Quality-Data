@@ -1,0 +1,33 @@
+{
+  "method_id": "mra_la8_J5",
+  "scale": "raw",
+  "method_full": "mra_la8_J5__raw",
+  "family": "trailing",
+  "additive": true,
+  "causal": true,
+  "params": {
+    "J": 5,
+    "filter": "la8",
+    "pad": 0
+  },
+  "warmup_rule": "t >= window_h",
+  "component_names": ["D1", "D2", "D3", "D4", "D5", "S5"],
+  "packages": {
+    "waveslim": "1.8.5",
+    "EMD": "1.5.9",
+    "Rlibeemd": "1.4.4",
+    "VMDecomp": "1.0.2",
+    "Rssa": "1.1",
+    "forecast": "9.0.2",
+    "arrow": "26.0.0"
+  },
+  "input_hash": "78f783c357338683",
+  "git": "fb1b42350e9f6ccc421d6444a93487088ea131a1",
+  "stations": ["CPCB", "ID1"],
+  "variables": ["PM2.5", "PM10", "NO2", "SO2", "O3", "CO"],
+  "partial": false,
+  "complete": true,
+  "runtime_sec": 278.64,
+  "max_additivity_error": 3.6198e-09,
+  "seed_policy": "none"
+}

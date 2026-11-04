@@ -9,7 +9,7 @@ local({
     "30_decomp_registry.R", "31_decomp_causal.R", "32_decomp_trailing.R",
     "33_decomp_diagnostics.R", "34_decomp_screen.R", "35_decomp_io.R",
     "04_modwt.R", "05_features.R", "06_models.R", "07_conformal.R",
-    "08_metrics.R", "09_hparams.R"
+    "08_metrics.R", "09_hparams.R", "10_eda_design.R"
   )
   for (f in files) {
     path <- file.path(this_dir, f)

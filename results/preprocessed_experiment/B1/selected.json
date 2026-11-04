@@ -1,0 +1,13 @@
+{
+  "shared": {
+    "num_leaves": 15,
+    "learning_rate": 0.1,
+    "min_data_in_leaf": 50,
+    "cov_set": null,
+    "best_iter": 55,
+    "val_mae_unit": 7.14996568535123,
+    "n_features": 25,
+    "n_train": 14976,
+    "n_refit": 20202
+  }
+}

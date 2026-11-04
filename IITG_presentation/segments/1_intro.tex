@@ -1,0 +1,18 @@
+\begin{frame}{Problem and Approach}
+  \begin{block}{Why this is hard}
+    \begin{itemize}
+      \item Air-quality forecasting needs \textbf{near real-time} answers.
+      \item That pushes us toward \textbf{lighter} models (trees, short lags).
+      \item The series is \textbf{non-stationary}: spikes, regime shifts, and changing variance.
+      \item Light models struggle on the \textbf{raw} mix of spikes, diurnal cycles, and slow drift.
+    \end{itemize}
+  \end{block}
+
+  \begin{exampleblock}{Paper approach}
+    \begin{enumerate}
+      \item Split the series into scale-wise components (details + smooth) with Haar MODWT.
+      \item Forecast each component with CatBoost.
+      \item Reconstruct by summing bands; optionally add conformal intervals.
+    \end{enumerate}
+  \end{exampleblock}
+\end{frame}
