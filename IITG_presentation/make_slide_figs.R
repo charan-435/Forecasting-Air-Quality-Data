@@ -61,6 +61,30 @@ plot(ytr[1:(length(ytr) - k)], ytr[(k + 1):length(ytr)], pch = 16, cex = 0.35,
      main = "CPCB PM2.5 --- Lag-24 scatter")
 dev.off()
 
+# Individual panels for annotated Beamer slides.
+png(file.path(outdir, "acf_cpcb_pm25.png"), width = 900, height = 700, res = 140)
+par(mar = c(4.2, 4.2, 3.2, 1))
+acf(ytr, lag.max = 72, main = "CPCB PM2.5 --- ACF (train)", na.action = na.pass)
+dev.off()
+png(file.path(outdir, "pacf_cpcb_pm25.png"), width = 900, height = 700, res = 140)
+par(mar = c(4.2, 4.2, 3.2, 1))
+pacf(ytr, lag.max = 72, main = "CPCB PM2.5 --- PACF (train)", na.action = na.pass)
+dev.off()
+png(file.path(outdir, "lag1_scatter_cpcb_pm25.png"), width = 900, height = 700, res = 140)
+par(mar = c(4.2, 4.2, 3.2, 1))
+k <- 1L
+plot(ytr[1:(length(ytr) - k)], ytr[(k + 1):length(ytr)], pch = 16, cex = 0.4,
+     col = rgb(0.12, 0.23, 0.37, 0.25), xlab = "Y(t-1)", ylab = "Y(t)",
+     main = "CPCB PM2.5 --- Lag-1 scatter")
+dev.off()
+png(file.path(outdir, "lag24_scatter_cpcb_pm25.png"), width = 900, height = 700, res = 140)
+par(mar = c(4.2, 4.2, 3.2, 1))
+k <- 24L
+plot(ytr[1:(length(ytr) - k)], ytr[(k + 1):length(ytr)], pch = 16, cex = 0.4,
+     col = rgb(0.12, 0.23, 0.37, 0.25), xlab = "Y(t-24)", ylab = "Y(t)",
+     main = "CPCB PM2.5 --- Lag-24 scatter")
+dev.off()
+
 png(file.path(outdir, "boxes_cpcb_pm25.png"), width = 1400, height = 550, res = 140)
 par(mfrow = c(1, 2), mar = c(4.5, 4.2, 3.2, 1))
 hod <- lubridate::hour(t[seq_len(n_train)])
@@ -69,6 +93,41 @@ boxplot(ytr ~ hod, outline = FALSE, col = "#EEF1F5", xlab = "Hour of day",
         ylab = "PM2.5", main = "CPCB PM2.5 --- Hour-of-day")
 boxplot(ytr ~ dow, outline = FALSE, col = "#EEF1F5", xlab = NULL,
         ylab = "PM2.5", main = "CPCB PM2.5 --- Day of week")
+dev.off()
+
+# ---- EDA → pipeline: snaive residuals + decision board (no energy plots) ----
+ttr <- t[seq_len(n_train)]
+sumr <- eda_design_summary(ytr, ttr, J = 5L, filter = "haar")
+dec  <- eda_design_decisions(sumr)
+sn   <- eda_snaive_resid(ytr, season = SEASONALITY)
+
+png(file.path(outdir, "snaive_resid_acf_cpcb_pm25.png"), width = 1400, height = 550, res = 140)
+par(mfrow = c(1, 2), mar = c(4.5, 4.2, 3.2, 1))
+plot(sn$resid, type = "l", col = "#1F3A5F", lwd = 0.7,
+     xlab = "Train index", ylab = "Y(t) - Y(t-24)",
+     main = "CPCB PM2.5 --- snaive residuals (train)")
+abline(h = 0, col = "grey70")
+acf(sn$resid, lag.max = 72, na.action = na.pass,
+    main = "ACF of snaive residuals")
+dev.off()
+
+png(file.path(outdir, "eda_to_pipeline_cpcb_pm25.png"), width = 1600, height = 900, res = 140)
+op <- par(mar = c(1, 1, 3.5, 1))
+plot.new()
+title(main = "From EDA (train) to pipeline --- CPCB PM2.5",
+      col.main = "#1F3A5F", cex.main = 1.35)
+n_row <- nrow(dec)
+ys <- seq(0.92, 0.08, length.out = n_row)
+for (i in seq_len(n_row)) {
+  y0 <- ys[i]
+  rect(0.02, y0 - 0.07, 0.48, y0 + 0.05, col = "#EEF1F5", border = "#9AA7B5")
+  rect(0.52, y0 - 0.07, 0.98, y0 + 0.05, col = "#F7EDE6", border = "#C49A7A")
+  text(0.03, y0 + 0.035, "EDA finding", adj = c(0, 0.5), cex = 0.7, col = "#5A6A7A")
+  text(0.53, y0 + 0.035, "Pipeline choice", adj = c(0, 0.5), cex = 0.7, col = "#8A5A3A")
+  text(0.03, y0 - 0.015, dec$EDA_finding[i], adj = c(0, 0.5), cex = 0.85, col = "#1F3A5F")
+  text(0.53, y0 - 0.015, dec$Pipeline_choice[i], adj = c(0, 0.5), cex = 0.85, col = "#A64B2A")
+}
+par(op)
 dev.off()
 
 # ---- Haar MRA panel on high-variance CPCB week ----

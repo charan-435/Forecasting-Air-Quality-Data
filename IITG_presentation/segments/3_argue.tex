@@ -11,7 +11,8 @@
       \item Fourier uses \textbf{global} sinusoids over the whole record.
       \item Air quality is \textbf{non-stationary} --- spikes and regime changes are local in time.
       \item Wavelets give a joint \textbf{time--scale} view; MODWT keeps every band length $N$ (no downsampling).
-      \item Haar MRA is additive: $Y_t=\sum_k D_{k,t}+S_{K,t}$.
+      \item MODWT MRA is additive for Haar, D4, LA8, \ldots:
+            $Y_t=\sum_k D_{k,t}+S_{K,t}$ (paper uses Haar).
     \end{itemize}
   \end{alertblock}
 \end{frame}
@@ -106,28 +107,4 @@
 \begin{frame}{Filter coefficients}
   \centering
   \includegraphics[width=0.95\linewidth,height=0.78\textheight,keepaspectratio]{filter_taps.png}
-\end{frame}
-
-\begin{frame}{Haar vs D4 vs LA8 (WaveCatBoost, 1-day MASE)}
-  \begin{itemize}\setlength\itemsep{0.2em}
-    \item \textbf{Paper default:} Haar ($M{=}2$).
-    \item \textbf{We also tried:} D4 ($M{=}4$) and LA8 ($M{=}8$).
-    \item Same WaveCatBoost head, same $K$ and lag $p$.
-  \end{itemize}
-  \vspace{0.4em}
-  \centering
-  \begin{tabular}{llccc}
-    \toprule
-    Sensor & Pollutant & Haar & D4 & LA8 \\
-    \midrule
-    CPCB & NO$_2$    & 0.541 & 0.510 & 0.529 \\
-    CPCB & PM$_{2.5}$ & 0.727 & 0.909 & 0.955 \\
-    ID1  & NO$_2$    & 1.252 & 1.346 & 1.330 \\
-    ID1  & PM$_{2.5}$ & 0.421 & 0.457 & 0.502 \\
-    \bottomrule
-  \end{tabular}
-  \vspace{0.5em}
-  \begin{exampleblock}{Takeaway}
-    Haar wins on 3 of 4 cells (D4 edges CPCB NO$_2$). Longer filters do not help overall --- Haar stays the default.
-  \end{exampleblock}
 \end{frame}

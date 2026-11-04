@@ -44,7 +44,7 @@ POLLS   <- c("PM2.5", "NO2")
 HORIZ   <- HORIZONS["1d"]
 SENS    <- SENSORS_PAPER
 
-# EMD on the full hourly train is slow; CPCB / ID1 PM2.5 only (Section 10.3 table).
+# EMD on the full hourly train is slow; CPCB / ID1 PM2.5 only (analysis.Rmd §10.2).
 EMD_KEYS <- c("CPCB_PM2.5", "ID1_PM2.5")
 
 cache <- load_cache(ext_cache_path)

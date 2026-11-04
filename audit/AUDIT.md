@@ -159,7 +159,7 @@ See table. F12: scaler uses pre-test window including 14-day val. F13: mean vs m
 | scores: 432 rows, 9 methods × 48 cases, 0 NA MASE | `B13_sarima.R` |
 | `nemenyi_q(9)=3.102`; 48 distinct (sensor, pollutant, horizon) | `C17_mcb.R` |
 | Early stopping val is before **that job’s** test start | `A7_early_stopping.R` |
-| EMD not in `scores.csv` / `extension_scores`; plot uses first 500 h of `y_train` | `A9_emd_scope.R` |
+| EMD not in `scores.csv`; in `extension_scores` for CPCB/ID1 PM2.5 only; Rmd §10.2 + train-prefix demo | `A9_emd_scope.R` |
 | SARIMA `frequency=24`, `seasonal=TRUE`; WaveSARIMA `seasonal=FALSE` on components | `B13_sarima.R` |
 | Hourly grid regular, no duplicate timestamps, no gaps >1 h | `C21_timestamps.R` |
 | `pacf_cutoff` not used in the bake-off; clip caps hardcoded | `A6_datadriven_settings.R` |

@@ -38,7 +38,7 @@ if (file.exists(hparam_path)) {
 
 FILTER_METHODS    <- c("wavecatboost")
 FILTER_FAMILIES   <- c("haar", "d4", "la8")
-FILTER_POLLUTANTS <- c("PM2.5", "NO2")
+FILTER_POLLUTANTS <- POLLUTANTS  # PM2.5, NO2, O3, CO, SO2, PM10
 FILTER_HORIZONS   <- HORIZONS["1d"]
 
 fcache <- load_cache(filter_cache_path)

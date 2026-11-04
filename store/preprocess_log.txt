@@ -80,3 +80,11 @@
 2026-11-02 23:08:12  imputation benchmark before 2023-10-01 n_art=500
 2026-11-02 23:08:17  benchmark parallel workers=8
 2026-11-02 23:10:21  wrote C:\Users\chara\Desktop\atsa_project/store/delhi/clean/series.parquet rows=140160
+2026-11-04 19:36:57  === preprocess active=shillong ===
+2026-11-04 19:36:57  ingest shillong_lumpyngngad adapter=vonter_parquet
+2026-11-04 19:37:00  shillong_lumpyngngad duplicate raw timestamps averaged: 0
+2026-11-04 19:37:25  ingest shillong_jnstadium adapter=vonter_parquet
+2026-11-04 19:37:29  shillong_jnstadium duplicate raw timestamps averaged: 0
+2026-11-04 19:38:03  imputation benchmark before 2023-10-01 n_art=500
+2026-11-04 19:38:09  benchmark parallel workers=8
+2026-11-04 19:40:25  wrote C:\Users\chara\Desktop\atsa_project/store/shillong/clean/series.parquet rows=140160
