@@ -1,0 +1,27 @@
+2026-11-03 15:25:56  === guard
+2026-11-03 15:25:57  guard snapshot: 229 protected files -> C:\Users\My\Forecasting-Air-Quality-Data\Forecasting-Air-Quality-Data/results/preprocessed_experiment/guard/hashes_before.json
+2026-11-03 15:25:57  === audit
+2026-11-03 15:26:02  audit: 8880 hours; 5 fill codes covering 2637 hours; PM ratio violations 206
+2026-11-03 15:26:02  === preprocess
+2026-11-03 15:26:08  [kaisen] benchmark parallel workers=8
+2026-11-03 15:26:22  preprocess: masked 16235 of 53280 pollutant-hours; store store/preprocessed_experiment/clean/series.parquet
+2026-11-03 15:26:22  === verify
+2026-11-03 15:26:24  guard verify [phase1]: 229 files, changed=0 removed=0 added=0 OK
+2026-11-03 15:26:24  done: guard, audit, preprocess, verify
+2026-11-03 15:26:38  === decompose
+2026-11-03 15:26:52  decomp clean PM2.5: max additivity error 7.11e-15
+2026-11-03 15:27:21  decomp clean PM10: max additivity error 2.13e-14
+2026-11-03 15:27:41  decomp clean NO2: max additivity error 3.55e-15
+2026-11-03 15:27:56  decomp clean SO2: max additivity error 1.78e-15
+2026-11-03 15:28:24  decomp clean O3: max additivity error 3.55e-15
+2026-11-03 15:28:52  decomp clean CO: max additivity error 1.11e-16
+2026-11-03 15:29:21  decomp unmasked PM2.5: max additivity error 7.11e-15
+2026-11-03 15:29:48  decomp unmasked PM10: max additivity error 1.42e-14
+2026-11-03 15:30:15  decomp unmasked NO2: max additivity error 3.55e-15
+2026-11-03 15:30:42  decomp unmasked SO2: max additivity error 1.78e-15
+2026-11-03 15:31:10  decomp unmasked O3: max additivity error 3.55e-15
+2026-11-03 15:31:25  decomp unmasked CO: max additivity error 1.11e-16
+2026-11-03 15:31:27  === test-data
+2026-11-03 15:31:31  === verify
+2026-11-03 15:31:32  guard verify [phase2]: 229 files, changed=0 removed=0 added=0 OK
+2026-11-03 15:31:32  done: decompose, test-data, verify
