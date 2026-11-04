@@ -97,9 +97,11 @@ if (file.exists(hparam_path)) {
 }
 # Cap J at 5 (32-hour scale): extra Haar levels are extra CatBoost models and
 # were ~4x slower in a J=9 trial, with little extra daily-cycle information.
+# Persist the capped J so hparams.rds matches what scores were computed with.
 if (hp$J > 5L) {
   hp$reason <- paste0(hp$reason, " Modelling cap: J=", hp$J, " -> 5.")
   hp$J <- 5L
+  saveRDS(hp, hparam_path)
 }
 message(hp$reason)
 params <- hp$params
@@ -268,17 +270,18 @@ saveRDS(conf_out, conformal_path)
 message("Done. Cached ", length(cache), " forecasts.")
 
 
-# ---- 5. Filter ablation: Haar vs D4 vs LA8 on WaveLGB --------------------
-# We use WaveLGB (fastest wave model) to compare filter families.
-# Scope: PM2.5 + NO2 on both sensors, 1-day and 7-day horizons.
+# ---- 5. Filter ablation: Haar vs D4 vs LA8 -------------------------------
+# Primary comparison uses WaveCatBoost (paper head). WaveLGB rows may remain
+# in the cache from earlier runs. Scope: PM2.5 + NO2, both sensors.
 # Results land in results/filter_scores.rds (separate from the main scores).
+# Standalone: Rscript run_filter_ablation_catboost.R
 
 message("=== Filter ablation: Haar / D4 / LA8 ===")
 
 filter_cache_path <- file.path(RES_DIR, "filter_cache.rds")
 filter_score_path <- file.path(RES_DIR, "filter_scores.rds")
 
-FILTER_METHODS    <- c("wavelgb")          # fastest wave method
+FILTER_METHODS    <- c("wavecatboost")
 FILTER_FAMILIES   <- c("haar", "d4", "la8")
 FILTER_POLLUTANTS <- c("PM2.5", "NO2")     # 2 representative pollutants
 FILTER_HORIZONS   <- if (QUICK) HORIZONS["1d"] else HORIZONS[c("1d", "7d")]

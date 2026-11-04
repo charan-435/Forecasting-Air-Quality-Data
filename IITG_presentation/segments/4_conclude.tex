@@ -1,0 +1,122 @@
+% CatBoost pipeline + conformal prediction (3 focused slides)
+
+\begin{frame}{WaveCatBoost pipeline}
+  \centering
+  \begin{tikzpicture}[
+    font=\scriptsize,
+    box/.style={draw, rounded corners=2pt, align=center, inner sep=3.5pt, minimum height=0.75cm},
+    arr/.style={-{Latex}, thick}
+  ]
+    \node[box, fill=blue!12] (y) {$Y_t$};
+    \node[box, fill=blue!12, right=0.45cm of y] (mra) {Haar MRA\\$D_1{\ldots}D_K,S_K$};
+    \node[box, fill=orange!18, right=0.45cm of mra] (cb) {CatBoost\\per band};
+    \node[box, fill=orange!18, right=0.45cm of cb] (rec) {lags $p{=}24$\\recursive};
+    \node[box, fill=green!15, right=0.45cm of rec] (inv) {$\widehat Y=\sum \widehat D_k+\widehat S_K$};
+
+    \draw[arr] (y) -- (mra);
+    \draw[arr] (mra) -- (cb);
+    \draw[arr] (cb) -- (rec);
+    \draw[arr] (rec) -- (inv);
+  \end{tikzpicture}
+
+  \vspace{0.7em}
+  \begin{itemize}
+    \item One CatBoost per detail / smooth band; reconstruct by summing.
+    \item Point forecast alone is not enough for air-quality decisions --- we need uncertainty.
+  \end{itemize}
+\end{frame}
+
+% ---- 1. Why conformal / what it does ----
+\begin{frame}{Why conformal prediction?}
+  \begin{block}{Idea in one line}
+    WaveCatBoost gives one number $\widehat Y_t$ (``PM$_{2.5}$ will be 20'').\\
+    Conformal adds a \textbf{band} around it: ``with about 95\% chance, the truth is between $L_t$ and $U_t$.''
+  \end{block}
+  \begin{itemize}
+    \item \textbf{Why we need it:} a single guess is risky for alerts --- we want a safe range.
+    \item \textbf{How it works :} look at recent forecast mistakes; if errors were large lately, make the band wider; if small, make it narrower.
+    \item \textbf{Why not a normal-based interval?} air-quality errors are irregular (spikes, quiet stretches). Conformal does \textbf{not} assume a normal curve.
+    \item \textbf{What ``95\%'' means:} over many hours, about 95 out of 100 true values should fall inside the band (coverage).
+  \end{itemize}
+\end{frame}
+
+% ---- 2. Full formula + term-by-term + how to use ----
+\begin{frame}{Conformal formula}
+  \[
+    CS_t=\frac{|Y_t-\widehat Y_t|}{\widehat U_t},
+    \qquad
+    CQ_t=Q_{1-\alpha}\!\big(CS_{t-\kappa+1:t}\big),
+    \qquad
+    PI_t=\widehat Y_t\pm CQ_t\,\widehat U_t
+  \]
+  {\footnotesize
+  \begin{itemize}\setlength\itemsep{0.25em}
+    \item $Y_t$, $\widehat Y_t$: observed value and WaveCatBoost forecast.
+    \item $\widehat U_t$: rolling MAE of recent residuals (local error scale).
+    \item $CS_t$: nonconformity --- absolute error scaled by $\widehat U_t$.
+    \item $\alpha$: miscoverage rate ($\alpha=0.05$ $\Rightarrow$ 95\% target).
+    \item $\kappa$: calibration window length (we try $\{24,168,336\}$~h).
+    \item $CQ_t$: $(1-\alpha)$-quantile of the last $\kappa$ scores $CS$.
+    \item $L_t=\widehat Y_t-CQ_t\widehat U_t$,\ \
+          $U_t=\widehat Y_t+CQ_t\widehat U_t$
+          (clip $L_t\ge 0$ for concentrations).
+  \end{itemize}
+  }
+  \vspace{0.2em}
+  \begin{exampleblock}{How to use it}
+    Fit on train $\to$ compute $CS$ on a held-out calibration window $\to$
+    pick $\kappa$ so cal.\ coverage $\approx 95\%$ $\to$ apply $CQ\,\widehat U$
+    on the test hours. Coverage $=$ fraction of test points with $Y_t\in[L_t,U_t]$.
+  \end{exampleblock}
+\end{frame}
+
+% ---- 3. What the window / plots show ----
+\begin{frame}{Do the intervals work? (7-day test)}
+  {\footnotesize
+  \textbf{Purpose:} on held-out hours, does true PM$_{2.5}$ (blue) fall inside the purple band around the forecast (red)?
+  }
+  \vspace{0.3em}
+  \centering
+  \includegraphics[width=0.98\linewidth,height=0.52\textheight,keepaspectratio]{conformal_cpcb_id1.png}
+  \vspace{0.15em}
+  {\footnotesize
+  \begin{itemize}\setlength\itemsep{0.12em}
+    \item \textbf{Blue} $=$ truth;\ \textbf{red} $=$ WaveCatBoost guess;\ \textbf{purple} $=$ conformal window $[L_t,U_t]$.
+    \item \textbf{Coverage} $=$ \% of hours where blue is inside purple
+          (target $\approx 95\%$). ID1 $\approx 90\%$ (OK); CPCB $\approx 68\%$ (too narrow after a flat spell).
+  \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}{Making intervals better --- CQR}
+  \begin{itemize}\setlength\itemsep{0.25em}
+    \item Paper / split conformal scales one point forecast with past errors.
+    \item \textbf{CQR} (extension): fit low \& high quantile models, then conformalize\\
+          $s_i=\max(\hat q_{lo}-Y_i,\; Y_i-\hat q_{hi})$.
+    \item Same split protocol (calibrate off the test window).
+  \end{itemize}
+  \vspace{0.5em}
+  {\footnotesize
+  \centering
+  \begin{tabular}{lcc cc}
+    \toprule
+    & \multicolumn{2}{c}{Split conformal} & \multicolumn{2}{c}{CQR} \\
+    \cmidrule(lr){2-3}\cmidrule(lr){4-5}
+    Sensor & Cov. & Width & Cov. & Width \\
+    \midrule
+    CPCB     & 0.68 & 8.6  & \textbf{0.89} & 10.6 \\
+    ID1      & 0.90 & 17.4 & \textbf{0.98} & 18.7 \\
+    Shillong & 0.90 & 127  & \textbf{0.92} & \textbf{34.6} \\
+    \bottomrule
+  \end{tabular}
+  }
+  \vspace{0.6em}
+  \begin{exampleblock}{Takeaway}
+    CQR lifts CPCB coverage and cuts Shillong width sharply --- next slide shows CPCB bands.
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}{CQR vs split conformal (CPCB PM$_{2.5}$)}
+  \centering
+  \includegraphics[width=0.98\linewidth,height=0.78\textheight,keepaspectratio]{conformal_vs_cqr_cpcb.png}
+\end{frame}

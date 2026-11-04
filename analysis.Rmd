@@ -52,6 +52,7 @@ filter_scores <- { p <- .res_file("filter_scores.rds"); if (!is.na(p)) readRDS(p
 ext_scores    <- { p <- .res_file("extension_scores.rds"); if (!is.na(p)) readRDS(p) else NULL }
 hparams <- { p <- .res_file("hparams.rds"); if (!is.na(p)) readRDS(p) else NULL }
 conf    <- { p <- .res_file("conformal.rds"); if (!is.na(p)) readRDS(p) else NULL }
+conf_ext <- { p <- .res_file("conformal_ext.rds"); if (!is.na(p)) readRDS(p) else NULL }
 fc_cache <- { p <- .res_file("forecast_cache.rds"); if (!is.na(p)) readRDS(p) else NULL }
 paper8 <- {
   p <- .res_file("paper_notebook_protocol_leaky_rolling_1step.rds")
@@ -1056,9 +1057,9 @@ Recursive 7-day MASE values sit on top of each other near 1.50 on CPCB PM2.5: th
 
 # 10. Extensions
 
-Three questions that sit outside the letter: why MODWT rather than Fourier; what another decomposition (EMD) looks like; and whether Haar is special among wavelet filters. All three use the same WaveLGB head, the same $K$ and $p$, and the same 1-day split, so a MASE gap is from the transform.
+Questions outside the letter: Fourier vs MODWT, other wavelet filters, EMD, and a better conformal interval (CQR). The first three use the same WaveLGB head, $K$, $p$, and 1-day split so a MASE gap is from the transform.
 
-Run `run_extensions.R` if the tables below are empty.
+Run `run_extensions.R` and `run_conformal_ext.R` if the tables below are empty.
 
 ## 10.1 Fourier vs MODWT
 
@@ -1141,22 +1142,26 @@ Haar should win on series with sharp spikes (ID1 in particular). Fourier bands r
 
 ## 10.2 Other wavelet filters (Haar, D4, LA8)
 
-Haar is two taps. D4 (4 taps) and LA8 (8 taps) are smoother octave filters. Reconstruction remains $Y_t = \sum_k D_{k,t} + S_{K,t}$ for every family; what changes is the shape of each $D_k$. Switch the filter in **Section 4.2** to see $D_1,\ldots,D_K$ and $S_K$ for Haar, D4, or LA8. The comparison below is MASE only — same WaveLGB head, same $K$ and $p$.
+Haar is two taps. D4 (4 taps) and LA8 (8 taps) are smoother octave filters. Reconstruction remains $Y_t = \sum_k D_{k,t} + S_{K,t}$ for every family; what changes is the shape of each $D_k$. Switch the filter in **Section 4.2** to see $D_1,\ldots,D_K$ and $S_K$ for Haar, D4, or LA8. The comparison below is MASE only — same **WaveCatBoost** head (paper model), same $K$ and $p$. Re-run with `Rscript run_filter_ablation_catboost.R` if `filter_scores` has no `wavecatboost` rows yet (older caches may still show WaveLGB only).
 
 ```{r filter-scores}
 fs <- ext_scores
 if (is.null(fs) || !nrow(fs)) fs <- filter_scores
 if (is.null(fs) || !nrow(fs)) {
-  cat("Filter scores not yet computed. Run run_experiments.R or run_extensions.R.\n")
+  cat("Filter scores not yet computed. Run run_filter_ablation_catboost.R (or run_experiments.R).\n")
 } else {
+  prefer <- if ("wavecatboost" %in% fs$method) "wavecatboost" else "wavelgb"
   sub <- fs %>%
-    dplyr::filter(filter %in% c("haar", "d4", "la8")) %>%
+    dplyr::filter(.data$method == prefer,
+                  .data$filter %in% c("haar", "d4", "la8")) %>%
     dplyr::select(sensor, pollutant, horizon, filter, MASE, MAE, RMSE)
   fw <- sub %>%
     dplyr::select(sensor, pollutant, horizon, filter, MASE) %>%
     tidyr::pivot_wider(names_from = filter, values_from = MASE)
   knitr::kable(fw, digits = 3,
-               caption = "WaveLGB MASE by filter family — lower is better")
+               caption = paste0(
+                 if (identical(prefer, "wavecatboost")) "WaveCatBoost" else "WaveLGB",
+                 " MASE by filter family — lower is better"))
 }
 ```
 
@@ -1171,10 +1176,13 @@ if (!is.null(fs) && nrow(fs)) {
 ```{r filter-scores-plot-server, echo=FALSE}
 fs_plot <- if (is.null(ext_scores) || !nrow(ext_scores)) filter_scores else ext_scores
 if (!is.null(fs_plot) && nrow(fs_plot)) {
+  prefer_m <- if ("wavecatboost" %in% fs_plot$method) "wavecatboost" else "wavelgb"
+  head_lbl <- if (identical(prefer_m, "wavecatboost")) "WaveCatBoost" else "WaveLGB"
   output$filt_slot <- renderUI(plotly_slot("filt_plot", 3L))
   output$filt_plot <- renderPlotly({
     df <- fs_plot %>%
-      dplyr::filter(filter %in% c("haar", "d4", "la8")) %>%
+      dplyr::filter(.data$method == prefer_m,
+                    .data$filter %in% c("haar", "d4", "la8")) %>%
       dplyr::mutate(
         label  = paste(sensor, pollutant, sep = "-"),
         filter = factor(filter, levels = c("haar", "d4", "la8"),
@@ -1184,7 +1192,8 @@ if (!is.null(fs_plot) && nrow(fs_plot)) {
       geom_col(position = "dodge", width = 0.65) +
       facet_wrap(~ label + horizon, scales = "free_y") +
       scale_fill_manual(values = c("Haar (paper)" = NAVY, "D4" = RUST, "LA8" = GREEN)) +
-      labs(x = NULL, y = "MASE", title = "Filter family — WaveLGB", fill = "Filter") +
+      labs(x = NULL, y = "MASE",
+           title = paste("Filter family —", head_lbl), fill = "Filter") +
       theme(axis.text.x = element_blank(), axis.ticks.x = element_blank(),
             plot.title = element_text(hjust = 0, colour = NAVY, size = 14))
     ggplotly(p) %>%
@@ -1195,7 +1204,7 @@ if (!is.null(fs_plot) && nrow(fs_plot)) {
 }
 ```
 
-On these series Haar is as good as, or slightly better than, D4 and LA8. The extra taps buy a cleaner $D_k$ plot, not a lower MASE. Haar also matches the letter, so it stays the default.
+On these series Haar is as good as, or slightly better than, D4 and LA8 under the WaveCatBoost head. The extra taps buy a cleaner $D_k$ plot, not a lower MASE. Haar also matches the letter, so it stays the default.
 
 ## 10.3 Empirical Mode Decomposition
 
@@ -1272,6 +1281,110 @@ if (isTRUE(has_emd)) {
 
 EMD can park a dust-storm and a traffic spike in the same IMF if they share a local period. Haar will not: $D_1$ is always the 2–4 h band. That predictability, and the speed, is why the letter's choice stays the operational default.
 
+## 10.4 Conformalized quantile regression
+
+The letter's interval (Section 8.2) is a residual quantile of $|Y-\hat Y|$ **on the plotted window** — about 95% coverage by construction, not a deployed PI. Split conformal (paper §II-C, `run_conformal.R`) is honest: it calibrates $CS_t = |Y_t-\hat Y_t|/\hat U_t$ on a hold-out 1-step window, then copies a single scale to the test hours.
+
+**CQR** (Romano, Patterson, Candès 2019) is the extension. Two LightGBM quantile models ($q=\alpha/2$ and $q=1-\alpha/2$) are fit on train lags only. The conformal score on the calibration window is
+
+$$
+s_i = \max\big(\hat q_{\mathrm{lo}}(x_i) - Y_i,\; Y_i - \hat q_{\mathrm{hi}}(x_i)\big).
+$$
+
+The $(1-\alpha)(1+1/n_{\mathrm{cal}})$ quantile of $s$ is added to both edges. Lower bounds are clipped at 0. Same 7-day PM2.5 cut as Section 8.2. Success is coverage near 95% **and** a narrower mean width than split conformal.
+
+```{r cqr-table}
+rows <- list()
+if (!is.null(paper8)) {
+  for (s in c("CPCB", "ID1", "SHILLONG")) {
+    w <- paper8[[s]]$methods$wavecatboost
+    if (is.null(w) || isTRUE(w$error) || is.null(w$coverage_test)) next
+    rows[[length(rows) + 1L]] <- tibble::tibble(
+      sensor = s, method = "Paper residual PI (test window)",
+      coverage = w$coverage_test, width = w$width
+    )
+  }
+}
+if (!is.null(conf)) {
+  for (s in c("CPCB", "ID1", "SHILLONG")) {
+    z <- conf[[s]]
+    if (is.null(z) || is.null(z$coverage_test)) next
+    rows[[length(rows) + 1L]] <- tibble::tibble(
+      sensor = s, method = "Split conformal (WaveCatBoost)",
+      coverage = z$coverage_test, width = z$width
+    )
+  }
+}
+if (!is.null(conf_ext$cqr)) {
+  for (s in c("CPCB", "ID1", "SHILLONG")) {
+    z <- conf_ext$cqr[[s]]
+    if (is.null(z) || isTRUE(z$error) || is.null(z$coverage_test)) next
+    rows[[length(rows) + 1L]] <- tibble::tibble(
+      sensor = s, method = "CQR (LightGBM quantiles)",
+      coverage = z$coverage_test, width = z$width
+    )
+  }
+}
+if (!length(rows)) {
+  cat("No conformal caches yet. Run run_paper_protocol.R, run_conformal.R, and run_conformal_ext.R.\n")
+} else {
+  knitr::kable(dplyr::bind_rows(rows), digits = 3,
+               caption = "PM2.5 7-day intervals: coverage vs mean width. Paper residual PI uses the plotted window.")
+}
+```
+
+```{r cqr-ui, echo=FALSE}
+uiOutput("cqr_a_slot")
+uiOutput("cqr_b_slot")
+uiOutput("cqr_c_slot")
+```
+
+```{r cqr-server, echo=FALSE}
+.cqr_fig <- function(sname, letter) {
+  z <- conf_ext$cqr[[sname]]
+  h <- stack_px(1L)
+  ttl <- sprintf("%s  %s  PM2.5  7-day  CQR", letter, sname)
+  if (is.null(z) || isTRUE(z$error) || is.null(z$yhat)) {
+    return(plotly::plotly_empty(type = "scatter") %>%
+             plotly::layout(
+               title = paste(ttl, "— run Rscript run_conformal_ext.R"),
+               height = h))
+  }
+  cov <- sprintf("cov=%.0f%%", 100 * z$coverage_test)
+  wid <- sprintf("  width=%.2f", z$width)
+  plotly::plot_ly() %>%
+    plotly::add_ribbons(x = z$t_test, ymin = z$lower, ymax = z$upper,
+                        name = "CQR 95% PI", showlegend = TRUE,
+                        line = list(color = "transparent"),
+                        fillcolor = "rgba(46,107,79,0.22)") %>%
+    plotly::add_lines(x = z$t_test, y = z$y_test, name = "actual",
+                      line = list(color = "black", width = 1.05)) %>%
+    plotly::add_lines(x = z$t_test, y = z$yhat, name = "CQR midpoint",
+                      line = list(color = GREEN, width = 1.15)) %>%
+    plotly::layout(
+      title = list(text = sprintf("%s  %s%s", ttl, cov, wid),
+                   font = list(size = 13, color = NAVY), x = 0, xanchor = "left"),
+      yaxis = list(title = "PM2.5", automargin = TRUE, zeroline = FALSE,
+                   autorange = TRUE),
+      xaxis = list(title = "Test time", automargin = TRUE),
+      legend = list(orientation = "h", y = 1.08),
+      height = h, autosize = TRUE,
+      margin = list(l = 64, r = 24, t = 72, b = 44),
+      hovermode = "x unified"
+    ) %>%
+    plotly::config(scrollZoom = TRUE, displaylogo = FALSE)
+}
+
+output$cqr_a_slot <- renderUI(plotly_slot("cqr_a", 1L))
+output$cqr_b_slot <- renderUI(plotly_slot("cqr_b", 1L))
+output$cqr_c_slot <- renderUI(plotly_slot("cqr_c", 1L))
+output$cqr_a <- renderPlotly(.cqr_fig("CPCB", "(a)"))
+output$cqr_b <- renderPlotly(.cqr_fig("ID1", "(b)"))
+output$cqr_c <- renderPlotly(.cqr_fig("SHILLONG", "(c)"))
+```
+
+Paper residual PI is not a fair competitor for width (it peeks at test). Compare CQR to **split conformal**: similar coverage with a narrower band is a win; coverage well below 95% means the quantile models under-dispersed and $\hat q$ could not fully correct them.
+
 ---
 
 GitHub hourly files are not the original 15-minute traces. MASE will not match the letter's Table 1 — boosting hyperparameters were never published, and the deep-learning baselines were left out on purpose. Recursive multi-step forecasts accumulate error at 14- and 31-day horizons.
@@ -1281,6 +1394,7 @@ GitHub hourly files are not the original 15-minute traces. MASE will not match t
 "C:/Program Files/R/R-4.5.1/bin/Rscript.exe" run_new_dataset.R
 "C:/Program Files/R/R-4.5.1/bin/Rscript.exe" run_paper_protocol.R
 "C:/Program Files/R/R-4.5.1/bin/Rscript.exe" run_extensions.R
+"C:/Program Files/R/R-4.5.1/bin/Rscript.exe" run_conformal_ext.R
 ```
 
 Then re-open this file in RStudio (**Run Document**) so the tables and conformal figure populate.

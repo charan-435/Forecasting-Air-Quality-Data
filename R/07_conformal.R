@@ -160,6 +160,111 @@ interval_width <- function(lo, hi) {
   mean(hi - lo, na.rm = TRUE)
 }
 
+# ---- Extension: conformalized quantile regression (CQR) -------------------
+# Romano, Patterson, Candès (2019). Quantile LightGBM at α/2 and 1-α/2 on
+# lag-p features, then a split-conformal correction on a hold-out window.
+# Same train / cal / test cut as conformal_wavecatboost_1step.
+
+fit_lgb_quantile <- function(y_train, q, params = default_tree_params()) {
+  q <- as.numeric(q)
+  sup <- supervised_from_series(y_train, params$p)
+  sp  <- split_val(sup$X, sup$y, params$val_hours %||% VAL_HOURS)
+  dtr <- lightgbm::lgb.Dataset(sp$X_tr, label = sp$y_tr)
+  dva <- lightgbm::lgb.Dataset.create.valid(dtr, sp$X_va, label = sp$y_va)
+  model <- lightgbm::lgb.train(
+    params = list(
+      objective = "quantile",
+      alpha = q,
+      metric = "quantile",
+      learning_rate = params$eta %||% 0.08,
+      num_leaves = params$lgb_leaves %||% 31L,
+      max_depth = params$max_depth %||% 6L,
+      feature_fraction = 0.8,
+      bagging_fraction = 0.8,
+      bagging_freq = 1,
+      verbosity = -1
+    ),
+    data = dtr,
+    nrounds = params$nrounds %||% 120L,
+    valids = list(eval = dva),
+    early_stopping_rounds = params$early_stopping %||% 30L,
+    verbose = -1
+  )
+  list(model = model, p = params$p, family = "lgb", quantile = q)
+}
+
+cqr_scores <- function(y, lo, hi) {
+  pmax(as.numeric(lo) - as.numeric(y), as.numeric(y) - as.numeric(hi))
+}
+
+conformal_cqr_1step <- function(s, params = default_tree_params(),
+                                h = HORIZONS[["7d"]],
+                                cal_h = 168L,
+                                alpha = 0.05) {
+  y <- as.numeric(s$y)
+  times <- s$times
+  n <- length(y)
+  h <- as.integer(h)
+  cal_h <- as.integer(min(cal_h, max(48L, floor((n - h) / 6))))
+  if (n <= h + cal_h + 200L) {
+    cal_h <- max(48L, min(cal_h, floor((n - h) / 5)))
+  }
+  n_test_start <- n - h + 1L
+  n_cal_start <- n_test_start - cal_h
+  n_fit <- n_cal_start - 1L
+  if (n_fit < 400L) stop("Series too short for CQR.")
+
+  y_fit <- y[seq_len(n_fit)]
+  sc <- minmax_fit(y_fit)
+  y_fit_n <- minmax_apply(y_fit, sc)
+  y_n <- minmax_apply(y, sc)
+
+  q_lo <- alpha / 2
+  q_hi <- 1 - alpha / 2
+  message("  CQR LightGBM q=", q_lo, " / ", q_hi,
+          "  fit ", n_fit, " h  |  cal ", cal_h, "  |  test ", h)
+  fit_lo <- fit_lgb_quantile(y_fit_n, q_lo, params)
+  fit_hi <- fit_lgb_quantile(y_fit_n, q_hi, params)
+
+  lo_cal_n <- walkforward_tree_forecast(fit_lo, y_fit_n, y_n[n_cal_start:(n_cal_start + cal_h - 1L)])
+  hi_cal_n <- walkforward_tree_forecast(fit_hi, y_fit_n, y_n[n_cal_start:(n_cal_start + cal_h - 1L)])
+  lo_te_n  <- walkforward_tree_forecast(fit_lo, y_n[seq_len(n_fit + cal_h)], y_n[n_test_start:n])
+  hi_te_n  <- walkforward_tree_forecast(fit_hi, y_n[seq_len(n_fit + cal_h)], y_n[n_test_start:n])
+
+  lo_cal <- minmax_invert(pmin(lo_cal_n, hi_cal_n), sc)
+  hi_cal <- minmax_invert(pmax(lo_cal_n, hi_cal_n), sc)
+  lo_te  <- minmax_invert(pmin(lo_te_n, hi_te_n), sc)
+  hi_te  <- minmax_invert(pmax(lo_te_n, hi_te_n), sc)
+  y_cal  <- y[n_cal_start:(n_cal_start + cal_h - 1L)]
+  y_test <- y[n_test_start:n]
+
+  scores <- cqr_scores(y_cal, lo_cal, hi_cal)
+  n_cal <- sum(is.finite(scores))
+  lev <- min(1, ceiling((n_cal + 1L) * (1 - alpha)) / max(1L, n_cal))
+  qhat <- as.numeric(stats::quantile(scores, probs = lev, na.rm = TRUE, names = FALSE))
+  if (!is.finite(qhat)) qhat <- 0
+
+  lower <- pmax(0, lo_te - qhat)
+  upper <- hi_te + qhat
+  yhat <- (lo_te + hi_te) / 2
+  list(
+    sensor = s$sensor, pollutant = s$pollutant, horizon = "7d",
+    protocol = "cqr_lgb_1step_split",
+    t_test = times[n_test_start:n],
+    y_test = y_test,
+    yhat = yhat,
+    lower = lower,
+    upper = upper,
+    qhat = qhat,
+    alpha = alpha,
+    cal_h = cal_h,
+    n_fit = n_fit,
+    coverage_cal = interval_coverage(y_cal, pmax(0, lo_cal - qhat), hi_cal + qhat),
+    coverage_test = interval_coverage(y_test, lower, upper),
+    width = interval_width(lower, upper)
+  )
+}
+
 # Extra decision rule (not in the paper): mean of the lower PI bound vs WHO / NAAQS.
 alert_from_interval <- function(pollutant, lower, upper, yhat) {
   thr <- ALERT_THRESHOLDS[[pollutant]]

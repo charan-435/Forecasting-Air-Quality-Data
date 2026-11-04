@@ -1,0 +1,142 @@
+% Experimental results
+
+\begin{frame}{Experimental results --- what we compare}
+  \begin{block}{Baselines vs WaveCatBoost}
+    Same data splits and horizons; only the model changes.
+    \begin{itemize}\setlength\itemsep{0.15em}
+      \item \textbf{Seasonal naive} (lag $S{=}24$), \textbf{SARIMA}
+      \item Trees on \textbf{raw} $Y$: LightGBM, CatBoost (, XGBoost)
+      \item Wave $+$ trees: WaveLGB, \textbf{WaveCatBoost} (paper model)
+      \item Paper also reports RNN, TCN, TFT, Transformer (Table~1)
+    \end{itemize}
+  \end{block}
+  \begin{itemize}
+    \item \textbf{Why MASE?} pollutants have different units/scales (NO$_2$ vs PM$_{2.5}$).
+          MASE is \textbf{scale-free}: error relative to a seasonal naive on train,
+          so we can compare methods across pollutants.
+    \item Also report MAE / RMSE in original units after inverting min-max.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Error metrics (formulas)}
+  {\footnotesize
+  With train length $N$, horizon $h$, seasonality $S{=}24$:
+  \[
+    \mathrm{MASE}
+    =\frac{\tfrac1h\sum_{t=1}^{h}|\widehat Y_t-Y_t|}
+          {\tfrac1{N-S}\sum_{t=S+1}^{N}|Y_t-Y_{t-S}|}
+  \]
+  (equivalent to paper Eq.~(6) / Hyndman seasonal MASE).\\[0.4em]
+  \[
+    \mathrm{MAE}=\tfrac1h\sum_{t=1}^{h}|\widehat Y_t-Y_t|,
+    \qquad
+    \mathrm{RMSE}=\sqrt{\tfrac1h\sum_{t=1}^{h}(\widehat Y_t-Y_t)^2}.
+  \]
+  }
+  \vspace{0.3em}
+  \begin{itemize}
+    \item MASE $<1$: better than seasonal naive on the train scale.
+    \item Lower is better for all three.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Our recursive bake-off (1-day MASE)}
+  {\scriptsize
+  \centering
+  \begin{tabular}{llcccc}
+    \toprule
+    Sensor & Pol. & snaive & LGB & CatBoost & WaveCatBoost \\
+    \midrule
+    CPCB & PM$_{2.5}$ & 2.02 & 0.74 & 0.82 & \textbf{0.71} \\
+    CPCB & PM$_{10}$  & 1.46 & 0.52 & 0.75 & 0.53 \\
+    CPCB & NO$_2$     & 0.72 & 0.52 & 0.51 & 0.55 \\
+    ID1  & PM$_{2.5}$ & 0.71 & 0.84 & 0.67 & 0.42 \\
+    ID1  & PM$_{10}$  & 0.66 & 0.81 & 0.73 & 0.41 \\
+    ID1  & NO$_2$     & 1.20 & 1.08 & 1.06 & 1.24 \\
+    \bottomrule
+  \end{tabular}
+  }
+  \vspace{0.35em}
+  \begin{itemize}
+    \item \textbf{Protocol:} recursive multi-step from one origin (\texttt{scores.csv}).
+    \item Fair for ``does wavelet help vs raw CatBoost / LGB?'' --- \textbf{not} Table~1.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Paper Table~1 (letter)}
+  \centering
+  \includegraphics[width=0.98\linewidth,height=0.72\textheight,keepaspectratio]{table1.png}
+  \vspace{0.1em}
+  {\scriptsize Letter: rolling 1-step MASE. WaveCatBoost vs RNN / LGBM / TCN / TFT / Transformer / XGB / CatBoost.}
+\end{frame}
+
+\begin{frame}{1-step re-run vs Table~1 (full)}
+  {\footnotesize
+  Letter-style protocol: full-series Haar MODWT $+$ walk-forward \textbf{1-step}
+  (\texttt{run\_paper\_protocol\_1d.R}).
+  }
+  \vspace{0.25em}
+  {\scriptsize
+  \centering
+  \resizebox{\linewidth}{!}{%
+  \begin{tabular}{ll ccc ccc}
+    \toprule
+    & & \multicolumn{3}{c}{Paper Table~1} & \multicolumn{3}{c}{Our 1-step re-run} \\
+    \cmidrule(lr){3-5}\cmidrule(lr){6-8}
+    Sensor & Pol. & LGB & CatB & WaveCB & LGB & CatB & WaveCB \\
+    \midrule
+    CPCB & PM$_{2.5}$ & 3.81 & 5.32 & 0.57 & 0.69 & 0.63 & \textbf{0.40} \\
+    CPCB & NO$_2$     & 0.79 & 0.82 & 0.57 & 0.57 & 0.52 & \textbf{0.39} \\
+    CPCB & O$_3$      & 1.87 & 2.89 & 0.98 & 0.33 & 0.33 & \textbf{0.17} \\
+    ID1  & PM$_{2.5}$ & 7.31 & 4.45 & 0.85 & 0.19 & 0.20 & \textbf{0.09} \\
+    \bottomrule
+  \end{tabular}%
+  }
+  }
+  \vspace{0.35em}
+  \begin{itemize}\setlength\itemsep{0.15em}
+    \item Our WaveCB MASE is \textbf{lower} than Table~1 on every cell.
+    \item Our LGB / CatBoost are also much lower --- the whole scale shifted.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Did we beat the paper?}
+  \begin{block}{What we can say}
+    \begin{itemize}
+      \item \textbf{Ranking matches Table~1:} WaveCatBoost beats LGB and CatBoost
+            on every overlapping 1-step cell.
+      \item Our WaveCatBoost MASE is numerically smaller than the letter's WaveCB.
+    \end{itemize}
+  \end{block}
+  \begin{alertblock}{What we should \emph{not} claim}
+    ``We beat the paper'' as a scientific result --- baselines dropped too
+    (e.g.\ CPCB PM$_{2.5}$ LGB: paper 3.81 $\to$ ours 0.69). Absolute levels are
+    \textbf{not digit-comparable} (hyperparams, notebook details, windowing).
+  \end{alertblock}
+  \begin{exampleblock}{Talk line}
+    Under the letter's rolling 1-step setup we reproduce the same ranking ---
+    WaveCatBoost wins --- and our WaveCB MASE is lower than Table~1, but we
+    compare \textbf{gaps / ranks}, not absolute digits.
+  \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Our 1-step results (all models)}
+  {\footnotesize
+  \centering
+  \begin{tabular}{llcccc}
+    \toprule
+    Sensor & Pol. & snaive & LGB & CatBoost & WaveCatBoost \\
+    \midrule
+    CPCB & PM$_{2.5}$ & 2.02 & 0.69 & 0.63 & \textbf{0.40} \\
+    CPCB & NO$_2$     & 0.72 & 0.57 & 0.52 & \textbf{0.39} \\
+    CPCB & O$_3$      & 1.22 & 0.33 & 0.33 & \textbf{0.17} \\
+    ID1  & PM$_{2.5}$ & 0.71 & 0.19 & 0.20 & \textbf{0.09} \\
+    \bottomrule
+  \end{tabular}
+  }
+  \vspace{0.45em}
+  \begin{itemize}
+    \item Fair within-protocol bake-off: WaveCatBoost is clearly best.
+    \item Same qualitative conclusion as the letter.
+  \end{itemize}
+\end{frame}

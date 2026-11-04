@@ -1,0 +1,10 @@
+\begin{frame}{Summary}
+  \begin{itemize}
+    \item WaveCatBoost $=$ Haar MODWT $+$ CatBoost per band $+$ reconstruct.
+    \item Haar remains a strong default vs D4/LA8.
+    \item Conformal bands add uncertainty; CQR improves coverage / width where split conformal struggles.
+    \item \textbf{Recursive bake-off:} wavelet helps vs raw trees on several cells.
+    \item \textbf{1-step vs Table~1:} same ranking (WaveCB wins); our MASE is lower, but
+          absolute digits are not a fair ``we beat the paper'' claim --- compare ranks/gaps.
+  \end{itemize}
+\end{frame}
