@@ -17,10 +17,28 @@
 
 \begin{frame}{Haar vs D4 vs LA8 (WaveCatBoost, 1-day MASE)}
   {\scriptsize
-  All 12 CPCB/ID1 $\times$ pollutant cells from \texttt{filter\_scores}
-  (\texttt{run\_filter\_ablation\_catboost.R} / Rmd §10.3).
+  Same WaveCatBoost head; only the MODWT filter $(p_m,q_m)$ changes
+  ($S_{0,t}=Y_t$, indices mod $N$):
+  \[
+    D_{j,t}=\sum_{m=0}^{M-1}p_m\,S_{j-1,(t-2^{j-1}m)\bmod N},\quad
+    S_{j,t}=\sum_{m=0}^{M-1}q_m\,S_{j-1,(t-2^{j-1}m)\bmod N}.
+  \]
   }
-  \vspace{0.2em}
+  {\tiny
+  \centering
+  \renewcommand{\arraystretch}{1.15}
+  \begin{tabular}{@{}l@{\hspace{0.6em}}l@{}}
+    \textbf{Haar} ($M{=}2$) &
+      $q=(\tfrac12,\tfrac12)$,\ $p=(\tfrac12,-\tfrac12)$ \\
+    \textbf{D4} ($M{=}4$) &
+      $q\approx(0.483,\,0.837,\,0.224,\,-0.129)$,\
+      $p\approx(-0.129,\,-0.224,\,0.837,\,-0.483)$ \\
+    \textbf{LA8} ($M{=}8$) &
+      $q\approx(-0.076,\,-0.030,\,0.498,\,0.804,\,0.298,\,-0.099,\,-0.013,\,0.032)$ \\
+      & $p\approx(0.032,\,0.013,\,-0.099,\,-0.298,\,0.804,\,-0.498,\,-0.030,\,0.076)$ \\
+  \end{tabular}
+  }
+  \vspace{0.25em}
   {\tiny
   \centering
   \resizebox{0.98\linewidth}{!}{%
@@ -45,11 +63,10 @@
   \end{tabular}%
   }
   }
-  \vspace{0.35em}
-  \begin{exampleblock}{Takeaway}
-    Haar best on \textbf{9/12} cells; D4 on 2 (CPCB NO$_2$, PM$_{10}$);
-    LA8 on 1 (CPCB SO$_2$). Haar stays the default.
-  \end{exampleblock}
+  \vspace{0.2em}
+  {\scriptsize
+  Haar best on \textbf{9/12} cells; D4 on 2; LA8 on 1 --- Haar stays the default.
+  }
 \end{frame}
 
 \begin{frame}{Fourier vs Haar MODWT (WaveLGB, 1-day)}
