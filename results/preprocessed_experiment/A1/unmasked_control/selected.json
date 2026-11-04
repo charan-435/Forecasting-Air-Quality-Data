@@ -1,0 +1,13 @@
+{
+  "target": {
+    "num_leaves": 63,
+    "learning_rate": 0.1,
+    "min_data_in_leaf": 50,
+    "cov_set": null,
+    "best_iter": 20,
+    "val_mae_unit": 7.10024816940644,
+    "n_features": 29,
+    "n_train": 3761,
+    "n_refit": 5225
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "phase": "audit",
+  "time": "2026-11-03 09:56:02 UTC",
+  "git": "38daa41d68294da98814d551894d208d2fb283d4",
+  "r_version": "R version 4.5.3 (2026-03-11 ucrt)",
+  "packages": {
+    "lightgbm": "4.7.0",
+    "arrow": "26.0.0",
+    "dplyr": "1.1.4",
+    "tidyr": "1.3.1",
+    "ggplot2": "4.0.0",
+    "digest": "0.6.37",
+    "yaml": "2.3.10",
+    "lubridate": "1.9.5",
+    "future": "1.80.0",
+    "future.apply": "1.21.0"
+  },
+  "config_sha256": "809e37bd1986ba248aa38ead803c81dda347f34098e348e64dbabc3e3d21fa55",
+  "code_sha256": {
+    "R/preprocessed_experiment/00_setup.R": "9e4e0fd06b85a38e1ba0dc0dbb36ef9e0475d54895db03c8ac35155da1ed6ce8",
+    "R/preprocessed_experiment/10_audit.R": "9e22c820332ac0438b2e36966226e8ac69734b1f12ef6f75f1b70af41eeb7954",
+    "R/preprocessed_experiment/20_preprocess.R": "b423dfbd3337e03e629c849206d40d1af787a257bc2828469c06d9035c4c140a",
+    "R/preprocessed_experiment/30_decomp.R": "e7a2a0cb0c5b771331b5f02a1fe269cbd4c2fcd4c90e8a2ec23c62072b059f4c",
+    "run_preprocessed_experiment.R": "c7b0bb3772bfd8a5b51a4333b798983dc0d2a9e273d7492357783bf3a0577080",
+    "config/preprocessed_experiment.yaml": "809e37bd1986ba248aa38ead803c81dda347f34098e348e64dbabc3e3d21fa55"
+  },
+  "seed": 7,
+  "command": "Rscript run_preprocessed_experiment.R phase1"
+}

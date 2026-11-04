@@ -1,0 +1,68 @@
+{
+  "D1": {
+    "num_leaves": 63,
+    "learning_rate": 0.03,
+    "min_data_in_leaf": 100,
+    "cov_set": "all_levels",
+    "best_iter": 356,
+    "val_mae_unit": 2.71485886589023,
+    "n_features": 54,
+    "n_train": 3761,
+    "n_refit": 5225
+  },
+  "D2": {
+    "num_leaves": 63,
+    "learning_rate": 0.1,
+    "min_data_in_leaf": 100,
+    "cov_set": "all_levels",
+    "best_iter": 544,
+    "val_mae_unit": 1.65448614782855,
+    "n_features": 54,
+    "n_train": 3761,
+    "n_refit": 5225
+  },
+  "D3": {
+    "num_leaves": 63,
+    "learning_rate": 0.1,
+    "min_data_in_leaf": 20,
+    "cov_set": "all_levels",
+    "best_iter": 29,
+    "val_mae_unit": 1.32339166974473,
+    "n_features": 54,
+    "n_train": 3761,
+    "n_refit": 5225
+  },
+  "D4": {
+    "num_leaves": 15,
+    "learning_rate": 0.1,
+    "min_data_in_leaf": 20,
+    "cov_set": "all_levels",
+    "best_iter": 30,
+    "val_mae_unit": 1.4249038297943,
+    "n_features": 54,
+    "n_train": 3761,
+    "n_refit": 5225
+  },
+  "D5": {
+    "num_leaves": 15,
+    "learning_rate": 0.1,
+    "min_data_in_leaf": 50,
+    "cov_set": "all_levels",
+    "best_iter": 102,
+    "val_mae_unit": 1.40780686467396,
+    "n_features": 54,
+    "n_train": 3761,
+    "n_refit": 5225
+  },
+  "S5": {
+    "num_leaves": 31,
+    "learning_rate": 0.1,
+    "min_data_in_leaf": 20,
+    "cov_set": "same_level",
+    "best_iter": 45,
+    "val_mae_unit": 3.40986269764837,
+    "n_features": 29,
+    "n_train": 3761,
+    "n_refit": 5225
+  }
+}

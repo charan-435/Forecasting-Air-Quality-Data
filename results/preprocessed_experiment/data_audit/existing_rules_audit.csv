@@ -1,0 +1,7 @@
+"pollutant","kaisen_lower","kaisen_upper","below_lower","above_upper","negative","stuck_ge_limit_causal","stuck_ge_limit_outside_fill_codes","spike_flag_kaisen","spike_masked_by_kaisen","pm_ratio_hours","pm_ratio_hours_outside_fill_codes"
+"PM2.5",0,1000,0,0,0,2380,1,344,FALSE,206,206
+"PM10",0,2000,0,0,0,2379,0,295,FALSE,206,206
+"NO2",0,1000,0,0,0,2379,0,353,FALSE,NA,NA
+"SO2",0,1000,0,0,0,2379,0,785,FALSE,NA,NA
+"O3",0,1000,0,0,0,2379,0,493,FALSE,NA,NA
+"CO",0,50,0,0,0,2379,0,336,FALSE,NA,NA
