@@ -1,0 +1,38 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[11:34:12] JN_Stadium B1 none direct h=24: 10 s 
+[11:34:30] JN_Stadium B1 none direct h=168: 18 s 
+[11:34:41] JN_Stadium B1 none direct h=336: 11 s 
+[11:34:48] JN_Stadium B1 none direct h=744: 6 s 
+[11:35:12]   one-step PM2.5 ALL: k=-, 24 s 
+[11:36:22] JN_Stadium B1 none recursive: one-step fits 24 s, recursion 70 s 
+[11:36:56] JN_Stadium B1 none cross-fit (4 folds): 33 s 
+[11:37:26] JN_Stadium B1 none hybrid s=24 h=168: 29 s 
+[11:37:46] JN_Stadium B1 none hybrid s=48 h=168: 20 s 
+[11:38:03] JN_Stadium B1 none hybrid s=72 h=168: 17 s 
+[11:38:25] JN_Stadium B1 none hybrid s=24 h=336: 21 s 
+[11:38:42] JN_Stadium B1 none hybrid s=48 h=336: 16 s 
+[11:38:59] JN_Stadium B1 none hybrid s=72 h=336: 17 s 
+[11:39:11] JN_Stadium B1 none hybrid s=24 h=744: 12 s 
+[11:39:22] JN_Stadium B1 none hybrid s=48 h=744: 10 s 
+[11:39:34] JN_Stadium B1 none hybrid s=72 h=744: 12 s 
+[11:39:34] cell JN_Stadium B1 none done in 5.6 min 
+[1] TRUE TRUE

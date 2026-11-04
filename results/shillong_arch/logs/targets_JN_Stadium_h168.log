@@ -1,0 +1,38 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[14:24:01] JN_Stadium targets: PM10, NO2, SO2, CO | archs: A0, A2, B0, A3 
+[14:24:33] targets JN_Stadium PM10 h=168 lightgbm A0 valMAE=33.766 n_val=389 (29 s) 
+[14:24:45] targets JN_Stadium PM10 h=168 lightgbm A2 valMAE=35.147 n_val=389 (12 s) 
+[14:26:01] targets JN_Stadium PM10 h=168 lightgbm B0 valMAE=33.861 n_val=389 (76 s) 
+[14:26:15] targets JN_Stadium PM10 h=168 lightgbm A3 valMAE=35.014 n_val=389 (14 s) 
+[14:26:32] targets JN_Stadium NO2 h=168 lightgbm A0 valMAE=6.882 n_val=425 (17 s) 
+[14:26:55] targets JN_Stadium NO2 h=168 lightgbm A2 valMAE=6.674 n_val=425 (24 s) 
+[14:31:52] targets JN_Stadium NO2 h=168 lightgbm B0 valMAE=7.007 n_val=425 (297 s) 
+[14:33:31] targets JN_Stadium NO2 h=168 lightgbm A3 valMAE=6.435 n_val=425 (99 s) 
+[14:33:36] targets JN_Stadium SO2 h=168 lightgbm A0 valMAE=1.885 n_val=425 (4 s) 
+[14:33:43] targets JN_Stadium SO2 h=168 lightgbm A2 valMAE=1.884 n_val=425 (7 s) 
+[14:34:13] targets JN_Stadium SO2 h=168 lightgbm B0 valMAE=2.012 n_val=425 (29 s) 
+[14:34:23] targets JN_Stadium SO2 h=168 lightgbm A3 valMAE=1.746 n_val=425 (10 s) 
+[14:34:29] targets JN_Stadium CO h=168 lightgbm A0 valMAE=0.229 n_val=425 (6 s) 
+[14:34:41] targets JN_Stadium CO h=168 lightgbm A2 valMAE=0.238 n_val=425 (12 s) 
+[14:35:18] targets JN_Stadium CO h=168 lightgbm B0 valMAE=0.242 n_val=425 (37 s) 
+[14:35:29] targets JN_Stadium CO h=168 lightgbm A3 valMAE=0.229 n_val=425 (11 s) 
+[14:35:29] targets JN_Stadium h=168 done in 700 s 

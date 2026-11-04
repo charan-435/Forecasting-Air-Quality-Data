@@ -1,0 +1,38 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[11:21:52] Lumpyngngad B1 none direct h=24: 7 s 
+[11:21:57] Lumpyngngad B1 none direct h=168: 4 s 
+[11:22:00] Lumpyngngad B1 none direct h=336: 3 s 
+[11:22:04] Lumpyngngad B1 none direct h=744: 3 s 
+[11:22:31]   one-step PM2.5 ALL: k=-, 27 s 
+[11:25:09] Lumpyngngad B1 none recursive: one-step fits 27 s, recursion 158 s 
+[11:26:10] Lumpyngngad B1 none cross-fit (4 folds): 60 s 
+[11:26:19] Lumpyngngad B1 none hybrid s=24 h=168: 9 s 
+[11:26:28] Lumpyngngad B1 none hybrid s=48 h=168: 8 s 
+[11:26:36] Lumpyngngad B1 none hybrid s=72 h=168: 8 s 
+[11:26:44] Lumpyngngad B1 none hybrid s=24 h=336: 7 s 
+[11:26:51] Lumpyngngad B1 none hybrid s=48 h=336: 7 s 
+[11:26:58] Lumpyngngad B1 none hybrid s=72 h=336: 6 s 
+[11:27:05] Lumpyngngad B1 none hybrid s=24 h=744: 7 s 
+[11:27:13] Lumpyngngad B1 none hybrid s=48 h=744: 8 s 
+[11:27:23] Lumpyngngad B1 none hybrid s=72 h=744: 10 s 
+[11:27:23] cell Lumpyngngad B1 none done in 5.6 min 
+[1] TRUE TRUE

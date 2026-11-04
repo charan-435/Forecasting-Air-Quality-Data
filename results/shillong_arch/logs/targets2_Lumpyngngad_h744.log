@@ -1,0 +1,28 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[15:47:53] Lumpyngngad targets: SO2, CO | archs: A0, A2, B0, A3, C3_sh 
+[15:48:03] targets Lumpyngngad SO2 h=744 lightgbm A2 valMAE=3.012 n_val=1370 (9 s) 
+[15:48:14] targets Lumpyngngad SO2 h=744 lightgbm A3 valMAE=2.860 n_val=1370 (11 s) 
+[15:53:59] targets Lumpyngngad SO2 h=744 lightgbm C3_sh valMAE=1.980 n_val=1370 (345 s) 
+[15:54:05] targets Lumpyngngad CO h=744 lightgbm A2 valMAE=0.071 n_val=1372 (6 s) 
+[15:54:11] targets Lumpyngngad CO h=744 lightgbm A3 valMAE=0.058 n_val=1372 (6 s) 
+[15:55:33] targets Lumpyngngad CO h=744 lightgbm C3_sh valMAE=0.055 n_val=1372 (81 s) 
+[15:55:33] targets Lumpyngngad h=744 done in 469 s 

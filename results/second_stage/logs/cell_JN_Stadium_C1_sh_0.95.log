@@ -1,0 +1,38 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[17:15:19] JN_Stadium C1_sh pca95 direct h=24: 31 s 
+[17:16:14] JN_Stadium C1_sh pca95 direct h=168: 54 s 
+[17:16:29] JN_Stadium C1_sh pca95 direct h=336: 15 s 
+[17:16:39] JN_Stadium C1_sh pca95 direct h=744: 10 s 
+[17:18:37]   one-step PM2.5 ALL: k=31, 118 s 
+[17:25:36] JN_Stadium C1_sh pca95 recursive: one-step fits 118 s, recursion 419 s 
+[17:26:42] JN_Stadium C1_sh pca95 cross-fit (4 folds): 66 s 
+[17:26:58] JN_Stadium C1_sh pca95 hybrid s=24 h=168: 16 s 
+[17:27:07] JN_Stadium C1_sh pca95 hybrid s=48 h=168: 8 s 
+[17:27:14] JN_Stadium C1_sh pca95 hybrid s=72 h=168: 6 s 
+[17:27:24] JN_Stadium C1_sh pca95 hybrid s=24 h=336: 10 s 
+[17:27:36] JN_Stadium C1_sh pca95 hybrid s=48 h=336: 12 s 
+[17:27:57] JN_Stadium C1_sh pca95 hybrid s=72 h=336: 21 s 
+[17:28:12] JN_Stadium C1_sh pca95 hybrid s=24 h=744: 15 s 
+[17:28:26] JN_Stadium C1_sh pca95 hybrid s=48 h=744: 14 s 
+[17:28:36] JN_Stadium C1_sh pca95 hybrid s=72 h=744: 10 s 
+[17:28:36] cell JN_Stadium C1_sh pca95 done in 13.8 min 
+[1] TRUE TRUE

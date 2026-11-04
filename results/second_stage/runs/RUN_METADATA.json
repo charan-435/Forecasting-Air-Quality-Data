@@ -1,0 +1,40 @@
+{
+  "stage": "run",
+  "time": "2026-11-04 17:39:06",
+  "git": "38daa41d68294da98814d551894d208d2fb283d4",
+  "packages": {
+    "R": "4.5.2",
+    "lightgbm": "4.7.0",
+    "xgboost": "3.2.1.1",
+    "catboost": "1.2.8",
+    "glmnet": "5.2",
+    "pls": "2.9.0",
+    "arrow": "26.0.0",
+    "data.table": "1.18.0",
+    "yaml": "2.3.12",
+    "digest": "0.6.39",
+    "jsonlite": "2.0.0",
+    "ggplot2": "4.0.1"
+  },
+  "args": ["--stage=run", "--station=JN_Stadium", "--archs=C1_sh", "--pca=0.99"],
+  "sha256": {
+    "config/second_stage.yaml": "f23e1f2c4c66a1baba7dc111b64f6f0e0152cdbe6c296a1aa46a4432bfd3b4fe",
+    "config/shillong_arch.yaml": "8976b654e7257ceb44f1eca6514940fc6548d90c98ad827e7b5dd4becbdeea34",
+    "run_second_stage.R": "82377e3ff0175ae00c28f6be627be00a7a4b5ad9994feee754eddf777d7a4095",
+    "R/40_mv_data.R": "0926d36d71b8ef4dc1fd96f3855af88e0e6c2e7928156de15194bdf7cb01a352",
+    "R/41_mv_features.R": "491fdc9372b2ff5abe6848391d381957dcede6345d5266c6f934297a391d5925",
+    "R/43_mv_models.R": "2b9c51f327931d3de43c07d83fab819484d531ad1ecf6a14925d831633e24d77",
+    "R/44_mv_metrics.R": "959eaf00a886f70dfc11778c7169cdf0d3c74c1e045e8991e8c59fca9a2c2027",
+    "R/45_mv_families.R": "e5b704c7646d6fe38af6423d48ddc6434c68b13e59257d410f774ef0992bd8b5",
+    "R/47_mv_eval.R": "6c95ae2ba8d91f203115c0b1224782cdad017442206e072380fe294f92faff3b",
+    "R/48_mv_runner.R": "dcf47fbe71f319166c9d9305c85fbf06774a0662c646a4200fc2fd4dfb051e87",
+    "R/50_sh_data.R": "6d480c98eb9ef99b7861bb383f01fdfa30c05979ddd99e18fd4156c8609c1893",
+    "R/51_sh_features.R": "d9e06cee258523d4ccc46f5679857cc4450afa2344aeff612cecfc63472944bf",
+    "R/53_sh_experiments.R": "579419832332d66464c79c42fa0d9a3e4ac9d2b7644eee08a512c103905248a8",
+    "R/55_sh_report.R": "c50c62877a1e520e9c83a4d7eb26602b97ff81b5f4c20c5a8daff75b056726cd",
+    "R/60_ss_core.R": "99d4b022056d8d82700a8e58e31a5bc271f2f0848013028cd196d167bb3fce13",
+    "R/61_ss_stages.R": "3602fc9a4baecab66af5f087e7c5b3516bcfd99bf4e20f057942a846895218f6",
+    "R/62_ss_report.R": "53e6dbeb2d3cf843bff793b71e7f9dd591f781e6a15863bacff2e37430abc58c",
+    "tests/second_stage/run_tests.R": "4ec75b8f04c7fe94d54e5c626657833588468d2518d846d40301633769e272ca"
+  }
+}

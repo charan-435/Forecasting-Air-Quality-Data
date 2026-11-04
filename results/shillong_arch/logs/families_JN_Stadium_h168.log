@@ -1,0 +1,37 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[14:23:58] JN_Stadium stage-2 shortlist: A0, B0, A3 
+[14:24:17] families JN_Stadium PM2.5 h=168 xgboost A0 valMAE=17.092 n_val=371 (15 s) 
+[14:25:12] families JN_Stadium PM2.5 h=168 xgboost B0 valMAE=17.079 n_val=371 (55 s) 
+[14:25:28] families JN_Stadium PM2.5 h=168 xgboost A3 valMAE=17.702 n_val=371 (16 s) 
+[14:26:17] families JN_Stadium PM2.5 h=168 catboost A0 valMAE=17.165 n_val=371 (49 s) 
+[14:29:23] families JN_Stadium PM2.5 h=168 catboost B0 valMAE=17.143 n_val=371 (185 s) 
+[14:29:51] families JN_Stadium PM2.5 h=168 catboost A3 valMAE=17.675 n_val=371 (28 s) 
+[14:29:52] families JN_Stadium PM2.5 h=168 ridge A0 valMAE=17.456 n_val=371 (1 s) 
+[14:29:52] families JN_Stadium PM2.5 h=168 ridge B0 valMAE=17.396 n_val=371 (0 s) 
+[14:29:53] families JN_Stadium PM2.5 h=168 ridge A3 valMAE=16.265 n_val=371 (0 s) 
+[14:29:53] families JN_Stadium PM2.5 h=168 lasso A0 valMAE=17.456 n_val=371 (0 s) 
+[14:29:54] families JN_Stadium PM2.5 h=168 lasso B0 valMAE=17.380 n_val=371 (0 s) 
+[14:29:54] families JN_Stadium PM2.5 h=168 lasso A3 valMAE=16.095 n_val=371 (0 s) 
+[14:29:55] families JN_Stadium PM2.5 h=168 elasticnet A0 valMAE=17.456 n_val=371 (1 s) 
+[14:29:56] families JN_Stadium PM2.5 h=168 elasticnet B0 valMAE=17.378 n_val=371 (1 s) 
+[14:29:56] families JN_Stadium PM2.5 h=168 elasticnet A3 valMAE=16.095 n_val=371 (0 s) 
+[14:29:56] families JN_Stadium h=168 done in 368 s 

@@ -1,0 +1,8 @@
+[23:22:32] xgboost B0 h=24 best=max_depth=6,min_child_weight=1,colsample_bytree=0.5,lambda=10 valMAE=5.890 (16 candidates, 5 seeds, 5 s) 
+[23:22:58] xgboost B1 h=24 best=max_depth=3,min_child_weight=1,colsample_bytree=0.5,lambda=10 valMAE=5.673 (16 candidates, 5 seeds, 26 s) 
+[23:22:59] xgboost B0 h=168 best=max_depth=6,min_child_weight=20,colsample_bytree=0.8,lambda=10 valMAE=7.442 (16 candidates, 5 seeds, 2 s) 
+[23:23:07] xgboost B1 h=168 best=max_depth=3,min_child_weight=20,colsample_bytree=0.8,lambda=10 valMAE=7.407 (16 candidates, 5 seeds, 8 s) 
+[23:23:10] xgboost B0 h=336 best=max_depth=6,min_child_weight=1,colsample_bytree=0.8,lambda=10 valMAE=7.946 (16 candidates, 5 seeds, 3 s) 
+[23:23:21] xgboost B1 h=336 best=max_depth=6,min_child_weight=1,colsample_bytree=0.8,lambda=1 valMAE=8.153 (16 candidates, 5 seeds, 11 s) 
+[23:23:22] xgboost B0 h=744 best=max_depth=3,min_child_weight=1,colsample_bytree=0.8,lambda=1 valMAE=6.266 (16 candidates, 5 seeds, 1 s) 
+[23:23:32] xgboost B1 h=744 best=max_depth=6,min_child_weight=1,colsample_bytree=0.5,lambda=10 valMAE=6.176 (16 candidates, 5 seeds, 9 s) 

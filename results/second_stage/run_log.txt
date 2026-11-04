@@ -1,0 +1,2049 @@
+[02:25:41] tests: 87/87 
+[02:27:14] Lumpyngngad A2 none direct h=24: 1 s 
+[02:27:14] Lumpyngngad A2 none direct h=168: 0 s 
+[02:27:15]   one-step PM2.5 LEVEL: k=-, 1 s 
+[02:27:17]   one-step SO2 LEVEL: k=-, 2 s 
+[02:27:18]   one-step CO LEVEL: k=-, 1 s 
+[02:27:20] Lumpyngngad A2 none recursive: one-step fits 4 s, recursion 2 s 
+[02:27:24] Lumpyngngad A2 none cross-fit (4 folds): 4 s 
+[02:27:24] Lumpyngngad A2 none hybrid s=24 h=168: 0 s 
+[02:27:24] Lumpyngngad A2 none hybrid s=72 h=168: 0 s 
+[02:27:24] smoke A2 none: 11 s 
+[02:27:25] Lumpyngngad A2 pca95 direct h=24: 0 s 
+[02:27:25] Lumpyngngad A2 pca95 direct h=168: 0 s 
+[02:27:26]   one-step PM2.5 LEVEL: k=14, 0 s 
+[02:27:27]   one-step SO2 LEVEL: k=16, 1 s 
+[02:27:28]   one-step CO LEVEL: k=18, 1 s 
+[02:27:32] Lumpyngngad A2 pca95 recursive: one-step fits 3 s, recursion 4 s 
+[02:27:36] Lumpyngngad A2 pca95 cross-fit (4 folds): 4 s 
+[02:27:36] Lumpyngngad A2 pca95 hybrid s=24 h=168: 0 s 
+[02:27:37] Lumpyngngad A2 pca95 hybrid s=72 h=168: 0 s 
+[02:27:37] smoke A2 pca95: 12 s 
+[02:27:49] Lumpyngngad C2_sep none direct h=24: 11 s 
+[02:27:59] Lumpyngngad C2_sep none direct h=168: 9 s 
+[02:28:02]   one-step PM2.5 D1: k=-, 3 s 
+[02:28:06]   one-step PM2.5 D2: k=-, 4 s 
+[02:28:10]   one-step PM2.5 D3: k=-, 4 s 
+[02:28:17]   one-step PM2.5 D4: k=-, 7 s 
+[02:28:28]   one-step PM2.5 D5: k=-, 11 s 
+[02:28:36]   one-step PM2.5 S5: k=-, 8 s 
+[02:28:40]   one-step SO2 D1: k=-, 3 s 
+[02:28:47]   one-step SO2 D2: k=-, 8 s 
+[02:28:59]   one-step SO2 D3: k=-, 11 s 
+[02:29:03]   one-step SO2 D4: k=-, 4 s 
+[02:29:09]   one-step SO2 D5: k=-, 5 s 
+[02:29:19]   one-step SO2 S5: k=-, 11 s 
+[02:29:23]   one-step CO D1: k=-, 3 s 
+[02:29:27]   one-step CO D2: k=-, 4 s 
+[02:29:32]   one-step CO D3: k=-, 5 s 
+[02:29:44]   one-step CO D4: k=-, 12 s 
+[02:29:56]   one-step CO D5: k=-, 12 s 
+[02:30:05]   one-step CO S5: k=-, 9 s 
+[02:30:40] Lumpyngngad C2_sep none recursive: one-step fits 126 s, recursion 35 s 
+[02:33:05] Lumpyngngad C2_sep none cross-fit (4 folds): 145 s 
+[02:33:16] Lumpyngngad C2_sep none hybrid s=24 h=168: 10 s 
+[02:33:26] Lumpyngngad C2_sep none hybrid s=72 h=168: 10 s 
+[02:33:26] smoke C2_sep none: 349 s 
+[02:33:38] Lumpyngngad C2_sep pca95 direct h=24: 11 s 
+[02:33:46] Lumpyngngad C2_sep pca95 direct h=168: 8 s 
+[02:33:48]   one-step PM2.5 D1: k=59, 2 s 
+[02:33:51]   one-step PM2.5 D2: k=59, 3 s 
+[02:33:55]   one-step PM2.5 D3: k=59, 4 s 
+[02:33:57]   one-step PM2.5 D4: k=59, 2 s 
+[02:34:00]   one-step PM2.5 D5: k=59, 4 s 
+[02:34:04]   one-step PM2.5 S5: k=59, 3 s 
+[02:34:08]   one-step SO2 D1: k=60, 4 s 
+[02:34:12]   one-step SO2 D2: k=60, 4 s 
+[02:34:17]   one-step SO2 D3: k=60, 5 s 
+[02:34:22]   one-step SO2 D4: k=60, 5 s 
+[02:34:25]   one-step SO2 D5: k=60, 3 s 
+[02:34:29]   one-step SO2 S5: k=60, 5 s 
+[02:34:32]   one-step CO D1: k=60, 3 s 
+[02:34:36]   one-step CO D2: k=60, 4 s 
+[02:34:41]   one-step CO D3: k=60, 5 s 
+[02:34:46]   one-step CO D4: k=60, 5 s 
+[02:34:51]   one-step CO D5: k=60, 5 s 
+[02:34:55]   one-step CO S5: k=60, 4 s 
+[02:37:35] Lumpyngngad C2_sep pca95 recursive: one-step fits 69 s, recursion 160 s 
+[02:39:14] Lumpyngngad C2_sep pca95 cross-fit (4 folds): 99 s 
+[02:39:22] Lumpyngngad C2_sep pca95 hybrid s=24 h=168: 8 s 
+[02:39:31] Lumpyngngad C2_sep pca95 hybrid s=72 h=168: 9 s 
+[02:39:31] smoke C2_sep pca95: 365 s 
+[02:39:32] Lumpyngngad A3 none direct h=24: 1 s 
+[02:39:32] Lumpyngngad A3 none direct h=168: 0 s 
+[02:39:34]   one-step PM2.5 LEVEL: k=-, 2 s 
+[02:39:35]   one-step SO2 LEVEL: k=-, 1 s 
+[02:39:36]   one-step CO LEVEL: k=-, 1 s 
+[02:39:39] Lumpyngngad A3 none recursive: one-step fits 4 s, recursion 3 s 
+[02:39:44] Lumpyngngad A3 none cross-fit (4 folds): 5 s 
+[02:39:45] Lumpyngngad A3 none hybrid s=24 h=168: 0 s 
+[02:39:45] Lumpyngngad A3 none hybrid s=72 h=168: 0 s 
+[02:39:45] smoke A3 none: 14 s 
+[02:39:45] Lumpyngngad A3 pca95 direct h=24: 0 s 
+[02:39:46] Lumpyngngad A3 pca95 direct h=168: 0 s 
+[02:39:46]   one-step PM2.5 LEVEL: k=14, 1 s 
+[02:39:48]   one-step SO2 LEVEL: k=16, 1 s 
+[02:39:49]   one-step CO LEVEL: k=18, 1 s 
+[02:39:54] Lumpyngngad A3 pca95 recursive: one-step fits 3 s, recursion 5 s 
+[02:40:00] Lumpyngngad A3 pca95 cross-fit (4 folds): 5 s 
+[02:40:00] Lumpyngngad A3 pca95 hybrid s=24 h=168: 0 s 
+[02:40:00] Lumpyngngad A3 pca95 hybrid s=72 h=168: 0 s 
+[02:40:00] smoke A3 pca95: 15 s 
+[02:40:00] smoke checks: 40/40 
+[02:40:32] JN_Stadium A2 none direct h=24: 7 s 
+[02:40:34] JN_Stadium A3 none direct h=24: 9 s 
+[02:40:35] JN_Stadium A2 none direct h=168: 3 s 
+[02:40:38] JN_Stadium A3 none direct h=168: 4 s 
+[02:41:50] Lumpyngngad C2_sep pca90 direct h=24: 82 s 
+[02:42:00] JN_Stadium C2_sep pca90 direct h=24: 93 s 
+[02:42:04] Lumpyngngad C2_sep pca95 direct h=24: 96 s 
+[02:42:34] Lumpyngngad C2_sep pca99 direct h=24: 126 s 
+[02:42:45] JN_Stadium C2_sep pca95 direct h=24: 138 s 
+[02:42:47] Lumpyngngad C2_sep pca90 direct h=168: 56 s 
+[02:42:54] JN_Stadium A3 none direct h=336: 136 s 
+[02:43:04] JN_Stadium A2 none direct h=336: 148 s 
+[02:43:07] JN_Stadium C2_sep pca99 direct h=24: 160 s 
+[02:43:08] Lumpyngngad C2_sep pca95 direct h=168: 63 s 
+[02:43:08] JN_Stadium C2_sep pca90 direct h=168: 67 s 
+[02:43:33] Lumpyngngad C2_sep pca90 direct h=336: 45 s 
+[02:43:39] JN_Stadium A3 none direct h=744: 46 s 
+[02:43:42] Lumpyngngad C2_sep pca99 direct h=168: 67 s 
+[02:43:59] Lumpyngngad C2_sep pca95 direct h=336: 50 s 
+[02:44:00] JN_Stadium C2_sep pca95 direct h=168: 74 s 
+[02:44:04] JN_Stadium C2_sep pca90 direct h=336: 54 s 
+[02:44:12] Lumpyngngad C2_sep pca90 direct h=744: 37 s 
+[02:44:13]   one-step PM2.5 LEVEL: k=-, 33 s 
+[02:44:16] Lumpyngngad C2_sep none direct h=24: 229 s 
+[02:44:21]   one-step PM2.5 D1: k=44, 9 s 
+[02:44:25] JN_Stadium A2 none direct h=744: 82 s 
+[02:44:29]   one-step PM10 LEVEL: k=-, 16 s 
+[02:44:32]   one-step PM2.5 D2: k=44, 11 s 
+[02:44:37] JN_Stadium C2_sep pca90 direct h=744: 33 s 
+[02:44:41] Lumpyngngad C2_sep pca99 direct h=336: 58 s 
+[02:44:42]   one-step NO2 LEVEL: k=-, 13 s 
+[02:44:45] Lumpyngngad C2_sep pca95 direct h=744: 44 s 
+[02:44:45] JN_Stadium C2_sep pca99 direct h=168: 97 s 
+[02:44:48]   one-step PM2.5 LEVEL: k=-, 23 s 
+[02:44:50]   one-step PM2.5 D1: k=55, 13 s 
+[02:44:56]   one-step PM2.5 D1: k=59, 11 s 
+[02:44:59]   one-step PM2.5 D3: k=44, 27 s 
+[02:45:05]   one-step SO2 LEVEL: k=-, 23 s 
+[02:45:08]   one-step PM10 LEVEL: k=-, 20 s 
+[02:45:14] JN_Stadium C2_sep pca95 direct h=336: 73 s 
+[02:45:18]   one-step NO2 LEVEL: k=-, 10 s 
+[02:45:25]   one-step PM2.5 D4: k=44, 26 s 
+[02:45:26]   one-step CO LEVEL: k=-, 21 s 
+[02:45:29]   one-step PM2.5 D2: k=55, 39 s 
+[02:45:34]   one-step SO2 LEVEL: k=-, 16 s 
+[02:45:37] Lumpyngngad C2_sep pca99 direct h=744: 55 s 
+[02:45:46]   one-step PM2.5 D2: k=59, 50 s 
+[02:45:51]   one-step PM2.5 D1: k=80, 14 s 
+[02:45:57]   one-step CO LEVEL: k=-, 24 s 
+[02:46:02] JN_Stadium C2_sep pca95 direct h=744: 48 s 
+[02:46:28]   one-step PM2.5 D1: k=79, 26 s 
+[02:46:36]   one-step PM2.5 D5: k=44, 71 s 
+[02:46:49] JN_Stadium A3 none recursive: one-step fits 106 s, recursion 84 s 
+[02:46:50] JN_Stadium A2 none recursive: one-step fits 92 s, recursion 53 s 
+[02:46:51] JN_Stadium C2_sep pca99 direct h=336: 125 s 
+[02:47:06]   one-step PM2.5 D3: k=59, 81 s 
+[02:47:11]   one-step PM2.5 D2: k=80, 79 s 
+[02:47:19]   one-step PM2.5 D4: k=59, 12 s 
+[02:47:43] JN_Stadium A2 none cross-fit (4 folds): 52 s 
+[02:47:46] JN_Stadium A2 none hybrid s=24 h=168: 4 s 
+[02:47:50] JN_Stadium A2 none hybrid s=48 h=168: 3 s 
+[02:47:51]   one-step PM2.5 S5: k=44, 75 s 
+[02:47:53] JN_Stadium A2 none hybrid s=72 h=168: 4 s 
+[02:47:56] JN_Stadium C2_sep pca99 direct h=744: 65 s 
+[02:48:06] JN_Stadium A2 none hybrid s=24 h=336: 13 s 
+[02:48:11] JN_Stadium A2 none hybrid s=48 h=336: 6 s 
+[02:48:12] JN_Stadium A3 none cross-fit (4 folds): 83 s 
+[02:48:16] JN_Stadium A2 none hybrid s=72 h=336: 5 s 
+[02:48:17] JN_Stadium A3 none hybrid s=24 h=168: 4 s 
+[02:48:17]   one-step PM2.5 D3: k=55, 168 s 
+[02:48:20] JN_Stadium A3 none hybrid s=48 h=168: 3 s 
+[02:48:25] JN_Stadium A2 none hybrid s=24 h=744: 8 s 
+[02:48:25]   one-step PM2.5 D1: k=124, 28 s 
+[02:48:26]   one-step SO2 D1: k=46, 34 s 
+[02:48:29] JN_Stadium A2 none hybrid s=48 h=744: 5 s 
+[02:48:31]   one-step PM2.5 D2: k=79, 123 s 
+[02:48:34] JN_Stadium A2 none hybrid s=72 h=744: 5 s 
+[02:48:34] cell JN_Stadium A2 none done in 8.2 min 
+[02:48:43]   one-step PM2.5 D5: k=59, 84 s 
+[02:48:55] Lumpyngngad A3 none direct h=24: 8 s 
+[02:48:59] Lumpyngngad C2_sep none direct h=168: 282 s 
+[02:49:02]   one-step SO2 D2: k=46, 36 s 
+[02:49:04] Lumpyngngad A3 none direct h=168: 10 s 
+[02:49:10] Lumpyngngad A3 none direct h=336: 6 s 
+[02:49:12] JN_Stadium A3 none hybrid s=72 h=168: 52 s 
+[02:49:16] Lumpyngngad A3 none direct h=744: 5 s 
+[02:49:17]   one-step PM2.5 D4: k=55, 60 s 
+[02:49:21]   one-step PM2.5 D3: k=80, 131 s 
+[02:49:43]   one-step PM2.5 LEVEL: k=-, 27 s 
+[02:50:03]   one-step PM2.5 D5: k=55, 46 s 
+[02:50:05] JN_Stadium C2_sep none direct h=24: 578 s 
+[02:50:12]   one-step PM2.5 D2: k=124, 107 s 
+[02:50:13]   one-step SO2 D3: k=46, 70 s 
+[02:50:23]   one-step SO2 LEVEL: k=-, 40 s 
+[02:50:24]   one-step PM2.5 S5: k=59, 101 s 
+[02:50:36]   one-step CO LEVEL: k=-, 13 s 
+[02:50:50]   one-step PM2.5 S5: k=55, 46 s 
+[02:50:59]   one-step PM2.5 D4: k=80, 98 s 
+[02:51:03]   one-step SO2 D1: k=60, 39 s 
+[02:51:07]   one-step PM10 D1: k=55, 17 s 
+[02:51:36] JN_Stadium A3 none hybrid s=24 h=336: 144 s 
+[02:51:48]   one-step PM10 D2: k=55, 41 s 
+[02:51:55]   one-step PM2.5 D3: k=79, 204 s 
+[02:51:59] Lumpyngngad C2_sep none direct h=336: 178 s 
+[02:51:59] Lumpyngngad A3 none recursive: one-step fits 80 s, recursion 83 s 
+[02:52:08] JN_Stadium A3 none hybrid s=48 h=336: 32 s 
+[02:52:12]   one-step SO2 D4: k=46, 119 s 
+[02:52:16] JN_Stadium A3 none hybrid s=72 h=336: 8 s 
+[02:52:19] JN_Stadium A3 none hybrid s=24 h=744: 3 s 
+[02:52:21] JN_Stadium A3 none hybrid s=48 h=744: 2 s 
+[02:52:24] JN_Stadium A3 none hybrid s=72 h=744: 3 s 
+[02:52:24] cell JN_Stadium A3 none done in 12.0 min 
+[02:52:41]   one-step SO2 D2: k=60, 98 s 
+[02:52:44] Lumpyngngad A2 none direct h=24: 8 s 
+[02:52:45]   one-step PM10 D3: k=55, 57 s 
+[02:52:51] Lumpyngngad A2 none direct h=168: 7 s 
+[02:52:58] Lumpyngngad A2 none direct h=336: 6 s 
+[02:53:03] Lumpyngngad A2 none direct h=744: 5 s 
+[02:53:12]   one-step PM2.5 D4: k=79, 77 s 
+[02:53:19]   one-step PM10 D4: k=55, 34 s 
+[02:53:23] Lumpyngngad A3 none cross-fit (4 folds): 84 s 
+[02:53:31]   one-step SO2 D5: k=46, 79 s 
+[02:53:31]   one-step PM2.5 D3: k=124, 199 s 
+[02:53:32] Lumpyngngad A3 none hybrid s=24 h=168: 9 s 
+[02:53:38]   one-step PM2.5 LEVEL: k=-, 34 s 
+[02:53:38]   one-step PM2.5 D5: k=80, 159 s 
+[02:53:39] Lumpyngngad A3 none hybrid s=48 h=168: 7 s 
+[02:53:45] Lumpyngngad A3 none hybrid s=72 h=168: 6 s 
+[02:53:53] Lumpyngngad A3 none hybrid s=24 h=336: 8 s 
+[02:54:00]   one-step PM10 D5: k=55, 41 s 
+[02:54:02] Lumpyngngad A3 none hybrid s=48 h=336: 9 s 
+[02:54:09] Lumpyngngad A3 none hybrid s=72 h=336: 7 s 
+[02:54:24]   one-step SO2 D3: k=60, 103 s 
+[02:54:25]   one-step SO2 LEVEL: k=-, 47 s 
+[02:54:25] Lumpyngngad A3 none hybrid s=24 h=744: 15 s 
+[02:54:26]   one-step PM2.5 D5: k=79, 74 s 
+[02:54:38]   one-step CO LEVEL: k=-, 13 s 
+[02:54:40] Lumpyngngad A3 none hybrid s=48 h=744: 15 s 
+[02:54:41] Lumpyngngad C2_sep none direct h=744: 161 s 
+[02:54:50]   one-step PM10 S5: k=55, 50 s 
+[02:54:56]   one-step SO2 S5: k=46, 85 s 
+[02:55:11]   one-step NO2 D1: k=55, 20 s 
+[02:55:11] Lumpyngngad A3 none hybrid s=72 h=744: 31 s 
+[02:55:11] cell Lumpyngngad A3 none done in 6.4 min 
+[02:55:19]   one-step CO D1: k=46, 23 s 
+[02:55:36]   one-step PM2.5 D4: k=124, 124 s 
+[02:55:53]   one-step NO2 D2: k=55, 43 s 
+[02:55:55]   one-step PM2.5 S5: k=79, 89 s 
+[02:56:09] Lumpyngngad A2 none recursive: one-step fits 95 s, recursion 91 s 
+[02:56:12]   one-step CO D2: k=46, 53 s 
+[02:56:13]   one-step PM10 D1: k=79, 17 s 
+[02:56:32]   one-step PM2.5 S5: k=80, 173 s 
+[02:56:39]   one-step SO2 D4: k=60, 135 s 
+[02:56:44]   one-step NO2 D3: k=55, 50 s 
+[02:56:53] JN_Stadium C2_sep none direct h=168: 407 s 
+[02:57:00]   one-step PM2.5 D1: k=-, 139 s 
+[02:57:00] JN_Stadium A3 pca99 direct h=24: 94 s 
+[02:57:15]   one-step CO D3: k=46, 63 s 
+[02:57:20]   one-step PM10 D2: k=79, 66 s 
+[02:57:20]   one-step SO2 D1: k=80, 48 s 
+[02:57:27] JN_Stadium A3 pca99 direct h=168: 27 s 
+[02:57:30] Lumpyngngad A2 none cross-fit (4 folds): 81 s 
+[02:57:38] Lumpyngngad A2 none hybrid s=24 h=168: 7 s 
+[02:57:43] Lumpyngngad A2 none hybrid s=48 h=168: 6 s 
+[02:57:44]   one-step NO2 D4: k=55, 60 s 
+[02:57:45]   one-step PM2.5 D5: k=124, 129 s 
+[02:57:50] JN_Stadium A3 pca99 direct h=336: 23 s 
+[02:57:51] Lumpyngngad A2 none hybrid s=72 h=168: 8 s 
+[02:57:52] JN_Stadium A3 pca99 direct h=744: 2 s 
+[02:57:57] Lumpyngngad A2 none hybrid s=24 h=336: 6 s 
+[02:58:03] Lumpyngngad A2 none hybrid s=48 h=336: 6 s 
+[02:58:08] Lumpyngngad A2 none hybrid s=72 h=336: 5 s 
+[02:58:14] Lumpyngngad A2 none hybrid s=24 h=744: 6 s 
+[02:58:19] Lumpyngngad A2 none hybrid s=48 h=744: 5 s 
+[02:58:24]   one-step NO2 D5: k=55, 40 s 
+[02:58:25] Lumpyngngad A2 none hybrid s=72 h=744: 6 s 
+[02:58:25] cell Lumpyngngad A2 none done in 5.8 min 
+[02:58:33]   one-step SO2 D5: k=60, 114 s 
+[02:58:35]   one-step CO D4: k=46, 80 s 
+[02:58:36]   one-step PM10 D3: k=79, 76 s 
+[02:58:41] JN_Stadium A2 pca99 direct h=24: 5 s 
+[02:58:47] JN_Stadium A2 pca99 direct h=168: 6 s 
+[02:59:11]   one-step PM2.5 S5: k=124, 86 s 
+[02:59:19]   one-step NO2 S5: k=55, 55 s 
+[02:59:25]   one-step SO2 D2: k=80, 125 s 
+[02:59:30]   one-step SO2 D1: k=55, 10 s 
+[02:59:30]   one-step PM10 D1: k=125, 19 s 
+[02:59:31]   one-step PM10 D4: k=79, 55 s 
+[02:59:41]   one-step PM2.5 D2: k=-, 160 s 
+[02:59:48] JN_Stadium A2 pca99 direct h=336: 61 s 
+[02:59:51] JN_Stadium A2 pca99 direct h=744: 3 s 
+[02:59:52]   one-step SO2 D2: k=55, 22 s 
+[02:59:59]   one-step CO D5: k=46, 84 s 
+[03:00:27]   one-step PM2.5 LEVEL: k=77, 36 s 
+[03:00:27]   one-step PM10 D5: k=79, 56 s 
+[03:00:30]   one-step PM2.5 LEVEL: k=77, 157 s 
+[03:00:32]   one-step SO2 S5: k=60, 119 s 
+[03:00:46]   one-step PM10 LEVEL: k=77, 19 s 
+[03:00:52]   one-step CO D1: k=60, 20 s 
+[03:00:59]   one-step PM10 LEVEL: k=77, 30 s 
+[03:01:02]   one-step SO2 D3: k=55, 70 s 
+[03:01:11]   one-step PM10 D2: k=125, 100 s 
+[03:01:24]   one-step PM10 S5: k=79, 57 s 
+[03:01:35]   one-step CO D2: k=60, 42 s 
+[03:01:42]   one-step NO2 D1: k=79, 18 s 
+[03:01:45]   one-step CO S5: k=46, 106 s 
+[03:01:49]   one-step NO2 LEVEL: k=77, 49 s 
+[03:01:58]   one-step SO2 D3: k=80, 152 s 
+[03:02:09]   one-step SO2 D4: k=55, 67 s 
+[03:02:15] JN_Stadium C2_sep none direct h=336: 321 s 
+[03:02:25]   one-step NO2 D2: k=79, 42 s 
+[03:02:32]   one-step SO2 LEVEL: k=77, 44 s 
+[03:02:51]   one-step PM2.5 D3: k=-, 191 s 
+[03:03:22]   one-step PM10 D3: k=125, 131 s 
+[03:03:28]   one-step CO D3: k=60, 113 s 
+[03:03:30]   one-step SO2 D5: k=55, 81 s 
+[03:03:31]   one-step CO LEVEL: k=77, 59 s 
+[03:04:06]   one-step NO2 D3: k=79, 101 s 
+[03:04:16]   one-step NO2 LEVEL: k=77, 209 s 
+[03:04:54]   one-step SO2 S5: k=55, 84 s 
+[03:05:25] JN_Stadium C2_sep none direct h=744: 190 s 
+[03:05:33]   one-step CO D1: k=55, 38 s 
+[03:05:40]   one-step SO2 D4: k=80, 223 s 
+[03:06:36]   one-step CO D2: k=55, 63 s 
+[03:06:39]   one-step PM10 D4: k=125, 198 s 
+[03:06:42]   one-step NO2 D4: k=79, 156 s 
+[03:07:00]   one-step CO D4: k=60, 211 s 
+[03:07:17]   one-step SO2 LEVEL: k=77, 182 s 
+[03:08:09]   one-step PM2.5 D1: k=-, 163 s 
+[03:08:49]   one-step CO LEVEL: k=77, 92 s 
+[03:09:19]   one-step NO2 D5: k=79, 157 s 
+[03:09:52]   one-step PM10 D5: k=125, 192 s 
+[03:10:35] JN_Stadium A3 pca99 recursive: one-step fits 339 s, recursion 424 s 
+[03:11:17]   one-step SO2 D5: k=80, 336 s 
+[03:11:19]   one-step CO D5: k=60, 259 s 
+[03:12:05]   one-step CO D3: k=55, 328 s 
+[03:12:30]   one-step NO2 S5: k=79, 190 s 
+[03:12:41]   one-step PM10 S5: k=125, 169 s 
+[03:12:49]   one-step SO2 D1: k=79, 19 s 
+[03:13:17]   one-step PM2.5 D4: k=-, 625 s 
+[03:13:37]   one-step NO2 D1: k=125, 55 s 
+[03:14:01]   one-step CO D4: k=55, 117 s 
+[03:14:02]   one-step SO2 D2: k=79, 73 s 
+[03:15:39]   one-step PM2.5 D2: k=-, 450 s 
+[03:15:48]   one-step CO S5: k=60, 269 s 
+[03:16:13]   one-step CO D5: k=55, 132 s 
+[03:16:23]   one-step SO2 S5: k=80, 306 s 
+[03:16:34]   one-step SO2 D3: k=79, 152 s 
+[03:17:03]   one-step NO2 D2: k=125, 206 s 
+[03:17:30]   one-step CO D1: k=80, 67 s 
+[03:17:38] JN_Stadium A2 pca99 recursive: one-step fits 538 s, recursion 528 s 
+[03:17:38]   one-step CO S5: k=55, 84 s 
+[03:19:37]   one-step SO2 D4: k=79, 182 s 
+[03:20:38] JN_Stadium A3 pca99 cross-fit (4 folds): 603 s 
+[03:20:53] JN_Stadium A3 pca99 hybrid s=24 h=168: 14 s 
+[03:20:57]   one-step NO2 D3: k=125, 235 s 
+[03:21:03] JN_Stadium A3 pca99 hybrid s=48 h=168: 10 s 
+[03:21:04]   one-step CO D2: k=80, 214 s 
+[03:21:21] JN_Stadium A3 pca99 hybrid s=72 h=168: 18 s 
+[03:21:30] JN_Stadium A3 pca99 hybrid s=24 h=336: 9 s 
+[03:21:38] JN_Stadium A3 pca99 hybrid s=48 h=336: 8 s 
+[03:21:58] JN_Stadium A3 pca99 hybrid s=72 h=336: 20 s 
+[03:22:03] JN_Stadium A3 pca99 hybrid s=24 h=744: 5 s 
+[03:22:07] JN_Stadium A3 pca99 hybrid s=48 h=744: 4 s 
+[03:22:12]   one-step PM2.5 D5: k=-, 535 s 
+[03:22:13] JN_Stadium A3 pca99 hybrid s=72 h=744: 6 s 
+[03:22:13] cell JN_Stadium A3 pca99 done in 26.8 min 
+[03:22:41]   one-step SO2 D5: k=79, 184 s 
+[03:22:55] Lumpyngngad A3 pca99 direct h=24: 21 s 
+[03:23:16] Lumpyngngad A3 pca99 direct h=168: 21 s 
+[03:23:29] Lumpyngngad A3 pca99 direct h=336: 13 s 
+[03:23:40] Lumpyngngad A3 pca99 direct h=744: 11 s 
+[03:24:04]   one-step SO2 S5: k=79, 83 s 
+[03:24:51]   one-step PM2.5 LEVEL: k=38, 71 s 
+[03:24:55]   one-step CO D1: k=79, 51 s 
+[03:25:09]   one-step NO2 D4: k=125, 252 s 
+[03:25:31]   one-step CO D3: k=80, 267 s 
+[03:26:46]   one-step SO2 LEVEL: k=38, 115 s 
+[03:27:00]   one-step CO D2: k=79, 125 s 
+[03:28:11]   one-step CO LEVEL: k=38, 85 s 
+[03:28:27]   one-step NO2 D5: k=125, 198 s 
+[03:30:18] JN_Stadium A2 pca99 cross-fit (4 folds): 759 s 
+[03:30:29] JN_Stadium A2 pca99 hybrid s=24 h=168: 11 s 
+[03:30:36] JN_Stadium A2 pca99 hybrid s=48 h=168: 7 s 
+[03:30:46] JN_Stadium A2 pca99 hybrid s=72 h=168: 10 s 
+[03:30:53] JN_Stadium A2 pca99 hybrid s=24 h=336: 7 s 
+[03:31:00] JN_Stadium A2 pca99 hybrid s=48 h=336: 6 s 
+[03:31:00]   one-step PM2.5 S5: k=-, 527 s 
+[03:31:13]   one-step CO D4: k=80, 342 s 
+[03:31:20] JN_Stadium A2 pca99 hybrid s=72 h=336: 20 s 
+[03:31:26] JN_Stadium A2 pca99 hybrid s=24 h=744: 6 s 
+[03:31:30] JN_Stadium A2 pca99 hybrid s=48 h=744: 4 s 
+[03:31:39] JN_Stadium A2 pca99 hybrid s=72 h=744: 9 s 
+[03:31:39] cell JN_Stadium A2 pca99 done in 33.1 min 
+[03:32:33] Lumpyngngad A2 pca99 direct h=24: 24 s 
+[03:32:51]   one-step CO D3: k=79, 350 s 
+[03:33:22] Lumpyngngad A2 pca99 direct h=168: 49 s 
+[03:33:42] Lumpyngngad A2 pca99 direct h=336: 19 s 
+[03:33:46]   one-step NO2 S5: k=125, 319 s 
+[03:33:56] Lumpyngngad A2 pca99 direct h=744: 14 s 
+[03:34:19]   one-step SO2 D1: k=125, 33 s 
+[03:34:30]   one-step SO2 D1: k=-, 210 s 
+[03:35:18] Lumpyngngad A3 pca99 recursive: one-step fits 271 s, recursion 427 s 
+[03:35:38]   one-step PM2.5 LEVEL: k=38, 102 s 
+[03:35:47]   one-step CO D4: k=79, 176 s 
+[03:37:20]   one-step SO2 LEVEL: k=38, 102 s 
+[03:37:46]   one-step SO2 D2: k=125, 207 s 
+[03:38:02]   one-step CO D5: k=80, 408 s 
+[03:38:21]   one-step CO LEVEL: k=38, 61 s 
+[03:38:42]   one-step CO D5: k=79, 175 s 
+[03:39:28] Lumpyngngad A3 pca99 cross-fit (4 folds): 250 s 
+[03:39:45] Lumpyngngad A3 pca99 hybrid s=24 h=168: 16 s 
+[03:40:03] Lumpyngngad A3 pca99 hybrid s=48 h=168: 18 s 
+[03:40:21] Lumpyngngad A3 pca99 hybrid s=72 h=168: 18 s 
+[03:40:36] Lumpyngngad A3 pca99 hybrid s=24 h=336: 15 s 
+[03:40:54] Lumpyngngad A3 pca99 hybrid s=48 h=336: 18 s 
+[03:41:16] Lumpyngngad A3 pca99 hybrid s=72 h=336: 22 s 
+[03:41:33] Lumpyngngad A3 pca99 hybrid s=24 h=744: 17 s 
+[03:41:45] Lumpyngngad A3 pca99 hybrid s=48 h=744: 12 s 
+[03:41:45]   one-step CO S5: k=79, 183 s 
+[03:42:04] Lumpyngngad A3 pca99 hybrid s=72 h=744: 19 s 
+[03:42:04] cell Lumpyngngad A3 pca99 done in 19.5 min 
+[03:43:09] JN_Stadium A3 pca95 direct h=24: 36 s 
+[03:44:12] JN_Stadium A3 pca95 direct h=168: 62 s 
+[03:44:30] JN_Stadium A3 pca95 direct h=336: 19 s 
+[03:44:34]   one-step SO2 D3: k=125, 408 s 
+[03:44:37] JN_Stadium A3 pca95 direct h=744: 6 s 
+[03:45:34] Lumpyngngad A2 pca99 recursive: one-step fits 265 s, recursion 434 s 
+[03:46:04]   one-step PM2.5 LEVEL: k=39, 87 s 
+[03:46:12]   one-step PM2.5 D3: k=-, 1832 s 
+[03:46:12]   one-step CO S5: k=80, 490 s 
+[03:46:49]   one-step PM10 LEVEL: k=39, 44 s 
+[03:48:12]   one-step NO2 LEVEL: k=39, 83 s 
+[03:48:58]   one-step SO2 LEVEL: k=39, 46 s 
+[03:49:23]   one-step SO2 D4: k=125, 289 s 
+[03:50:18]   one-step CO LEVEL: k=39, 79 s 
+[03:50:20] Lumpyngngad A2 pca99 cross-fit (4 folds): 285 s 
+[03:50:43] Lumpyngngad A2 pca99 hybrid s=24 h=168: 22 s 
+[03:51:11] Lumpyngngad A2 pca99 hybrid s=48 h=168: 28 s 
+[03:51:25] Lumpyngngad A2 pca99 hybrid s=72 h=168: 14 s 
+[03:51:44] Lumpyngngad A2 pca99 hybrid s=24 h=336: 19 s 
+[03:52:09] Lumpyngngad A2 pca99 hybrid s=48 h=336: 25 s 
+[03:52:30] Lumpyngngad A2 pca99 hybrid s=72 h=336: 21 s 
+[03:52:43] Lumpyngngad A2 pca99 hybrid s=24 h=744: 13 s 
+[03:52:54] Lumpyngngad A2 pca99 hybrid s=48 h=744: 10 s 
+[03:53:04] Lumpyngngad A2 pca99 hybrid s=72 h=744: 10 s 
+[03:53:04] cell Lumpyngngad A2 pca99 done in 20.9 min 
+[03:53:12]   one-step PM2.5 D4: k=-, 420 s 
+[03:53:49] JN_Stadium A2 pca95 direct h=24: 16 s 
+[03:54:06] JN_Stadium A2 pca95 direct h=168: 17 s 
+[03:54:21] JN_Stadium A2 pca95 direct h=336: 15 s 
+[03:54:29] JN_Stadium A2 pca95 direct h=744: 8 s 
+[03:55:54]   one-step PM2.5 LEVEL: k=39, 85 s 
+[03:56:40]   one-step PM10 LEVEL: k=39, 46 s 
+[03:57:04]   one-step SO2 D5: k=125, 460 s 
+[03:57:51]   one-step SO2 D2: k=-, 1401 s 
+[03:57:58] JN_Stadium A3 pca95 recursive: one-step fits 341 s, recursion 460 s 
+[03:58:08]   one-step NO2 LEVEL: k=39, 88 s 
+[03:58:50]   one-step SO2 LEVEL: k=39, 42 s 
+[03:59:35]   one-step CO LEVEL: k=39, 45 s 
+[03:59:37]   one-step SO2 S5: k=125, 153 s 
+[04:00:32]   one-step PM2.5 D5: k=-, 440 s 
+[04:01:29] JN_Stadium A3 pca95 cross-fit (4 folds): 210 s 
+[04:01:37] JN_Stadium A3 pca95 hybrid s=24 h=168: 7 s 
+[04:01:50] JN_Stadium A3 pca95 hybrid s=48 h=168: 13 s 
+[04:02:26] JN_Stadium A3 pca95 hybrid s=72 h=168: 36 s 
+[04:02:50]   one-step CO D1: k=125, 193 s 
+[04:04:16] JN_Stadium A3 pca95 hybrid s=24 h=336: 111 s 
+[04:04:24] JN_Stadium A3 pca95 hybrid s=48 h=336: 8 s 
+[04:04:32] JN_Stadium A3 pca95 hybrid s=72 h=336: 8 s 
+[04:04:38] JN_Stadium A3 pca95 hybrid s=24 h=744: 5 s 
+[04:04:44] JN_Stadium A3 pca95 hybrid s=48 h=744: 6 s 
+[04:04:50] JN_Stadium A3 pca95 hybrid s=72 h=744: 5 s 
+[04:04:50] cell JN_Stadium A3 pca95 done in 22.3 min 
+[04:05:39] Lumpyngngad A3 pca95 direct h=24: 20 s 
+[04:05:52] Lumpyngngad A3 pca95 direct h=168: 13 s 
+[04:05:56] JN_Stadium A2 pca95 recursive: one-step fits 306 s, recursion 381 s 
+[04:06:04] Lumpyngngad A3 pca95 direct h=336: 12 s 
+[04:06:14] Lumpyngngad A3 pca95 direct h=744: 9 s 
+[04:06:47]   one-step PM2.5 LEVEL: k=14, 34 s 
+[04:07:18]   one-step SO2 D3: k=-, 567 s 
+[04:08:37] JN_Stadium A2 pca95 cross-fit (4 folds): 160 s 
+[04:08:46] JN_Stadium A2 pca95 hybrid s=24 h=168: 9 s 
+[04:08:47]   one-step SO2 LEVEL: k=16, 119 s 
+[04:08:50] JN_Stadium A2 pca95 hybrid s=48 h=168: 4 s 
+[04:08:57] JN_Stadium A2 pca95 hybrid s=72 h=168: 7 s 
+[04:09:02]   one-step CO D2: k=125, 372 s 
+[04:09:03] JN_Stadium A2 pca95 hybrid s=24 h=336: 6 s 
+[04:09:07] JN_Stadium A2 pca95 hybrid s=48 h=336: 4 s 
+[04:09:11] JN_Stadium A2 pca95 hybrid s=72 h=336: 4 s 
+[04:09:15] JN_Stadium A2 pca95 hybrid s=24 h=744: 4 s 
+[04:09:20] JN_Stadium A2 pca95 hybrid s=48 h=744: 5 s 
+[04:09:23] JN_Stadium A2 pca95 hybrid s=72 h=744: 3 s 
+[04:09:23] cell JN_Stadium A2 pca95 done in 15.8 min 
+[04:10:02]   one-step CO LEVEL: k=18, 75 s 
+[04:10:04] Lumpyngngad A2 pca95 direct h=24: 15 s 
+[04:10:20] Lumpyngngad A2 pca95 direct h=168: 15 s 
+[04:10:32] Lumpyngngad A2 pca95 direct h=336: 11 s 
+[04:10:44] Lumpyngngad A2 pca95 direct h=744: 13 s 
+[04:11:24]   one-step PM2.5 LEVEL: k=14, 39 s 
+[04:12:54]   one-step SO2 LEVEL: k=16, 90 s 
+[04:13:58]   one-step CO LEVEL: k=18, 63 s 
+[04:14:54]   one-step SO2 D4: k=-, 455 s 
+[04:17:41] Lumpyngngad A3 pca95 recursive: one-step fits 228 s, recursion 459 s 
+[04:18:11]   one-step SO2 D5: k=-, 196 s 
+[04:20:08] Lumpyngngad A2 pca95 recursive: one-step fits 193 s, recursion 370 s 
+[04:21:32] Lumpyngngad A3 pca95 cross-fit (4 folds): 229 s 
+[04:21:50] Lumpyngngad A3 pca95 hybrid s=24 h=168: 18 s 
+[04:22:10] Lumpyngngad A3 pca95 hybrid s=48 h=168: 19 s 
+[04:22:16] Lumpyngngad A2 pca95 cross-fit (4 folds): 128 s 
+[04:22:24] Lumpyngngad A3 pca95 hybrid s=72 h=168: 14 s 
+[04:22:30] Lumpyngngad A2 pca95 hybrid s=24 h=168: 14 s 
+[04:22:39] Lumpyngngad A3 pca95 hybrid s=24 h=336: 15 s 
+[04:22:44] Lumpyngngad A2 pca95 hybrid s=48 h=168: 14 s 
+[04:22:49] Lumpyngngad A3 pca95 hybrid s=48 h=336: 9 s 
+[04:22:56] Lumpyngngad A2 pca95 hybrid s=72 h=168: 13 s 
+[04:23:02] Lumpyngngad A3 pca95 hybrid s=72 h=336: 13 s 
+[04:23:07] Lumpyngngad A2 pca95 hybrid s=24 h=336: 10 s 
+[04:23:10] ERROR JN_Stadium C2_sep pca99: std::bad_alloc
+ 
+[04:23:11] ERROR Lumpyngngad A2 pca95: std::bad_alloc
+ 
+[04:23:16] Lumpyngngad A3 pca95 hybrid s=24 h=744: 14 s 
+[04:23:25] Lumpyngngad A3 pca95 hybrid s=48 h=744: 9 s 
+[04:23:34] Lumpyngngad A3 pca95 hybrid s=72 h=744: 9 s 
+[04:23:34] cell Lumpyngngad A3 pca95 done in 18.3 min 
+[04:24:02] JN_Stadium A2 pca90 direct h=24: 15 s 
+[04:24:10] JN_Stadium A3 pca90 direct h=24: 31 s 
+[04:24:13] JN_Stadium A2 pca90 direct h=168: 11 s 
+[04:24:17] Lumpyngngad A3 pca90 direct h=24: 18 s 
+[04:24:20] JN_Stadium A2 pca90 direct h=336: 7 s 
+[04:24:25] JN_Stadium A2 pca90 direct h=744: 5 s 
+[04:24:39] Lumpyngngad A3 pca90 direct h=168: 22 s 
+[04:24:50] Lumpyngngad A3 pca90 direct h=336: 11 s 
+[04:24:53] JN_Stadium A3 pca90 direct h=168: 43 s 
+[04:25:01] Lumpyngngad A3 pca90 direct h=744: 11 s 
+[04:25:01]   one-step PM2.5 LEVEL: k=23, 36 s 
+[04:25:29]   one-step PM2.5 LEVEL: k=7, 28 s 
+[04:25:31]   one-step PM10 LEVEL: k=23, 30 s 
+[04:26:08]   one-step NO2 LEVEL: k=22, 37 s 
+[04:26:36] JN_Stadium A3 pca90 direct h=336: 102 s 
+[04:26:38] Lumpyngngad C2_sep pca90 recursive: one-step fits 1054 s, recursion 5093 s 
+[04:26:40]   one-step SO2 LEVEL: k=22, 32 s 
+[04:26:42] JN_Stadium A3 pca90 direct h=744: 6 s 
+[04:26:58]   one-step CO LEVEL: k=22, 18 s 
+[04:27:09]   one-step SO2 LEVEL: k=8, 100 s 
+[04:27:23]   one-step PM2.5 LEVEL: k=23, 41 s 
+[04:27:43]   one-step CO LEVEL: k=9, 33 s 
+[04:28:28]   one-step PM10 LEVEL: k=23, 65 s 
+[04:29:16]   one-step NO2 LEVEL: k=22, 48 s 
+[04:29:46]   one-step SO2 LEVEL: k=22, 31 s 
+[04:30:38]   one-step CO LEVEL: k=22, 51 s 
+[04:32:38] JN_Stadium A2 pca90 recursive: one-step fits 153 s, recursion 341 s 
+[04:33:01] Lumpyngngad A3 pca90 recursive: one-step fits 162 s, recursion 318 s 
+[04:34:16] JN_Stadium A2 pca90 cross-fit (4 folds): 97 s 
+[04:34:23] JN_Stadium A2 pca90 hybrid s=24 h=168: 7 s 
+[04:34:33] JN_Stadium A2 pca90 hybrid s=48 h=168: 9 s 
+[04:34:39] JN_Stadium A2 pca90 hybrid s=72 h=168: 6 s 
+[04:34:57] JN_Stadium A2 pca90 hybrid s=24 h=336: 18 s 
+[04:35:06] JN_Stadium A2 pca90 hybrid s=48 h=336: 9 s 
+[04:35:16] Lumpyngngad A3 pca90 cross-fit (4 folds): 135 s 
+[04:35:25] JN_Stadium A2 pca90 hybrid s=72 h=336: 19 s 
+[04:35:28] Lumpyngngad A3 pca90 hybrid s=24 h=168: 11 s 
+[04:35:29] JN_Stadium A2 pca90 hybrid s=24 h=744: 4 s 
+[04:35:33] JN_Stadium A2 pca90 hybrid s=48 h=744: 4 s 
+[04:35:35] JN_Stadium A2 pca90 hybrid s=72 h=744: 2 s 
+[04:35:35] cell JN_Stadium A2 pca90 done in 11.8 min 
+[04:35:42] Lumpyngngad A3 pca90 hybrid s=48 h=168: 14 s 
+[04:35:54] Lumpyngngad A3 pca90 hybrid s=72 h=168: 12 s 
+[04:36:06] Lumpyngngad A3 pca90 hybrid s=24 h=336: 11 s 
+[04:36:13] Lumpyngngad A2 pca90 direct h=24: 13 s 
+[04:36:18] Lumpyngngad A3 pca90 hybrid s=48 h=336: 12 s 
+[04:36:23] Lumpyngngad A2 pca90 direct h=168: 10 s 
+[04:36:31] Lumpyngngad A3 pca90 hybrid s=72 h=336: 12 s 
+[04:36:31] Lumpyngngad A2 pca90 direct h=336: 8 s 
+[04:36:38] Lumpyngngad A2 pca90 direct h=744: 7 s 
+[04:36:40] Lumpyngngad A3 pca90 hybrid s=24 h=744: 9 s 
+[04:36:48] Lumpyngngad A3 pca90 hybrid s=48 h=744: 8 s 
+[04:36:49] JN_Stadium A3 pca90 recursive: one-step fits 236 s, recursion 371 s 
+[04:36:53]   one-step PM2.5 LEVEL: k=7, 15 s 
+[04:36:57] Lumpyngngad A3 pca90 hybrid s=72 h=744: 8 s 
+[04:36:57] cell Lumpyngngad A3 pca90 done in 13.0 min 
+[04:36:57]   one-step PM2.5 S5: k=-, 2185 s 
+[04:37:02]   one-step SO2 S5: k=-, 1131 s 
+[04:37:50]   one-step SO2 LEVEL: k=8, 57 s 
+[04:38:15]   one-step CO LEVEL: k=9, 25 s 
+[04:38:58] JN_Stadium A3 pca90 cross-fit (4 folds): 128 s 
+[04:39:03] JN_Stadium A3 pca90 hybrid s=24 h=168: 5 s 
+[04:39:12] JN_Stadium A3 pca90 hybrid s=48 h=168: 9 s 
+[04:39:13]   one-step PM10 D1: k=-, 135 s 
+[04:39:26] JN_Stadium A3 pca90 hybrid s=72 h=168: 14 s 
+[04:40:08] JN_Stadium A3 pca90 hybrid s=24 h=336: 43 s 
+[04:40:26] JN_Stadium A3 pca90 hybrid s=48 h=336: 18 s 
+[04:40:34] JN_Stadium A3 pca90 hybrid s=72 h=336: 7 s 
+[04:40:39] JN_Stadium A3 pca90 hybrid s=24 h=744: 5 s 
+[04:40:44] JN_Stadium A3 pca90 hybrid s=48 h=744: 5 s 
+[04:40:49] JN_Stadium A3 pca90 hybrid s=72 h=744: 5 s 
+[04:40:49] cell JN_Stadium A3 pca90 done in 17.2 min 
+[04:41:32]   one-step CO D1: k=-, 270 s 
+[04:41:43] Lumpyngngad A2 pca90 recursive: one-step fits 97 s, recursion 207 s 
+[04:42:47] Lumpyngngad A2 pca90 cross-fit (4 folds): 64 s 
+[04:42:55]   one-step PM10 D2: k=-, 222 s 
+[04:43:00] Lumpyngngad A2 pca90 hybrid s=24 h=168: 13 s 
+[04:43:10] Lumpyngngad A2 pca90 hybrid s=48 h=168: 9 s 
+[04:43:19] Lumpyngngad A2 pca90 hybrid s=72 h=168: 10 s 
+[04:43:26] Lumpyngngad A2 pca90 hybrid s=24 h=336: 6 s 
+[04:43:54] Lumpyngngad A2 pca90 hybrid s=48 h=336: 28 s 
+[04:44:10] Lumpyngngad A2 pca90 hybrid s=72 h=336: 16 s 
+[04:44:18] Lumpyngngad A2 pca90 hybrid s=24 h=744: 8 s 
+[04:44:23] Lumpyngngad A2 pca90 hybrid s=48 h=744: 5 s 
+[04:44:30] Lumpyngngad A2 pca90 hybrid s=72 h=744: 6 s 
+[04:44:30] cell Lumpyngngad A2 pca90 done in 8.5 min 
+[04:45:52]   one-step CO D2: k=-, 260 s 
+[04:48:09]   one-step PM10 D3: k=-, 314 s 
+[04:50:58]   one-step PM10 D4: k=-, 169 s 
+[04:52:02]   one-step CO D3: k=-, 369 s 
+[04:56:28] Lumpyngngad C2_sep pca95 recursive: one-step fits 1864 s, recursion 6039 s 
+[04:56:28]   one-step PM10 D5: k=-, 329 s 
+[04:56:59] ERROR JN_Stadium C2_sep none: std::bad_alloc
+ 
+[05:01:31]   one-step CO D4: k=-, 569 s 
+[05:02:21] Lumpyngngad C2_sep pca90 cross-fit (4 folds): 2141 s 
+[05:03:22] Lumpyngngad C2_sep pca90 hybrid s=24 h=168: 60 s 
+[05:04:28] Lumpyngngad C2_sep pca90 hybrid s=48 h=168: 64 s 
+[05:04:35] JN_Stadium C2_sep pca90 recursive: one-step fits 1981 s, recursion 6417 s 
+[05:05:22] Lumpyngngad C2_sep pca90 hybrid s=72 h=168: 53 s 
+[05:06:06] Lumpyngngad C2_sep pca90 hybrid s=24 h=336: 44 s 
+[05:06:53] Lumpyngngad C2_sep pca90 hybrid s=48 h=336: 46 s 
+[05:06:54]   one-step CO D5: k=-, 323 s 
+[05:07:40] Lumpyngngad C2_sep pca90 hybrid s=72 h=336: 46 s 
+[05:08:21] Lumpyngngad C2_sep pca90 hybrid s=24 h=744: 40 s 
+[05:09:01] Lumpyngngad C2_sep pca90 hybrid s=48 h=744: 39 s 
+[05:09:42] Lumpyngngad C2_sep pca90 hybrid s=72 h=744: 40 s 
+[05:09:42] cell Lumpyngngad C2_sep pca90 done in 149.3 min 
+[05:11:00]   one-step CO S5: k=-, 245 s 
+[05:32:34] Lumpyngngad C2_sep pca95 cross-fit (4 folds): 2164 s 
+[05:34:18] Lumpyngngad C2_sep pca95 hybrid s=24 h=168: 102 s 
+[05:35:23] Lumpyngngad C2_sep pca99 recursive: one-step fits 3635 s, recursion 6550 s 
+[05:35:53] Lumpyngngad C2_sep pca95 hybrid s=48 h=168: 93 s 
+[05:36:21] JN_Stadium C2_sep pca90 cross-fit (4 folds): 1905 s 
+[05:36:48] Lumpyngngad C2_sep none recursive: one-step fits 8179 s, recursion 1548 s 
+[05:36:48] JN_Stadium C2_sep pca95 recursive: one-step fits 3343 s, recursion 6902 s 
+[05:36:53] Lumpyngngad C2_sep pca95 hybrid s=72 h=168: 60 s 
+[05:37:08] JN_Stadium C2_sep pca90 hybrid s=24 h=168: 46 s 
+[05:37:19] Lumpyngngad C2_sep pca95 hybrid s=24 h=336: 25 s 
+[05:37:37] JN_Stadium C2_sep pca90 hybrid s=48 h=168: 29 s 
+[05:37:48] Lumpyngngad C2_sep pca95 hybrid s=48 h=336: 29 s 
+[05:38:05] JN_Stadium C2_sep pca90 hybrid s=72 h=168: 28 s 
+[05:38:14] Lumpyngngad C2_sep pca95 hybrid s=72 h=336: 26 s 
+[05:38:31] JN_Stadium C2_sep pca90 hybrid s=24 h=336: 26 s 
+[05:38:36] Lumpyngngad C2_sep pca95 hybrid s=24 h=744: 22 s 
+[05:38:59] Lumpyngngad C2_sep pca95 hybrid s=48 h=744: 22 s 
+[05:39:08] JN_Stadium C2_sep pca90 hybrid s=48 h=336: 37 s 
+[05:39:24] Lumpyngngad C2_sep pca95 hybrid s=72 h=744: 25 s 
+[05:39:24] cell Lumpyngngad C2_sep pca95 done in 179.0 min 
+[05:39:36] JN_Stadium C2_sep pca90 hybrid s=72 h=336: 27 s 
+[05:39:48] JN_Stadium C2_sep pca90 hybrid s=24 h=744: 12 s 
+[05:39:59] JN_Stadium C2_sep pca90 hybrid s=48 h=744: 11 s 
+[05:40:14] JN_Stadium C2_sep pca90 hybrid s=72 h=744: 15 s 
+[05:40:14] cell JN_Stadium C2_sep pca90 done in 179.8 min 
+[05:49:06] JN_Stadium C2_sep pca95 cross-fit (4 folds): 738 s 
+[05:49:36] JN_Stadium C2_sep pca95 hybrid s=24 h=168: 29 s 
+[05:52:08] JN_Stadium C2_sep pca95 hybrid s=48 h=168: 151 s 
+[05:52:58] JN_Stadium C2_sep pca95 hybrid s=72 h=168: 50 s 
+[05:53:47] JN_Stadium C2_sep pca95 hybrid s=24 h=336: 49 s 
+[05:54:26] Lumpyngngad C2_sep pca99 cross-fit (4 folds): 1142 s 
+[05:54:30] JN_Stadium C2_sep pca95 hybrid s=48 h=336: 43 s 
+[05:54:55] Lumpyngngad C2_sep pca99 hybrid s=24 h=168: 28 s 
+[05:54:55] JN_Stadium C2_sep pca95 hybrid s=72 h=336: 25 s 
+[05:55:09] JN_Stadium C2_sep pca95 hybrid s=24 h=744: 13 s 
+[05:55:23] JN_Stadium C2_sep pca95 hybrid s=48 h=744: 14 s 
+[05:55:25] Lumpyngngad C2_sep pca99 hybrid s=48 h=168: 30 s 
+[05:55:37] JN_Stadium C2_sep pca95 hybrid s=72 h=744: 13 s 
+[05:55:37] cell JN_Stadium C2_sep pca95 done in 195.2 min 
+[05:55:54] Lumpyngngad C2_sep pca99 hybrid s=72 h=168: 28 s 
+[05:56:18] Lumpyngngad C2_sep pca99 hybrid s=24 h=336: 24 s 
+[05:56:42] Lumpyngngad C2_sep pca99 hybrid s=48 h=336: 24 s 
+[05:57:07] Lumpyngngad C2_sep pca99 hybrid s=72 h=336: 24 s 
+[05:57:27] Lumpyngngad C2_sep pca99 hybrid s=24 h=744: 20 s 
+[05:57:50] Lumpyngngad C2_sep pca99 hybrid s=48 h=744: 23 s 
+[05:58:13] Lumpyngngad C2_sep pca99 hybrid s=72 h=744: 22 s 
+[05:58:13] cell Lumpyngngad C2_sep pca99 done in 197.8 min 
+[06:08:37] Lumpyngngad C2_sep none cross-fit (4 folds): 1909 s 
+[06:10:06] Lumpyngngad C2_sep none hybrid s=24 h=168: 89 s 
+[06:11:16] Lumpyngngad C2_sep none hybrid s=48 h=168: 70 s 
+[06:12:34] Lumpyngngad C2_sep none hybrid s=72 h=168: 77 s 
+[06:13:36] Lumpyngngad C2_sep none hybrid s=24 h=336: 62 s 
+[06:14:43] Lumpyngngad C2_sep none hybrid s=48 h=336: 66 s 
+[06:15:56] Lumpyngngad C2_sep none hybrid s=72 h=336: 73 s 
+[06:17:02] Lumpyngngad C2_sep none hybrid s=24 h=744: 67 s 
+[06:18:10] Lumpyngngad C2_sep none hybrid s=48 h=744: 67 s 
+[06:19:09] Lumpyngngad C2_sep none hybrid s=72 h=744: 59 s 
+[06:19:09] cell Lumpyngngad C2_sep none done in 218.8 min 
+[06:55:34]   one-step PM2.5 LEVEL: k=14, 5 s 
+[06:55:43]   one-step PM2.5 D1: k=124, 14 s 
+[06:55:44] report: 311 run files 
+[06:55:45]   one-step SO2 LEVEL: k=16, 11 s 
+[06:55:51] direct/none reproduces the original runs: 48/48 
+[06:55:54]   one-step CO LEVEL: k=18, 9 s 
+[06:55:55] report: 522 paired comparisons x 2 blocks 
+[06:56:34]   one-step PM2.5 D1: k=-, 65 s 
+[06:57:19] Lumpyngngad A2 pca95 recursive: one-step fits 25 s, recursion 86 s 
+[06:57:20]   one-step PM2.5 D2: k=124, 97 s 
+[06:57:42] Lumpyngngad A2 pca95 cross-fit (4 folds): 22 s 
+[06:57:44] Lumpyngngad A2 pca95 hybrid s=48 h=336: 2 s 
+[06:57:45] report written to results/second_stage/report 
+[06:57:46] Lumpyngngad A2 pca95 hybrid s=72 h=336: 2 s 
+[06:57:48] Lumpyngngad A2 pca95 hybrid s=24 h=744: 1 s 
+[06:57:49] Lumpyngngad A2 pca95 hybrid s=48 h=744: 1 s 
+[06:57:50] Lumpyngngad A2 pca95 hybrid s=72 h=744: 1 s 
+[06:57:50] cell Lumpyngngad A2 pca95 done in 2.3 min 
+[06:58:43]   one-step PM2.5 D3: k=124, 83 s 
+[06:58:48]   one-step PM2.5 D2: k=-, 133 s 
+[06:59:30]   one-step PM2.5 D4: k=124, 46 s 
+[07:00:20]   one-step PM2.5 D5: k=124, 50 s 
+[07:00:58]   one-step PM2.5 S5: k=124, 38 s 
+[07:01:06]   one-step PM10 D1: k=125, 8 s 
+[07:01:52]   one-step PM10 D2: k=125, 46 s 
+[07:02:39]   one-step PM10 D3: k=125, 47 s 
+[07:03:26]   one-step PM10 D4: k=125, 47 s 
+[07:04:05]   one-step PM10 D5: k=125, 39 s 
+[07:04:23]   one-step PM2.5 D3: k=-, 336 s 
+[07:04:39]   one-step PM10 S5: k=125, 34 s 
+[07:04:51]   one-step NO2 D1: k=125, 12 s 
+[07:05:26]   one-step PM2.5 D4: k=-, 62 s 
+[07:05:31]   one-step NO2 D2: k=125, 40 s 
+[07:06:18]   one-step NO2 D3: k=125, 47 s 
+[07:06:28]   one-step PM2.5 D5: k=-, 63 s 
+[07:07:12]   one-step NO2 D4: k=125, 54 s 
+[07:07:54]   one-step NO2 D5: k=125, 41 s 
+[07:08:36]   one-step NO2 S5: k=125, 42 s 
+[07:08:42]   one-step SO2 D1: k=125, 6 s 
+[07:09:24]   one-step SO2 D2: k=125, 42 s 
+[07:10:17]   one-step SO2 D3: k=125, 53 s 
+[07:10:59]   one-step SO2 D4: k=125, 42 s 
+[07:11:29]   one-step PM2.5 S5: k=-, 301 s 
+[07:11:53]   one-step PM10 D1: k=-, 24 s 
+[07:11:53]   one-step SO2 D5: k=125, 55 s 
+[07:12:15]   one-step SO2 S5: k=125, 21 s 
+[07:12:31]   one-step PM10 D2: k=-, 38 s 
+[07:12:39]   one-step CO D1: k=125, 25 s 
+[07:13:28]   one-step CO D2: k=125, 49 s 
+[07:13:36]   one-step PM10 D3: k=-, 65 s 
+[07:14:13]   one-step PM10 D4: k=-, 37 s 
+[07:15:24]   one-step PM10 D5: k=-, 70 s 
+[07:15:27]   one-step CO D3: k=125, 119 s 
+[07:16:14]   one-step CO D4: k=125, 47 s 
+[07:16:30]   one-step PM10 S5: k=-, 67 s 
+[07:17:06]   one-step NO2 D1: k=-, 36 s 
+[07:17:11]   one-step CO D5: k=125, 57 s 
+[07:17:50]   one-step CO S5: k=125, 39 s 
+[07:18:11]   one-step NO2 D2: k=-, 64 s 
+[07:30:23]   one-step NO2 D3: k=-, 732 s 
+[07:38:09]   one-step NO2 D4: k=-, 466 s 
+[07:40:36]   one-step NO2 D5: k=-, 147 s 
+[07:46:39]   one-step NO2 S5: k=-, 363 s 
+[07:47:31]   one-step SO2 D1: k=-, 51 s 
+[07:50:01]   one-step SO2 D2: k=-, 150 s 
+[07:55:24]   one-step SO2 D3: k=-, 323 s 
+[08:00:40] JN_Stadium C2_sep pca99 recursive: one-step fits 1340 s, recursion 2570 s 
+[08:01:46]   one-step SO2 D4: k=-, 382 s 
+[08:02:45]   one-step SO2 D5: k=-, 59 s 
+[08:03:04]   one-step SO2 S5: k=-, 19 s 
+[08:03:48]   one-step CO D1: k=-, 44 s 
+[08:04:58]   one-step CO D2: k=-, 70 s 
+[08:08:35]   one-step CO D3: k=-, 217 s 
+[08:09:31]   one-step CO D4: k=-, 56 s 
+[08:17:10] JN_Stadium C2_sep pca99 cross-fit (4 folds): 990 s 
+[08:17:56] JN_Stadium C2_sep pca99 hybrid s=24 h=168: 46 s 
+[08:18:43]   one-step CO D5: k=-, 552 s 
+[08:18:47] JN_Stadium C2_sep pca99 hybrid s=48 h=168: 51 s 
+[08:19:31] JN_Stadium C2_sep pca99 hybrid s=72 h=168: 43 s 
+[08:20:11] JN_Stadium C2_sep pca99 hybrid s=24 h=336: 39 s 
+[08:20:46] JN_Stadium C2_sep pca99 hybrid s=48 h=336: 35 s 
+[08:21:18] JN_Stadium C2_sep pca99 hybrid s=72 h=336: 33 s 
+[08:21:38] JN_Stadium C2_sep pca99 hybrid s=24 h=744: 19 s 
+[08:22:08] JN_Stadium C2_sep pca99 hybrid s=48 h=744: 30 s 
+[08:22:27] JN_Stadium C2_sep pca99 hybrid s=72 h=744: 19 s 
+[08:22:27] cell JN_Stadium C2_sep pca99 done in 87.0 min 
+[08:27:39]   one-step CO S5: k=-, 536 s 
+[08:46:22] JN_Stadium C2_sep none recursive: one-step fits 5530 s, recursion 1123 s 
+[10:07:13] report: 327 run files 
+[10:07:20] direct/none reproduces the original runs: 48/48 
+[10:07:23] report: 543 paired comparisons x 2 blocks 
+[10:07:42]   one-step PM2.5 D1: k=-, 44 s 
+[10:08:29] report written to results/second_stage/report 
+[10:09:24]   one-step PM2.5 D2: k=-, 102 s 
+[10:09:59] Lumpyngngad A0 pca90 direct h=24: 2 s 
+[10:09:59] Lumpyngngad A0 pca95 direct h=24: 2 s 
+[10:10:00] Lumpyngngad A0 none direct h=24: 3 s 
+[10:10:01] Lumpyngngad A0 pca90 direct h=168: 2 s 
+[10:10:02] Lumpyngngad A0 pca95 direct h=168: 3 s 
+[10:10:04] Lumpyngngad A0 pca90 direct h=336: 2 s 
+[10:10:04] Lumpyngngad A0 none direct h=168: 4 s 
+[10:10:04] Lumpyngngad A0 pca95 direct h=336: 2 s 
+[10:10:05] Lumpyngngad A0 pca90 direct h=744: 1 s 
+[10:10:06] Lumpyngngad A0 pca95 direct h=744: 1 s 
+[10:10:06] Lumpyngngad A0 none direct h=336: 2 s 
+[10:10:07] Lumpyngngad A0 none direct h=744: 1 s 
+[10:10:08]   one-step PM2.5 LEVEL: k=10, 3 s 
+[10:10:09]   one-step PM2.5 LEVEL: k=5, 4 s 
+[10:10:13]   one-step PM2.5 LEVEL: k=-, 6 s 
+[10:10:18] Lumpyngngad A0 pca95 recursive: one-step fits 3 s, recursion 10 s 
+[10:10:22] Lumpyngngad A0 pca90 recursive: one-step fits 4 s, recursion 13 s 
+[10:10:22] Lumpyngngad A0 pca95 cross-fit (4 folds): 4 s 
+[10:10:24] Lumpyngngad A0 none recursive: one-step fits 6 s, recursion 10 s 
+[10:10:26] Lumpyngngad A0 pca95 hybrid s=24 h=168: 3 s 
+[10:10:27] Lumpyngngad A0 pca90 cross-fit (4 folds): 4 s 
+[10:10:28] Lumpyngngad A0 pca95 hybrid s=48 h=168: 2 s 
+[10:10:28] Lumpyngngad A0 none cross-fit (4 folds): 5 s 
+[10:10:29] Lumpyngngad A0 pca90 hybrid s=24 h=168: 2 s 
+[10:10:30] Lumpyngngad A0 pca95 hybrid s=72 h=168: 2 s 
+[10:10:30] Lumpyngngad A0 pca90 hybrid s=48 h=168: 1 s 
+[10:10:31] Lumpyngngad A0 pca95 hybrid s=24 h=336: 2 s 
+[10:10:32] Lumpyngngad A0 pca90 hybrid s=72 h=168: 2 s 
+[10:10:32] Lumpyngngad A0 none hybrid s=24 h=168: 3 s 
+[10:10:33] Lumpyngngad A0 pca90 hybrid s=24 h=336: 1 s 
+[10:10:33] Lumpyngngad A0 pca95 hybrid s=48 h=336: 2 s 
+[10:10:34] Lumpyngngad A0 none hybrid s=48 h=168: 2 s 
+[10:10:34] Lumpyngngad A0 pca90 hybrid s=48 h=336: 2 s 
+[10:10:35] Lumpyngngad A0 pca95 hybrid s=72 h=336: 2 s 
+[10:10:36] Lumpyngngad A0 pca90 hybrid s=72 h=336: 1 s 
+[10:10:37] Lumpyngngad A0 pca95 hybrid s=24 h=744: 2 s 
+[10:10:37] Lumpyngngad A0 none hybrid s=72 h=168: 3 s 
+[10:10:37] Lumpyngngad A0 pca90 hybrid s=24 h=744: 1 s 
+[10:10:38] Lumpyngngad A0 pca95 hybrid s=48 h=744: 1 s 
+[10:10:38] Lumpyngngad A0 pca90 hybrid s=48 h=744: 1 s 
+[10:10:39] Lumpyngngad A0 pca90 hybrid s=72 h=744: 1 s 
+[10:10:39] cell Lumpyngngad A0 pca90 done in 0.7 min 
+[10:10:39] Lumpyngngad A0 pca95 hybrid s=72 h=744: 1 s 
+[10:10:39] cell Lumpyngngad A0 pca95 done in 0.7 min 
+[10:10:40] Lumpyngngad A0 none hybrid s=24 h=336: 3 s 
+[10:10:41] Lumpyngngad A0 none hybrid s=48 h=336: 1 s 
+[10:10:44] Lumpyngngad A0 none hybrid s=72 h=336: 3 s 
+[10:10:46] Lumpyngngad A0 none hybrid s=24 h=744: 2 s 
+[10:10:46] JN_Stadium A0 none direct h=24: 2 s 
+[10:10:47] Lumpyngngad A0 pca99 direct h=24: 3 s 
+[10:10:48] Lumpyngngad A0 none hybrid s=48 h=744: 2 s 
+[10:10:49] JN_Stadium A0 none direct h=168: 3 s 
+[10:10:50] Lumpyngngad A0 none hybrid s=72 h=744: 2 s 
+[10:10:50] cell Lumpyngngad A0 none done in 0.9 min 
+[10:10:50] JN_Stadium A0 none direct h=336: 2 s 
+[10:10:51] Lumpyngngad A0 pca99 direct h=168: 4 s 
+[10:10:53] JN_Stadium A0 none direct h=744: 2 s 
+[10:10:53] Lumpyngngad A0 pca99 direct h=336: 2 s 
+[10:10:55] Lumpyngngad A0 pca99 direct h=744: 2 s 
+[10:10:56]   one-step PM2.5 LEVEL: k=-, 3 s 
+[10:10:56] JN_Stadium A0 pca90 direct h=24: 2 s 
+[10:10:59] JN_Stadium A0 pca90 direct h=168: 3 s 
+[10:11:01] JN_Stadium A0 none recursive: one-step fits 3 s, recursion 5 s 
+[10:11:01] JN_Stadium A0 pca90 direct h=336: 1 s 
+[10:11:02] JN_Stadium A0 pca90 direct h=744: 1 s 
+[10:11:03] JN_Stadium A0 none cross-fit (4 folds): 2 s 
+[10:11:04]   one-step PM2.5 LEVEL: k=20, 10 s 
+[10:11:05] JN_Stadium A0 none hybrid s=24 h=168: 2 s 
+[10:11:07] JN_Stadium A0 none hybrid s=48 h=168: 2 s 
+[10:11:08]   one-step PM2.5 LEVEL: k=9, 6 s 
+[10:11:08] JN_Stadium A0 none hybrid s=72 h=168: 1 s 
+[10:11:12] JN_Stadium A0 none hybrid s=24 h=336: 4 s 
+[10:11:14] JN_Stadium A0 none hybrid s=48 h=336: 2 s 
+[10:11:16] JN_Stadium A0 none hybrid s=72 h=336: 2 s 
+[10:11:19] JN_Stadium A0 none hybrid s=24 h=744: 3 s 
+[10:11:22] JN_Stadium A0 none hybrid s=48 h=744: 3 s 
+[10:11:24] JN_Stadium A0 pca90 recursive: one-step fits 6 s, recursion 16 s 
+[10:11:25] JN_Stadium A0 none hybrid s=72 h=744: 3 s 
+[10:11:25] cell JN_Stadium A0 none done in 0.7 min 
+[10:11:27] Lumpyngngad A0 pca99 recursive: one-step fits 10 s, recursion 22 s 
+[10:11:29] JN_Stadium A0 pca90 cross-fit (4 folds): 5 s 
+[10:11:30] JN_Stadium A0 pca90 hybrid s=24 h=168: 1 s 
+[10:11:31] JN_Stadium A0 pca90 hybrid s=48 h=168: 1 s 
+[10:11:31] JN_Stadium A0 pca90 hybrid s=72 h=168: 0 s 
+[10:11:33] JN_Stadium A0 pca90 hybrid s=24 h=336: 1 s 
+[10:11:33] JN_Stadium A0 pca95 direct h=24: 2 s 
+[10:11:34] JN_Stadium A0 pca90 hybrid s=48 h=336: 1 s 
+[10:11:35] JN_Stadium A0 pca90 hybrid s=72 h=336: 1 s 
+[10:11:35] Lumpyngngad A0 pca99 cross-fit (4 folds): 8 s 
+[10:11:36] JN_Stadium A0 pca90 hybrid s=24 h=744: 1 s 
+[10:11:36] JN_Stadium A0 pca95 direct h=168: 3 s 
+[10:11:37] Lumpyngngad A0 pca99 hybrid s=24 h=168: 1 s 
+[10:11:37] JN_Stadium A0 pca90 hybrid s=48 h=744: 1 s 
+[10:11:37] JN_Stadium A0 pca90 hybrid s=72 h=744: 1 s 
+[10:11:37] cell JN_Stadium A0 pca90 done in 0.7 min 
+[10:11:37] JN_Stadium A0 pca95 direct h=336: 1 s 
+[10:11:38] Lumpyngngad A0 pca99 hybrid s=48 h=168: 1 s 
+[10:11:39] JN_Stadium A0 pca95 direct h=744: 1 s 
+[10:11:40] Lumpyngngad A0 pca99 hybrid s=72 h=168: 2 s 
+[10:11:41] Lumpyngngad A0 pca99 hybrid s=24 h=336: 2 s 
+[10:11:43] Lumpyngngad A0 pca99 hybrid s=48 h=336: 1 s 
+[10:11:44] JN_Stadium A0 pca99 direct h=24: 2 s 
+[10:11:45] Lumpyngngad A0 pca99 hybrid s=72 h=336: 2 s 
+[10:11:45]   one-step PM2.5 LEVEL: k=13, 6 s 
+[10:11:47] Lumpyngngad A0 pca99 hybrid s=24 h=744: 2 s 
+[10:11:47] JN_Stadium A0 pca99 direct h=168: 3 s 
+[10:11:49] Lumpyngngad A0 pca99 hybrid s=48 h=744: 2 s 
+[10:11:50] JN_Stadium A0 pca99 direct h=336: 2 s 
+[10:11:51] JN_Stadium A0 pca99 direct h=744: 2 s 
+[10:11:52] Lumpyngngad A0 pca99 hybrid s=72 h=744: 2 s 
+[10:11:52] cell Lumpyngngad A0 pca99 done in 1.1 min 
+[10:11:59] JN_Stadium A0 pca95 recursive: one-step fits 6 s, recursion 14 s 
+[10:12:03] JN_Stadium A0 pca95 cross-fit (4 folds): 4 s 
+[10:12:04] Lumpyngngad A1 none direct h=24: 5 s 
+[10:12:05] JN_Stadium A0 pca95 hybrid s=24 h=168: 2 s 
+[10:12:06] JN_Stadium A0 pca95 hybrid s=48 h=168: 1 s 
+[10:12:07]   one-step PM2.5 LEVEL: k=22, 16 s 
+[10:12:12] JN_Stadium A0 pca95 hybrid s=72 h=168: 5 s 
+[10:12:13] JN_Stadium A0 pca95 hybrid s=24 h=336: 2 s 
+[10:12:15] JN_Stadium A0 pca95 hybrid s=48 h=336: 2 s 
+[10:12:16] JN_Stadium A0 pca95 hybrid s=72 h=336: 1 s 
+[10:12:18] Lumpyngngad A1 none direct h=168: 14 s 
+[10:12:18] JN_Stadium A0 pca95 hybrid s=24 h=744: 2 s 
+[10:12:20] JN_Stadium A0 pca95 hybrid s=48 h=744: 1 s 
+[10:12:22] JN_Stadium A0 pca95 hybrid s=72 h=744: 2 s 
+[10:12:22] cell JN_Stadium A0 pca95 done in 0.9 min 
+[10:12:28] JN_Stadium A0 pca99 recursive: one-step fits 16 s, recursion 21 s 
+[10:12:29] Lumpyngngad A1 none direct h=336: 11 s 
+[10:12:32] Lumpyngngad A1 none direct h=744: 2 s 
+[10:12:32] Lumpyngngad A1 pca90 direct h=24: 2 s 
+[10:12:36] JN_Stadium A0 pca99 cross-fit (4 folds): 8 s 
+[10:12:38] JN_Stadium A0 pca99 hybrid s=24 h=168: 2 s 
+[10:12:39] JN_Stadium A0 pca99 hybrid s=48 h=168: 1 s 
+[10:12:39] Lumpyngngad A1 pca90 direct h=168: 7 s 
+[10:12:39]   one-step PM2.5 LEVEL: k=-, 7 s 
+[10:12:40] JN_Stadium A0 pca99 hybrid s=72 h=168: 1 s 
+[10:12:42] JN_Stadium A0 pca99 hybrid s=24 h=336: 2 s 
+[10:12:43] JN_Stadium A0 pca99 hybrid s=48 h=336: 1 s 
+[10:12:44] Lumpyngngad A1 pca90 direct h=336: 5 s 
+[10:12:44] JN_Stadium A0 pca99 hybrid s=72 h=336: 1 s 
+[10:12:47] JN_Stadium A0 pca99 hybrid s=24 h=744: 3 s 
+[10:12:49] JN_Stadium A0 pca99 hybrid s=48 h=744: 2 s 
+[10:12:50] JN_Stadium A0 pca99 hybrid s=72 h=744: 2 s 
+[10:12:50] cell JN_Stadium A0 pca99 done in 1.1 min 
+[10:12:52] Lumpyngngad A1 pca90 direct h=744: 8 s 
+[10:12:53] Lumpyngngad A1 none recursive: one-step fits 7 s, recursion 14 s 
+[10:12:55]   one-step PM2.5 LEVEL: k=5, 3 s 
+[10:13:01] Lumpyngngad A1 none cross-fit (4 folds): 8 s 
+[10:13:02] Lumpyngngad A1 pca95 direct h=24: 5 s 
+[10:13:09] Lumpyngngad A1 pca90 recursive: one-step fits 3 s, recursion 13 s 
+[10:13:09] Lumpyngngad A1 pca95 direct h=168: 8 s 
+[10:13:10] Lumpyngngad A1 none hybrid s=24 h=168: 9 s 
+[10:13:11] Lumpyngngad A1 pca90 cross-fit (4 folds): 2 s 
+[10:13:13] Lumpyngngad A1 pca95 direct h=336: 3 s 
+[10:13:15] Lumpyngngad A1 pca95 direct h=744: 2 s 
+[10:13:16] Lumpyngngad A1 pca90 hybrid s=24 h=168: 5 s 
+[10:13:16] Lumpyngngad A1 none hybrid s=48 h=168: 7 s 
+[10:13:19]   one-step PM2.5 LEVEL: k=10, 4 s 
+[10:13:21] Lumpyngngad A1 pca90 hybrid s=48 h=168: 5 s 
+[10:13:22] Lumpyngngad A1 none hybrid s=72 h=168: 6 s 
+[10:13:26] Lumpyngngad A1 none hybrid s=24 h=336: 4 s 
+[10:13:28] Lumpyngngad A1 pca90 hybrid s=72 h=168: 7 s 
+[10:13:30] Lumpyngngad A1 none hybrid s=48 h=336: 4 s 
+[10:13:31] Lumpyngngad A1 pca90 hybrid s=24 h=336: 3 s 
+[10:13:33] Lumpyngngad A1 pca95 recursive: one-step fits 4 s, recursion 14 s 
+[10:13:33] Lumpyngngad A1 pca90 hybrid s=48 h=336: 2 s 
+[10:13:34] Lumpyngngad A1 none hybrid s=72 h=336: 4 s 
+[10:13:36] Lumpyngngad A1 pca95 cross-fit (4 folds): 3 s 
+[10:13:36] Lumpyngngad A1 pca90 hybrid s=72 h=336: 3 s 
+[10:13:37] Lumpyngngad A1 none hybrid s=24 h=744: 3 s 
+[10:13:39] Lumpyngngad A1 pca90 hybrid s=24 h=744: 2 s 
+[10:13:40] Lumpyngngad A1 none hybrid s=48 h=744: 3 s 
+[10:13:41] Lumpyngngad A1 pca90 hybrid s=48 h=744: 2 s 
+[10:13:42] Lumpyngngad A1 pca95 hybrid s=24 h=168: 6 s 
+[10:13:43] Lumpyngngad A1 pca90 hybrid s=72 h=744: 2 s 
+[10:13:43] cell Lumpyngngad A1 pca90 done in 1.2 min 
+[10:13:43] Lumpyngngad A1 none hybrid s=72 h=744: 3 s 
+[10:13:43] cell Lumpyngngad A1 none done in 1.7 min 
+[10:13:43] Lumpyngngad A1 pca95 hybrid s=48 h=168: 2 s 
+[10:13:45] Lumpyngngad A1 pca95 hybrid s=72 h=168: 2 s 
+[10:13:48] Lumpyngngad A1 pca95 hybrid s=24 h=336: 3 s 
+[10:13:50] Lumpyngngad A1 pca95 hybrid s=48 h=336: 2 s 
+[10:13:51] JN_Stadium A1 none direct h=24: 3 s 
+[10:13:51] Lumpyngngad A1 pca95 hybrid s=72 h=336: 2 s 
+[10:13:52] Lumpyngngad A1 pca99 direct h=24: 4 s 
+[10:13:54] Lumpyngngad A1 pca95 hybrid s=24 h=744: 3 s 
+[10:13:56] Lumpyngngad A1 pca95 hybrid s=48 h=744: 2 s 
+[10:13:58] Lumpyngngad A1 pca95 hybrid s=72 h=744: 2 s 
+[10:13:58] cell Lumpyngngad A1 pca95 done in 1.0 min 
+[10:14:00] Lumpyngngad A1 pca99 direct h=168: 8 s 
+[10:14:02] JN_Stadium A1 none direct h=168: 11 s 
+[10:14:03] Lumpyngngad A1 pca99 direct h=336: 3 s 
+[10:14:03] JN_Stadium A1 none direct h=336: 1 s 
+[10:14:04] JN_Stadium A1 none direct h=744: 1 s 
+[10:14:05] Lumpyngngad A1 pca99 direct h=744: 2 s 
+[10:14:06] JN_Stadium A1 pca90 direct h=24: 3 s 
+[10:14:08]   one-step PM2.5 LEVEL: k=-, 4 s 
+[10:14:11] JN_Stadium A1 pca90 direct h=168: 5 s 
+[10:14:12]   one-step PM2.5 LEVEL: k=20, 6 s 
+[10:14:12] JN_Stadium A1 pca90 direct h=336: 2 s 
+[10:14:14] JN_Stadium A1 pca90 direct h=744: 2 s 
+[10:14:16] JN_Stadium A1 none recursive: one-step fits 4 s, recursion 8 s 
+[10:14:20] JN_Stadium A1 none cross-fit (4 folds): 4 s 
+[10:14:24]   one-step PM2.5 LEVEL: k=9, 10 s 
+[10:14:26] JN_Stadium A1 none hybrid s=24 h=168: 5 s 
+[10:14:31] JN_Stadium A1 none hybrid s=48 h=168: 6 s 
+[10:14:31] Lumpyngngad A1 pca99 recursive: one-step fits 6 s, recursion 20 s 
+[10:14:35] JN_Stadium A1 none hybrid s=72 h=168: 4 s 
+[10:14:37] Lumpyngngad A1 pca99 cross-fit (4 folds): 5 s 
+[10:14:37] JN_Stadium A1 none hybrid s=24 h=336: 2 s 
+[10:14:39] JN_Stadium A1 none hybrid s=48 h=336: 2 s 
+[10:14:39] JN_Stadium A1 pca90 recursive: one-step fits 10 s, recursion 15 s 
+[10:14:40] JN_Stadium A1 none hybrid s=72 h=336: 1 s 
+[10:14:41] Lumpyngngad A1 pca99 hybrid s=24 h=168: 4 s 
+[10:14:41] JN_Stadium A1 none hybrid s=24 h=744: 1 s 
+[10:14:42] JN_Stadium A1 none hybrid s=48 h=744: 1 s 
+[10:14:43] JN_Stadium A1 none hybrid s=72 h=744: 1 s 
+[10:14:43] cell JN_Stadium A1 none done in 0.9 min 
+[10:14:43] JN_Stadium A1 pca90 cross-fit (4 folds): 4 s 
+[10:14:45] Lumpyngngad A1 pca99 hybrid s=48 h=168: 4 s 
+[10:14:47] Lumpyngngad A1 pca99 hybrid s=72 h=168: 2 s 
+[10:14:48] JN_Stadium A1 pca90 hybrid s=24 h=168: 4 s 
+[10:14:50] Lumpyngngad A1 pca99 hybrid s=24 h=336: 3 s 
+[10:14:50] JN_Stadium A1 pca90 hybrid s=48 h=168: 2 s 
+[10:14:51] JN_Stadium A1 pca95 direct h=24: 3 s 
+[10:14:51] Lumpyngngad A1 pca99 hybrid s=48 h=336: 2 s 
+[10:14:52] JN_Stadium A1 pca90 hybrid s=72 h=168: 2 s 
+[10:14:53] JN_Stadium A1 pca90 hybrid s=24 h=336: 1 s 
+[10:14:53] Lumpyngngad A1 pca99 hybrid s=72 h=336: 2 s 
+[10:14:54] JN_Stadium A1 pca90 hybrid s=48 h=336: 1 s 
+[10:14:55] JN_Stadium A1 pca90 hybrid s=72 h=336: 1 s 
+[10:14:56] Lumpyngngad A1 pca99 hybrid s=24 h=744: 2 s 
+[10:14:56] JN_Stadium A1 pca90 hybrid s=24 h=744: 1 s 
+[10:14:56] JN_Stadium A1 pca95 direct h=168: 5 s 
+[10:14:57] JN_Stadium A1 pca90 hybrid s=48 h=744: 1 s 
+[10:14:57] JN_Stadium A1 pca95 direct h=336: 1 s 
+[10:14:57] JN_Stadium A1 pca90 hybrid s=72 h=744: 1 s 
+[10:14:57] cell JN_Stadium A1 pca90 done in 0.9 min 
+[10:14:58] Lumpyngngad A1 pca99 hybrid s=48 h=744: 2 s 
+[10:14:59] JN_Stadium A1 pca95 direct h=744: 1 s 
+[10:14:59] Lumpyngngad A1 pca99 hybrid s=72 h=744: 1 s 
+[10:14:59] cell Lumpyngngad A1 pca99 done in 1.2 min 
+[10:15:05] JN_Stadium A1 pca99 direct h=24: 2 s 
+[10:15:07]   one-step PM2.5 LEVEL: k=13, 8 s 
+[10:15:13] JN_Stadium A1 pca99 direct h=168: 8 s 
+[10:15:15] JN_Stadium A1 pca99 direct h=336: 2 s 
+[10:15:17] JN_Stadium A1 pca99 direct h=744: 2 s 
+[10:15:22] Lumpyngngad B0 none direct h=24: 17 s 
+[10:15:24] JN_Stadium A1 pca95 recursive: one-step fits 8 s, recursion 17 s 
+[10:15:26]   one-step PM2.5 LEVEL: k=22, 10 s 
+[10:15:31] JN_Stadium A1 pca95 cross-fit (4 folds): 7 s 
+[10:15:32] Lumpyngngad B0 none direct h=168: 10 s 
+[10:15:38] JN_Stadium A1 pca99 recursive: one-step fits 10 s, recursion 12 s 
+[10:15:39] JN_Stadium A1 pca95 hybrid s=24 h=168: 8 s 
+[10:15:42] Lumpyngngad B0 none direct h=336: 10 s 
+[10:15:43] JN_Stadium A1 pca99 cross-fit (4 folds): 4 s 
+[10:15:45] JN_Stadium A1 pca99 hybrid s=24 h=168: 3 s 
+[10:15:48] JN_Stadium A1 pca95 hybrid s=48 h=168: 9 s 
+[10:15:50] Lumpyngngad B0 none direct h=744: 8 s 
+[10:15:51]   one-step PM2.5 D1: k=-, 1 s 
+[10:15:52] JN_Stadium A1 pca95 hybrid s=72 h=168: 4 s 
+[10:15:53] JN_Stadium A1 pca95 hybrid s=24 h=336: 1 s 
+[10:15:53] JN_Stadium A1 pca99 hybrid s=48 h=168: 8 s 
+[10:15:54] JN_Stadium A1 pca95 hybrid s=48 h=336: 1 s 
+[10:15:55] JN_Stadium A1 pca95 hybrid s=72 h=336: 1 s 
+[10:15:55] JN_Stadium A1 pca95 hybrid s=24 h=744: 1 s 
+[10:15:56] JN_Stadium A1 pca95 hybrid s=48 h=744: 1 s 
+[10:15:57] JN_Stadium A1 pca95 hybrid s=72 h=744: 1 s 
+[10:15:57] cell JN_Stadium A1 pca95 done in 1.2 min 
+[10:15:57] JN_Stadium A1 pca99 hybrid s=72 h=168: 4 s 
+[10:15:58] JN_Stadium A1 pca99 hybrid s=24 h=336: 1 s 
+[10:15:59] JN_Stadium A1 pca99 hybrid s=48 h=336: 1 s 
+[10:15:59]   one-step PM2.5 D2: k=-, 9 s 
+[10:16:00] JN_Stadium A1 pca99 hybrid s=72 h=336: 1 s 
+[10:16:01] JN_Stadium A1 pca99 hybrid s=24 h=744: 1 s 
+[10:16:02] JN_Stadium A1 pca99 hybrid s=48 h=744: 1 s 
+[10:16:03] JN_Stadium A1 pca99 hybrid s=72 h=744: 1 s 
+[10:16:03] cell JN_Stadium A1 pca99 done in 1.0 min 
+[10:16:08] Lumpyngngad B0 pca90 direct h=24: 6 s 
+[10:16:13] Lumpyngngad B0 pca90 direct h=168: 5 s 
+[10:16:14]   one-step PM2.5 D3: k=-, 14 s 
+[10:16:15] Lumpyngngad B0 pca95 direct h=24: 7 s 
+[10:16:19] Lumpyngngad B0 pca90 direct h=336: 5 s 
+[10:16:20] Lumpyngngad B0 pca95 direct h=168: 5 s 
+[10:16:25] Lumpyngngad B0 pca90 direct h=744: 5 s 
+[10:16:26]   one-step PM2.5 D1: k=20, 1 s 
+[10:16:26] Lumpyngngad B0 pca95 direct h=336: 6 s 
+[10:16:27]   one-step PM2.5 D2: k=12, 1 s 
+[10:16:28]   one-step PM2.5 D3: k=6, 1 s 
+[10:16:30]   one-step PM2.5 D4: k=3, 2 s 
+[10:16:31] Lumpyngngad B0 pca95 direct h=744: 5 s 
+[10:16:32]   one-step PM2.5 D5: k=3, 2 s 
+[10:16:33]   one-step PM2.5 D1: k=22, 2 s 
+[10:16:35]   one-step PM2.5 S5: k=1, 2 s 
+[10:16:35]   one-step PM2.5 D2: k=14, 2 s 
+[10:16:37]   one-step PM2.5 D3: k=7, 2 s 
+[10:16:39]   one-step PM2.5 D4: k=4, 2 s 
+[10:16:42]   one-step PM2.5 D5: k=4, 3 s 
+[10:16:45]   one-step PM2.5 D4: k=-, 31 s 
+[10:16:46]   one-step PM2.5 S5: k=1, 4 s 
+[10:17:15] Lumpyngngad B0 pca90 recursive: one-step fits 10 s, recursion 40 s 
+[10:17:26] Lumpyngngad B0 pca90 cross-fit (4 folds): 11 s 
+[10:17:30] Lumpyngngad B0 pca95 recursive: one-step fits 14 s, recursion 44 s 
+[10:17:30]   one-step PM2.5 D3: k=-, 486 s 
+[10:17:30]   one-step PM2.5 D5: k=-, 45 s 
+[10:17:32] Lumpyngngad B0 pca90 hybrid s=24 h=168: 5 s 
+[10:17:38] Lumpyngngad B0 pca95 cross-fit (4 folds): 8 s 
+[10:17:38] Lumpyngngad B0 pca90 hybrid s=48 h=168: 6 s 
+[10:17:40]   one-step PM2.5 S5: k=-, 10 s 
+[10:17:48] Lumpyngngad B0 pca95 hybrid s=24 h=168: 9 s 
+[10:17:48] Lumpyngngad B0 pca90 hybrid s=72 h=168: 9 s 
+[10:18:00] Lumpyngngad B0 pca90 hybrid s=24 h=336: 12 s 
+[10:18:01] Lumpyngngad B0 pca95 hybrid s=48 h=168: 13 s 
+[10:18:13] Lumpyngngad B0 pca90 hybrid s=48 h=336: 12 s 
+[10:18:13] Lumpyngngad B0 pca95 hybrid s=72 h=168: 12 s 
+[10:18:26] Lumpyngngad B0 pca90 hybrid s=72 h=336: 12 s 
+[10:18:26] Lumpyngngad B0 pca95 hybrid s=24 h=336: 12 s 
+[10:18:38] Lumpyngngad B0 pca90 hybrid s=24 h=744: 12 s 
+[10:18:40] Lumpyngngad B0 pca95 hybrid s=48 h=336: 13 s 
+[10:18:51] Lumpyngngad B0 pca90 hybrid s=48 h=744: 12 s 
+[10:18:53] Lumpyngngad B0 pca95 hybrid s=72 h=336: 13 s 
+[10:19:01] Lumpyngngad B0 pca90 hybrid s=72 h=744: 10 s 
+[10:19:01] cell Lumpyngngad B0 pca90 done in 3.0 min 
+[10:19:06] Lumpyngngad B0 pca95 hybrid s=24 h=744: 13 s 
+[10:19:18] Lumpyngngad B0 pca95 hybrid s=48 h=744: 12 s 
+[10:19:31] Lumpyngngad B0 pca95 hybrid s=72 h=744: 13 s 
+[10:19:31] cell Lumpyngngad B0 pca95 done in 3.4 min 
+[10:19:32] Lumpyngngad B0 pca99 direct h=24: 21 s 
+[10:19:47] Lumpyngngad B0 pca99 direct h=168: 15 s 
+[10:19:57]   one-step PM2.5 D4: k=-, 147 s 
+[10:20:04] Lumpyngngad B0 pca99 direct h=336: 16 s 
+[10:20:20] Lumpyngngad B0 pca99 direct h=744: 16 s 
+[10:20:23]   one-step PM2.5 D1: k=23, 3 s 
+[10:20:31] JN_Stadium B0 none direct h=24: 49 s 
+[10:20:33]   one-step PM2.5 D2: k=18, 10 s 
+[10:20:42]   one-step PM2.5 D3: k=11, 9 s 
+[10:20:58]   one-step PM2.5 D4: k=6, 16 s 
+[10:21:11]   one-step PM2.5 D5: k=6, 13 s 
+[10:21:51]   one-step PM2.5 S5: k=3, 40 s 
+[10:22:09] JN_Stadium B0 none direct h=168: 98 s 
+[10:22:37] Lumpyngngad B0 none recursive: one-step fits 111 s, recursion 297 s 
+[10:22:48]   one-step PM2.5 D5: k=-, 171 s 
+[10:22:55] JN_Stadium B0 none direct h=336: 46 s 
+[10:23:10] JN_Stadium B0 none direct h=744: 15 s 
+[10:23:18]   one-step PM2.5 D1: k=-, 8 s 
+[10:23:39]   one-step PM2.5 D2: k=-, 20 s 
+[10:24:01]   one-step PM2.5 D3: k=-, 23 s 
+[10:24:19]   one-step PM2.5 D4: k=-, 18 s 
+[10:24:36]   one-step PM2.5 D5: k=-, 17 s 
+[10:24:44]   one-step PM2.5 S5: k=-, 8 s 
+[10:25:02] Lumpyngngad B0 pca99 recursive: one-step fits 91 s, recursion 191 s 
+[10:25:37] Lumpyngngad B0 none cross-fit (4 folds): 179 s 
+[10:26:12] Lumpyngngad B0 pca99 cross-fit (4 folds): 69 s 
+[10:26:14] Lumpyngngad B0 none hybrid s=24 h=168: 37 s 
+[10:26:24] Lumpyngngad B0 pca99 hybrid s=24 h=168: 11 s 
+[10:26:29] Lumpyngngad B0 none hybrid s=48 h=168: 15 s 
+[10:26:37] Lumpyngngad B0 pca99 hybrid s=48 h=168: 12 s 
+[10:26:43] Lumpyngngad B0 none hybrid s=72 h=168: 14 s 
+[10:26:45] JN_Stadium B0 none recursive: one-step fits 94 s, recursion 122 s 
+[10:26:48] Lumpyngngad B0 pca99 hybrid s=72 h=168: 11 s 
+[10:26:53] Lumpyngngad B0 none hybrid s=24 h=336: 9 s 
+[10:26:54] Lumpyngngad B0 pca99 hybrid s=24 h=336: 6 s 
+[10:27:00] Lumpyngngad B0 pca99 hybrid s=48 h=336: 6 s 
+[10:27:01] Lumpyngngad B0 none hybrid s=48 h=336: 8 s 
+[10:27:07] Lumpyngngad B0 pca99 hybrid s=72 h=336: 6 s 
+[10:27:09] Lumpyngngad B0 none hybrid s=72 h=336: 7 s 
+[10:27:14] Lumpyngngad B0 pca99 hybrid s=24 h=744: 7 s 
+[10:27:18] JN_Stadium B0 none cross-fit (4 folds): 32 s 
+[10:27:20] Lumpyngngad B0 none hybrid s=24 h=744: 12 s 
+[10:27:22] Lumpyngngad B0 pca99 hybrid s=48 h=744: 8 s 
+[10:27:27] Lumpyngngad B0 pca99 hybrid s=72 h=744: 5 s 
+[10:27:27] cell Lumpyngngad B0 pca99 done in 8.3 min 
+[10:27:29] Lumpyngngad B0 none hybrid s=48 h=744: 8 s 
+[10:27:29] JN_Stadium B0 none hybrid s=24 h=168: 11 s 
+[10:27:36] Lumpyngngad B0 none hybrid s=72 h=744: 7 s 
+[10:27:36] cell Lumpyngngad B0 none done in 12.5 min 
+[10:27:39] JN_Stadium B0 none hybrid s=48 h=168: 10 s 
+[10:27:44] JN_Stadium B0 pca90 direct h=24: 11 s 
+[10:27:48] JN_Stadium B0 none hybrid s=72 h=168: 8 s 
+[10:27:53] JN_Stadium B0 pca90 direct h=168: 8 s 
+[10:27:54] JN_Stadium B0 pca95 direct h=24: 12 s 
+[10:27:59] JN_Stadium B0 none hybrid s=24 h=336: 11 s 
+[10:28:01] JN_Stadium B0 pca90 direct h=336: 9 s 
+[10:28:06] JN_Stadium B0 pca95 direct h=168: 13 s 
+[10:28:07] JN_Stadium B0 pca90 direct h=744: 6 s 
+[10:28:08] JN_Stadium B0 none hybrid s=48 h=336: 9 s 
+[10:28:09]   one-step PM2.5 D1: k=20, 2 s 
+[10:28:12]   one-step PM2.5 D2: k=12, 3 s 
+[10:28:16] JN_Stadium B0 none hybrid s=72 h=336: 8 s 
+[10:28:16] JN_Stadium B0 pca95 direct h=336: 10 s 
+[10:28:18]   one-step PM2.5 D3: k=6, 6 s 
+[10:28:21]   one-step PM2.5 D4: k=4, 2 s 
+[10:28:22]   one-step PM2.5 D5: k=3, 2 s 
+[10:28:22] JN_Stadium B0 none hybrid s=24 h=744: 6 s 
+[10:28:23] JN_Stadium B0 pca95 direct h=744: 6 s 
+[10:28:25]   one-step PM2.5 S5: k=1, 2 s 
+[10:28:27]   one-step PM2.5 D1: k=22, 4 s 
+[10:28:32]   one-step PM2.5 D2: k=14, 5 s 
+[10:28:32] JN_Stadium B0 none hybrid s=48 h=744: 10 s 
+[10:28:40]   one-step PM2.5 D3: k=7, 8 s 
+[10:28:42] JN_Stadium B0 none hybrid s=72 h=744: 10 s 
+[10:28:42] cell JN_Stadium B0 none done in 9.0 min 
+[10:28:45]   one-step PM2.5 D4: k=5, 5 s 
+[10:28:48]   one-step PM2.5 D5: k=4, 3 s 
+[10:28:51]   one-step PM2.5 S5: k=2, 3 s 
+[10:29:11] JN_Stadium B0 pca90 recursive: one-step fits 17 s, recursion 46 s 
+[10:29:15] JN_Stadium B0 pca99 direct h=24: 25 s 
+[10:29:30] JN_Stadium B0 pca90 cross-fit (4 folds): 19 s 
+[10:29:36] JN_Stadium B0 pca95 recursive: one-step fits 29 s, recursion 44 s 
+[10:29:38] JN_Stadium B0 pca99 direct h=168: 23 s 
+[10:29:42] JN_Stadium B0 pca90 hybrid s=24 h=168: 12 s 
+[10:29:49] JN_Stadium B0 pca99 direct h=336: 10 s 
+[10:29:49] JN_Stadium B0 pca95 cross-fit (4 folds): 13 s 
+[10:29:49] JN_Stadium B0 pca90 hybrid s=48 h=168: 8 s 
+[10:29:55] JN_Stadium B0 pca90 hybrid s=72 h=168: 5 s 
+[10:29:58] JN_Stadium B0 pca99 direct h=744: 9 s 
+[10:29:58] JN_Stadium B0 pca95 hybrid s=24 h=168: 9 s 
+[10:30:02]   one-step PM2.5 D1: k=23, 5 s 
+[10:30:03] JN_Stadium B0 pca90 hybrid s=24 h=336: 8 s 
+[10:30:06] JN_Stadium B0 pca95 hybrid s=48 h=168: 7 s 
+[10:30:07]   one-step PM2.5 D2: k=17, 5 s 
+[10:30:10] JN_Stadium B0 pca90 hybrid s=48 h=336: 7 s 
+[10:30:11] JN_Stadium B0 pca95 hybrid s=72 h=168: 6 s 
+[10:30:16] JN_Stadium B0 pca90 hybrid s=72 h=336: 6 s 
+[10:30:20]   one-step PM2.5 D3: k=10, 12 s 
+[10:30:21] JN_Stadium B0 pca95 hybrid s=24 h=336: 9 s 
+[10:30:22] JN_Stadium B0 pca90 hybrid s=24 h=744: 6 s 
+[10:30:26]   one-step PM2.5 D4: k=7, 6 s 
+[10:30:26] JN_Stadium B0 pca90 hybrid s=48 h=744: 4 s 
+[10:30:27] JN_Stadium B0 pca95 hybrid s=48 h=336: 6 s 
+[10:30:29] JN_Stadium B0 pca90 hybrid s=72 h=744: 3 s 
+[10:30:29] cell JN_Stadium B0 pca90 done in 2.9 min 
+[10:30:31]   one-step PM2.5 D5: k=6, 5 s 
+[10:30:31] JN_Stadium B0 pca95 hybrid s=72 h=336: 5 s 
+[10:30:37] JN_Stadium B0 pca95 hybrid s=24 h=744: 6 s 
+[10:30:40]   one-step PM2.5 S5: k=3, 9 s 
+[10:30:47] JN_Stadium B0 pca95 hybrid s=48 h=744: 9 s 
+[10:30:56] JN_Stadium B0 pca95 hybrid s=72 h=744: 10 s 
+[10:30:56] cell JN_Stadium B0 pca95 done in 3.3 min 
+[10:31:03] Lumpyngngad B2 none direct h=24: 28 s 
+[10:31:21] Lumpyngngad B2 none direct h=168: 17 s 
+[10:31:23] Lumpyngngad B2 pca90 direct h=24: 17 s 
+[10:31:35] Lumpyngngad B2 pca90 direct h=168: 12 s 
+[10:31:37] Lumpyngngad B2 none direct h=336: 16 s 
+[10:31:38]   one-step PM2.5 S5: k=-, 529 s 
+[10:31:48] Lumpyngngad B2 pca90 direct h=336: 12 s 
+[10:32:02] Lumpyngngad B2 pca90 direct h=744: 14 s 
+[10:32:03] Lumpyngngad B2 none direct h=744: 26 s 
+[10:32:05]   one-step PM2.5 D1: k=20, 3 s 
+[10:32:06]   one-step PM2.5 D1: k=-, 3 s 
+[10:32:08]   one-step PM2.5 D2: k=12, 3 s 
+[10:32:11]   one-step PM2.5 D3: k=6, 3 s 
+[10:32:13]   one-step PM2.5 D4: k=3, 3 s 
+[10:32:21]   one-step PM2.5 D5: k=3, 8 s 
+[10:32:23] JN_Stadium B0 pca99 recursive: one-step fits 42 s, recursion 104 s 
+[10:32:24]   one-step PM2.5 D2: k=-, 18 s 
+[10:32:25]   one-step PM10 D1: k=-, 47 s 
+[10:32:27]   one-step PM2.5 S5: k=1, 5 s 
+[10:32:46]   one-step PM2.5 D3: k=-, 22 s 
+[10:33:04] JN_Stadium B0 pca99 cross-fit (4 folds): 40 s 
+[10:33:19] JN_Stadium B0 pca99 hybrid s=24 h=168: 15 s 
+[10:33:29]   one-step PM10 D2: k=-, 64 s 
+[10:33:33] JN_Stadium B0 pca99 hybrid s=48 h=168: 14 s 
+[10:33:37]   one-step PM2.5 D4: k=-, 51 s 
+[10:33:43] Lumpyngngad B2 pca90 recursive: one-step fits 24 s, recursion 77 s 
+[10:33:45] JN_Stadium B0 pca99 hybrid s=72 h=168: 12 s 
+[10:33:56] JN_Stadium B0 pca99 hybrid s=24 h=336: 11 s 
+[10:33:59] Lumpyngngad B2 pca90 cross-fit (4 folds): 15 s 
+[10:34:05] JN_Stadium B0 pca99 hybrid s=48 h=336: 9 s 
+[10:34:06] Lumpyngngad B2 pca90 hybrid s=24 h=168: 7 s 
+[10:34:09]   one-step PM2.5 D5: k=-, 33 s 
+[10:34:13] JN_Stadium B0 pca99 hybrid s=72 h=336: 7 s 
+[10:34:14] Lumpyngngad B2 pca90 hybrid s=48 h=168: 8 s 
+[10:34:16]   one-step PM2.5 S5: k=-, 7 s 
+[10:34:22] JN_Stadium B0 pca99 hybrid s=24 h=744: 10 s 
+[10:34:32] Lumpyngngad B2 pca90 hybrid s=72 h=168: 18 s 
+[10:34:38] JN_Stadium B0 pca99 hybrid s=48 h=744: 15 s 
+[10:34:47] Lumpyngngad B2 pca90 hybrid s=24 h=336: 15 s 
+[10:34:50] JN_Stadium B0 pca99 hybrid s=72 h=744: 12 s 
+[10:34:50] cell JN_Stadium B0 pca99 done in 6.0 min 
+[10:35:03] Lumpyngngad B2 pca90 hybrid s=48 h=336: 15 s 
+[10:45:42]   one-step PM10 D3: k=-, 733 s 
+[10:49:08] Lumpyngngad B2 pca90 hybrid s=72 h=336: 845 s 
+[10:49:13] Lumpyngngad B2 pca95 direct h=24: 852 s 
+[10:49:23] Lumpyngngad B2 pca90 hybrid s=24 h=744: 14 s 
+[10:49:26] Lumpyngngad B2 pca95 direct h=168: 12 s 
+[10:53:04] Lumpyngngad B2 none recursive: one-step fits 133 s, recursion 1127 s 
+[10:54:02] Lumpyngngad B2 pca90 hybrid s=48 h=744: 278 s 
+[10:54:12]   one-step PM10 D4: k=-, 509 s 
+[10:54:33] Lumpyngngad B2 pca95 direct h=336: 307 s 
+[10:56:10] Lumpyngngad B2 pca90 hybrid s=72 h=744: 127 s 
+[10:56:10] cell Lumpyngngad B2 pca90 done in 25.1 min 
+[10:57:05] Lumpyngngad B2 pca95 direct h=744: 151 s 
+[10:57:24]   one-step PM2.5 D1: k=22, 19 s 
+[10:57:49]   one-step PM2.5 D2: k=14, 25 s 
+[10:58:16]   one-step PM2.5 D3: k=7, 27 s 
+[10:58:50]   one-step PM2.5 D4: k=4, 33 s 
+[10:59:29]   one-step PM10 D5: k=-, 318 s 
+[11:00:09] Lumpyngngad B2 pca99 direct h=24: 227 s 
+[11:00:14]   one-step PM2.5 D5: k=4, 84 s 
+[11:01:34]   one-step PM2.5 S5: k=1, 80 s 
+[11:03:20] Lumpyngngad B2 pca99 direct h=168: 191 s 
+[11:03:30] Lumpyngngad B2 pca99 direct h=336: 9 s 
+[11:03:45] Lumpyngngad B2 pca99 direct h=744: 14 s 
+[11:03:47]   one-step PM2.5 D1: k=23, 2 s 
+[11:03:54]   one-step PM2.5 D2: k=18, 7 s 
+[11:04:03]   one-step PM2.5 D3: k=11, 9 s 
+[11:04:08] Lumpyngngad B2 pca95 recursive: one-step fits 269 s, recursion 154 s 
+[11:04:31]   one-step PM2.5 D4: k=6, 28 s 
+[11:04:34]   one-step PM10 S5: k=-, 304 s 
+[11:06:51] Lumpyngngad B2 none cross-fit (4 folds): 826 s 
+[11:08:12] Lumpyngngad B2 pca95 cross-fit (4 folds): 244 s 
+[11:09:05]   one-step PM2.5 D5: k=6, 274 s 
+[11:09:16] Lumpyngngad B2 none hybrid s=24 h=168: 145 s 
+[11:09:17] Lumpyngngad B2 pca95 hybrid s=24 h=168: 64 s 
+[11:09:22]   one-step NO2 D1: k=-, 288 s 
+[11:09:25] Lumpyngngad B2 pca95 hybrid s=48 h=168: 9 s 
+[11:09:31]   one-step PM2.5 S5: k=3, 26 s 
+[11:09:32] Lumpyngngad B2 none hybrid s=48 h=168: 16 s 
+[11:09:35] Lumpyngngad B2 pca95 hybrid s=72 h=168: 10 s 
+[11:09:46] Lumpyngngad B2 pca95 hybrid s=24 h=336: 10 s 
+[11:11:25] Lumpyngngad B2 none hybrid s=72 h=168: 113 s 
+[11:11:30] Lumpyngngad B2 pca95 hybrid s=48 h=336: 104 s 
+[11:11:40] Lumpyngngad B2 none hybrid s=24 h=336: 14 s 
+[11:11:41] Lumpyngngad B2 pca95 hybrid s=72 h=336: 11 s 
+[11:12:31] Lumpyngngad B2 pca95 hybrid s=24 h=744: 49 s 
+[11:12:34] Lumpyngngad B2 none hybrid s=48 h=336: 52 s 
+[11:13:42] Lumpyngngad B2 pca95 hybrid s=48 h=744: 71 s 
+[11:13:48] Lumpyngngad B2 none hybrid s=72 h=336: 73 s 
+[11:13:53] Lumpyngngad B2 pca95 hybrid s=72 h=744: 11 s 
+[11:13:53] cell Lumpyngngad B2 pca95 done in 38.9 min 
+[11:14:10]   one-step NO2 D2: k=-, 288 s 
+[11:14:12] Lumpyngngad B2 none hybrid s=24 h=744: 24 s 
+[11:14:32] JN_Stadium B2 none direct h=24: 31 s 
+[11:14:34] Lumpyngngad B2 none hybrid s=48 h=744: 22 s 
+[11:14:48] Lumpyngngad B2 pca99 recursive: one-step fits 347 s, recursion 316 s 
+[11:14:51] Lumpyngngad B2 none hybrid s=72 h=744: 16 s 
+[11:14:51] cell Lumpyngngad B2 none done in 44.3 min 
+[11:14:58] JN_Stadium B2 none direct h=168: 25 s 
+[11:15:12] JN_Stadium B2 none direct h=336: 14 s 
+[11:15:14] JN_Stadium B2 pca90 direct h=24: 18 s 
+[11:15:27] JN_Stadium B2 none direct h=744: 15 s 
+[11:15:29] Lumpyngngad B2 pca99 cross-fit (4 folds): 41 s 
+[11:15:32]   one-step PM2.5 D1: k=-, 5 s 
+[11:15:34] JN_Stadium B2 pca90 direct h=168: 20 s 
+[11:15:38] Lumpyngngad B2 pca99 hybrid s=24 h=168: 8 s 
+[11:15:42] JN_Stadium B2 pca90 direct h=336: 8 s 
+[11:15:44]   one-step PM2.5 D2: k=-, 12 s 
+[11:15:46] Lumpyngngad B2 pca99 hybrid s=48 h=168: 8 s 
+[11:15:50] JN_Stadium B2 pca90 direct h=744: 8 s 
+[11:15:54]   one-step PM2.5 D1: k=20, 3 s 
+[11:15:56]   one-step PM2.5 D3: k=-, 12 s 
+[11:15:56] Lumpyngngad B2 pca99 hybrid s=72 h=168: 9 s 
+[11:15:56]   one-step PM2.5 D2: k=12, 3 s 
+[11:16:04]   one-step PM2.5 D4: k=-, 8 s 
+[11:16:04] Lumpyngngad B2 pca99 hybrid s=24 h=336: 8 s 
+[11:16:07]   one-step PM2.5 D3: k=6, 11 s 
+[11:16:10]   one-step PM2.5 D5: k=-, 7 s 
+[11:16:11] Lumpyngngad B2 pca99 hybrid s=48 h=336: 6 s 
+[11:16:12]   one-step PM2.5 D4: k=4, 4 s 
+[11:16:15]   one-step PM2.5 D5: k=3, 3 s 
+[11:16:16]   one-step PM2.5 S5: k=-, 6 s 
+[11:16:17]   one-step PM2.5 S5: k=1, 3 s 
+[11:16:22] Lumpyngngad B2 pca99 hybrid s=72 h=336: 11 s 
+[11:16:41] Lumpyngngad B2 pca99 hybrid s=24 h=744: 18 s 
+[11:16:56] Lumpyngngad B2 pca99 hybrid s=48 h=744: 15 s 
+[11:17:10] Lumpyngngad B2 pca99 hybrid s=72 h=744: 13 s 
+[11:17:10] cell Lumpyngngad B2 pca99 done in 20.8 min 
+[11:17:55] JN_Stadium B2 pca90 recursive: one-step fits 27 s, recursion 97 s 
+[11:18:02] JN_Stadium B2 pca95 direct h=24: 41 s 
+[11:18:06] JN_Stadium B2 none recursive: one-step fits 49 s, recursion 110 s 
+[11:18:18] JN_Stadium B2 pca95 direct h=168: 16 s 
+[11:18:19] JN_Stadium B2 pca90 cross-fit (4 folds): 24 s 
+[11:18:27] JN_Stadium B2 pca95 direct h=336: 8 s 
+[11:18:35] JN_Stadium B2 pca95 direct h=744: 8 s 
+[11:18:39] JN_Stadium B2 pca90 hybrid s=24 h=168: 20 s 
+[11:18:39]   one-step PM2.5 D1: k=22, 4 s 
+[11:18:46]   one-step PM2.5 D2: k=14, 6 s 
+[11:18:48] JN_Stadium B2 none cross-fit (4 folds): 42 s 
+[11:18:57] JN_Stadium B2 pca90 hybrid s=48 h=168: 18 s 
+[11:19:04] JN_Stadium B2 none hybrid s=24 h=168: 16 s 
+[11:19:09]   one-step PM2.5 D3: k=7, 23 s 
+[11:19:12] JN_Stadium B2 pca90 hybrid s=72 h=168: 15 s 
+[11:19:14]   one-step PM2.5 D4: k=5, 5 s 
+[11:19:17]   one-step PM2.5 D5: k=4, 3 s 
+[11:19:20] JN_Stadium B2 pca90 hybrid s=24 h=336: 7 s 
+[11:19:26] JN_Stadium B2 none hybrid s=48 h=168: 21 s 
+[11:19:27] JN_Stadium B2 pca90 hybrid s=48 h=336: 7 s 
+[11:19:29]   one-step PM2.5 S5: k=2, 12 s 
+[11:19:39] JN_Stadium B2 pca90 hybrid s=72 h=336: 12 s 
+[11:19:51] JN_Stadium B2 pca90 hybrid s=24 h=744: 11 s 
+[11:20:06] JN_Stadium B2 pca90 hybrid s=48 h=744: 16 s 
+[11:20:10] JN_Stadium B2 none hybrid s=72 h=168: 44 s 
+[11:20:22] JN_Stadium B2 pca90 hybrid s=72 h=744: 15 s 
+[11:20:22] cell JN_Stadium B2 pca90 done in 5.4 min 
+[11:20:27] JN_Stadium B2 none hybrid s=24 h=336: 17 s 
+[11:20:43] JN_Stadium B2 none hybrid s=48 h=336: 16 s 
+[11:21:00] JN_Stadium B2 none hybrid s=72 h=336: 16 s 
+[11:21:01] JN_Stadium B2 pca99 direct h=24: 32 s 
+[11:21:13] JN_Stadium B2 none hybrid s=24 h=744: 13 s 
+[11:21:26] JN_Stadium B2 none hybrid s=48 h=744: 13 s 
+[11:21:31] JN_Stadium B2 pca99 direct h=168: 29 s 
+[11:21:39] JN_Stadium B2 pca95 recursive: one-step fits 54 s, recursion 130 s 
+[11:21:40] JN_Stadium B2 none hybrid s=72 h=744: 14 s 
+[11:21:40] cell JN_Stadium B2 none done in 7.6 min 
+[11:21:43] JN_Stadium B2 pca99 direct h=336: 13 s 
+[11:21:52] Lumpyngngad B1 none direct h=24: 7 s 
+[11:21:52] JN_Stadium B2 pca99 direct h=744: 9 s 
+[11:21:56]   one-step PM2.5 D1: k=23, 3 s 
+[11:21:57] Lumpyngngad B1 none direct h=168: 4 s 
+[11:22:00] Lumpyngngad B1 none direct h=336: 3 s 
+[11:22:04] Lumpyngngad B1 none direct h=744: 3 s 
+[11:22:07]   one-step PM2.5 D2: k=17, 11 s 
+[11:22:19] JN_Stadium B2 pca95 cross-fit (4 folds): 40 s 
+[11:22:24]   one-step PM2.5 D3: k=10, 17 s 
+[11:22:31]   one-step PM2.5 ALL: k=-, 27 s 
+[11:22:38] JN_Stadium B2 pca95 hybrid s=24 h=168: 19 s 
+[11:23:14] JN_Stadium B2 pca95 hybrid s=48 h=168: 35 s 
+[11:23:21]   one-step PM2.5 D4: k=7, 57 s 
+[11:23:28]   one-step PM2.5 D5: k=6, 7 s 
+[11:23:43] JN_Stadium B2 pca95 hybrid s=72 h=168: 29 s 
+[11:24:00]   one-step PM2.5 S5: k=3, 31 s 
+[11:24:05] JN_Stadium B2 pca95 hybrid s=24 h=336: 21 s 
+[11:24:32] JN_Stadium B2 pca95 hybrid s=48 h=336: 27 s 
+[11:24:57] JN_Stadium B2 pca95 hybrid s=72 h=336: 25 s 
+[11:25:09] Lumpyngngad B1 none recursive: one-step fits 27 s, recursion 158 s 
+[11:25:15] JN_Stadium B2 pca95 hybrid s=24 h=744: 18 s 
+[11:25:27] JN_Stadium B2 pca95 hybrid s=48 h=744: 12 s 
+[11:25:48] JN_Stadium B2 pca95 hybrid s=72 h=744: 20 s 
+[11:25:48] cell JN_Stadium B2 pca95 done in 8.5 min 
+[11:26:10] Lumpyngngad B1 none cross-fit (4 folds): 60 s 
+[11:26:16] Lumpyngngad B1 pca90 direct h=24: 14 s 
+[11:26:19] Lumpyngngad B1 none hybrid s=24 h=168: 9 s 
+[11:26:22] Lumpyngngad B1 pca90 direct h=168: 6 s 
+[11:26:28] Lumpyngngad B1 none hybrid s=48 h=168: 8 s 
+[11:26:29] Lumpyngngad B1 pca90 direct h=336: 6 s 
+[11:26:35] Lumpyngngad B1 pca90 direct h=744: 6 s 
+[11:26:36] Lumpyngngad B1 none hybrid s=72 h=168: 8 s 
+[11:26:44] Lumpyngngad B1 none hybrid s=24 h=336: 7 s 
+[11:26:51] Lumpyngngad B1 none hybrid s=48 h=336: 7 s 
+[11:26:58] Lumpyngngad B1 none hybrid s=72 h=336: 6 s 
+[11:27:05] Lumpyngngad B1 none hybrid s=24 h=744: 7 s 
+[11:27:13] Lumpyngngad B1 none hybrid s=48 h=744: 8 s 
+[11:27:15]   one-step PM2.5 ALL: k=11, 40 s 
+[11:27:23] Lumpyngngad B1 none hybrid s=72 h=744: 10 s 
+[11:27:23] cell Lumpyngngad B1 none done in 5.6 min 
+[11:27:38] JN_Stadium B2 pca99 recursive: one-step fits 127 s, recursion 218 s 
+[11:27:53] Lumpyngngad B1 pca95 direct h=24: 16 s 
+[11:28:01] Lumpyngngad B1 pca95 direct h=168: 8 s 
+[11:28:09] Lumpyngngad B1 pca95 direct h=336: 7 s 
+[11:28:17] Lumpyngngad B1 pca95 direct h=744: 8 s 
+[11:29:35] JN_Stadium B2 pca99 cross-fit (4 folds): 116 s 
+[11:29:57] Lumpyngngad B1 pca90 recursive: one-step fits 40 s, recursion 162 s 
+[11:30:01] JN_Stadium B2 pca99 hybrid s=24 h=168: 26 s 
+[11:30:12]   one-step PM2.5 ALL: k=16, 115 s 
+[11:30:36] JN_Stadium B2 pca99 hybrid s=48 h=168: 34 s 
+[11:30:59] Lumpyngngad B1 pca90 cross-fit (4 folds): 62 s 
+[11:31:06] Lumpyngngad B1 pca90 hybrid s=24 h=168: 6 s 
+[11:31:12] Lumpyngngad B1 pca90 hybrid s=48 h=168: 5 s 
+[11:31:18] Lumpyngngad B1 pca90 hybrid s=72 h=168: 6 s 
+[11:31:25] Lumpyngngad B1 pca90 hybrid s=24 h=336: 6 s 
+[11:31:30] Lumpyngngad B1 pca90 hybrid s=48 h=336: 5 s 
+[11:31:36] Lumpyngngad B1 pca90 hybrid s=72 h=336: 6 s 
+[11:31:41] JN_Stadium B2 pca99 hybrid s=72 h=168: 65 s 
+[11:31:42] Lumpyngngad B1 pca90 hybrid s=24 h=744: 5 s 
+[11:31:49] Lumpyngngad B1 pca90 hybrid s=48 h=744: 7 s 
+[11:31:56] Lumpyngngad B1 pca90 hybrid s=72 h=744: 7 s 
+[11:31:56] cell Lumpyngngad B1 pca90 done in 5.9 min 
+[11:32:05]   one-step NO2 D3: k=-, 1075 s 
+[11:32:06] JN_Stadium B2 pca99 hybrid s=24 h=336: 25 s 
+[11:32:28] Lumpyngngad B1 pca99 direct h=24: 20 s 
+[11:32:29] JN_Stadium B2 pca99 hybrid s=48 h=336: 23 s 
+[11:32:41] Lumpyngngad B1 pca99 direct h=168: 12 s 
+[11:32:51] JN_Stadium B2 pca99 hybrid s=72 h=336: 22 s 
+[11:32:52] Lumpyngngad B1 pca99 direct h=336: 11 s 
+[11:33:04] Lumpyngngad B1 pca99 direct h=744: 11 s 
+[11:33:12] JN_Stadium B2 pca99 hybrid s=24 h=744: 21 s 
+[11:33:33] JN_Stadium B2 pca99 hybrid s=48 h=744: 20 s 
+[11:33:51] JN_Stadium B2 pca99 hybrid s=72 h=744: 18 s 
+[11:33:51] cell JN_Stadium B2 pca99 done in 13.4 min 
+[11:34:12] JN_Stadium B1 none direct h=24: 10 s 
+[11:34:30] JN_Stadium B1 none direct h=168: 18 s 
+[11:34:41] JN_Stadium B1 none direct h=336: 11 s 
+[11:34:48] JN_Stadium B1 none direct h=744: 6 s 
+[11:35:12]   one-step PM2.5 ALL: k=-, 24 s 
+[11:36:22] JN_Stadium B1 none recursive: one-step fits 24 s, recursion 70 s 
+[11:36:35]   one-step PM2.5 ALL: k=22, 211 s 
+[11:36:56] JN_Stadium B1 none cross-fit (4 folds): 33 s 
+[11:37:26] JN_Stadium B1 none hybrid s=24 h=168: 29 s 
+[11:37:46] JN_Stadium B1 none hybrid s=48 h=168: 20 s 
+[11:38:03] JN_Stadium B1 none hybrid s=72 h=168: 17 s 
+[11:38:25] JN_Stadium B1 none hybrid s=24 h=336: 21 s 
+[11:38:42] JN_Stadium B1 none hybrid s=48 h=336: 16 s 
+[11:38:59] JN_Stadium B1 none hybrid s=72 h=336: 17 s 
+[11:39:11] JN_Stadium B1 none hybrid s=24 h=744: 12 s 
+[11:39:22] JN_Stadium B1 none hybrid s=48 h=744: 10 s 
+[11:39:34] JN_Stadium B1 none hybrid s=72 h=744: 12 s 
+[11:39:34] cell JN_Stadium B1 none done in 5.6 min 
+[11:40:13] JN_Stadium B1 pca90 direct h=24: 21 s 
+[11:40:35] JN_Stadium B1 pca90 direct h=168: 22 s 
+[11:40:57] JN_Stadium B1 pca90 direct h=336: 21 s 
+[11:41:09] JN_Stadium B1 pca90 direct h=744: 12 s 
+[11:42:53]   one-step PM2.5 ALL: k=13, 104 s 
+[11:46:11] Lumpyngngad B1 pca95 recursive: one-step fits 115 s, recursion 960 s 
+[11:51:49] JN_Stadium B1 pca90 recursive: one-step fits 104 s, recursion 535 s 
+[11:52:02] Lumpyngngad B1 pca95 cross-fit (4 folds): 349 s 
+[11:52:11] Lumpyngngad B1 pca95 hybrid s=24 h=168: 8 s 
+[11:52:18] Lumpyngngad B1 pca95 hybrid s=48 h=168: 6 s 
+[11:52:24] Lumpyngngad B1 pca95 hybrid s=72 h=168: 6 s 
+[11:52:31] Lumpyngngad B1 pca95 hybrid s=24 h=336: 6 s 
+[11:52:38] Lumpyngngad B1 pca95 hybrid s=48 h=336: 7 s 
+[11:52:48] Lumpyngngad B1 pca95 hybrid s=72 h=336: 9 s 
+[11:52:57] Lumpyngngad B1 pca95 hybrid s=24 h=744: 8 s 
+[11:53:11] Lumpyngngad B1 pca95 hybrid s=48 h=744: 13 s 
+[11:53:16] JN_Stadium B1 pca90 cross-fit (4 folds): 87 s 
+[11:53:24] Lumpyngngad B1 pca95 hybrid s=72 h=744: 13 s 
+[11:53:24] cell Lumpyngngad B1 pca95 done in 25.8 min 
+[11:53:27] JN_Stadium B1 pca90 hybrid s=24 h=168: 10 s 
+[11:53:33] JN_Stadium B1 pca90 hybrid s=48 h=168: 6 s 
+[11:53:37] JN_Stadium B1 pca90 hybrid s=72 h=168: 3 s 
+[11:53:43] JN_Stadium B1 pca90 hybrid s=24 h=336: 6 s 
+[11:53:50] JN_Stadium B1 pca90 hybrid s=48 h=336: 7 s 
+[11:53:52] JN_Stadium B1 pca95 direct h=24: 16 s 
+[11:53:56] JN_Stadium B1 pca90 hybrid s=72 h=336: 6 s 
+[11:54:02] JN_Stadium B1 pca90 hybrid s=24 h=744: 6 s 
+[11:54:06] JN_Stadium B1 pca95 direct h=168: 14 s 
+[11:54:08] JN_Stadium B1 pca90 hybrid s=48 h=744: 6 s 
+[11:54:11] JN_Stadium B1 pca90 hybrid s=72 h=744: 3 s 
+[11:54:11] cell JN_Stadium B1 pca90 done in 14.3 min 
+[11:54:16] JN_Stadium B1 pca95 direct h=336: 10 s 
+[11:54:25] JN_Stadium B1 pca95 direct h=744: 8 s 
+[11:54:41] JN_Stadium B1 pca99 direct h=24: 18 s 
+[11:54:48]   one-step NO2 D4: k=-, 1364 s 
+[11:55:05] JN_Stadium B1 pca99 direct h=168: 24 s 
+[11:55:17] JN_Stadium B1 pca99 direct h=336: 12 s 
+[11:55:26] JN_Stadium B1 pca99 direct h=744: 8 s 
+[11:56:02]   one-step PM2.5 ALL: k=18, 96 s 
+[11:56:09] Lumpyngngad B1 pca99 recursive: one-step fits 212 s, recursion 1174 s 
+[11:57:05]   one-step PM2.5 ALL: k=23, 99 s 
+[12:00:34]   one-step NO2 D5: k=-, 346 s 
+[12:02:10] Lumpyngngad B1 pca99 cross-fit (4 folds): 360 s 
+[12:02:20] Lumpyngngad B1 pca99 hybrid s=24 h=168: 9 s 
+[12:02:31] Lumpyngngad B1 pca99 hybrid s=48 h=168: 10 s 
+[12:02:41] Lumpyngngad B1 pca99 hybrid s=72 h=168: 9 s 
+[12:02:51] Lumpyngngad B1 pca99 hybrid s=24 h=336: 10 s 
+[12:03:00] Lumpyngngad B1 pca99 hybrid s=48 h=336: 8 s 
+[12:03:10] Lumpyngngad B1 pca99 hybrid s=72 h=336: 9 s 
+[12:03:20] Lumpyngngad B1 pca99 hybrid s=24 h=744: 9 s 
+[12:03:31] Lumpyngngad B1 pca99 hybrid s=48 h=744: 11 s 
+[12:03:45] Lumpyngngad B1 pca99 hybrid s=72 h=744: 13 s 
+[12:03:45] cell Lumpyngngad B1 pca99 done in 31.6 min 
+[12:04:24] Lumpyngngad B3 none direct h=24: 24 s 
+[12:04:35] JN_Stadium B1 pca95 recursive: one-step fits 96 s, recursion 513 s 
+[12:04:39] Lumpyngngad B3 none direct h=168: 14 s 
+[12:04:50] Lumpyngngad B3 none direct h=336: 10 s 
+[12:05:03] Lumpyngngad B3 none direct h=744: 13 s 
+[12:05:26] JN_Stadium B1 pca99 recursive: one-step fits 99 s, recursion 501 s 
+[12:05:55] JN_Stadium B1 pca95 cross-fit (4 folds): 79 s 
+[12:06:02] JN_Stadium B1 pca95 hybrid s=24 h=168: 7 s 
+[12:06:07] JN_Stadium B1 pca95 hybrid s=48 h=168: 5 s 
+[12:06:10]   one-step PM2.5 ALL: k=-, 67 s 
+[12:06:13] JN_Stadium B1 pca95 hybrid s=72 h=168: 5 s 
+[12:06:22] JN_Stadium B1 pca95 hybrid s=24 h=336: 9 s 
+[12:06:34] JN_Stadium B1 pca95 hybrid s=48 h=336: 11 s 
+[12:06:42] JN_Stadium B1 pca95 hybrid s=72 h=336: 8 s 
+[12:06:49] JN_Stadium B1 pca95 hybrid s=24 h=744: 7 s 
+[12:06:54] JN_Stadium B1 pca99 cross-fit (4 folds): 88 s 
+[12:06:55] JN_Stadium B1 pca95 hybrid s=48 h=744: 6 s 
+[12:06:59] JN_Stadium B1 pca95 hybrid s=72 h=744: 3 s 
+[12:06:59] cell JN_Stadium B1 pca95 done in 13.4 min 
+[12:07:14] JN_Stadium B1 pca99 hybrid s=24 h=168: 20 s 
+[12:07:27] JN_Stadium B1 pca99 hybrid s=48 h=168: 12 s 
+[12:07:32] JN_Stadium B1 pca99 hybrid s=72 h=168: 5 s 
+[12:07:33] Lumpyngngad B3 pca90 direct h=24: 24 s 
+[12:07:40] JN_Stadium B1 pca99 hybrid s=24 h=336: 8 s 
+[12:07:43] Lumpyngngad B3 pca90 direct h=168: 9 s 
+[12:07:47] JN_Stadium B1 pca99 hybrid s=48 h=336: 7 s 
+[12:07:53] Lumpyngngad B3 pca90 direct h=336: 10 s 
+[12:07:56] JN_Stadium B1 pca99 hybrid s=72 h=336: 9 s 
+[12:08:05] JN_Stadium B1 pca99 hybrid s=24 h=744: 9 s 
+[12:08:05] Lumpyngngad B3 pca90 direct h=744: 11 s 
+[12:08:10] JN_Stadium B1 pca99 hybrid s=48 h=744: 5 s 
+[12:08:16] JN_Stadium B1 pca99 hybrid s=72 h=744: 5 s 
+[12:08:16] cell JN_Stadium B1 pca99 done in 13.9 min 
+[12:08:45] Lumpyngngad B3 pca95 direct h=24: 20 s 
+[12:08:54] Lumpyngngad B3 pca95 direct h=168: 8 s 
+[12:09:05] Lumpyngngad B3 pca95 direct h=336: 10 s 
+[12:09:15] Lumpyngngad B3 pca95 direct h=744: 10 s 
+[12:09:58]   one-step PM2.5 ALL: k=11, 113 s 
+[12:13:08]   one-step PM2.5 ALL: k=16, 233 s 
+[12:15:27]   one-step NO2 S5: k=-, 893 s 
+[12:16:22] Lumpyngngad B3 none recursive: one-step fits 67 s, recursion 612 s 
+[12:18:11]   one-step SO2 D1: k=-, 164 s 
+[12:20:28] Lumpyngngad B3 none cross-fit (4 folds): 245 s 
+[12:20:48] Lumpyngngad B3 none hybrid s=24 h=168: 19 s 
+[12:21:08] Lumpyngngad B3 none hybrid s=48 h=168: 19 s 
+[12:21:28] Lumpyngngad B3 none hybrid s=72 h=168: 19 s 
+[12:21:47] Lumpyngngad B3 none hybrid s=24 h=336: 19 s 
+[12:22:08] Lumpyngngad B3 none hybrid s=48 h=336: 20 s 
+[12:22:44] Lumpyngngad B3 none hybrid s=72 h=336: 34 s 
+[12:23:08] Lumpyngngad B3 none hybrid s=24 h=744: 23 s 
+[12:23:28] Lumpyngngad B3 none hybrid s=48 h=744: 20 s 
+[12:23:51] Lumpyngngad B3 none hybrid s=72 h=744: 22 s 
+[12:23:51] cell Lumpyngngad B3 none done in 19.9 min 
+[12:24:42] Lumpyngngad B3 pca99 direct h=24: 33 s 
+[12:25:02] Lumpyngngad B3 pca99 direct h=168: 19 s 
+[12:25:23] Lumpyngngad B3 pca99 direct h=336: 20 s 
+[12:25:47] Lumpyngngad B3 pca99 direct h=744: 23 s 
+[12:26:20]   one-step SO2 D2: k=-, 489 s 
+[12:26:41] Lumpyngngad B3 pca90 recursive: one-step fits 113 s, recursion 1004 s 
+[12:30:19] Lumpyngngad B3 pca90 cross-fit (4 folds): 217 s 
+[12:30:27] Lumpyngngad B3 pca90 hybrid s=24 h=168: 8 s 
+[12:30:32]   one-step PM2.5 ALL: k=22, 285 s 
+[12:30:37] Lumpyngngad B3 pca90 hybrid s=48 h=168: 9 s 
+[12:30:52] Lumpyngngad B3 pca90 hybrid s=72 h=168: 14 s 
+[12:31:07] Lumpyngngad B3 pca90 hybrid s=24 h=336: 14 s 
+[12:31:21] Lumpyngngad B3 pca90 hybrid s=48 h=336: 13 s 
+[12:31:25] Lumpyngngad B3 pca95 recursive: one-step fits 233 s, recursion 1096 s 
+[12:31:39] Lumpyngngad B3 pca90 hybrid s=72 h=336: 17 s 
+[12:31:49] Lumpyngngad B3 pca90 hybrid s=24 h=744: 10 s 
+[12:32:04] Lumpyngngad B3 pca90 hybrid s=48 h=744: 14 s 
+[12:32:17] Lumpyngngad B3 pca90 hybrid s=72 h=744: 13 s 
+[12:32:17] cell Lumpyngngad B3 pca90 done in 25.1 min 
+[12:32:44] JN_Stadium B3 none direct h=24: 15 s 
+[12:33:05] JN_Stadium B3 none direct h=168: 21 s 
+[12:33:17] JN_Stadium B3 none direct h=336: 12 s 
+[12:33:28] JN_Stadium B3 none direct h=744: 10 s 
+[12:33:57]   one-step PM2.5 ALL: k=-, 29 s 
+[12:36:20] Lumpyngngad B3 pca95 cross-fit (4 folds): 294 s 
+[12:36:29] Lumpyngngad B3 pca95 hybrid s=24 h=168: 9 s 
+[12:36:37] JN_Stadium B3 none recursive: one-step fits 30 s, recursion 159 s 
+[12:36:38] Lumpyngngad B3 pca95 hybrid s=48 h=168: 9 s 
+[12:36:47] Lumpyngngad B3 pca95 hybrid s=72 h=168: 8 s 
+[12:36:56] Lumpyngngad B3 pca95 hybrid s=24 h=336: 9 s 
+[12:37:02] JN_Stadium B3 none cross-fit (4 folds): 25 s 
+[12:37:07] Lumpyngngad B3 pca95 hybrid s=48 h=336: 10 s 
+[12:37:20] Lumpyngngad B3 pca95 hybrid s=72 h=336: 13 s 
+[12:37:22] JN_Stadium B3 none hybrid s=24 h=168: 20 s 
+[12:37:32] Lumpyngngad B3 pca95 hybrid s=24 h=744: 11 s 
+[12:37:40] JN_Stadium B3 none hybrid s=48 h=168: 17 s 
+[12:37:44] Lumpyngngad B3 pca95 hybrid s=48 h=744: 11 s 
+[12:37:55] Lumpyngngad B3 pca95 hybrid s=72 h=744: 11 s 
+[12:37:55] cell Lumpyngngad B3 pca95 done in 29.5 min 
+[12:38:05] JN_Stadium B3 none hybrid s=72 h=168: 24 s 
+[12:38:16] JN_Stadium B3 none hybrid s=24 h=336: 11 s 
+[12:38:26] JN_Stadium B3 none hybrid s=48 h=336: 9 s 
+[12:38:39] JN_Stadium B3 pca90 direct h=24: 33 s 
+[12:38:41] JN_Stadium B3 none hybrid s=72 h=336: 14 s 
+[12:38:54] JN_Stadium B3 none hybrid s=24 h=744: 13 s 
+[12:39:04] JN_Stadium B3 pca90 direct h=168: 24 s 
+[12:39:06] JN_Stadium B3 none hybrid s=48 h=744: 11 s 
+[12:39:09]   one-step SO2 D3: k=-, 769 s 
+[12:39:16] JN_Stadium B3 none hybrid s=72 h=744: 10 s 
+[12:39:16] cell JN_Stadium B3 none done in 6.8 min 
+[12:39:18] JN_Stadium B3 pca90 direct h=336: 13 s 
+[12:39:30] JN_Stadium B3 pca90 direct h=744: 13 s 
+[12:40:08] JN_Stadium B3 pca95 direct h=24: 41 s 
+[12:40:32] JN_Stadium B3 pca95 direct h=168: 24 s 
+[12:40:40]   one-step PM2.5 ALL: k=13, 70 s 
+[12:40:49] JN_Stadium B3 pca95 direct h=336: 17 s 
+[12:41:03] JN_Stadium B3 pca95 direct h=744: 13 s 
+[12:43:27]   one-step PM2.5 ALL: k=18, 144 s 
+[12:48:15] JN_Stadium B3 pca90 recursive: one-step fits 70 s, recursion 455 s 
+[12:48:24] Lumpyngngad B3 pca99 recursive: one-step fits 285 s, recursion 1072 s 
+[12:49:30] JN_Stadium B3 pca90 cross-fit (4 folds): 74 s 
+[12:49:43] JN_Stadium B3 pca90 hybrid s=24 h=168: 13 s 
+[12:50:00] JN_Stadium B3 pca90 hybrid s=48 h=168: 16 s 
+[12:50:22] JN_Stadium B3 pca90 hybrid s=72 h=168: 22 s 
+[12:50:29] JN_Stadium B3 pca90 hybrid s=24 h=336: 6 s 
+[12:50:35] JN_Stadium B3 pca90 hybrid s=48 h=336: 6 s 
+[12:50:44] JN_Stadium B3 pca90 hybrid s=72 h=336: 9 s 
+[12:50:51] JN_Stadium B3 pca90 hybrid s=24 h=744: 7 s 
+[12:51:00] JN_Stadium B3 pca90 hybrid s=48 h=744: 9 s 
+[12:51:12] JN_Stadium B3 pca90 hybrid s=72 h=744: 12 s 
+[12:51:12] cell JN_Stadium B3 pca90 done in 13.1 min 
+[12:51:54] JN_Stadium B3 pca95 recursive: one-step fits 144 s, recursion 507 s 
+[12:52:08] JN_Stadium B3 pca99 direct h=24: 41 s 
+[12:52:35] JN_Stadium B3 pca99 direct h=168: 26 s 
+[12:52:48] JN_Stadium B3 pca99 direct h=336: 13 s 
+[12:52:56] JN_Stadium B3 pca99 direct h=744: 8 s 
+[12:53:04] Lumpyngngad B3 pca99 cross-fit (4 folds): 279 s 
+[12:53:11] Lumpyngngad B3 pca99 hybrid s=24 h=168: 6 s 
+[12:53:18] Lumpyngngad B3 pca99 hybrid s=48 h=168: 7 s 
+[12:53:26] Lumpyngngad B3 pca99 hybrid s=72 h=168: 7 s 
+[12:53:33] Lumpyngngad B3 pca99 hybrid s=24 h=336: 7 s 
+[12:53:36] JN_Stadium B3 pca95 cross-fit (4 folds): 102 s 
+[12:53:39] Lumpyngngad B3 pca99 hybrid s=48 h=336: 5 s 
+[12:53:45] Lumpyngngad B3 pca99 hybrid s=72 h=336: 6 s 
+[12:53:50] JN_Stadium B3 pca95 hybrid s=24 h=168: 13 s 
+[12:53:51] Lumpyngngad B3 pca99 hybrid s=24 h=744: 6 s 
+[12:53:56] Lumpyngngad B3 pca99 hybrid s=48 h=744: 5 s 
+[12:54:00] JN_Stadium B3 pca95 hybrid s=48 h=168: 10 s 
+[12:54:01] Lumpyngngad B3 pca99 hybrid s=72 h=744: 5 s 
+[12:54:01] cell Lumpyngngad B3 pca99 done in 29.9 min 
+[12:54:04]   one-step PM2.5 ALL: k=23, 68 s 
+[12:54:12]   one-step SO2 D4: k=-, 902 s 
+[12:54:15] JN_Stadium B3 pca95 hybrid s=72 h=168: 14 s 
+[12:54:22] JN_Stadium B3 pca95 hybrid s=24 h=336: 7 s 
+[12:54:29] JN_Stadium B3 pca95 hybrid s=48 h=336: 7 s 
+[12:54:37] JN_Stadium B3 pca95 hybrid s=72 h=336: 8 s 
+[12:54:47] JN_Stadium B3 pca95 hybrid s=24 h=744: 9 s 
+[12:54:56] JN_Stadium B3 pca95 hybrid s=48 h=744: 9 s 
+[12:55:07] JN_Stadium B3 pca95 hybrid s=72 h=744: 10 s 
+[12:55:07] cell JN_Stadium B3 pca95 done in 15.7 min 
+[12:55:27] Lumpyngngad C1_sep none direct h=24: 78 s 
+[12:55:47] Lumpyngngad C1_sep pca90 direct h=24: 31 s 
+[12:56:11] Lumpyngngad C1_sep pca90 direct h=168: 23 s 
+[12:56:24]   one-step SO2 D5: k=-, 133 s 
+[12:56:29] Lumpyngngad C1_sep pca90 direct h=336: 17 s 
+[12:56:39] Lumpyngngad C1_sep none direct h=168: 71 s 
+[12:56:47] Lumpyngngad C1_sep pca90 direct h=744: 18 s 
+[12:56:51]   one-step PM2.5 D1: k=18, 4 s 
+[12:57:07]   one-step PM2.5 D2: k=18, 16 s 
+[12:57:08]   one-step SO2 S5: k=-, 44 s 
+[12:57:41]   one-step PM2.5 D3: k=18, 34 s 
+[12:57:47] Lumpyngngad C1_sep none direct h=336: 67 s 
+[12:58:14]   one-step PM2.5 D4: k=18, 33 s 
+[12:58:44] Lumpyngngad C1_sep none direct h=744: 57 s 
+[12:58:51]   one-step CO D1: k=-, 102 s 
+[12:59:04]   one-step PM2.5 D1: k=-, 19 s 
+[12:59:08]   one-step PM2.5 D5: k=18, 55 s 
+[12:59:30] JN_Stadium B3 pca99 recursive: one-step fits 68 s, recursion 327 s 
+[12:59:46]   one-step PM2.5 S5: k=18, 38 s 
+[12:59:52]   one-step PM2.5 D2: k=-, 48 s 
+[13:01:16] JN_Stadium B3 pca99 cross-fit (4 folds): 106 s 
+[13:01:18]   one-step PM2.5 D3: k=-, 87 s 
+[13:01:33]   one-step CO D2: k=-, 163 s 
+[13:01:41] JN_Stadium B3 pca99 hybrid s=24 h=168: 25 s 
+[13:02:00] JN_Stadium B3 pca99 hybrid s=48 h=168: 19 s 
+[13:02:25] JN_Stadium B3 pca99 hybrid s=72 h=168: 24 s 
+[13:02:34] JN_Stadium B3 pca99 hybrid s=24 h=336: 9 s 
+[13:02:42] JN_Stadium B3 pca99 hybrid s=48 h=336: 7 s 
+[13:02:50] JN_Stadium B3 pca99 hybrid s=72 h=336: 8 s 
+[13:03:01] JN_Stadium B3 pca99 hybrid s=24 h=744: 10 s 
+[13:03:09] JN_Stadium B3 pca99 hybrid s=48 h=744: 8 s 
+[13:03:23] JN_Stadium B3 pca99 hybrid s=72 h=744: 14 s 
+[13:03:23] cell JN_Stadium B3 pca99 done in 11.9 min 
+[13:03:27]   one-step PM2.5 D4: k=-, 129 s 
+[13:04:32] Lumpyngngad C1_sep pca95 direct h=24: 35 s 
+[13:04:58] Lumpyngngad C1_sep pca95 direct h=168: 26 s 
+[13:05:23] Lumpyngngad C1_sep pca95 direct h=336: 24 s 
+[13:05:45] Lumpyngngad C1_sep pca95 direct h=744: 22 s 
+[13:05:50]   one-step PM2.5 D1: k=23, 5 s 
+[13:06:03]   one-step PM2.5 D5: k=-, 156 s 
+[13:06:14]   one-step PM2.5 D2: k=23, 24 s 
+[13:06:37]   one-step PM2.5 D3: k=23, 23 s 
+[13:08:53]   one-step CO D3: k=-, 439 s 
+[13:10:33]   one-step CO D4: k=-, 100 s 
+[13:20:54]   one-step CO D5: k=-, 621 s 
+[13:29:44]   one-step CO S5: k=-, 530 s 
+[13:48:47] JN_Stadium C2_sep none recursive: one-step fits 12165 s, recursion 1143 s 
+[15:14:47] JN_Stadium C2_sep none cross-fit (4 folds): 5161 s 
+[15:19:01] JN_Stadium C2_sep none hybrid s=24 h=168: 254 s 
+[15:21:36] JN_Stadium C2_sep none hybrid s=48 h=168: 154 s 
+[15:23:15] JN_Stadium C2_sep none hybrid s=72 h=168: 99 s 
+[15:24:45] JN_Stadium C2_sep none hybrid s=24 h=336: 90 s 
+[15:26:56] JN_Stadium C2_sep none hybrid s=48 h=336: 130 s 
+[15:28:49] JN_Stadium C2_sep none hybrid s=72 h=336: 113 s 
+[15:29:40] JN_Stadium C2_sep none hybrid s=24 h=744: 50 s 
+[15:30:22] JN_Stadium C2_sep none hybrid s=48 h=744: 42 s 
+[15:31:14] JN_Stadium C2_sep none hybrid s=72 h=744: 52 s 
+[15:31:14] cell JN_Stadium C2_sep none done in 324.3 min 
+[15:32:11]   one-step PM2.5 D1: k=18, 2 s 
+[15:32:12]   one-step PM2.5 D1: k=23, 2 s 
+[15:32:18]   one-step PM2.5 D2: k=18, 7 s 
+[15:32:18]   one-step PM2.5 D1: k=-, 9 s 
+[15:32:22]   one-step PM2.5 D2: k=23, 10 s 
+[15:32:31]   one-step PM2.5 D3: k=23, 9 s 
+[15:32:33]   one-step PM2.5 D3: k=18, 15 s 
+[15:32:46]   one-step PM2.5 D4: k=23, 15 s 
+[15:32:47]   one-step PM2.5 D4: k=18, 14 s 
+[15:32:50]   one-step PM2.5 D2: k=-, 31 s 
+[15:33:06] report: 1020 run files 
+[15:33:14]   one-step PM2.5 D5: k=18, 27 s 
+[15:33:19]   one-step PM2.5 D5: k=23, 33 s 
+[15:33:28]   one-step PM2.5 D3: k=-, 38 s 
+[15:33:44] direct/none reproduces the original runs: 152/152 
+[15:33:45]   one-step PM2.5 S5: k=23, 26 s 
+[15:33:48]   one-step PM2.5 S5: k=18, 34 s 
+[15:34:35] report: 1756 paired comparisons x 2 blocks 
+[15:36:19]   one-step PM2.5 D4: k=-, 171 s 
+[15:40:26]   one-step PM2.5 D5: k=-, 247 s 
+[15:42:48]   one-step PM2.5 S5: k=-, 142 s 
+[15:43:42] Lumpyngngad C1_sep pca95 recursive: one-step fits 96 s, recursion 597 s 
+[15:44:46] Lumpyngngad C1_sep pca90 recursive: one-step fits 99 s, recursion 659 s 
+[15:46:06] report written to results/second_stage/report 
+[15:46:44] Lumpyngngad C1_sep pca95 cross-fit (4 folds): 181 s 
+[15:47:15] Lumpyngngad C1_sep pca95 hybrid s=24 h=168: 30 s 
+[15:47:46] Lumpyngngad C1_sep pca95 hybrid s=48 h=168: 31 s 
+[15:48:12] Lumpyngngad C1_sep pca90 cross-fit (4 folds): 205 s 
+[15:48:13] Lumpyngngad C1_sep pca95 hybrid s=72 h=168: 26 s 
+[15:48:33] Lumpyngngad C1_sep pca95 hybrid s=24 h=336: 20 s 
+[15:48:33] Lumpyngngad C1_sep pca90 hybrid s=24 h=168: 20 s 
+[15:48:50] Lumpyngngad C1_sep pca95 hybrid s=48 h=336: 16 s 
+[15:48:51] Lumpyngngad C1_sep pca90 hybrid s=48 h=168: 17 s 
+[15:49:07] Lumpyngngad C1_sep pca90 hybrid s=72 h=168: 15 s 
+[15:49:07] Lumpyngngad C1_sep pca95 hybrid s=72 h=336: 17 s 
+[15:49:22] Lumpyngngad C1_sep none recursive: one-step fits 639 s, recursion 394 s 
+[15:49:24] Lumpyngngad C1_sep pca90 hybrid s=24 h=336: 16 s 
+[15:49:24] Lumpyngngad C1_sep pca95 hybrid s=24 h=744: 16 s 
+[15:49:30] Lumpyngngad C1_sep pca95 hybrid s=48 h=744: 6 s 
+[15:49:30] Lumpyngngad C1_sep pca90 hybrid s=48 h=336: 7 s 
+[15:49:37] Lumpyngngad C1_sep pca95 hybrid s=72 h=744: 6 s 
+[15:49:37] cell Lumpyngngad C1_sep pca95 done in 17.5 min 
+[15:49:37] Lumpyngngad C1_sep pca90 hybrid s=72 h=336: 7 s 
+[15:49:45] Lumpyngngad C1_sep pca90 hybrid s=24 h=744: 7 s 
+[15:49:51] Lumpyngngad C1_sep pca90 hybrid s=48 h=744: 7 s 
+[15:49:57] Lumpyngngad C1_sep pca90 hybrid s=72 h=744: 6 s 
+[15:49:57] cell Lumpyngngad C1_sep pca90 done in 17.8 min 
+[15:50:00] Lumpyngngad C1_sep pca99 direct h=24: 17 s 
+[15:50:11] Lumpyngngad C1_sep pca99 direct h=168: 11 s 
+[15:50:21] Lumpyngngad C1_sep pca99 direct h=336: 10 s 
+[15:50:31] Lumpyngngad C1_sep pca99 direct h=744: 10 s 
+[15:50:37]   one-step PM2.5 D1: k=28, 6 s 
+[15:50:46]   one-step PM2.5 D2: k=28, 10 s 
+[15:50:58] JN_Stadium C1_sep none direct h=24: 56 s 
+[15:51:09]   one-step PM2.5 D3: k=28, 23 s 
+[15:51:37] JN_Stadium C1_sep none direct h=168: 39 s 
+[15:51:40]   one-step PM2.5 D4: k=28, 31 s 
+[15:51:59]   one-step PM2.5 D5: k=28, 18 s 
+[15:52:11] JN_Stadium C1_sep none direct h=336: 34 s 
+[15:52:31] JN_Stadium C1_sep none direct h=744: 19 s 
+[15:52:31]   one-step PM2.5 S5: k=28, 33 s 
+[15:52:51]   one-step PM2.5 D1: k=-, 20 s 
+[15:53:22]   one-step PM2.5 D2: k=-, 31 s 
+[15:54:39] Lumpyngngad C1_sep none cross-fit (4 folds): 317 s 
+[15:55:50] Lumpyngngad C1_sep none hybrid s=24 h=168: 71 s 
+[15:56:44]   one-step PM2.5 D3: k=-, 202 s 
+[15:56:57] Lumpyngngad C1_sep none hybrid s=48 h=168: 66 s 
+[15:57:28]   one-step PM2.5 D4: k=-, 44 s 
+[15:58:05] Lumpyngngad C1_sep none hybrid s=72 h=168: 68 s 
+[15:58:21]   one-step PM2.5 D5: k=-, 53 s 
+[15:59:17] Lumpyngngad C1_sep none hybrid s=24 h=336: 72 s 
+[16:00:14] Lumpyngngad C1_sep none hybrid s=48 h=336: 56 s 
+[16:00:41]   one-step PM2.5 S5: k=-, 139 s 
+[16:01:34] Lumpyngngad C1_sep none hybrid s=72 h=336: 80 s 
+[16:02:00] Lumpyngngad C1_sep pca99 recursive: one-step fits 120 s, recursion 569 s 
+[16:02:33] Lumpyngngad C1_sep none hybrid s=24 h=744: 59 s 
+[16:03:22] Lumpyngngad C1_sep none hybrid s=48 h=744: 48 s 
+[16:04:01] JN_Stadium C1_sep none recursive: one-step fits 490 s, recursion 201 s 
+[16:04:04] Lumpyngngad C1_sep none hybrid s=72 h=744: 42 s 
+[16:04:04] cell Lumpyngngad C1_sep none done in 31.9 min 
+[16:04:42] JN_Stadium C1_sep pca90 direct h=24: 32 s 
+[16:05:15] Lumpyngngad C1_sep pca99 cross-fit (4 folds): 194 s 
+[16:05:16] JN_Stadium C1_sep pca90 direct h=168: 34 s 
+[16:05:25] JN_Stadium C1_sep pca90 direct h=336: 9 s 
+[16:05:28] Lumpyngngad C1_sep pca99 hybrid s=24 h=168: 12 s 
+[16:05:34] JN_Stadium C1_sep pca90 direct h=744: 9 s 
+[16:05:37]   one-step PM2.5 D1: k=17, 3 s 
+[16:05:37] Lumpyngngad C1_sep pca99 hybrid s=48 h=168: 10 s 
+[16:05:41]   one-step PM2.5 D2: k=17, 4 s 
+[16:05:46] Lumpyngngad C1_sep pca99 hybrid s=72 h=168: 9 s 
+[16:05:53]   one-step PM2.5 D3: k=17, 11 s 
+[16:05:57] Lumpyngngad C1_sep pca99 hybrid s=24 h=336: 11 s 
+[16:06:04]   one-step PM2.5 D4: k=17, 11 s 
+[16:06:09] Lumpyngngad C1_sep pca99 hybrid s=48 h=336: 11 s 
+[16:06:18] Lumpyngngad C1_sep pca99 hybrid s=72 h=336: 9 s 
+[16:06:24]   one-step PM2.5 D5: k=17, 21 s 
+[16:06:28] Lumpyngngad C1_sep pca99 hybrid s=24 h=744: 10 s 
+[16:06:38] Lumpyngngad C1_sep pca99 hybrid s=48 h=744: 9 s 
+[16:06:38]   one-step PM2.5 S5: k=17, 14 s 
+[16:06:55] Lumpyngngad C1_sep pca99 hybrid s=72 h=744: 17 s 
+[16:06:55] cell Lumpyngngad C1_sep pca99 done in 17.2 min 
+[16:08:01] JN_Stadium C1_sep pca95 direct h=24: 58 s 
+[16:08:44] JN_Stadium C1_sep none cross-fit (4 folds): 282 s 
+[16:09:11] JN_Stadium C1_sep pca95 direct h=168: 70 s 
+[16:09:33] JN_Stadium C1_sep pca95 direct h=336: 21 s 
+[16:09:42] JN_Stadium C1_sep pca90 recursive: one-step fits 64 s, recursion 184 s 
+[16:09:43] JN_Stadium C1_sep none hybrid s=24 h=168: 59 s 
+[16:09:50] JN_Stadium C1_sep pca95 direct h=744: 17 s 
+[16:09:51]   one-step PM2.5 D1: k=22, 2 s 
+[16:09:59]   one-step PM2.5 D2: k=22, 7 s 
+[16:10:12] JN_Stadium C1_sep none hybrid s=48 h=168: 29 s 
+[16:10:21]   one-step PM2.5 D3: k=22, 22 s 
+[16:10:30] JN_Stadium C1_sep pca90 cross-fit (4 folds): 48 s 
+[16:10:40]   one-step PM2.5 D4: k=22, 20 s 
+[16:10:41] JN_Stadium C1_sep pca90 hybrid s=24 h=168: 11 s 
+[16:10:43] JN_Stadium C1_sep none hybrid s=72 h=168: 31 s 
+[16:10:50] JN_Stadium C1_sep pca90 hybrid s=48 h=168: 9 s 
+[16:10:58] JN_Stadium C1_sep pca90 hybrid s=72 h=168: 8 s 
+[16:11:00]   one-step PM2.5 D5: k=22, 20 s 
+[16:11:03] JN_Stadium C1_sep none hybrid s=24 h=336: 20 s 
+[16:11:07] JN_Stadium C1_sep pca90 hybrid s=24 h=336: 9 s 
+[16:11:14]   one-step PM2.5 S5: k=22, 14 s 
+[16:11:23] JN_Stadium C1_sep pca90 hybrid s=48 h=336: 16 s 
+[16:11:39] JN_Stadium C1_sep pca90 hybrid s=72 h=336: 16 s 
+[16:11:51] JN_Stadium C1_sep pca90 hybrid s=24 h=744: 12 s 
+[16:12:01] JN_Stadium C1_sep none hybrid s=48 h=336: 58 s 
+[16:12:04] JN_Stadium C1_sep pca90 hybrid s=48 h=744: 12 s 
+[16:12:16] JN_Stadium C1_sep pca90 hybrid s=72 h=744: 12 s 
+[16:12:16] cell JN_Stadium C1_sep pca90 done in 8.1 min 
+[16:12:57] JN_Stadium C1_sep none hybrid s=72 h=336: 56 s 
+[16:13:35] JN_Stadium C1_sep pca99 direct h=24: 70 s 
+[16:13:39] JN_Stadium C1_sep none hybrid s=24 h=744: 42 s 
+[16:14:08] JN_Stadium C1_sep none hybrid s=48 h=744: 28 s 
+[16:14:31] JN_Stadium C1_sep none hybrid s=72 h=744: 23 s 
+[16:14:31] cell JN_Stadium C1_sep none done in 24.5 min 
+[16:14:31] JN_Stadium C1_sep pca95 recursive: one-step fits 84 s, recursion 198 s 
+[16:14:37] JN_Stadium C1_sep pca99 direct h=168: 62 s 
+[16:14:50] JN_Stadium C1_sep pca99 direct h=336: 13 s 
+[16:15:00] JN_Stadium C1_sep pca99 direct h=744: 10 s 
+[16:15:02]   one-step PM2.5 D1: k=28, 2 s 
+[16:15:09] Lumpyngngad C1_sh none direct h=24: 33 s 
+[16:15:32] JN_Stadium C1_sep pca95 cross-fit (4 folds): 60 s 
+[16:15:35] Lumpyngngad C1_sh none direct h=168: 25 s 
+[16:15:37]   one-step PM2.5 D2: k=28, 35 s 
+[16:15:49] Lumpyngngad C1_sh none direct h=336: 14 s 
+[16:15:49] JN_Stadium C1_sep pca95 hybrid s=24 h=168: 17 s 
+[16:15:59] JN_Stadium C1_sep pca95 hybrid s=48 h=168: 10 s 
+[16:16:03]   one-step PM2.5 D3: k=28, 26 s 
+[16:16:07] JN_Stadium C1_sep pca95 hybrid s=72 h=168: 7 s 
+[16:16:09] Lumpyngngad C1_sh none direct h=744: 20 s 
+[16:16:15] JN_Stadium C1_sep pca95 hybrid s=24 h=336: 8 s 
+[16:16:26] JN_Stadium C1_sep pca95 hybrid s=48 h=336: 11 s 
+[16:16:28]   one-step PM2.5 D4: k=28, 25 s 
+[16:16:36] JN_Stadium C1_sep pca95 hybrid s=72 h=336: 10 s 
+[16:16:44] JN_Stadium C1_sep pca95 hybrid s=24 h=744: 8 s 
+[16:16:51] JN_Stadium C1_sep pca95 hybrid s=48 h=744: 7 s 
+[16:16:56]   one-step PM2.5 D5: k=28, 28 s 
+[16:17:00] JN_Stadium C1_sep pca95 hybrid s=72 h=744: 9 s 
+[16:17:00] cell JN_Stadium C1_sep pca95 done in 10.0 min 
+[16:17:09]   one-step PM2.5 S5: k=28, 13 s 
+[16:18:06] Lumpyngngad C1_sh pca90 direct h=24: 60 s 
+[16:18:22] Lumpyngngad C1_sh pca90 direct h=168: 16 s 
+[16:18:38] Lumpyngngad C1_sh pca90 direct h=336: 16 s 
+[16:18:56] Lumpyngngad C1_sh pca90 direct h=744: 17 s 
+[16:21:18]   one-step PM2.5 ALL: k=-, 309 s 
+[16:21:33]   one-step PM2.5 ALL: k=24, 157 s 
+[16:23:10] JN_Stadium C1_sep pca99 recursive: one-step fits 129 s, recursion 361 s 
+[16:30:23] JN_Stadium C1_sep pca99 cross-fit (4 folds): 433 s 
+[16:31:31] JN_Stadium C1_sep pca99 hybrid s=24 h=168: 67 s 
+[16:32:32] JN_Stadium C1_sep pca99 hybrid s=48 h=168: 61 s 
+[16:33:17] JN_Stadium C1_sep pca99 hybrid s=72 h=168: 45 s 
+[16:34:04] JN_Stadium C1_sep pca99 hybrid s=24 h=336: 46 s 
+[16:34:57] JN_Stadium C1_sep pca99 hybrid s=48 h=336: 53 s 
+[16:35:28] Lumpyngngad C1_sh none recursive: one-step fits 309 s, recursion 850 s 
+[16:35:36] JN_Stadium C1_sep pca99 hybrid s=72 h=336: 39 s 
+[16:36:05] JN_Stadium C1_sep pca99 hybrid s=24 h=744: 29 s 
+[16:36:31] JN_Stadium C1_sep pca99 hybrid s=48 h=744: 25 s 
+[16:36:47] JN_Stadium C1_sep pca99 hybrid s=72 h=744: 16 s 
+[16:36:47] cell JN_Stadium C1_sep pca99 done in 24.4 min 
+[16:38:25] Lumpyngngad C1_sh pca95 direct h=24: 87 s 
+[16:38:48] Lumpyngngad C1_sh pca95 direct h=168: 22 s 
+[16:39:09] Lumpyngngad C1_sh pca95 direct h=336: 20 s 
+[16:39:30] Lumpyngngad C1_sh pca95 direct h=744: 21 s 
+[16:39:43] Lumpyngngad C1_sh pca90 recursive: one-step fits 157 s, recursion 1090 s 
+[16:41:59]   one-step PM2.5 ALL: k=30, 148 s 
+[16:43:05] Lumpyngngad C1_sh pca90 cross-fit (4 folds): 202 s 
+[16:43:14] Lumpyngngad C1_sh none cross-fit (4 folds): 466 s 
+[16:43:33] Lumpyngngad C1_sh pca90 hybrid s=24 h=168: 26 s 
+[16:43:48] Lumpyngngad C1_sh pca90 hybrid s=48 h=168: 15 s 
+[16:44:02] Lumpyngngad C1_sh pca90 hybrid s=72 h=168: 13 s 
+[16:44:10] Lumpyngngad C1_sh none hybrid s=24 h=168: 55 s 
+[16:44:19] Lumpyngngad C1_sh pca90 hybrid s=24 h=336: 16 s 
+[16:44:33] Lumpyngngad C1_sh pca90 hybrid s=48 h=336: 13 s 
+[16:44:46] Lumpyngngad C1_sh pca90 hybrid s=72 h=336: 13 s 
+[16:45:05] Lumpyngngad C1_sh none hybrid s=48 h=168: 53 s 
+[16:45:07] Lumpyngngad C1_sh pca90 hybrid s=24 h=744: 20 s 
+[16:45:22] Lumpyngngad C1_sh pca90 hybrid s=48 h=744: 14 s 
+[16:45:37] Lumpyngngad C1_sh pca90 hybrid s=72 h=744: 15 s 
+[16:45:37] cell Lumpyngngad C1_sh pca90 done in 28.5 min 
+[16:45:46] Lumpyngngad C1_sh none hybrid s=72 h=168: 41 s 
+[16:46:23] Lumpyngngad C1_sh none hybrid s=24 h=336: 37 s 
+[16:46:57] Lumpyngngad C1_sh none hybrid s=48 h=336: 33 s 
+[16:47:40] Lumpyngngad C1_sh none hybrid s=72 h=336: 42 s 
+[16:47:49] Lumpyngngad C1_sh pca99 direct h=24: 121 s 
+[16:48:19] Lumpyngngad C1_sh pca99 direct h=168: 29 s 
+[16:48:26] Lumpyngngad C1_sh none hybrid s=24 h=744: 45 s 
+[16:48:47] Lumpyngngad C1_sh pca99 direct h=336: 28 s 
+[16:49:04] Lumpyngngad C1_sh none hybrid s=48 h=744: 37 s 
+[16:49:14] Lumpyngngad C1_sh pca99 direct h=744: 26 s 
+[16:49:39] Lumpyngngad C1_sh none hybrid s=72 h=744: 35 s 
+[16:49:39] cell Lumpyngngad C1_sh none done in 35.1 min 
+[16:50:27] JN_Stadium C1_sh none direct h=24: 37 s 
+[16:52:02] JN_Stadium C1_sh none direct h=168: 95 s 
+[16:52:35] JN_Stadium C1_sh none direct h=336: 32 s 
+[16:52:57] JN_Stadium C1_sh none direct h=744: 22 s 
+[16:53:53]   one-step PM2.5 ALL: k=44, 278 s 
+[16:56:18]   one-step PM2.5 ALL: k=-, 200 s 
+[16:59:16] Lumpyngngad C1_sh pca95 recursive: one-step fits 148 s, recursion 1037 s 
+[17:03:58] JN_Stadium C1_sh none recursive: one-step fits 200 s, recursion 460 s 
+[17:06:12] Lumpyngngad C1_sh pca95 cross-fit (4 folds): 415 s 
+[17:06:33] Lumpyngngad C1_sh pca95 hybrid s=24 h=168: 20 s 
+[17:06:50] Lumpyngngad C1_sh pca95 hybrid s=48 h=168: 16 s 
+[17:07:07] Lumpyngngad C1_sh pca95 hybrid s=72 h=168: 16 s 
+[17:07:28] Lumpyngngad C1_sh pca95 hybrid s=24 h=336: 21 s 
+[17:07:52] Lumpyngngad C1_sh pca95 hybrid s=48 h=336: 23 s 
+[17:07:56] JN_Stadium C1_sh none cross-fit (4 folds): 238 s 
+[17:08:08] Lumpyngngad C1_sh pca95 hybrid s=72 h=336: 16 s 
+[17:08:31] Lumpyngngad C1_sh pca95 hybrid s=24 h=744: 22 s 
+[17:08:51] Lumpyngngad C1_sh pca95 hybrid s=48 h=744: 19 s 
+[17:09:07] Lumpyngngad C1_sh pca95 hybrid s=72 h=744: 16 s 
+[17:09:07] cell Lumpyngngad C1_sh pca95 done in 32.2 min 
+[17:09:26] JN_Stadium C1_sh none hybrid s=24 h=168: 89 s 
+[17:09:48] JN_Stadium C1_sh pca90 direct h=24: 30 s 
+[17:10:38] JN_Stadium C1_sh none hybrid s=48 h=168: 72 s 
+[17:10:43] JN_Stadium C1_sh pca90 direct h=168: 55 s 
+[17:10:58] JN_Stadium C1_sh pca90 direct h=336: 14 s 
+[17:11:06] JN_Stadium C1_sh pca90 direct h=744: 8 s 
+[17:11:39] JN_Stadium C1_sh none hybrid s=72 h=168: 61 s 
+[17:12:08] JN_Stadium C1_sh none hybrid s=24 h=336: 29 s 
+[17:12:35] JN_Stadium C1_sh none hybrid s=48 h=336: 26 s 
+[17:12:47]   one-step PM2.5 ALL: k=24, 101 s 
+[17:13:08] JN_Stadium C1_sh none hybrid s=72 h=336: 32 s 
+[17:13:37] JN_Stadium C1_sh none hybrid s=24 h=744: 29 s 
+[17:14:17] JN_Stadium C1_sh none hybrid s=48 h=744: 40 s 
+[17:14:22] Lumpyngngad C1_sh pca99 recursive: one-step fits 279 s, recursion 1229 s 
+[17:14:39] JN_Stadium C1_sh none hybrid s=72 h=744: 21 s 
+[17:14:39] cell JN_Stadium C1_sh none done in 24.8 min 
+[17:15:19] JN_Stadium C1_sh pca95 direct h=24: 31 s 
+[17:16:14] JN_Stadium C1_sh pca95 direct h=168: 54 s 
+[17:16:29] JN_Stadium C1_sh pca95 direct h=336: 15 s 
+[17:16:39] JN_Stadium C1_sh pca95 direct h=744: 10 s 
+[17:18:37]   one-step PM2.5 ALL: k=31, 118 s 
+[17:20:36] JN_Stadium C1_sh pca90 recursive: one-step fits 101 s, recursion 469 s 
+[17:20:57] Lumpyngngad C1_sh pca99 cross-fit (4 folds): 395 s 
+[17:21:17] Lumpyngngad C1_sh pca99 hybrid s=24 h=168: 19 s 
+[17:21:41] Lumpyngngad C1_sh pca99 hybrid s=48 h=168: 23 s 
+[17:22:04] Lumpyngngad C1_sh pca99 hybrid s=72 h=168: 22 s 
+[17:22:27] JN_Stadium C1_sh pca90 cross-fit (4 folds): 110 s 
+[17:22:32] Lumpyngngad C1_sh pca99 hybrid s=24 h=336: 28 s 
+[17:22:44] JN_Stadium C1_sh pca90 hybrid s=24 h=168: 17 s 
+[17:22:52] Lumpyngngad C1_sh pca99 hybrid s=48 h=336: 20 s 
+[17:22:59] JN_Stadium C1_sh pca90 hybrid s=48 h=168: 15 s 
+[17:23:07] JN_Stadium C1_sh pca90 hybrid s=72 h=168: 8 s 
+[17:23:10] Lumpyngngad C1_sh pca99 hybrid s=72 h=336: 17 s 
+[17:23:18] JN_Stadium C1_sh pca90 hybrid s=24 h=336: 10 s 
+[17:23:28] JN_Stadium C1_sh pca90 hybrid s=48 h=336: 10 s 
+[17:23:35] Lumpyngngad C1_sh pca99 hybrid s=24 h=744: 24 s 
+[17:23:40] JN_Stadium C1_sh pca90 hybrid s=72 h=336: 12 s 
+[17:23:48] JN_Stadium C1_sh pca90 hybrid s=24 h=744: 8 s 
+[17:23:52] Lumpyngngad C1_sh pca99 hybrid s=48 h=744: 17 s 
+[17:23:56] JN_Stadium C1_sh pca90 hybrid s=48 h=744: 7 s 
+[17:24:02] JN_Stadium C1_sh pca90 hybrid s=72 h=744: 6 s 
+[17:24:02] cell JN_Stadium C1_sh pca90 done in 14.8 min 
+[17:24:09] Lumpyngngad C1_sh pca99 hybrid s=72 h=744: 17 s 
+[17:24:09] cell Lumpyngngad C1_sh pca99 done in 38.4 min 
+[17:24:46] JN_Stadium C1_sh pca99 direct h=24: 34 s 
+[17:25:36] JN_Stadium C1_sh pca95 recursive: one-step fits 118 s, recursion 419 s 
+[17:25:37] JN_Stadium C1_sh pca99 direct h=168: 51 s 
+[17:25:45] JN_Stadium C1_sh pca99 direct h=336: 8 s 
+[17:25:51] JN_Stadium C1_sh pca99 direct h=744: 6 s 
+[17:26:42] JN_Stadium C1_sh pca95 cross-fit (4 folds): 66 s 
+[17:26:58] JN_Stadium C1_sh pca95 hybrid s=24 h=168: 16 s 
+[17:27:07] JN_Stadium C1_sh pca95 hybrid s=48 h=168: 8 s 
+[17:27:14] JN_Stadium C1_sh pca95 hybrid s=72 h=168: 6 s 
+[17:27:24] JN_Stadium C1_sh pca95 hybrid s=24 h=336: 10 s 
+[17:27:36] JN_Stadium C1_sh pca95 hybrid s=48 h=336: 12 s 
+[17:27:36]   one-step PM2.5 ALL: k=46, 105 s 
+[17:27:57] JN_Stadium C1_sh pca95 hybrid s=72 h=336: 21 s 
+[17:28:12] JN_Stadium C1_sh pca95 hybrid s=24 h=744: 15 s 
+[17:28:26] JN_Stadium C1_sh pca95 hybrid s=48 h=744: 14 s 
+[17:28:36] JN_Stadium C1_sh pca95 hybrid s=72 h=744: 10 s 
+[17:28:36] cell JN_Stadium C1_sh pca95 done in 13.8 min 
+[17:35:13] JN_Stadium C1_sh pca99 recursive: one-step fits 105 s, recursion 457 s 
+[17:37:04] JN_Stadium C1_sh pca99 cross-fit (4 folds): 110 s 
+[17:37:27] JN_Stadium C1_sh pca99 hybrid s=24 h=168: 23 s 
+[17:37:43] JN_Stadium C1_sh pca99 hybrid s=48 h=168: 15 s 
+[17:37:54] JN_Stadium C1_sh pca99 hybrid s=72 h=168: 11 s 
+[17:38:08] JN_Stadium C1_sh pca99 hybrid s=24 h=336: 14 s 
+[17:38:21] JN_Stadium C1_sh pca99 hybrid s=48 h=336: 12 s 
+[17:38:33] JN_Stadium C1_sh pca99 hybrid s=72 h=336: 12 s 
+[17:38:46] JN_Stadium C1_sh pca99 hybrid s=24 h=744: 13 s 
+[17:38:56] JN_Stadium C1_sh pca99 hybrid s=48 h=744: 10 s 
+[17:39:06] JN_Stadium C1_sh pca99 hybrid s=72 h=744: 10 s 
+[17:39:06] cell JN_Stadium C1_sh pca99 done in 14.9 min 
+[17:41:15] report: 1232 run files 
+[17:42:36] direct/none reproduces the original runs: 176/176 
+[17:43:07] report: 2084 paired comparisons x 2 blocks 
+[17:49:49] report written to results/second_stage/report 

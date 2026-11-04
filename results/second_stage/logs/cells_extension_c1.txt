@@ -1,0 +1,16 @@
+Lumpyngngad C1_sep none
+Lumpyngngad C1_sep 0.9
+Lumpyngngad C1_sep 0.95
+Lumpyngngad C1_sep 0.99
+JN_Stadium C1_sep none
+JN_Stadium C1_sep 0.9
+JN_Stadium C1_sep 0.95
+JN_Stadium C1_sep 0.99
+Lumpyngngad C1_sh none
+Lumpyngngad C1_sh 0.9
+Lumpyngngad C1_sh 0.95
+Lumpyngngad C1_sh 0.99
+JN_Stadium C1_sh none
+JN_Stadium C1_sh 0.9
+JN_Stadium C1_sh 0.95
+JN_Stadium C1_sh 0.99

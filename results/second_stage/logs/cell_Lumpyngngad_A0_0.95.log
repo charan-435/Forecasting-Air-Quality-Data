@@ -1,0 +1,38 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[10:09:59] Lumpyngngad A0 pca95 direct h=24: 2 s 
+[10:10:02] Lumpyngngad A0 pca95 direct h=168: 3 s 
+[10:10:04] Lumpyngngad A0 pca95 direct h=336: 2 s 
+[10:10:06] Lumpyngngad A0 pca95 direct h=744: 1 s 
+[10:10:08]   one-step PM2.5 LEVEL: k=10, 3 s 
+[10:10:18] Lumpyngngad A0 pca95 recursive: one-step fits 3 s, recursion 10 s 
+[10:10:22] Lumpyngngad A0 pca95 cross-fit (4 folds): 4 s 
+[10:10:26] Lumpyngngad A0 pca95 hybrid s=24 h=168: 3 s 
+[10:10:28] Lumpyngngad A0 pca95 hybrid s=48 h=168: 2 s 
+[10:10:30] Lumpyngngad A0 pca95 hybrid s=72 h=168: 2 s 
+[10:10:31] Lumpyngngad A0 pca95 hybrid s=24 h=336: 2 s 
+[10:10:33] Lumpyngngad A0 pca95 hybrid s=48 h=336: 2 s 
+[10:10:35] Lumpyngngad A0 pca95 hybrid s=72 h=336: 2 s 
+[10:10:37] Lumpyngngad A0 pca95 hybrid s=24 h=744: 2 s 
+[10:10:38] Lumpyngngad A0 pca95 hybrid s=48 h=744: 1 s 
+[10:10:39] Lumpyngngad A0 pca95 hybrid s=72 h=744: 1 s 
+[10:10:39] cell Lumpyngngad A0 pca95 done in 0.7 min 
+[1] TRUE TRUE

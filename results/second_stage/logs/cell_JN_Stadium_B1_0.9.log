@@ -1,0 +1,38 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[11:40:13] JN_Stadium B1 pca90 direct h=24: 21 s 
+[11:40:35] JN_Stadium B1 pca90 direct h=168: 22 s 
+[11:40:57] JN_Stadium B1 pca90 direct h=336: 21 s 
+[11:41:09] JN_Stadium B1 pca90 direct h=744: 12 s 
+[11:42:53]   one-step PM2.5 ALL: k=13, 104 s 
+[11:51:49] JN_Stadium B1 pca90 recursive: one-step fits 104 s, recursion 535 s 
+[11:53:16] JN_Stadium B1 pca90 cross-fit (4 folds): 87 s 
+[11:53:27] JN_Stadium B1 pca90 hybrid s=24 h=168: 10 s 
+[11:53:33] JN_Stadium B1 pca90 hybrid s=48 h=168: 6 s 
+[11:53:37] JN_Stadium B1 pca90 hybrid s=72 h=168: 3 s 
+[11:53:43] JN_Stadium B1 pca90 hybrid s=24 h=336: 6 s 
+[11:53:50] JN_Stadium B1 pca90 hybrid s=48 h=336: 7 s 
+[11:53:56] JN_Stadium B1 pca90 hybrid s=72 h=336: 6 s 
+[11:54:02] JN_Stadium B1 pca90 hybrid s=24 h=744: 6 s 
+[11:54:08] JN_Stadium B1 pca90 hybrid s=48 h=744: 6 s 
+[11:54:11] JN_Stadium B1 pca90 hybrid s=72 h=744: 3 s 
+[11:54:11] cell JN_Stadium B1 pca90 done in 14.3 min 
+[1] TRUE TRUE

@@ -1,0 +1,9 @@
+station,variable,source,unit,start,end,n_rows,median_step_min,n_irregular_steps,expected_hourly_rows,missing_timestamps,duplicate_timestamp_rows,monotonic,na_values,inf_values,negative,zeros,out_of_bounds,bounds,pct_missing,n_const_runs_ge6h,hours_in_const_runs_ge6h,max_const_run_h,n_linear_runs_ge6h,hours_in_linear_runs_ge6h,max_linear_run_h,min,median,max,note
+CPCB,PM2.5,data/raw/CPCB.csv,ug/m3,2022-07-01 00:00:00,2023-07-06 00:00:00,8881,60.0,0,8881,0,0,True,0,0,0,0,0,"[0, 1000]",0.0,23,2495,600,0,0,3,0.27958502,11.88380751,66.8044677,
+CPCB,PM10,data/raw/CPCB.csv,ug/m3,2022-07-01 00:00:00,2023-07-06 00:00:00,8881,60.0,0,8881,0,0,True,0,0,0,0,0,"[0, 2000]",0.0,22,2489,600,0,0,3,0.319974405,19.94398114,392.74117,
+CPCB,NO2,data/raw/CPCB.csv,ug/m3,2022-07-01 00:00:00,2023-07-06 00:00:00,8881,60.0,0,8881,0,0,True,0,0,0,0,0,"[0, 1000]",0.0,22,2489,600,0,0,3,1.76596875,2.1755232,25.88567625,
+CPCB,SO2,data/raw/CPCB.csv,ug/m3,2022-07-01 00:00:00,2023-07-06 00:00:00,8881,60.0,0,8881,0,0,True,0,0,0,0,0,"[0, 1000]",0.0,22,2489,600,0,0,3,2.92064386,4.965645867,9.834520975,
+CPCB,O3,data/raw/CPCB.csv,ug/m3,2022-07-01 00:00:00,2023-07-06 00:00:00,8881,60.0,0,8881,0,0,True,0,0,0,0,0,"[0, 1000]",0.0,22,2489,600,0,0,4,0.186224409,0.684918185,34.51961461,
+CPCB,CO,data/raw/CPCB.csv,ug/m3 (raw file),2022-07-01 00:00:00,2023-07-06 00:00:00,8881,60.0,0,8881,0,0,True,0,0,0,31,0,"[0, 50]",0.0,22,2489,600,0,0,5,0.0,233.0435842,1332.431136,CO converted ug/m3->mg/m3 for bounds check only
+CPCB,AT,data/raw/CPCB.csv,degC,2022-07-01 00:00:00,2023-07-06 00:00:00,8881,60.0,0,8881,0,0,True,0,0,0,0,0,"[-10, 50]",0.0,27,2519,600,0,0,3,17.892,23.33662516,28.3195,
+CPCB,RH,data/raw/CPCB.csv,pct,2022-07-01 00:00:00,2023-07-06 00:00:00,8881,60.0,0,8881,0,0,True,0,0,0,0,0,"[0, 100]",0.0,22,2489,600,0,0,3,13.0425,72.36183352,99.1325,

@@ -1,0 +1,49 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[15:36:14] smoke Lumpyngngad A0: val MAE 7.905 test MAE 10.028 (24 inputs, 0 s) 
+[15:36:14] smoke Lumpyngngad A1: val MAE 7.659 test MAE 9.656 (31 inputs, 0 s) 
+[15:36:15] smoke Lumpyngngad A2: val MAE 7.421 test MAE 9.041 (72 inputs, 0 s) 
+[15:36:15] smoke Lumpyngngad A3: val MAE 7.289 test MAE 9.043 (79 inputs, 0 s) 
+[15:36:16] smoke Lumpyngngad B0: val MAE 8.267 test MAE 10.408 (24 inputs, 1 s) 
+[15:36:17] smoke Lumpyngngad B1: val MAE 8.991 test MAE 10.337 (25 inputs, 1 s) 
+[15:36:19] smoke Lumpyngngad B2: val MAE 8.129 test MAE 10.289 (31 inputs, 2 s) 
+[15:36:20] smoke Lumpyngngad B3: val MAE 8.722 test MAE 10.513 (32 inputs, 1 s) 
+[15:36:24] smoke Lumpyngngad C1_sep: val MAE 8.182 test MAE 10.265 (144 inputs, 4 s) 
+[15:36:27] smoke Lumpyngngad C1_sh: val MAE 8.748 test MAE 10.388 (169 inputs, 3 s) 
+[15:36:38] smoke Lumpyngngad C2_sep: val MAE 7.939 test MAE 9.902 (432 inputs, 11 s) 
+[15:36:50] smoke Lumpyngngad C2_sh: val MAE 8.403 test MAE 10.981 (457 inputs, 13 s) 
+[15:37:02] smoke Lumpyngngad C3_sep: val MAE 7.839 test MAE 10.637 (439 inputs, 11 s) 
+[15:37:16] smoke Lumpyngngad C3_sh: val MAE 8.316 test MAE 12.595 (464 inputs, 14 s) 
+[15:37:16] smoke JN_Stadium A0: val MAE 11.647 test MAE 22.522 (24 inputs, 0 s) 
+[15:37:17] smoke JN_Stadium A1: val MAE 11.495 test MAE 22.443 (34 inputs, 0 s) 
+[15:37:17] smoke JN_Stadium A2: val MAE 12.803 test MAE 22.704 (120 inputs, 0 s) 
+[15:37:18] smoke JN_Stadium A3: val MAE 12.128 test MAE 22.688 (130 inputs, 0 s) 
+[15:37:19] smoke JN_Stadium B0: val MAE 12.832 test MAE 23.002 (24 inputs, 1 s) 
+[15:37:19] smoke JN_Stadium B1: val MAE 12.928 test MAE 21.864 (25 inputs, 0 s) 
+[15:37:21] smoke JN_Stadium B2: val MAE 11.253 test MAE 22.773 (34 inputs, 2 s) 
+[15:37:21] smoke JN_Stadium B3: val MAE 12.261 test MAE 23.101 (35 inputs, 1 s) 
+[15:37:26] smoke JN_Stadium C1_sep: val MAE 13.219 test MAE 22.586 (144 inputs, 5 s) 
+[15:37:28] smoke JN_Stadium C1_sh: val MAE 12.472 test MAE 21.429 (169 inputs, 2 s) 
+[15:37:53] smoke JN_Stadium C2_sep: val MAE 15.067 test MAE 23.484 (720 inputs, 25 s) 
+[15:38:03] smoke JN_Stadium C2_sh: val MAE 11.545 test MAE 21.999 (745 inputs, 9 s) 
+[15:38:34] smoke JN_Stadium C3_sep: val MAE 15.096 test MAE 22.977 (730 inputs, 32 s) 
+[15:38:42] smoke JN_Stadium C3_sh: val MAE 11.926 test MAE 21.972 (755 inputs, 8 s) 
+[15:38:42] smoke checks: 70/70 

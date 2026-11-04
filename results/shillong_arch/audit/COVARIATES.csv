@@ -1,0 +1,17 @@
+"station","covariate","pct_available_all","pct_available_train","pct_available_validation","pct_available_test"
+"Lumpyngngad","AT",0,0,0,0
+"Lumpyngngad","RH",93.6,91.8,98.7,94.4
+"Lumpyngngad","WS",93.6,91.8,98.7,94.4
+"Lumpyngngad","WD_sin",93.6,91.8,98.7,94.4
+"Lumpyngngad","WD_cos",93.6,91.8,98.7,94.4
+"Lumpyngngad","RF",93.8,92.1,98.8,94.4
+"Lumpyngngad","SR",59.8,37.1,92,91
+"Lumpyngngad","BP",0,0,0,0
+"JN_Stadium","AT",33,78.8,74.1,73.8
+"JN_Stadium","RH",33,78.8,74.1,73.8
+"JN_Stadium","WS",33,78.8,74.1,73.8
+"JN_Stadium","WD_sin",33,78.8,74.1,73.8
+"JN_Stadium","WD_cos",33,78.8,74.1,73.8
+"JN_Stadium","RF",36.9,89.2,74.1,85.9
+"JN_Stadium","SR",36.9,89.2,74.1,85.9
+"JN_Stadium","BP",33,78.8,74.1,73.8

@@ -1,0 +1,38 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[12:32:44] JN_Stadium B3 none direct h=24: 15 s 
+[12:33:05] JN_Stadium B3 none direct h=168: 21 s 
+[12:33:17] JN_Stadium B3 none direct h=336: 12 s 
+[12:33:28] JN_Stadium B3 none direct h=744: 10 s 
+[12:33:57]   one-step PM2.5 ALL: k=-, 29 s 
+[12:36:37] JN_Stadium B3 none recursive: one-step fits 30 s, recursion 159 s 
+[12:37:02] JN_Stadium B3 none cross-fit (4 folds): 25 s 
+[12:37:22] JN_Stadium B3 none hybrid s=24 h=168: 20 s 
+[12:37:40] JN_Stadium B3 none hybrid s=48 h=168: 17 s 
+[12:38:05] JN_Stadium B3 none hybrid s=72 h=168: 24 s 
+[12:38:16] JN_Stadium B3 none hybrid s=24 h=336: 11 s 
+[12:38:26] JN_Stadium B3 none hybrid s=48 h=336: 9 s 
+[12:38:41] JN_Stadium B3 none hybrid s=72 h=336: 14 s 
+[12:38:54] JN_Stadium B3 none hybrid s=24 h=744: 13 s 
+[12:39:06] JN_Stadium B3 none hybrid s=48 h=744: 11 s 
+[12:39:16] JN_Stadium B3 none hybrid s=72 h=744: 10 s 
+[12:39:16] cell JN_Stadium B3 none done in 6.8 min 
+[1] TRUE TRUE

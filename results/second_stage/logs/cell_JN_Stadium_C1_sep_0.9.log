@@ -1,0 +1,43 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[16:04:42] JN_Stadium C1_sep pca90 direct h=24: 32 s 
+[16:05:16] JN_Stadium C1_sep pca90 direct h=168: 34 s 
+[16:05:25] JN_Stadium C1_sep pca90 direct h=336: 9 s 
+[16:05:34] JN_Stadium C1_sep pca90 direct h=744: 9 s 
+[16:05:37]   one-step PM2.5 D1: k=17, 3 s 
+[16:05:41]   one-step PM2.5 D2: k=17, 4 s 
+[16:05:53]   one-step PM2.5 D3: k=17, 11 s 
+[16:06:04]   one-step PM2.5 D4: k=17, 11 s 
+[16:06:24]   one-step PM2.5 D5: k=17, 21 s 
+[16:06:38]   one-step PM2.5 S5: k=17, 14 s 
+[16:09:42] JN_Stadium C1_sep pca90 recursive: one-step fits 64 s, recursion 184 s 
+[16:10:30] JN_Stadium C1_sep pca90 cross-fit (4 folds): 48 s 
+[16:10:41] JN_Stadium C1_sep pca90 hybrid s=24 h=168: 11 s 
+[16:10:50] JN_Stadium C1_sep pca90 hybrid s=48 h=168: 9 s 
+[16:10:58] JN_Stadium C1_sep pca90 hybrid s=72 h=168: 8 s 
+[16:11:07] JN_Stadium C1_sep pca90 hybrid s=24 h=336: 9 s 
+[16:11:23] JN_Stadium C1_sep pca90 hybrid s=48 h=336: 16 s 
+[16:11:39] JN_Stadium C1_sep pca90 hybrid s=72 h=336: 16 s 
+[16:11:51] JN_Stadium C1_sep pca90 hybrid s=24 h=744: 12 s 
+[16:12:04] JN_Stadium C1_sep pca90 hybrid s=48 h=744: 12 s 
+[16:12:16] JN_Stadium C1_sep pca90 hybrid s=72 h=744: 12 s 
+[16:12:16] cell JN_Stadium C1_sep pca90 done in 8.1 min 
+[1] TRUE TRUE

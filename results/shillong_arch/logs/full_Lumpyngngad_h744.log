@@ -1,0 +1,35 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[13:43:27] full Lumpyngngad PM2.5 h=744 lightgbm A0 valMAE=14.867 n_val=1157 (2 s) 
+[13:43:30] full Lumpyngngad PM2.5 h=744 lightgbm A1 valMAE=11.299 n_val=1157 (3 s) 
+[13:43:34] full Lumpyngngad PM2.5 h=744 lightgbm A2 valMAE=9.819 n_val=1157 (4 s) 
+[13:43:42] full Lumpyngngad PM2.5 h=744 lightgbm A3 valMAE=9.549 n_val=1157 (8 s) 
+[13:43:54] full Lumpyngngad PM2.5 h=744 lightgbm B0 valMAE=14.411 n_val=1157 (12 s) 
+[13:43:59] full Lumpyngngad PM2.5 h=744 lightgbm B1 valMAE=15.290 n_val=1157 (5 s) 
+[13:44:21] full Lumpyngngad PM2.5 h=744 lightgbm B2 valMAE=11.488 n_val=1157 (22 s) 
+[13:44:30] full Lumpyngngad PM2.5 h=744 lightgbm B3 valMAE=11.886 n_val=1157 (9 s) 
+[13:45:16] full Lumpyngngad PM2.5 h=744 lightgbm C1_sep valMAE=11.784 n_val=1157 (45 s) 
+[13:45:58] full Lumpyngngad PM2.5 h=744 lightgbm C1_sh valMAE=14.703 n_val=1157 (42 s) 
+[13:49:53] full Lumpyngngad PM2.5 h=744 lightgbm C2_sep valMAE=12.773 n_val=1157 (233 s) 
+[13:54:35] full Lumpyngngad PM2.5 h=744 lightgbm C2_sh valMAE=11.234 n_val=1157 (282 s) 
+[14:08:16] full Lumpyngngad PM2.5 h=744 lightgbm C3_sep valMAE=12.826 n_val=1157 (820 s) 
+[14:10:16] full Lumpyngngad PM2.5 h=744 lightgbm C3_sh valMAE=11.192 n_val=1157 (120 s) 
+[14:10:16] full Lumpyngngad h=744 done in 1614 s 

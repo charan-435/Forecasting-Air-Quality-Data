@@ -1,0 +1,43 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[15:50:00] Lumpyngngad C1_sep pca99 direct h=24: 17 s 
+[15:50:11] Lumpyngngad C1_sep pca99 direct h=168: 11 s 
+[15:50:21] Lumpyngngad C1_sep pca99 direct h=336: 10 s 
+[15:50:31] Lumpyngngad C1_sep pca99 direct h=744: 10 s 
+[15:50:37]   one-step PM2.5 D1: k=28, 6 s 
+[15:50:46]   one-step PM2.5 D2: k=28, 10 s 
+[15:51:09]   one-step PM2.5 D3: k=28, 23 s 
+[15:51:40]   one-step PM2.5 D4: k=28, 31 s 
+[15:51:59]   one-step PM2.5 D5: k=28, 18 s 
+[15:52:31]   one-step PM2.5 S5: k=28, 33 s 
+[16:02:00] Lumpyngngad C1_sep pca99 recursive: one-step fits 120 s, recursion 569 s 
+[16:05:15] Lumpyngngad C1_sep pca99 cross-fit (4 folds): 194 s 
+[16:05:28] Lumpyngngad C1_sep pca99 hybrid s=24 h=168: 12 s 
+[16:05:37] Lumpyngngad C1_sep pca99 hybrid s=48 h=168: 10 s 
+[16:05:46] Lumpyngngad C1_sep pca99 hybrid s=72 h=168: 9 s 
+[16:05:57] Lumpyngngad C1_sep pca99 hybrid s=24 h=336: 11 s 
+[16:06:09] Lumpyngngad C1_sep pca99 hybrid s=48 h=336: 11 s 
+[16:06:18] Lumpyngngad C1_sep pca99 hybrid s=72 h=336: 9 s 
+[16:06:28] Lumpyngngad C1_sep pca99 hybrid s=24 h=744: 10 s 
+[16:06:38] Lumpyngngad C1_sep pca99 hybrid s=48 h=744: 9 s 
+[16:06:55] Lumpyngngad C1_sep pca99 hybrid s=72 h=744: 17 s 
+[16:06:55] cell Lumpyngngad C1_sep pca99 done in 17.2 min 
+[1] TRUE TRUE

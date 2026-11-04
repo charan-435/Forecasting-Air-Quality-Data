@@ -1,0 +1,43 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[15:50:58] JN_Stadium C1_sep none direct h=24: 56 s 
+[15:51:37] JN_Stadium C1_sep none direct h=168: 39 s 
+[15:52:11] JN_Stadium C1_sep none direct h=336: 34 s 
+[15:52:31] JN_Stadium C1_sep none direct h=744: 19 s 
+[15:52:51]   one-step PM2.5 D1: k=-, 20 s 
+[15:53:22]   one-step PM2.5 D2: k=-, 31 s 
+[15:56:44]   one-step PM2.5 D3: k=-, 202 s 
+[15:57:28]   one-step PM2.5 D4: k=-, 44 s 
+[15:58:21]   one-step PM2.5 D5: k=-, 53 s 
+[16:00:41]   one-step PM2.5 S5: k=-, 139 s 
+[16:04:01] JN_Stadium C1_sep none recursive: one-step fits 490 s, recursion 201 s 
+[16:08:44] JN_Stadium C1_sep none cross-fit (4 folds): 282 s 
+[16:09:43] JN_Stadium C1_sep none hybrid s=24 h=168: 59 s 
+[16:10:12] JN_Stadium C1_sep none hybrid s=48 h=168: 29 s 
+[16:10:43] JN_Stadium C1_sep none hybrid s=72 h=168: 31 s 
+[16:11:03] JN_Stadium C1_sep none hybrid s=24 h=336: 20 s 
+[16:12:01] JN_Stadium C1_sep none hybrid s=48 h=336: 58 s 
+[16:12:57] JN_Stadium C1_sep none hybrid s=72 h=336: 56 s 
+[16:13:39] JN_Stadium C1_sep none hybrid s=24 h=744: 42 s 
+[16:14:08] JN_Stadium C1_sep none hybrid s=48 h=744: 28 s 
+[16:14:31] JN_Stadium C1_sep none hybrid s=72 h=744: 23 s 
+[16:14:31] cell JN_Stadium C1_sep none done in 24.5 min 
+[1] TRUE TRUE

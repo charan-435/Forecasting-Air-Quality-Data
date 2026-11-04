@@ -1,0 +1,43 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[10:16:08] Lumpyngngad B0 pca90 direct h=24: 6 s 
+[10:16:13] Lumpyngngad B0 pca90 direct h=168: 5 s 
+[10:16:19] Lumpyngngad B0 pca90 direct h=336: 5 s 
+[10:16:25] Lumpyngngad B0 pca90 direct h=744: 5 s 
+[10:16:26]   one-step PM2.5 D1: k=20, 1 s 
+[10:16:27]   one-step PM2.5 D2: k=12, 1 s 
+[10:16:28]   one-step PM2.5 D3: k=6, 1 s 
+[10:16:30]   one-step PM2.5 D4: k=3, 2 s 
+[10:16:32]   one-step PM2.5 D5: k=3, 2 s 
+[10:16:35]   one-step PM2.5 S5: k=1, 2 s 
+[10:17:15] Lumpyngngad B0 pca90 recursive: one-step fits 10 s, recursion 40 s 
+[10:17:26] Lumpyngngad B0 pca90 cross-fit (4 folds): 11 s 
+[10:17:32] Lumpyngngad B0 pca90 hybrid s=24 h=168: 5 s 
+[10:17:38] Lumpyngngad B0 pca90 hybrid s=48 h=168: 6 s 
+[10:17:48] Lumpyngngad B0 pca90 hybrid s=72 h=168: 9 s 
+[10:18:00] Lumpyngngad B0 pca90 hybrid s=24 h=336: 12 s 
+[10:18:13] Lumpyngngad B0 pca90 hybrid s=48 h=336: 12 s 
+[10:18:26] Lumpyngngad B0 pca90 hybrid s=72 h=336: 12 s 
+[10:18:38] Lumpyngngad B0 pca90 hybrid s=24 h=744: 12 s 
+[10:18:51] Lumpyngngad B0 pca90 hybrid s=48 h=744: 12 s 
+[10:19:01] Lumpyngngad B0 pca90 hybrid s=72 h=744: 10 s 
+[10:19:01] cell Lumpyngngad B0 pca90 done in 3.0 min 
+[1] TRUE TRUE

@@ -1,0 +1,37 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[14:24:06] Lumpyngngad targets: SO2, O3, CO | archs: A0, A2, B0, A3, C3_sep 
+[14:25:32] targets Lumpyngngad SO2 h=744 lightgbm A0 valMAE=3.841 n_val=1370 (84 s) 
+[14:30:59] targets Lumpyngngad SO2 h=744 lightgbm A2 valMAE=1.087 n_val=1370 (326 s) 
+[14:32:00] targets Lumpyngngad SO2 h=744 lightgbm B0 valMAE=0.765 n_val=1370 (60 s) 
+[14:34:47] targets Lumpyngngad SO2 h=744 lightgbm A3 valMAE=1.095 n_val=1370 (167 s) 
+[14:44:03] targets Lumpyngngad SO2 h=744 lightgbm C3_sep valMAE=1.405 n_val=1370 (556 s) 
+[14:44:07] targets Lumpyngngad O3 h=744 lightgbm A0 valMAE=0.195 n_val=1359 (3 s) 
+[14:44:14] targets Lumpyngngad O3 h=744 lightgbm A2 valMAE=0.193 n_val=1359 (8 s) 
+[14:44:39] targets Lumpyngngad O3 h=744 lightgbm B0 valMAE=0.201 n_val=1359 (25 s) 
+[14:44:48] targets Lumpyngngad O3 h=744 lightgbm A3 valMAE=0.193 n_val=1359 (8 s) 
+[14:51:25] targets Lumpyngngad O3 h=744 lightgbm C3_sep valMAE=0.203 n_val=1359 (397 s) 
+[14:51:28] targets Lumpyngngad CO h=744 lightgbm A0 valMAE=0.059 n_val=1372 (3 s) 
+[14:51:36] targets Lumpyngngad CO h=744 lightgbm A2 valMAE=0.058 n_val=1372 (8 s) 
+[14:51:55] targets Lumpyngngad CO h=744 lightgbm B0 valMAE=0.057 n_val=1372 (19 s) 
+[14:52:02] targets Lumpyngngad CO h=744 lightgbm A3 valMAE=0.053 n_val=1372 (7 s) 
+[14:57:11] targets Lumpyngngad CO h=744 lightgbm C3_sep valMAE=0.061 n_val=1372 (308 s) 
+[14:57:11] targets Lumpyngngad h=744 done in 2002 s 

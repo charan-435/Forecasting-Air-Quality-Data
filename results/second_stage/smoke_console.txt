@@ -1,0 +1,92 @@
+[02:27:14] Lumpyngngad A2 none direct h=24: 1 s 
+[02:27:14] Lumpyngngad A2 none direct h=168: 0 s 
+[02:27:15]   one-step PM2.5 LEVEL: k=-, 1 s 
+[02:27:17]   one-step SO2 LEVEL: k=-, 2 s 
+[02:27:18]   one-step CO LEVEL: k=-, 1 s 
+[02:27:20] Lumpyngngad A2 none recursive: one-step fits 4 s, recursion 2 s 
+[02:27:24] Lumpyngngad A2 none cross-fit (4 folds): 4 s 
+[02:27:24] Lumpyngngad A2 none hybrid s=24 h=168: 0 s 
+[02:27:24] Lumpyngngad A2 none hybrid s=72 h=168: 0 s 
+[02:27:24] smoke A2 none: 11 s 
+[02:27:25] Lumpyngngad A2 pca95 direct h=24: 0 s 
+[02:27:25] Lumpyngngad A2 pca95 direct h=168: 0 s 
+[02:27:26]   one-step PM2.5 LEVEL: k=14, 0 s 
+[02:27:27]   one-step SO2 LEVEL: k=16, 1 s 
+[02:27:28]   one-step CO LEVEL: k=18, 1 s 
+[02:27:32] Lumpyngngad A2 pca95 recursive: one-step fits 3 s, recursion 4 s 
+[02:27:36] Lumpyngngad A2 pca95 cross-fit (4 folds): 4 s 
+[02:27:36] Lumpyngngad A2 pca95 hybrid s=24 h=168: 0 s 
+[02:27:37] Lumpyngngad A2 pca95 hybrid s=72 h=168: 0 s 
+[02:27:37] smoke A2 pca95: 12 s 
+[02:27:49] Lumpyngngad C2_sep none direct h=24: 11 s 
+[02:27:59] Lumpyngngad C2_sep none direct h=168: 9 s 
+[02:28:02]   one-step PM2.5 D1: k=-, 3 s 
+[02:28:06]   one-step PM2.5 D2: k=-, 4 s 
+[02:28:10]   one-step PM2.5 D3: k=-, 4 s 
+[02:28:17]   one-step PM2.5 D4: k=-, 7 s 
+[02:28:28]   one-step PM2.5 D5: k=-, 11 s 
+[02:28:36]   one-step PM2.5 S5: k=-, 8 s 
+[02:28:40]   one-step SO2 D1: k=-, 3 s 
+[02:28:47]   one-step SO2 D2: k=-, 8 s 
+[02:28:59]   one-step SO2 D3: k=-, 11 s 
+[02:29:03]   one-step SO2 D4: k=-, 4 s 
+[02:29:09]   one-step SO2 D5: k=-, 5 s 
+[02:29:19]   one-step SO2 S5: k=-, 11 s 
+[02:29:23]   one-step CO D1: k=-, 3 s 
+[02:29:27]   one-step CO D2: k=-, 4 s 
+[02:29:32]   one-step CO D3: k=-, 5 s 
+[02:29:44]   one-step CO D4: k=-, 12 s 
+[02:29:56]   one-step CO D5: k=-, 12 s 
+[02:30:05]   one-step CO S5: k=-, 9 s 
+[02:30:40] Lumpyngngad C2_sep none recursive: one-step fits 126 s, recursion 35 s 
+[02:33:05] Lumpyngngad C2_sep none cross-fit (4 folds): 145 s 
+[02:33:16] Lumpyngngad C2_sep none hybrid s=24 h=168: 10 s 
+[02:33:26] Lumpyngngad C2_sep none hybrid s=72 h=168: 10 s 
+[02:33:26] smoke C2_sep none: 349 s 
+[02:33:38] Lumpyngngad C2_sep pca95 direct h=24: 11 s 
+[02:33:46] Lumpyngngad C2_sep pca95 direct h=168: 8 s 
+[02:33:48]   one-step PM2.5 D1: k=59, 2 s 
+[02:33:51]   one-step PM2.5 D2: k=59, 3 s 
+[02:33:55]   one-step PM2.5 D3: k=59, 4 s 
+[02:33:57]   one-step PM2.5 D4: k=59, 2 s 
+[02:34:00]   one-step PM2.5 D5: k=59, 4 s 
+[02:34:04]   one-step PM2.5 S5: k=59, 3 s 
+[02:34:08]   one-step SO2 D1: k=60, 4 s 
+[02:34:12]   one-step SO2 D2: k=60, 4 s 
+[02:34:17]   one-step SO2 D3: k=60, 5 s 
+[02:34:22]   one-step SO2 D4: k=60, 5 s 
+[02:34:25]   one-step SO2 D5: k=60, 3 s 
+[02:34:29]   one-step SO2 S5: k=60, 5 s 
+[02:34:32]   one-step CO D1: k=60, 3 s 
+[02:34:36]   one-step CO D2: k=60, 4 s 
+[02:34:41]   one-step CO D3: k=60, 5 s 
+[02:34:46]   one-step CO D4: k=60, 5 s 
+[02:34:51]   one-step CO D5: k=60, 5 s 
+[02:34:55]   one-step CO S5: k=60, 4 s 
+[02:37:35] Lumpyngngad C2_sep pca95 recursive: one-step fits 69 s, recursion 160 s 
+[02:39:14] Lumpyngngad C2_sep pca95 cross-fit (4 folds): 99 s 
+[02:39:22] Lumpyngngad C2_sep pca95 hybrid s=24 h=168: 8 s 
+[02:39:31] Lumpyngngad C2_sep pca95 hybrid s=72 h=168: 9 s 
+[02:39:31] smoke C2_sep pca95: 365 s 
+[02:39:32] Lumpyngngad A3 none direct h=24: 1 s 
+[02:39:32] Lumpyngngad A3 none direct h=168: 0 s 
+[02:39:34]   one-step PM2.5 LEVEL: k=-, 2 s 
+[02:39:35]   one-step SO2 LEVEL: k=-, 1 s 
+[02:39:36]   one-step CO LEVEL: k=-, 1 s 
+[02:39:39] Lumpyngngad A3 none recursive: one-step fits 4 s, recursion 3 s 
+[02:39:44] Lumpyngngad A3 none cross-fit (4 folds): 5 s 
+[02:39:45] Lumpyngngad A3 none hybrid s=24 h=168: 0 s 
+[02:39:45] Lumpyngngad A3 none hybrid s=72 h=168: 0 s 
+[02:39:45] smoke A3 none: 14 s 
+[02:39:45] Lumpyngngad A3 pca95 direct h=24: 0 s 
+[02:39:46] Lumpyngngad A3 pca95 direct h=168: 0 s 
+[02:39:46]   one-step PM2.5 LEVEL: k=14, 1 s 
+[02:39:48]   one-step SO2 LEVEL: k=16, 1 s 
+[02:39:49]   one-step CO LEVEL: k=18, 1 s 
+[02:39:54] Lumpyngngad A3 pca95 recursive: one-step fits 3 s, recursion 5 s 
+[02:40:00] Lumpyngngad A3 pca95 cross-fit (4 folds): 5 s 
+[02:40:00] Lumpyngngad A3 pca95 hybrid s=24 h=168: 0 s 
+[02:40:00] Lumpyngngad A3 pca95 hybrid s=72 h=168: 0 s 
+[02:40:00] smoke A3 pca95: 15 s 
+[02:40:00] smoke checks: 40/40 
+[1] TRUE TRUE

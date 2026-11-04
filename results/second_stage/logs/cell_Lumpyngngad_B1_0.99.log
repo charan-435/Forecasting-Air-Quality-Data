@@ -1,0 +1,38 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[11:32:28] Lumpyngngad B1 pca99 direct h=24: 20 s 
+[11:32:41] Lumpyngngad B1 pca99 direct h=168: 12 s 
+[11:32:52] Lumpyngngad B1 pca99 direct h=336: 11 s 
+[11:33:04] Lumpyngngad B1 pca99 direct h=744: 11 s 
+[11:36:35]   one-step PM2.5 ALL: k=22, 211 s 
+[11:56:09] Lumpyngngad B1 pca99 recursive: one-step fits 212 s, recursion 1174 s 
+[12:02:10] Lumpyngngad B1 pca99 cross-fit (4 folds): 360 s 
+[12:02:20] Lumpyngngad B1 pca99 hybrid s=24 h=168: 9 s 
+[12:02:31] Lumpyngngad B1 pca99 hybrid s=48 h=168: 10 s 
+[12:02:41] Lumpyngngad B1 pca99 hybrid s=72 h=168: 9 s 
+[12:02:51] Lumpyngngad B1 pca99 hybrid s=24 h=336: 10 s 
+[12:03:00] Lumpyngngad B1 pca99 hybrid s=48 h=336: 8 s 
+[12:03:10] Lumpyngngad B1 pca99 hybrid s=72 h=336: 9 s 
+[12:03:20] Lumpyngngad B1 pca99 hybrid s=24 h=744: 9 s 
+[12:03:31] Lumpyngngad B1 pca99 hybrid s=48 h=744: 11 s 
+[12:03:45] Lumpyngngad B1 pca99 hybrid s=72 h=744: 13 s 
+[12:03:45] cell Lumpyngngad B1 pca99 done in 31.6 min 
+[1] TRUE TRUE

@@ -1,0 +1,29 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[12:55:27] Lumpyngngad C1_sep none direct h=24: 78 s 
+[12:56:39] Lumpyngngad C1_sep none direct h=168: 71 s 
+[12:57:47] Lumpyngngad C1_sep none direct h=336: 67 s 
+[12:58:44] Lumpyngngad C1_sep none direct h=744: 57 s 
+[12:59:04]   one-step PM2.5 D1: k=-, 19 s 
+[12:59:52]   one-step PM2.5 D2: k=-, 48 s 
+[13:01:18]   one-step PM2.5 D3: k=-, 87 s 
+[13:03:27]   one-step PM2.5 D4: k=-, 129 s 
+[13:06:03]   one-step PM2.5 D5: k=-, 156 s 

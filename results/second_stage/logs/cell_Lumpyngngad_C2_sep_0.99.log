@@ -1,0 +1,55 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[02:42:34] Lumpyngngad C2_sep pca99 direct h=24: 126 s 
+[02:43:42] Lumpyngngad C2_sep pca99 direct h=168: 67 s 
+[02:44:41] Lumpyngngad C2_sep pca99 direct h=336: 58 s 
+[02:45:37] Lumpyngngad C2_sep pca99 direct h=744: 55 s 
+[02:45:51]   one-step PM2.5 D1: k=80, 14 s 
+[02:47:11]   one-step PM2.5 D2: k=80, 79 s 
+[02:49:21]   one-step PM2.5 D3: k=80, 131 s 
+[02:50:59]   one-step PM2.5 D4: k=80, 98 s 
+[02:53:38]   one-step PM2.5 D5: k=80, 159 s 
+[02:56:32]   one-step PM2.5 S5: k=80, 173 s 
+[02:57:20]   one-step SO2 D1: k=80, 48 s 
+[02:59:25]   one-step SO2 D2: k=80, 125 s 
+[03:01:58]   one-step SO2 D3: k=80, 152 s 
+[03:05:40]   one-step SO2 D4: k=80, 223 s 
+[03:11:17]   one-step SO2 D5: k=80, 336 s 
+[03:16:23]   one-step SO2 S5: k=80, 306 s 
+[03:17:30]   one-step CO D1: k=80, 67 s 
+[03:21:04]   one-step CO D2: k=80, 214 s 
+[03:25:31]   one-step CO D3: k=80, 267 s 
+[03:31:13]   one-step CO D4: k=80, 342 s 
+[03:38:02]   one-step CO D5: k=80, 408 s 
+[03:46:12]   one-step CO S5: k=80, 490 s 
+[05:35:23] Lumpyngngad C2_sep pca99 recursive: one-step fits 3635 s, recursion 6550 s 
+[05:54:26] Lumpyngngad C2_sep pca99 cross-fit (4 folds): 1142 s 
+[05:54:55] Lumpyngngad C2_sep pca99 hybrid s=24 h=168: 28 s 
+[05:55:25] Lumpyngngad C2_sep pca99 hybrid s=48 h=168: 30 s 
+[05:55:54] Lumpyngngad C2_sep pca99 hybrid s=72 h=168: 28 s 
+[05:56:18] Lumpyngngad C2_sep pca99 hybrid s=24 h=336: 24 s 
+[05:56:42] Lumpyngngad C2_sep pca99 hybrid s=48 h=336: 24 s 
+[05:57:07] Lumpyngngad C2_sep pca99 hybrid s=72 h=336: 24 s 
+[05:57:27] Lumpyngngad C2_sep pca99 hybrid s=24 h=744: 20 s 
+[05:57:50] Lumpyngngad C2_sep pca99 hybrid s=48 h=744: 23 s 
+[05:58:13] Lumpyngngad C2_sep pca99 hybrid s=72 h=744: 22 s 
+[05:58:13] cell Lumpyngngad C2_sep pca99 done in 197.8 min 
+[1] TRUE TRUE

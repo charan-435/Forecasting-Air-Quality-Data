@@ -1,0 +1,59 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[15:35:58] audit Lumpyngngad: pollutants PM2.5,SO2,CO | covariates RH,WS,WD_sin,WD_cos,RF 
+[15:35:59] audit JN_Stadium: pollutants PM2.5,PM10,NO2,SO2,CO | covariates AT,RH,WS,WD_sin,WD_cos,RF,SR,BP 
+ok   T01 hourly value = mean of slots in (t-1h, t]                  4 slots
+ok   T01 8760 hours per station and variable                        
+ok   T02 panels hold only their own station                         
+ok   T02 JN Stadium has no data before 2023-07-26, Lumpyngngad does 
+ok   T03 all variables on one contiguous hourly grid                
+ok   T04 raw lag 1 = value at origin, lag 24 = value at origin - 23 
+ok   T04 A2 has 24 lags per available pollutant                     
+ok   T05 component lag k = component value at origin - k + 1        
+ok   T05 B0 component model sees only its own component             
+ok   T06 comp_id encodes the component (0..K-1) consistently        
+ok   T06 own slot = standardized own-component lags                 
+ok   T07 shared rows = K x separate rows, same origins per component 
+ok   T07 shared training rows only from training-block targets      
+ok   T14 inverse scaling recovers component values                  
+ok   T14 scaling statistics come from training-block hours only     
+ok   T08 one column per covariate, value at the origin              
+ok   T08 calendar describes the target timestamp                    
+ok   T09 covariate architectures carry no covariate lags            
+ok   T09 A1 history is the target pollutant only                    
+ok   T09 no covariates in A0/A2/B0/B1/C1/C2                         
+ok   T10 changing data after the origin leaves every architecture's inputs unchanged 
+ok   T10 every input index <= origin (max lag index = origin)       
+ok   T11 blocks are chronological and disjoint for every horizon and station 
+ok   T12 no training target after the training end (h = 744)        
+ok   T12 every target hour is scorable and every origin passes the store policy 
+ok   T13 imputed values up to t ignore observations after t         
+ok   T13 store LOCF fills equal the previous observed hour          
+ok   T13 store keeps observed hours unchanged                       
+ok   T15 sum of components = series (every pollutant, both stations) 
+ok   T15 component at t uses only x[t - 2^J + 1 .. t]               
+ok   T16 all architectures share target timestamps per block        
+ok   T16 samples are the same for every pollutant set used as inputs 
+ok   T17 same seed -> identical forecasts                           
+ok   T17 samples and datasets rebuild identically                   
+
+34 / 34 tests passed
+[15:36:09] audit checks: 28/28 | tests: 34/34 

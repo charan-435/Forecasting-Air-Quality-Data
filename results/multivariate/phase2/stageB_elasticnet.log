@@ -1,0 +1,8 @@
+[23:22:27] elasticnet B0 h=24 best=alpha=0.9 valMAE=5.925 (3 candidates, 1 seeds, 1 s) 
+[23:22:28] elasticnet B1 h=24 best=alpha=0.9 valMAE=5.924 (3 candidates, 1 seeds, 0 s) 
+[23:22:28] elasticnet B0 h=168 best=alpha=0.1 valMAE=7.270 (3 candidates, 1 seeds, 0 s) 
+[23:22:28] elasticnet B1 h=168 best=alpha=0.1 valMAE=7.270 (3 candidates, 1 seeds, 0 s) 
+[23:22:28] elasticnet B0 h=336 best=alpha=0.9 valMAE=8.014 (3 candidates, 1 seeds, 0 s) 
+[23:22:29] elasticnet B1 h=336 best=alpha=0.9 valMAE=7.964 (3 candidates, 1 seeds, 0 s) 
+[23:22:29] elasticnet B0 h=744 best=alpha=0.1 valMAE=6.154 (3 candidates, 1 seeds, 0 s) 
+[23:22:29] elasticnet B1 h=744 best=alpha=0.1 valMAE=6.154 (3 candidates, 1 seeds, 0 s) 

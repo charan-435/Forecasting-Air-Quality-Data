@@ -1,0 +1,4 @@
+finished Lumpyngngad A2 0.95 (exit 0)
+finished JN_Stadium C2_sep 0.99 (exit 0)
+environment: line 1:   774 Segmentation fault      "$RS" run_second_stage.R --stage=run --station=$1 --archs=$2 --pca=$3 > "results/second_stage/logs/cell_$1_$2_$3.log" 2>&1
+finished JN_Stadium C2_sep none (exit 139)

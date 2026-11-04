@@ -1,0 +1,3 @@
+JN_Stadium C2_sep none
+JN_Stadium C2_sep 0.99
+Lumpyngngad A2 0.95

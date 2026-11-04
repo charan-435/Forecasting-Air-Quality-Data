@@ -1,0 +1,9 @@
+"design","horizon_h","best_iter","iterations_run","hit_cap","elapsed_s"
+"B0",24,39,69,FALSE,0.3
+"B1",24,49,79,FALSE,0.83
+"B0",168,7,37,FALSE,0.1
+"B1",168,13,43,FALSE,0.43
+"B0",336,33,63,FALSE,0.27
+"B1",336,12,42,FALSE,0.37
+"B0",744,4,34,FALSE,0.06
+"B1",744,4,34,FALSE,0.28

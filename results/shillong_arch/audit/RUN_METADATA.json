@@ -1,0 +1,39 @@
+{
+  "stage": "audit",
+  "time": "2026-11-03 15:36:09",
+  "git": "38daa41d68294da98814d551894d208d2fb283d4",
+  "packages": {
+    "R": "4.5.2",
+    "lightgbm": "4.7.0",
+    "xgboost": "3.2.1.1",
+    "catboost": "1.2.8",
+    "glmnet": "5.2",
+    "pls": "2.9.0",
+    "arrow": "26.0.0",
+    "data.table": "1.18.0",
+    "yaml": "2.3.12",
+    "digest": "0.6.39",
+    "jsonlite": "2.0.0",
+    "ggplot2": "4.0.1"
+  },
+  "args": "--stage=audit",
+  "sha256": {
+    "config/shillong_arch.yaml": "8976b654e7257ceb44f1eca6514940fc6548d90c98ad827e7b5dd4becbdeea34",
+    "run_shillong_arch.R": "9af269ba09d4cb32f242bde400184eb7e16e930fe190bec0dc740bcbee1b036f",
+    "R/40_mv_data.R": "0926d36d71b8ef4dc1fd96f3855af88e0e6c2e7928156de15194bdf7cb01a352",
+    "R/41_mv_features.R": "491fdc9372b2ff5abe6848391d381957dcede6345d5266c6f934297a391d5925",
+    "R/43_mv_models.R": "2b9c51f327931d3de43c07d83fab819484d531ad1ecf6a14925d831633e24d77",
+    "R/44_mv_metrics.R": "959eaf00a886f70dfc11778c7169cdf0d3c74c1e045e8991e8c59fca9a2c2027",
+    "R/45_mv_families.R": "e5b704c7646d6fe38af6423d48ddc6434c68b13e59257d410f774ef0992bd8b5",
+    "R/46_mv_featsel.R": "572d897628a4535f7484f0cbdb40915056e5abd747ed3d54fd60aea465bded14",
+    "R/47_mv_eval.R": "6c95ae2ba8d91f203115c0b1224782cdad017442206e072380fe294f92faff3b",
+    "R/48_mv_runner.R": "dcf47fbe71f319166c9d9305c85fbf06774a0662c646a4200fc2fd4dfb051e87",
+    "R/49_mv_stages.R": "40d5833de0f61fabfe20d6c7d94c36408fe73df3d9b4f340b012272ea1683fbc",
+    "R/50_sh_data.R": "6d480c98eb9ef99b7861bb383f01fdfa30c05979ddd99e18fd4156c8609c1893",
+    "R/51_sh_features.R": "d9e06cee258523d4ccc46f5679857cc4450afa2344aeff612cecfc63472944bf",
+    "R/52_sh_audit.R": "34f0a5c3e007bc25f7d2609afdaf8a591c76ac93ec05746aa8fb65ac1b354996",
+    "R/53_sh_experiments.R": "579419832332d66464c79c42fa0d9a3e4ac9d2b7644eee08a512c103905248a8",
+    "R/54_sh_stages.R": "c6a8f7b8eb49f37f8a901eecb4cac6057ad9f27936a8f7b2b37bae316ab0f7df",
+    "R/55_sh_report.R": "427dc94839495ce7797b0bea31ee3f8054bea44b5b0c0e67a2b594ad4f924cbe"
+  }
+}

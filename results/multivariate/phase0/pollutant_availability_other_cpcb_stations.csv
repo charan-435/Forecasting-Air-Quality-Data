@@ -1,0 +1,25 @@
+station,station_id,variable,source,column,start,end,n_rows_15min,median_step_min,duplicate_ts,na_15min,pct_na_15min,negative,hours_total,hours_with_ge3_of_4_valid,pct_hours_usable
+ITO (Delhi),site_117,PM2.5,data/raw/delhi/cpcb_delhi_2023.parquet,PM2.5 (ug/m³),2023-01-01 00:00:00,2023-12-31 23:30:00,32453,15.0,0,786,2.42,0,8760,8025,91.61
+ITO (Delhi),site_117,PM10,data/raw/delhi/cpcb_delhi_2023.parquet,PM10 (ug/m³),2023-01-01 00:00:00,2023-12-31 23:30:00,32453,15.0,0,708,2.18,0,8760,8045,91.84
+ITO (Delhi),site_117,NO2,data/raw/delhi/cpcb_delhi_2023.parquet,NO2 (ug/m³),2023-01-01 00:00:00,2023-12-31 23:30:00,32453,15.0,0,1323,4.08,0,8760,7876,89.91
+ITO (Delhi),site_117,SO2,data/raw/delhi/cpcb_delhi_2023.parquet,SO2 (ug/m³),2023-01-01 00:00:00,2023-12-31 23:30:00,32453,15.0,0,846,2.61,0,8760,7991,91.22
+ITO (Delhi),site_117,O3,data/raw/delhi/cpcb_delhi_2023.parquet,Ozone (ug/m³),2023-01-01 00:00:00,2023-12-31 23:30:00,32453,15.0,0,531,1.64,0,8760,8097,92.43
+ITO (Delhi),site_117,CO,data/raw/delhi/cpcb_delhi_2023.parquet,CO (mg/m³),2023-01-01 00:00:00,2023-12-31 23:30:00,32453,15.0,0,743,2.29,0,8760,8037,91.75
+RK_Puram (Delhi),site_124,PM2.5,data/raw/delhi/cpcb_delhi_2023.parquet,PM2.5 (ug/m³),2023-01-01 00:00:00,2023-12-31 23:45:00,35040,15.0,0,2270,6.48,0,8760,8202,93.63
+RK_Puram (Delhi),site_124,PM10,data/raw/delhi/cpcb_delhi_2023.parquet,PM10 (ug/m³),2023-01-01 00:00:00,2023-12-31 23:45:00,35040,15.0,0,5081,14.5,0,8760,8012,91.46
+RK_Puram (Delhi),site_124,NO2,data/raw/delhi/cpcb_delhi_2023.parquet,NO2 (ug/m³),2023-01-01 00:00:00,2023-12-31 23:45:00,35040,15.0,0,4206,12.0,0,8760,7565,86.36
+RK_Puram (Delhi),site_124,SO2,data/raw/delhi/cpcb_delhi_2023.parquet,SO2 (ug/m³),2023-01-01 00:00:00,2023-12-31 23:45:00,35040,15.0,0,8131,23.2,0,8760,6552,74.79
+RK_Puram (Delhi),site_124,O3,data/raw/delhi/cpcb_delhi_2023.parquet,Ozone (ug/m³),2023-01-01 00:00:00,2023-12-31 23:45:00,35040,15.0,0,4331,12.36,0,8760,7561,86.31
+RK_Puram (Delhi),site_124,CO,data/raw/delhi/cpcb_delhi_2023.parquet,CO (mg/m³),2023-01-01 00:00:00,2023-12-31 23:45:00,35040,15.0,0,8798,25.11,0,8760,6406,73.13
+Lumpyngngad (Shillong),site_5131,PM2.5,data/raw/shillong/shillong_15min_2023.parquet,PM2.5 (ug/m³),2023-01-01 00:00:00,2023-12-31 23:45:00,35040,15.0,0,7603,21.7,0,8760,6808,77.72
+Lumpyngngad (Shillong),site_5131,PM10,data/raw/shillong/shillong_15min_2023.parquet,PM10 (ug/m³),2023-01-01 00:00:00,2023-12-31 23:45:00,35040,15.0,0,17070,48.72,0,8760,4466,50.98
+Lumpyngngad (Shillong),site_5131,NO2,data/raw/shillong/shillong_15min_2023.parquet,NO2 (ug/m³),2023-01-01 00:00:00,2023-12-31 23:45:00,35040,15.0,0,9063,25.86,0,8760,6476,73.93
+Lumpyngngad (Shillong),site_5131,SO2,data/raw/shillong/shillong_15min_2023.parquet,SO2 (ug/m³),2023-01-01 00:00:00,2023-12-31 23:45:00,35040,15.0,0,2164,6.18,0,8760,8202,93.63
+Lumpyngngad (Shillong),site_5131,O3,data/raw/shillong/shillong_15min_2023.parquet,Ozone (ug/m³),2023-01-01 00:00:00,2023-12-31 23:45:00,35040,15.0,0,2559,7.3,0,8760,8151,93.05
+Lumpyngngad (Shillong),site_5131,CO,data/raw/shillong/shillong_15min_2023.parquet,CO (mg/m³),2023-01-01 00:00:00,2023-12-31 23:45:00,35040,15.0,0,2069,5.9,0,8760,8218,93.81
+JN_Stadium (Shillong),site_5593,PM2.5,data/raw/shillong/shillong_15min_2023.parquet,PM2.5 (ug/m³),2023-01-01 00:00:00,2023-12-31 23:45:00,35040,15.0,0,23846,68.05,0,8760,2798,31.94
+JN_Stadium (Shillong),site_5593,PM10,data/raw/shillong/shillong_15min_2023.parquet,PM10 (ug/m³),2023-01-01 00:00:00,2023-12-31 23:45:00,35040,15.0,0,23266,66.4,0,8760,2946,33.63
+JN_Stadium (Shillong),site_5593,NO2,data/raw/shillong/shillong_15min_2023.parquet,NO2 (ug/m³),2023-01-01 00:00:00,2023-12-31 23:45:00,35040,15.0,0,22241,63.47,0,8760,3198,36.51
+JN_Stadium (Shillong),site_5593,SO2,data/raw/shillong/shillong_15min_2023.parquet,SO2 (ug/m³),2023-01-01 00:00:00,2023-12-31 23:45:00,35040,15.0,0,22237,63.46,0,8760,3200,36.53
+JN_Stadium (Shillong),site_5593,O3,data/raw/shillong/shillong_15min_2023.parquet,Ozone (ug/m³),2023-01-01 00:00:00,2023-12-31 23:45:00,35040,15.0,0,27608,78.79,0,8760,1768,20.18
+JN_Stadium (Shillong),site_5593,CO,data/raw/shillong/shillong_15min_2023.parquet,CO (mg/m³),2023-01-01 00:00:00,2023-12-31 23:45:00,35040,15.0,0,22146,63.2,0,8760,3235,36.93

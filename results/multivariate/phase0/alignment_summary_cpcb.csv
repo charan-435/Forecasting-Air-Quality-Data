@@ -1,0 +1,7 @@
+variable,station,n_union_grid,n_finite,n_missing_after_alignment,n_constant_fill,n_all6_stuck_run_ge6h,n_target_scorable,pct_target_scorable,n_after_mra_warmup,n_target_scorable_after_warmup,pct_target_scorable_after_warmup
+PM2.5,CPCB,8880,8880,0,2304,175,6401,72.08,6833,4878,71.39
+PM10,CPCB,8880,8880,0,2304,175,6401,72.08,6833,4878,71.39
+NO2,CPCB,8880,8880,0,2304,175,6401,72.08,6833,4878,71.39
+SO2,CPCB,8880,8880,0,2304,175,6401,72.08,6833,4878,71.39
+O3,CPCB,8880,8880,0,2304,175,6401,72.08,6833,4878,71.39
+CO,CPCB,8880,8880,0,2304,175,6401,72.08,6833,4878,71.39

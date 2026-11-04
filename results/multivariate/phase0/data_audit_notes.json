@@ -1,0 +1,44 @@
+{
+  "cpcb_raw_rows": 8881,
+  "cpcb_last_row_clones_first": true,
+  "cpcb_last_ts": "2023-07-06 00:00:00",
+  "cpcb_second_last_ts": "2023-07-05 23:00:00",
+  "store_vs_raw_maxabs_diff_CPCB": {
+    "PM2.5": 0.0,
+    "PM10": 0.0,
+    "NO2": 0.0,
+    "SO2": 0.0,
+    "O3": 0.0,
+    "CO": 0.0,
+    "AT": 0.0,
+    "RH": 0.0
+  },
+  "store_cpcb_rows": 8880,
+  "store_cpcb_start": "2022-07-01 00:00:00",
+  "store_cpcb_end": "2023-07-05 23:00:00",
+  "raw_rows_not_in_store": [
+    "2023-07-06 00:00:00"
+  ],
+  "union_grid_rows": 8880,
+  "common_all6_rows": 8880,
+  "common_pct_retained": 100.0,
+  "union_grid_regular_hourly": true,
+  "cpcb_rows_identical_to_previous_hour_all6": 2548,
+  "cpcb_row_frozen_runs_ge6h": 22,
+  "cpcb_row_frozen_hours_in_runs_ge6h": 2489,
+  "cpcb_row_frozen_max_run_h": 600,
+  "cpcb_frozen_blocks_ge24h": 16,
+  "cpcb_rows_equal_to_first_row": 2305,
+  "cpcb_rows_equal_to_first_row_ts_sample": [
+    "2022-07-01 00:00:00",
+    "2022-07-01 01:00:00",
+    "2022-07-01 02:00:00",
+    "2022-07-01 03:00:00",
+    "2022-07-01 04:00:00",
+    "2022-07-01 05:00:00",
+    "2022-07-01 06:00:00",
+    "2022-07-01 07:00:00",
+    "2022-07-01 08:00:00",
+    "2022-07-01 09:00:00"
+  ]
+}

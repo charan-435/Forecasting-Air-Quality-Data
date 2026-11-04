@@ -1,0 +1,3 @@
+"combination","reason"
+"hybrid, h = 24 (all switch points)","A 24 h recursive block reaches the horizon: identical to recursive, not a distinct experiment"
+"hybrid, s >= h","The recursive block would reach or pass the horizon"

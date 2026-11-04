@@ -1,0 +1,42 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[04:24:10] JN_Stadium A3 pca90 direct h=24: 31 s 
+[04:24:53] JN_Stadium A3 pca90 direct h=168: 43 s 
+[04:26:36] JN_Stadium A3 pca90 direct h=336: 102 s 
+[04:26:42] JN_Stadium A3 pca90 direct h=744: 6 s 
+[04:27:23]   one-step PM2.5 LEVEL: k=23, 41 s 
+[04:28:28]   one-step PM10 LEVEL: k=23, 65 s 
+[04:29:16]   one-step NO2 LEVEL: k=22, 48 s 
+[04:29:46]   one-step SO2 LEVEL: k=22, 31 s 
+[04:30:38]   one-step CO LEVEL: k=22, 51 s 
+[04:36:49] JN_Stadium A3 pca90 recursive: one-step fits 236 s, recursion 371 s 
+[04:38:58] JN_Stadium A3 pca90 cross-fit (4 folds): 128 s 
+[04:39:03] JN_Stadium A3 pca90 hybrid s=24 h=168: 5 s 
+[04:39:12] JN_Stadium A3 pca90 hybrid s=48 h=168: 9 s 
+[04:39:26] JN_Stadium A3 pca90 hybrid s=72 h=168: 14 s 
+[04:40:08] JN_Stadium A3 pca90 hybrid s=24 h=336: 43 s 
+[04:40:26] JN_Stadium A3 pca90 hybrid s=48 h=336: 18 s 
+[04:40:34] JN_Stadium A3 pca90 hybrid s=72 h=336: 7 s 
+[04:40:39] JN_Stadium A3 pca90 hybrid s=24 h=744: 5 s 
+[04:40:44] JN_Stadium A3 pca90 hybrid s=48 h=744: 5 s 
+[04:40:49] JN_Stadium A3 pca90 hybrid s=72 h=744: 5 s 
+[04:40:49] cell JN_Stadium A3 pca90 done in 17.2 min 
+[1] TRUE TRUE

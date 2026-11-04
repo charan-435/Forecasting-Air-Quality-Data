@@ -1,0 +1,113 @@
+"station","arch","pca","strategy","switch_h","horizon_h","unit","n_in","k"
+"Lumpyngngad","A2","none","direct",NA,168,"LEVEL",72,NA
+"Lumpyngngad","A2","none","direct",NA,24,"LEVEL",72,NA
+"Lumpyngngad","A2","none","hybrid",24,168,"LEVEL",72,NA
+"Lumpyngngad","A2","none","hybrid",72,168,"LEVEL",72,NA
+"Lumpyngngad","A2","none","recursive",NA,NA,"PM2.5 LEVEL",72,NA
+"Lumpyngngad","A2","none","recursive",NA,NA,"SO2 LEVEL",72,NA
+"Lumpyngngad","A2","none","recursive",NA,NA,"CO LEVEL",72,NA
+"Lumpyngngad","A2","pca95","direct",NA,168,"LEVEL",72,15
+"Lumpyngngad","A2","pca95","direct",NA,24,"LEVEL",72,15
+"Lumpyngngad","A2","pca95","hybrid",24,168,"LEVEL",72,7
+"Lumpyngngad","A2","pca95","hybrid",72,168,"LEVEL",72,7
+"Lumpyngngad","A2","pca95","recursive",NA,NA,"PM2.5 LEVEL",72,14
+"Lumpyngngad","A2","pca95","recursive",NA,NA,"SO2 LEVEL",72,16
+"Lumpyngngad","A2","pca95","recursive",NA,NA,"CO LEVEL",72,18
+"Lumpyngngad","A3","none","direct",NA,168,"LEVEL",79,NA
+"Lumpyngngad","A3","none","direct",NA,24,"LEVEL",79,NA
+"Lumpyngngad","A3","none","hybrid",24,168,"LEVEL",79,NA
+"Lumpyngngad","A3","none","hybrid",72,168,"LEVEL",79,NA
+"Lumpyngngad","A3","none","recursive",NA,NA,"PM2.5 LEVEL",79,NA
+"Lumpyngngad","A3","none","recursive",NA,NA,"SO2 LEVEL",79,NA
+"Lumpyngngad","A3","none","recursive",NA,NA,"CO LEVEL",79,NA
+"Lumpyngngad","A3","pca95","direct",NA,168,"LEVEL",79,15
+"Lumpyngngad","A3","pca95","direct",NA,24,"LEVEL",79,15
+"Lumpyngngad","A3","pca95","hybrid",24,168,"LEVEL",79,7
+"Lumpyngngad","A3","pca95","hybrid",72,168,"LEVEL",79,5
+"Lumpyngngad","A3","pca95","recursive",NA,NA,"PM2.5 LEVEL",79,14
+"Lumpyngngad","A3","pca95","recursive",NA,NA,"SO2 LEVEL",79,16
+"Lumpyngngad","A3","pca95","recursive",NA,NA,"CO LEVEL",79,18
+"Lumpyngngad","C2_sep","none","direct",NA,168,"D1",432,NA
+"Lumpyngngad","C2_sep","none","direct",NA,168,"D2",432,NA
+"Lumpyngngad","C2_sep","none","direct",NA,168,"D3",432,NA
+"Lumpyngngad","C2_sep","none","direct",NA,168,"D4",432,NA
+"Lumpyngngad","C2_sep","none","direct",NA,168,"D5",432,NA
+"Lumpyngngad","C2_sep","none","direct",NA,168,"S5",432,NA
+"Lumpyngngad","C2_sep","none","direct",NA,24,"D1",432,NA
+"Lumpyngngad","C2_sep","none","direct",NA,24,"D2",432,NA
+"Lumpyngngad","C2_sep","none","direct",NA,24,"D3",432,NA
+"Lumpyngngad","C2_sep","none","direct",NA,24,"D4",432,NA
+"Lumpyngngad","C2_sep","none","direct",NA,24,"D5",432,NA
+"Lumpyngngad","C2_sep","none","direct",NA,24,"S5",432,NA
+"Lumpyngngad","C2_sep","none","hybrid",24,168,"D1",432,NA
+"Lumpyngngad","C2_sep","none","hybrid",24,168,"D2",432,NA
+"Lumpyngngad","C2_sep","none","hybrid",24,168,"D3",432,NA
+"Lumpyngngad","C2_sep","none","hybrid",24,168,"D4",432,NA
+"Lumpyngngad","C2_sep","none","hybrid",24,168,"D5",432,NA
+"Lumpyngngad","C2_sep","none","hybrid",24,168,"S5",432,NA
+"Lumpyngngad","C2_sep","none","hybrid",72,168,"D1",432,NA
+"Lumpyngngad","C2_sep","none","hybrid",72,168,"D2",432,NA
+"Lumpyngngad","C2_sep","none","hybrid",72,168,"D3",432,NA
+"Lumpyngngad","C2_sep","none","hybrid",72,168,"D4",432,NA
+"Lumpyngngad","C2_sep","none","hybrid",72,168,"D5",432,NA
+"Lumpyngngad","C2_sep","none","hybrid",72,168,"S5",432,NA
+"Lumpyngngad","C2_sep","none","recursive",NA,NA,"PM2.5 D1",432,NA
+"Lumpyngngad","C2_sep","none","recursive",NA,NA,"PM2.5 D2",432,NA
+"Lumpyngngad","C2_sep","none","recursive",NA,NA,"PM2.5 D3",432,NA
+"Lumpyngngad","C2_sep","none","recursive",NA,NA,"PM2.5 D4",432,NA
+"Lumpyngngad","C2_sep","none","recursive",NA,NA,"PM2.5 D5",432,NA
+"Lumpyngngad","C2_sep","none","recursive",NA,NA,"PM2.5 S5",432,NA
+"Lumpyngngad","C2_sep","none","recursive",NA,NA,"SO2 D1",432,NA
+"Lumpyngngad","C2_sep","none","recursive",NA,NA,"SO2 D2",432,NA
+"Lumpyngngad","C2_sep","none","recursive",NA,NA,"SO2 D3",432,NA
+"Lumpyngngad","C2_sep","none","recursive",NA,NA,"SO2 D4",432,NA
+"Lumpyngngad","C2_sep","none","recursive",NA,NA,"SO2 D5",432,NA
+"Lumpyngngad","C2_sep","none","recursive",NA,NA,"SO2 S5",432,NA
+"Lumpyngngad","C2_sep","none","recursive",NA,NA,"CO D1",432,NA
+"Lumpyngngad","C2_sep","none","recursive",NA,NA,"CO D2",432,NA
+"Lumpyngngad","C2_sep","none","recursive",NA,NA,"CO D3",432,NA
+"Lumpyngngad","C2_sep","none","recursive",NA,NA,"CO D4",432,NA
+"Lumpyngngad","C2_sep","none","recursive",NA,NA,"CO D5",432,NA
+"Lumpyngngad","C2_sep","none","recursive",NA,NA,"CO S5",432,NA
+"Lumpyngngad","C2_sep","pca95","direct",NA,168,"D1",432,58
+"Lumpyngngad","C2_sep","pca95","direct",NA,168,"D2",432,58
+"Lumpyngngad","C2_sep","pca95","direct",NA,168,"D3",432,58
+"Lumpyngngad","C2_sep","pca95","direct",NA,168,"D4",432,58
+"Lumpyngngad","C2_sep","pca95","direct",NA,168,"D5",432,58
+"Lumpyngngad","C2_sep","pca95","direct",NA,168,"S5",432,58
+"Lumpyngngad","C2_sep","pca95","direct",NA,24,"D1",432,58
+"Lumpyngngad","C2_sep","pca95","direct",NA,24,"D2",432,58
+"Lumpyngngad","C2_sep","pca95","direct",NA,24,"D3",432,58
+"Lumpyngngad","C2_sep","pca95","direct",NA,24,"D4",432,58
+"Lumpyngngad","C2_sep","pca95","direct",NA,24,"D5",432,58
+"Lumpyngngad","C2_sep","pca95","direct",NA,24,"S5",432,58
+"Lumpyngngad","C2_sep","pca95","hybrid",24,168,"D1",432,55
+"Lumpyngngad","C2_sep","pca95","hybrid",24,168,"D2",432,55
+"Lumpyngngad","C2_sep","pca95","hybrid",24,168,"D3",432,55
+"Lumpyngngad","C2_sep","pca95","hybrid",24,168,"D4",432,55
+"Lumpyngngad","C2_sep","pca95","hybrid",24,168,"D5",432,55
+"Lumpyngngad","C2_sep","pca95","hybrid",24,168,"S5",432,55
+"Lumpyngngad","C2_sep","pca95","hybrid",72,168,"D1",432,58
+"Lumpyngngad","C2_sep","pca95","hybrid",72,168,"D2",432,58
+"Lumpyngngad","C2_sep","pca95","hybrid",72,168,"D3",432,58
+"Lumpyngngad","C2_sep","pca95","hybrid",72,168,"D4",432,58
+"Lumpyngngad","C2_sep","pca95","hybrid",72,168,"D5",432,58
+"Lumpyngngad","C2_sep","pca95","hybrid",72,168,"S5",432,58
+"Lumpyngngad","C2_sep","pca95","recursive",NA,NA,"PM2.5 D1",432,59
+"Lumpyngngad","C2_sep","pca95","recursive",NA,NA,"PM2.5 D2",432,59
+"Lumpyngngad","C2_sep","pca95","recursive",NA,NA,"PM2.5 D3",432,59
+"Lumpyngngad","C2_sep","pca95","recursive",NA,NA,"PM2.5 D4",432,59
+"Lumpyngngad","C2_sep","pca95","recursive",NA,NA,"PM2.5 D5",432,59
+"Lumpyngngad","C2_sep","pca95","recursive",NA,NA,"PM2.5 S5",432,59
+"Lumpyngngad","C2_sep","pca95","recursive",NA,NA,"SO2 D1",432,60
+"Lumpyngngad","C2_sep","pca95","recursive",NA,NA,"SO2 D2",432,60
+"Lumpyngngad","C2_sep","pca95","recursive",NA,NA,"SO2 D3",432,60
+"Lumpyngngad","C2_sep","pca95","recursive",NA,NA,"SO2 D4",432,60
+"Lumpyngngad","C2_sep","pca95","recursive",NA,NA,"SO2 D5",432,60
+"Lumpyngngad","C2_sep","pca95","recursive",NA,NA,"SO2 S5",432,60
+"Lumpyngngad","C2_sep","pca95","recursive",NA,NA,"CO D1",432,60
+"Lumpyngngad","C2_sep","pca95","recursive",NA,NA,"CO D2",432,60
+"Lumpyngngad","C2_sep","pca95","recursive",NA,NA,"CO D3",432,60
+"Lumpyngngad","C2_sep","pca95","recursive",NA,NA,"CO D4",432,60
+"Lumpyngngad","C2_sep","pca95","recursive",NA,NA,"CO D5",432,60
+"Lumpyngngad","C2_sep","pca95","recursive",NA,NA,"CO S5",432,60

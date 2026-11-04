@@ -1,0 +1,56 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[02:43:07] JN_Stadium C2_sep pca99 direct h=24: 160 s 
+[02:44:45] JN_Stadium C2_sep pca99 direct h=168: 97 s 
+[02:46:51] JN_Stadium C2_sep pca99 direct h=336: 125 s 
+[02:47:56] JN_Stadium C2_sep pca99 direct h=744: 65 s 
+[02:48:25]   one-step PM2.5 D1: k=124, 28 s 
+[02:50:12]   one-step PM2.5 D2: k=124, 107 s 
+[02:53:31]   one-step PM2.5 D3: k=124, 199 s 
+[02:55:36]   one-step PM2.5 D4: k=124, 124 s 
+[02:57:45]   one-step PM2.5 D5: k=124, 129 s 
+[02:59:11]   one-step PM2.5 S5: k=124, 86 s 
+[02:59:30]   one-step PM10 D1: k=125, 19 s 
+[03:01:11]   one-step PM10 D2: k=125, 100 s 
+[03:03:22]   one-step PM10 D3: k=125, 131 s 
+[03:06:39]   one-step PM10 D4: k=125, 198 s 
+[03:09:52]   one-step PM10 D5: k=125, 192 s 
+[03:12:41]   one-step PM10 S5: k=125, 169 s 
+[03:13:37]   one-step NO2 D1: k=125, 55 s 
+[03:17:03]   one-step NO2 D2: k=125, 206 s 
+[03:20:57]   one-step NO2 D3: k=125, 235 s 
+[03:25:09]   one-step NO2 D4: k=125, 252 s 
+[03:28:27]   one-step NO2 D5: k=125, 198 s 
+[03:33:46]   one-step NO2 S5: k=125, 319 s 
+[03:34:19]   one-step SO2 D1: k=125, 33 s 
+[03:37:46]   one-step SO2 D2: k=125, 207 s 
+[03:44:34]   one-step SO2 D3: k=125, 408 s 
+[03:49:23]   one-step SO2 D4: k=125, 289 s 
+[03:57:04]   one-step SO2 D5: k=125, 460 s 
+[03:59:37]   one-step SO2 S5: k=125, 153 s 
+[04:02:50]   one-step CO D1: k=125, 193 s 
+[04:09:02]   one-step CO D2: k=125, 372 s 
+[04:23:10] ERROR JN_Stadium C2_sep pca99: std::bad_alloc
+ 
+Error in order(names != names2) : 
+  Could not allocate saveds in savetl_init
+Calls: tryCatch ... <Anonymous> -> log_error -> data.frame -> make.names -> order
+Execution halted

@@ -1,0 +1,8 @@
+[23:23:01] catboost B0 h=24 best=depth=6,l2_leaf_reg=10 valMAE=5.922 (4 candidates, 5 seeds, 34 s) 
+[23:28:15] catboost B1 h=24 best=depth=6,l2_leaf_reg=10 valMAE=5.711 (4 candidates, 5 seeds, 314 s) 
+[23:28:21] catboost B0 h=168 best=depth=6,l2_leaf_reg=10 valMAE=7.443 (4 candidates, 5 seeds, 6 s) 
+[23:28:54] catboost B1 h=168 best=depth=6,l2_leaf_reg=3 valMAE=7.522 (4 candidates, 5 seeds, 33 s) 
+[23:29:02] catboost B0 h=336 best=depth=6,l2_leaf_reg=3 valMAE=8.201 (4 candidates, 5 seeds, 8 s) 
+[23:29:33] catboost B1 h=336 best=depth=6,l2_leaf_reg=3 valMAE=8.216 (4 candidates, 5 seeds, 31 s) 
+[23:29:36] catboost B0 h=744 best=depth=4,l2_leaf_reg=10 valMAE=6.279 (4 candidates, 5 seeds, 3 s) 
+[23:30:01] catboost B1 h=744 best=depth=6,l2_leaf_reg=10 valMAE=6.178 (4 candidates, 5 seeds, 26 s) 

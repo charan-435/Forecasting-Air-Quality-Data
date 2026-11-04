@@ -1,0 +1,169 @@
+"variant","group","family","horizon_h","candidate","n_inputs","val_MAE","train_MAE","best_iter"
+"B0+PM10","ablation_add","lightgbm",168,"all",48,7.58868114906187,5.94308867514945,14
+"B0+NO2","ablation_add","lightgbm",168,"all",48,7.57105065085666,6.05168158104329,10
+"B0+SO2","ablation_add","lightgbm",168,"all",48,7.67517102398013,5.79536312882471,13
+"B0+O3","ablation_add","lightgbm",168,"all",48,7.56542190533538,6.03435418382917,9
+"B0+CO","ablation_add","lightgbm",168,"all",48,7.67042313367632,5.86988241465432,16
+"B1-PM2.5","ablation_drop","lightgbm",168,"all",120,7.52722796284191,5.53036014598412,18
+"B1-PM10","ablation_drop","lightgbm",168,"all",120,7.67513049323524,5.54160220950705,18
+"B1-NO2","ablation_drop","lightgbm",168,"all",120,7.45806746625121,5.7177177429727,13
+"B1-SO2","ablation_drop","lightgbm",168,"all",120,7.51657556223022,5.80893353645253,13
+"B1-O3","ablation_drop","lightgbm",168,"all",120,7.49196419403146,5.68806488616155,14
+"B1-CO","ablation_drop","lightgbm",168,"all",120,7.55920886643069,5.73465321042084,13
+"corr_topk","filter","lightgbm",168,"k12",12,7.49781636153341,5.85571787173181,14
+"corr_topk","filter","lightgbm",168,"k24",24,7.53432217274925,5.7690474182558,15
+"corr_topk","filter","lightgbm",168,"k48",48,7.53923497946685,5.66110073999487,16
+"corr_topk","filter","lightgbm",168,"k72",72,7.58325727201608,5.63538213252128,16
+"corr_topk","filter","lightgbm",168,"k96",96,7.54120812986953,5.62066529471744,16
+"mi_topk","filter","lightgbm",168,"k12",12,7.76499733021173,5.72790842043104,22
+"mi_topk","filter","lightgbm",168,"k24",24,7.6948797977583,5.7354450199263,20
+"mi_topk","filter","lightgbm",168,"k48",48,7.52421424839057,5.73658191170837,14
+"mi_topk","filter","lightgbm",168,"k72",72,7.4777050100504,5.73845378207696,13
+"mi_topk","filter","lightgbm",168,"k96",96,7.54101149974309,5.60280627273209,16
+"enet_select","embedded","lightgbm",168,"en",4,7.51738597175274,6.15760201305057,10
+"rfe","wrapper","lightgbm",168,"k144",144,7.45228980273208,5.72741906304134,13
+"pca+lightgbm","projection","lightgbm",168,"k2",2,7.68879017925201,5.90865687948754,11
+"pca+lightgbm","projection","lightgbm",168,"k4",4,7.6702847872818,5.78878901112012,15
+"pca+lightgbm","projection","lightgbm",168,"k8",8,7.58577862824917,5.79717155577985,13
+"pca+lightgbm","projection","lightgbm",168,"k16",16,7.61191917899085,5.70194900153966,14
+"pca+lightgbm","projection","lightgbm",168,"k24",24,7.58058541958115,5.7474152495038,14
+"pca+lightgbm","projection","lightgbm",168,"k32",32,7.65063090333446,5.69923930690674,14
+"pca+lightgbm","projection","lightgbm",168,"k48",48,7.6205374121812,5.70335910336691,14
+"pca+ols (PCR)","projection","ols",168,"k2",2,8.51407334857138,6.20425825622277,1
+"pca+ols (PCR)","projection","ols",168,"k4",4,8.72972440830887,6.0465049660608,1
+"pca+ols (PCR)","projection","ols",168,"k8",8,8.40033601345927,6.00229787223289,1
+"pca+ols (PCR)","projection","ols",168,"k16",16,8.39386560711104,5.93173243678634,1
+"pca+ols (PCR)","projection","ols",168,"k24",24,8.53953905994374,5.8417172777994,1
+"pca+ols (PCR)","projection","ols",168,"k32",32,8.46650965272317,5.80512513254054,1
+"pca+ols (PCR)","projection","ols",168,"k48",48,8.46282360896755,5.79951345007858,1
+"plsscores+lightgbm","projection","lightgbm",168,"k2",2,7.6448561763559,5.91340028163375,15
+"plsscores+lightgbm","projection","lightgbm",168,"k4",4,7.71158432921444,5.67626011107568,21
+"plsscores+lightgbm","projection","lightgbm",168,"k8",8,7.73124861155993,5.60614244424325,22
+"plsscores+lightgbm","projection","lightgbm",168,"k16",16,7.68516367606315,5.55472268965447,21
+"pls regression","projection","pls",168,"std",144,8.29531603014026,5.9151461875989,3
+"B0+PM10","ablation_add","lightgbm",24,"all",48,5.85678186338967,3.70571622996011,38
+"B0+NO2","ablation_add","lightgbm",24,"all",48,5.97235401736497,3.43807988711984,64
+"B0+SO2","ablation_add","lightgbm",24,"all",48,5.93829419679371,2.66210060758509,312
+"B0+O3","ablation_add","lightgbm",24,"all",48,5.9686270312419,2.97157953610392,225
+"B0+CO","ablation_add","lightgbm",24,"all",48,6.00454247461314,3.39427724014031,73
+"B1-PM2.5","ablation_drop","lightgbm",24,"all",120,5.98413383635396,3.07746839525198,84
+"B1-PM10","ablation_drop","lightgbm",24,"all",120,5.65152570519338,2.29747118541299,314
+"B1-NO2","ablation_drop","lightgbm",24,"all",120,5.73329329944005,2.20285413666762,408
+"B1-SO2","ablation_drop","lightgbm",24,"all",120,5.90695625126683,3.59451696028015,41
+"B1-O3","ablation_drop","lightgbm",24,"all",120,5.93093590718889,3.10576007359676,74
+"B1-CO","ablation_drop","lightgbm",24,"all",120,5.7342433541856,2.46568635997161,263
+"corr_topk","filter","lightgbm",24,"k12",12,5.82063224202272,3.08947060485665,156
+"corr_topk","filter","lightgbm",24,"k24",24,5.78887364769711,2.89663146357797,216
+"corr_topk","filter","lightgbm",24,"k48",48,5.67552884817311,2.62573231566832,290
+"corr_topk","filter","lightgbm",24,"k72",72,5.84470512087052,2.50870974378261,309
+"corr_topk","filter","lightgbm",24,"k96",96,5.99558374718505,3.11366801476177,86
+"mi_topk","filter","lightgbm",24,"k12",12,5.89794027932675,3.6285414838353,41
+"mi_topk","filter","lightgbm",24,"k24",24,5.89827471215761,3.44384012056062,50
+"mi_topk","filter","lightgbm",24,"k48",48,5.67296857759036,2.5063763085658,389
+"mi_topk","filter","lightgbm",24,"k72",72,5.83429498409377,3.45457820741468,46
+"mi_topk","filter","lightgbm",24,"k96",96,5.87635663263586,3.06915564642639,87
+"enet_select","embedded","lightgbm",24,"en",11,5.86153478934465,3.32510087845079,67
+"rfe","wrapper","lightgbm",24,"k144",144,5.67206822493515,2.28517591864343,313
+"pca+lightgbm","projection","lightgbm",24,"k2",2,6.77156421377164,4.44981681097782,26
+"pca+lightgbm","projection","lightgbm",24,"k4",4,6.48160097531581,4.06138066632432,38
+"pca+lightgbm","projection","lightgbm",24,"k8",8,6.12382056359955,3.05957616683373,158
+"pca+lightgbm","projection","lightgbm",24,"k16",16,5.96703785978641,3.01741839197501,119
+"pca+lightgbm","projection","lightgbm",24,"k24",24,5.99336550380973,2.89812703690733,135
+"pca+lightgbm","projection","lightgbm",24,"k32",32,6.06102458273009,3.46907346370206,54
+"pca+lightgbm","projection","lightgbm",24,"k48",48,6.06256487737378,2.56823852930832,222
+"pca+ols (PCR)","projection","ols",24,"k2",2,7.14611663929144,4.64615191918292,1
+"pca+ols (PCR)","projection","ols",24,"k4",4,7.0126346008899,4.19108355903563,1
+"pca+ols (PCR)","projection","ols",24,"k8",8,6.39219836958706,4.0706746037646,1
+"pca+ols (PCR)","projection","ols",24,"k16",16,6.19725440226705,3.90197589263828,1
+"pca+ols (PCR)","projection","ols",24,"k24",24,6.18800387265583,3.87708955187205,1
+"pca+ols (PCR)","projection","ols",24,"k32",32,6.23766802040459,3.86471958550165,1
+"pca+ols (PCR)","projection","ols",24,"k48",48,6.26375008072289,3.84913523004406,1
+"plsscores+lightgbm","projection","lightgbm",24,"k2",2,6.22175479042541,3.90770986564456,36
+"plsscores+lightgbm","projection","lightgbm",24,"k4",4,5.99288633266491,3.62895671528931,54
+"plsscores+lightgbm","projection","lightgbm",24,"k8",8,6.14147729223896,3.5907819348528,48
+"plsscores+lightgbm","projection","lightgbm",24,"k16",16,5.97015344890884,3.10894481754972,112
+"pls regression","projection","pls",24,"std",144,6.10043202929443,3.85795989534403,4
+"B0+PM10","ablation_add","lightgbm",336,"all",48,8.00513214385889,5.51087266692738,27
+"B0+NO2","ablation_add","lightgbm",336,"all",48,8.13949420031867,5.04236741416339,35
+"B0+SO2","ablation_add","lightgbm",336,"all",48,8.22353283870347,5.37116214634508,17
+"B0+O3","ablation_add","lightgbm",336,"all",48,8.48046669080475,6.1109031528407,9
+"B0+CO","ablation_add","lightgbm",336,"all",48,7.8740983274343,4.93516000573858,49
+"B1-PM2.5","ablation_drop","lightgbm",336,"all",120,8.28102274474805,5.71133306497939,11
+"B1-PM10","ablation_drop","lightgbm",336,"all",120,8.26580004197756,5.78498648124364,10
+"B1-NO2","ablation_drop","lightgbm",336,"all",120,8.32088277022281,5.70131227871838,11
+"B1-SO2","ablation_drop","lightgbm",336,"all",120,8.41235025796538,5.81403025574049,11
+"B1-O3","ablation_drop","lightgbm",336,"all",120,8.07204963086676,5.23532819606996,18
+"B1-CO","ablation_drop","lightgbm",336,"all",120,8.21162362703822,5.95815641444945,8
+"corr_topk","filter","lightgbm",336,"k12",12,8.44085444576409,6.0602535956557,10
+"corr_topk","filter","lightgbm",336,"k24",24,8.28284625400681,5.94760576469677,10
+"corr_topk","filter","lightgbm",336,"k48",48,8.07978878325614,5.45063871729901,17
+"corr_topk","filter","lightgbm",336,"k72",72,8.11687423625778,5.29244918665858,18
+"corr_topk","filter","lightgbm",336,"k96",96,8.11411354840411,5.31970146633597,17
+"mi_topk","filter","lightgbm",336,"k12",12,8.44249423171488,5.89069643185437,12
+"mi_topk","filter","lightgbm",336,"k24",24,8.42766717666299,5.75874688377923,14
+"mi_topk","filter","lightgbm",336,"k48",48,8.08823693925605,5.4146666360909,17
+"mi_topk","filter","lightgbm",336,"k72",72,8.18210956625938,5.80963636064319,10
+"mi_topk","filter","lightgbm",336,"k96",96,8.21910107222532,5.88857089153652,9
+"enet_select","embedded","lightgbm",336,"en",3,8.37713771226687,6.08969148954116,15
+"rfe","wrapper","lightgbm",336,"k32",32,8.16603099516673,5.82176212431136,10
+"pca+lightgbm","projection","lightgbm",336,"k2",2,8.32501529689772,6.0653664508014,8
+"pca+lightgbm","projection","lightgbm",336,"k4",4,8.31825204662598,5.70133090897686,14
+"pca+lightgbm","projection","lightgbm",336,"k8",8,8.17718990069118,5.45876279535916,17
+"pca+lightgbm","projection","lightgbm",336,"k16",16,7.89999257132081,5.06494045917499,21
+"pca+lightgbm","projection","lightgbm",336,"k24",24,7.74349600441836,4.91413947793975,25
+"pca+lightgbm","projection","lightgbm",336,"k32",32,7.709436511551,4.93193604696594,23
+"pca+lightgbm","projection","lightgbm",336,"k48",48,7.87899009237914,4.75323976222344,27
+"pca+ols (PCR)","projection","ols",336,"k2",2,9.44489934241837,6.80963655379954,1
+"pca+ols (PCR)","projection","ols",336,"k4",4,9.97146763797545,6.47702636956588,1
+"pca+ols (PCR)","projection","ols",336,"k8",8,9.5875033230041,6.42107867993779,1
+"pca+ols (PCR)","projection","ols",336,"k16",16,8.9125578347913,6.289551768051,1
+"pca+ols (PCR)","projection","ols",336,"k24",24,8.88838578470174,6.21280105734876,1
+"pca+ols (PCR)","projection","ols",336,"k32",32,8.85431017825256,6.16344833312763,1
+"pca+ols (PCR)","projection","ols",336,"k48",48,8.94520870112925,6.12685323289327,1
+"plsscores+lightgbm","projection","lightgbm",336,"k2",2,7.9920632715036,5.98137629230346,13
+"plsscores+lightgbm","projection","lightgbm",336,"k4",4,7.735463127403,5.42704046730628,21
+"plsscores+lightgbm","projection","lightgbm",336,"k8",8,7.73953427444685,5.19776272174004,22
+"plsscores+lightgbm","projection","lightgbm",336,"k16",16,7.69075783294874,5.40388474766126,17
+"pls regression","projection","pls",336,"std",144,8.61205573665831,6.2045253065193,4
+"B0+PM10","ablation_add","lightgbm",744,"all",48,6.24314722112216,6.50456042267684,4
+"B0+NO2","ablation_add","lightgbm",744,"all",48,6.30680756357929,6.32886027000887,5
+"B0+SO2","ablation_add","lightgbm",744,"all",48,6.37650251573424,6.04254892162754,7
+"B0+O3","ablation_add","lightgbm",744,"all",48,6.3290966755066,6.25282919128722,6
+"B0+CO","ablation_add","lightgbm",744,"all",48,6.28280147198949,6.44287350665938,5
+"B1-PM2.5","ablation_drop","lightgbm",744,"all",120,6.20465439168042,6.08610478836207,6
+"B1-PM10","ablation_drop","lightgbm",744,"all",120,6.19041232638424,6.2221929737826,5
+"B1-NO2","ablation_drop","lightgbm",744,"all",120,6.15751139370137,6.23761701186352,5
+"B1-SO2","ablation_drop","lightgbm",744,"all",120,6.17253844816176,6.16330496562209,6
+"B1-O3","ablation_drop","lightgbm",744,"all",120,6.23384561930031,6.10554938999622,6
+"B1-CO","ablation_drop","lightgbm",744,"all",120,6.15732776061495,6.20211864503921,5
+"corr_topk","filter","lightgbm",744,"k12",12,6.3164134677553,6.4531921045017,5
+"corr_topk","filter","lightgbm",744,"k24",24,6.31383016949866,6.43196037650733,5
+"corr_topk","filter","lightgbm",744,"k48",48,6.32854879641297,6.35957714099437,5
+"corr_topk","filter","lightgbm",744,"k72",72,6.31285707105809,6.25301498544711,5
+"corr_topk","filter","lightgbm",744,"k96",96,6.30631993174094,6.11116089961728,6
+"mi_topk","filter","lightgbm",744,"k12",12,6.20047888839216,6.0976931980128,7
+"mi_topk","filter","lightgbm",744,"k24",24,6.19867975529829,6.0466539183962,7
+"mi_topk","filter","lightgbm",744,"k48",48,6.22772296617423,6.22821713604077,5
+"mi_topk","filter","lightgbm",744,"k72",72,6.28025465595916,6.21300695475747,5
+"mi_topk","filter","lightgbm",744,"k96",96,6.20446255878429,6.10793946101096,6
+"enet_select","embedded","lightgbm",744,"en",1,6.30684961425086,6.48524789906651,6
+"rfe","wrapper","lightgbm",744,"k14",14,6.14162271623065,6.23220500834838,5
+"pca+lightgbm","projection","lightgbm",744,"k2",2,6.44934677772458,6.55203516338605,4
+"pca+lightgbm","projection","lightgbm",744,"k4",4,6.49052801613312,6.4557581645154,5
+"pca+lightgbm","projection","lightgbm",744,"k8",8,6.42103207881643,6.51721218869949,4
+"pca+lightgbm","projection","lightgbm",744,"k16",16,6.40098643819218,6.45136280614495,4
+"pca+lightgbm","projection","lightgbm",744,"k24",24,6.38311218864215,6.14074505412588,7
+"pca+lightgbm","projection","lightgbm",744,"k32",32,6.25750725975328,6.50934593346199,4
+"pca+lightgbm","projection","lightgbm",744,"k48",48,6.3650299008653,6.48078648053346,4
+"pca+ols (PCR)","projection","ols",744,"k2",2,10.804609567913,6.2772122999678,1
+"pca+ols (PCR)","projection","ols",744,"k4",4,10.9975014784583,5.94044103907863,1
+"pca+ols (PCR)","projection","ols",744,"k8",8,10.2970016677835,5.8696722746563,1
+"pca+ols (PCR)","projection","ols",744,"k16",16,10.0998628243993,5.79013723694383,1
+"pca+ols (PCR)","projection","ols",744,"k24",24,9.9348391354749,5.76797057074147,1
+"pca+ols (PCR)","projection","ols",744,"k32",32,9.82712017376438,5.6855027865387,1
+"pca+ols (PCR)","projection","ols",744,"k48",48,9.8052903552922,5.67382599831701,1
+"plsscores+lightgbm","projection","lightgbm",744,"k2",2,6.42961052060637,6.49621942854305,5
+"plsscores+lightgbm","projection","lightgbm",744,"k4",4,6.35838902432679,6.39165372115326,7
+"plsscores+lightgbm","projection","lightgbm",744,"k8",8,6.3318818684917,6.54603279045201,4
+"plsscores+lightgbm","projection","lightgbm",744,"k16",16,6.40268231171514,6.27097056315753,7
+"pls regression","projection","pls",744,"std",144,9.27810843395965,5.62004918658297,7

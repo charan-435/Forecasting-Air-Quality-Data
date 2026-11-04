@@ -1,0 +1,32 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[15:47:51] Lumpyngngad stage-2 shortlist: A0, B0, A3, C3_sh 
+[15:48:00] families Lumpyngngad PM2.5 h=744 xgboost A3 valMAE=16.508 n_val=1157 (7 s) 
+[15:50:21] families Lumpyngngad PM2.5 h=744 xgboost C3_sh valMAE=10.324 n_val=1157 (140 s) 
+[15:50:55] families Lumpyngngad PM2.5 h=744 catboost A3 valMAE=13.709 n_val=1157 (34 s) 
+[15:56:03] families Lumpyngngad PM2.5 h=744 catboost C3_sh valMAE=10.673 n_val=1157 (308 s) 
+[15:56:03] families Lumpyngngad PM2.5 h=744 ridge A3 valMAE=11.487 n_val=1157 (0 s) 
+[15:56:09] families Lumpyngngad PM2.5 h=744 ridge C3_sh valMAE=15.548 n_val=1157 (6 s) 
+[15:56:09] families Lumpyngngad PM2.5 h=744 lasso A3 valMAE=11.592 n_val=1157 (0 s) 
+[15:56:14] families Lumpyngngad PM2.5 h=744 lasso C3_sh valMAE=16.429 n_val=1157 (4 s) 
+[15:56:14] families Lumpyngngad PM2.5 h=744 elasticnet A3 valMAE=11.596 n_val=1157 (0 s) 
+[15:56:22] families Lumpyngngad PM2.5 h=744 elasticnet C3_sh valMAE=16.448 n_val=1157 (8 s) 
+[15:56:22] families Lumpyngngad h=744 done in 518 s 

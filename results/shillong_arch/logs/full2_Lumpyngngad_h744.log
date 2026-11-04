@@ -1,0 +1,27 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[15:38:50] full Lumpyngngad PM2.5 h=744 lightgbm A2 valMAE=14.677 n_val=1157 (3 s) 
+[15:38:53] full Lumpyngngad PM2.5 h=744 lightgbm A3 valMAE=13.001 n_val=1157 (3 s) 
+[15:40:16] full Lumpyngngad PM2.5 h=744 lightgbm C2_sep valMAE=12.774 n_val=1157 (83 s) 
+[15:41:12] full Lumpyngngad PM2.5 h=744 lightgbm C2_sh valMAE=11.280 n_val=1157 (56 s) 
+[15:42:34] full Lumpyngngad PM2.5 h=744 lightgbm C3_sep valMAE=12.050 n_val=1157 (82 s) 
+[15:43:31] full Lumpyngngad PM2.5 h=744 lightgbm C3_sh valMAE=10.703 n_val=1157 (57 s) 
+[15:43:31] full Lumpyngngad h=744 done in 286 s 

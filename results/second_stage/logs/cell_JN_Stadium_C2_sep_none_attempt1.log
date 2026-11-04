@@ -1,0 +1,38 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[02:50:05] JN_Stadium C2_sep none direct h=24: 578 s 
+[02:56:53] JN_Stadium C2_sep none direct h=168: 407 s 
+[03:02:15] JN_Stadium C2_sep none direct h=336: 321 s 
+[03:05:25] JN_Stadium C2_sep none direct h=744: 190 s 
+[03:08:09]   one-step PM2.5 D1: k=-, 163 s 
+[03:15:39]   one-step PM2.5 D2: k=-, 450 s 
+[03:46:12]   one-step PM2.5 D3: k=-, 1832 s 
+[03:53:12]   one-step PM2.5 D4: k=-, 420 s 
+[04:00:32]   one-step PM2.5 D5: k=-, 440 s 
+[04:36:57]   one-step PM2.5 S5: k=-, 2185 s 
+[04:39:13]   one-step PM10 D1: k=-, 135 s 
+[04:42:55]   one-step PM10 D2: k=-, 222 s 
+[04:48:09]   one-step PM10 D3: k=-, 314 s 
+[04:50:58]   one-step PM10 D4: k=-, 169 s 
+[04:56:28]   one-step PM10 D5: k=-, 329 s 
+[04:56:59] ERROR JN_Stadium C2_sep none: std::bad_alloc
+ 
+[1] TRUE TRUE

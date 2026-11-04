@@ -1,0 +1,71 @@
+"check","pass"
+"Lumpyngngad A0 all forecasts finite",TRUE
+"Lumpyngngad A1 all forecasts finite",TRUE
+"Lumpyngngad A2 all forecasts finite",TRUE
+"Lumpyngngad A3 all forecasts finite",TRUE
+"Lumpyngngad B0 component truths sum to observed level",TRUE
+"Lumpyngngad B0 reconstruction = sum of component forecasts",TRUE
+"Lumpyngngad B0 all forecasts finite",TRUE
+"Lumpyngngad B1 component truths sum to observed level",TRUE
+"Lumpyngngad B1 reconstruction = sum of component forecasts",TRUE
+"Lumpyngngad B1 all forecasts finite",TRUE
+"Lumpyngngad B2 component truths sum to observed level",TRUE
+"Lumpyngngad B2 reconstruction = sum of component forecasts",TRUE
+"Lumpyngngad B2 all forecasts finite",TRUE
+"Lumpyngngad B3 component truths sum to observed level",TRUE
+"Lumpyngngad B3 reconstruction = sum of component forecasts",TRUE
+"Lumpyngngad B3 all forecasts finite",TRUE
+"Lumpyngngad C1_sep component truths sum to observed level",TRUE
+"Lumpyngngad C1_sep reconstruction = sum of component forecasts",TRUE
+"Lumpyngngad C1_sep all forecasts finite",TRUE
+"Lumpyngngad C1_sh component truths sum to observed level",TRUE
+"Lumpyngngad C1_sh reconstruction = sum of component forecasts",TRUE
+"Lumpyngngad C1_sh all forecasts finite",TRUE
+"Lumpyngngad C2_sep component truths sum to observed level",TRUE
+"Lumpyngngad C2_sep reconstruction = sum of component forecasts",TRUE
+"Lumpyngngad C2_sep all forecasts finite",TRUE
+"Lumpyngngad C2_sh component truths sum to observed level",TRUE
+"Lumpyngngad C2_sh reconstruction = sum of component forecasts",TRUE
+"Lumpyngngad C2_sh all forecasts finite",TRUE
+"Lumpyngngad C3_sep component truths sum to observed level",TRUE
+"Lumpyngngad C3_sep reconstruction = sum of component forecasts",TRUE
+"Lumpyngngad C3_sep all forecasts finite",TRUE
+"Lumpyngngad C3_sh component truths sum to observed level",TRUE
+"Lumpyngngad C3_sh reconstruction = sum of component forecasts",TRUE
+"Lumpyngngad C3_sh all forecasts finite",TRUE
+"Lumpyngngad identical target timestamps across architectures",TRUE
+"JN_Stadium A0 all forecasts finite",TRUE
+"JN_Stadium A1 all forecasts finite",TRUE
+"JN_Stadium A2 all forecasts finite",TRUE
+"JN_Stadium A3 all forecasts finite",TRUE
+"JN_Stadium B0 component truths sum to observed level",TRUE
+"JN_Stadium B0 reconstruction = sum of component forecasts",TRUE
+"JN_Stadium B0 all forecasts finite",TRUE
+"JN_Stadium B1 component truths sum to observed level",TRUE
+"JN_Stadium B1 reconstruction = sum of component forecasts",TRUE
+"JN_Stadium B1 all forecasts finite",TRUE
+"JN_Stadium B2 component truths sum to observed level",TRUE
+"JN_Stadium B2 reconstruction = sum of component forecasts",TRUE
+"JN_Stadium B2 all forecasts finite",TRUE
+"JN_Stadium B3 component truths sum to observed level",TRUE
+"JN_Stadium B3 reconstruction = sum of component forecasts",TRUE
+"JN_Stadium B3 all forecasts finite",TRUE
+"JN_Stadium C1_sep component truths sum to observed level",TRUE
+"JN_Stadium C1_sep reconstruction = sum of component forecasts",TRUE
+"JN_Stadium C1_sep all forecasts finite",TRUE
+"JN_Stadium C1_sh component truths sum to observed level",TRUE
+"JN_Stadium C1_sh reconstruction = sum of component forecasts",TRUE
+"JN_Stadium C1_sh all forecasts finite",TRUE
+"JN_Stadium C2_sep component truths sum to observed level",TRUE
+"JN_Stadium C2_sep reconstruction = sum of component forecasts",TRUE
+"JN_Stadium C2_sep all forecasts finite",TRUE
+"JN_Stadium C2_sh component truths sum to observed level",TRUE
+"JN_Stadium C2_sh reconstruction = sum of component forecasts",TRUE
+"JN_Stadium C2_sh all forecasts finite",TRUE
+"JN_Stadium C3_sep component truths sum to observed level",TRUE
+"JN_Stadium C3_sep reconstruction = sum of component forecasts",TRUE
+"JN_Stadium C3_sep all forecasts finite",TRUE
+"JN_Stadium C3_sh component truths sum to observed level",TRUE
+"JN_Stadium C3_sh reconstruction = sum of component forecasts",TRUE
+"JN_Stadium C3_sh all forecasts finite",TRUE
+"JN_Stadium identical target timestamps across architectures",TRUE

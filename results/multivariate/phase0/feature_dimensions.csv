@@ -1,0 +1,7 @@
+n_pollutants,B0_univariate_raw,B1_raw,B2_univariate_components,B2_components,B1_pooled_with_target_onehot,B2_pooled_with_target_onehot,B2_pooled_two_categorical_ids,targets_B1,targets_B2
+1,24,24,144,144,25,150,146,1,6
+2,24,48,144,288,50,300,290,2,12
+3,24,72,144,432,75,450,434,3,18
+4,24,96,144,576,100,600,578,4,24
+5,24,120,144,720,125,750,722,5,30
+6,24,144,144,864,150,900,866,6,36

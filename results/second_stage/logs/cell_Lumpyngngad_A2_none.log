@@ -1,0 +1,40 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[02:52:44] Lumpyngngad A2 none direct h=24: 8 s 
+[02:52:51] Lumpyngngad A2 none direct h=168: 7 s 
+[02:52:58] Lumpyngngad A2 none direct h=336: 6 s 
+[02:53:03] Lumpyngngad A2 none direct h=744: 5 s 
+[02:53:38]   one-step PM2.5 LEVEL: k=-, 34 s 
+[02:54:25]   one-step SO2 LEVEL: k=-, 47 s 
+[02:54:38]   one-step CO LEVEL: k=-, 13 s 
+[02:56:09] Lumpyngngad A2 none recursive: one-step fits 95 s, recursion 91 s 
+[02:57:30] Lumpyngngad A2 none cross-fit (4 folds): 81 s 
+[02:57:38] Lumpyngngad A2 none hybrid s=24 h=168: 7 s 
+[02:57:43] Lumpyngngad A2 none hybrid s=48 h=168: 6 s 
+[02:57:51] Lumpyngngad A2 none hybrid s=72 h=168: 8 s 
+[02:57:57] Lumpyngngad A2 none hybrid s=24 h=336: 6 s 
+[02:58:03] Lumpyngngad A2 none hybrid s=48 h=336: 6 s 
+[02:58:08] Lumpyngngad A2 none hybrid s=72 h=336: 5 s 
+[02:58:14] Lumpyngngad A2 none hybrid s=24 h=744: 6 s 
+[02:58:19] Lumpyngngad A2 none hybrid s=48 h=744: 5 s 
+[02:58:25] Lumpyngngad A2 none hybrid s=72 h=744: 6 s 
+[02:58:25] cell Lumpyngngad A2 none done in 5.8 min 
+[1] TRUE TRUE

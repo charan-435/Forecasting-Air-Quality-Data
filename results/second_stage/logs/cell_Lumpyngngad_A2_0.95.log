@@ -1,0 +1,32 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[06:55:34]   one-step PM2.5 LEVEL: k=14, 5 s 
+[06:55:45]   one-step SO2 LEVEL: k=16, 11 s 
+[06:55:54]   one-step CO LEVEL: k=18, 9 s 
+[06:57:19] Lumpyngngad A2 pca95 recursive: one-step fits 25 s, recursion 86 s 
+[06:57:42] Lumpyngngad A2 pca95 cross-fit (4 folds): 22 s 
+[06:57:44] Lumpyngngad A2 pca95 hybrid s=48 h=336: 2 s 
+[06:57:46] Lumpyngngad A2 pca95 hybrid s=72 h=336: 2 s 
+[06:57:48] Lumpyngngad A2 pca95 hybrid s=24 h=744: 1 s 
+[06:57:49] Lumpyngngad A2 pca95 hybrid s=48 h=744: 1 s 
+[06:57:50] Lumpyngngad A2 pca95 hybrid s=72 h=744: 1 s 
+[06:57:50] cell Lumpyngngad A2 pca95 done in 2.3 min 
+[1] TRUE TRUE

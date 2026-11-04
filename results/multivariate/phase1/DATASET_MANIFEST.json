@@ -1,0 +1,191 @@
+{
+  "experiment": "phase1_b0_b1",
+  "created": "2026-11-02 17:29:53 UTC",
+  "quality_mask": "none (UNMASKED: includes 2,304 upstream constant-fill hours)",
+  "data_source": {
+    "path": "store/clean/series.parquet",
+    "sha256": "93c62ca44d3e0ebb79e3bea0a1852e048497ff41222740fcab14a807ad6d2e96",
+    "reader": "nanoparquet 0.5.2",
+    "value_column": "value_filled_causal",
+    "station": "CPCB",
+    "rows": 8880
+  },
+  "pollutant_order": ["PM2.5", "PM10", "NO2", "SO2", "O3", "CO"],
+  "units": {
+    "PM2.5": "ug/m3",
+    "PM10": "ug/m3",
+    "NO2": "ug/m3",
+    "SO2": "ug/m3",
+    "O3": "ug/m3",
+    "CO": "mg/m3"
+  },
+  "unit_check": [
+    {
+      "pollutant": "PM2.5",
+      "declared_unit": "ug/m3",
+      "canonical_unit": "ug/m3",
+      "bound_lo": 0,
+      "bound_hi": 1000,
+      "min": 0.27958502,
+      "median": 11.88380751,
+      "max": 66.8044677,
+      "pass": true
+    },
+    {
+      "pollutant": "PM10",
+      "declared_unit": "ug/m3",
+      "canonical_unit": "ug/m3",
+      "bound_lo": 0,
+      "bound_hi": 2000,
+      "min": 0.319974405,
+      "median": 19.94398114,
+      "max": 392.74117,
+      "pass": true
+    },
+    {
+      "pollutant": "NO2",
+      "declared_unit": "ug/m3",
+      "canonical_unit": "ug/m3",
+      "bound_lo": 0,
+      "bound_hi": 1000,
+      "min": 1.76596875,
+      "median": 2.1755232,
+      "max": 25.88567625,
+      "pass": true
+    },
+    {
+      "pollutant": "SO2",
+      "declared_unit": "ug/m3",
+      "canonical_unit": "ug/m3",
+      "bound_lo": 0,
+      "bound_hi": 1000,
+      "min": 2.92064386,
+      "median": 4.965645867,
+      "max": 9.834520975,
+      "pass": true
+    },
+    {
+      "pollutant": "O3",
+      "declared_unit": "ug/m3",
+      "canonical_unit": "ug/m3",
+      "bound_lo": 0,
+      "bound_hi": 1000,
+      "min": 0.186224409,
+      "median": 0.684918185,
+      "max": 34.51961461,
+      "pass": true
+    },
+    {
+      "pollutant": "CO",
+      "declared_unit": "mg/m3",
+      "canonical_unit": "mg/m3",
+      "bound_lo": 0,
+      "bound_hi": 50,
+      "min": 0,
+      "median": 0.2330435842,
+      "max": 1.332431136,
+      "pass": true
+    }
+  ],
+  "timestamps": {
+    "timezone": "Asia/Kolkata",
+    "first": "2022-07-01 00:00",
+    "last": "2023-07-05 23:00",
+    "n": 8880,
+    "step_seconds": 3600
+  },
+  "split": {
+    "name": "S3",
+    "first_origin": "2022-09-25 06:00",
+    "blocks": [
+      {
+        "block": "train",
+        "start": "2022-09-24 07:00",
+        "end": "2023-01-31 23:00",
+        "start_idx": 2048,
+        "end_idx": 5160,
+        "hours": 3113
+      },
+      {
+        "block": "validation",
+        "start": "2023-02-01 00:00",
+        "end": "2023-04-03 23:00",
+        "start_idx": 5161,
+        "end_idx": 6648,
+        "hours": 1488
+      },
+      {
+        "block": "test",
+        "start": "2023-04-04 00:00",
+        "end": "2023-07-05 23:00",
+        "start_idx": 6649,
+        "end_idx": 8880,
+        "hours": 2232
+      }
+    ]
+  },
+  "lookback_h": 24,
+  "horizons": [24, 168, 336, 744],
+  "horizons_run": 24,
+  "target": "PM2.5",
+  "strategy": "direct_fixed_horizon",
+  "designs": {
+    "B0": {
+      "pollutants": "PM2.5",
+      "n_features": 24,
+      "feature_names": ["PM2.5__lag00", "PM2.5__lag01", "PM2.5__lag02", "PM2.5__lag03", "PM2.5__lag04", "PM2.5__lag05", "PM2.5__lag06", "PM2.5__lag07", "PM2.5__lag08", "PM2.5__lag09", "PM2.5__lag10", "PM2.5__lag11", "PM2.5__lag12", "PM2.5__lag13", "PM2.5__lag14", "PM2.5__lag15", "PM2.5__lag16", "PM2.5__lag17", "PM2.5__lag18", "PM2.5__lag19", "PM2.5__lag20", "PM2.5__lag21", "PM2.5__lag22", "PM2.5__lag23"]
+    },
+    "B1": {
+      "pollutants": ["PM2.5", "PM10", "NO2", "SO2", "O3", "CO"],
+      "n_features": 144,
+      "feature_names": ["PM2.5__lag00", "PM2.5__lag01", "PM2.5__lag02", "PM2.5__lag03", "PM2.5__lag04", "PM2.5__lag05", "PM2.5__lag06", "PM2.5__lag07", "PM2.5__lag08", "PM2.5__lag09", "PM2.5__lag10", "PM2.5__lag11", "PM2.5__lag12", "PM2.5__lag13", "PM2.5__lag14", "PM2.5__lag15", "PM2.5__lag16", "PM2.5__lag17", "PM2.5__lag18", "PM2.5__lag19", "PM2.5__lag20", "PM2.5__lag21", "PM2.5__lag22", "PM2.5__lag23", "PM10__lag00", "PM10__lag01", "PM10__lag02", "PM10__lag03", "PM10__lag04", "PM10__lag05", "PM10__lag06", "PM10__lag07", "PM10__lag08", "PM10__lag09", "PM10__lag10", "PM10__lag11", "PM10__lag12", "PM10__lag13", "PM10__lag14", "PM10__lag15", "PM10__lag16", "PM10__lag17", "PM10__lag18", "PM10__lag19", "PM10__lag20", "PM10__lag21", "PM10__lag22", "PM10__lag23", "NO2__lag00", "NO2__lag01", "NO2__lag02", "NO2__lag03", "NO2__lag04", "NO2__lag05", "NO2__lag06", "NO2__lag07", "NO2__lag08", "NO2__lag09", "NO2__lag10", "NO2__lag11", "NO2__lag12", "NO2__lag13", "NO2__lag14", "NO2__lag15", "NO2__lag16", "NO2__lag17", "NO2__lag18", "NO2__lag19", "NO2__lag20", "NO2__lag21", "NO2__lag22", "NO2__lag23", "SO2__lag00", "SO2__lag01", "SO2__lag02", "SO2__lag03", "SO2__lag04", "SO2__lag05", "SO2__lag06", "SO2__lag07", "SO2__lag08", "SO2__lag09", "SO2__lag10", "SO2__lag11", "SO2__lag12", "SO2__lag13", "SO2__lag14", "SO2__lag15", "SO2__lag16", "SO2__lag17", "SO2__lag18", "SO2__lag19", "SO2__lag20", "SO2__lag21", "SO2__lag22", "SO2__lag23", "O3__lag00", "O3__lag01", "O3__lag02", "O3__lag03", "O3__lag04", "O3__lag05", "O3__lag06", "O3__lag07", "O3__lag08", "O3__lag09", "O3__lag10", "O3__lag11", "O3__lag12", "O3__lag13", "O3__lag14", "O3__lag15", "O3__lag16", "O3__lag17", "O3__lag18", "O3__lag19", "O3__lag20", "O3__lag21", "O3__lag22", "O3__lag23", "CO__lag00", "CO__lag01", "CO__lag02", "CO__lag03", "CO__lag04", "CO__lag05", "CO__lag06", "CO__lag07", "CO__lag08", "CO__lag09", "CO__lag10", "CO__lag11", "CO__lag12", "CO__lag13", "CO__lag14", "CO__lag15", "CO__lag16", "CO__lag17", "CO__lag18", "CO__lag19", "CO__lag20", "CO__lag21", "CO__lag22", "CO__lag23"]
+    }
+  },
+  "seed": 2026,
+  "bootstrap": {
+    "method": "moving_block",
+    "block_h": 168,
+    "reps": 999,
+    "seed": 7,
+    "level": 0.95
+  },
+  "mase_scale": {
+    "primary": {
+      "scale": 4.11240010552088,
+      "n_hours": 3113,
+      "n_pairs": 3089,
+      "from": "2022-09-24 07:00",
+      "to": "2023-01-31 23:00",
+      "blocks": "train"
+    },
+    "refit_alternative": {
+      "scale": 4.97681594080883,
+      "n_hours": 4601,
+      "n_pairs": 4577,
+      "from": "2022-09-24 07:00",
+      "to": "2023-04-03 23:00",
+      "blocks": "train+validation"
+    }
+  },
+  "package_versions": {
+    "R": "4.3.3",
+    "lightgbm": "4.7.0",
+    "data.table": "1.14.10",
+    "yaml": "2.3.8",
+    "digest": "0.6.34",
+    "jsonlite": "1.8.8",
+    "arrow": "not installed",
+    "nanoparquet": "0.5.2"
+  },
+  "git_commit": "38daa41d68294da98814d551894d208d2fb283d4",
+  "config_sha256": "4ecdb641bf03a32fd036d14712d5cd4b6ba4b4c2489472f064d2fe7bfbcdc32b",
+  "code_sha256": {
+    "R/40_mv_data.R": "0926d36d71b8ef4dc1fd96f3855af88e0e6c2e7928156de15194bdf7cb01a352",
+    "R/41_mv_features.R": "39b21f731eaf52a079a0a33079cd0d3c9ac4ecf5b531d5fca05d572b5c8f2017",
+    "R/43_mv_models.R": "523ec39b591d71898ed671dcbba8edbcf1904382f5ab36b650f43f59f5c2e00d",
+    "R/44_mv_metrics.R": "c305253c5449275250a7fe476a41d5173dd64d821ec75518f6cfaf04de660ef1",
+    "run_multivariate.R": "cfe8e17cfee3827f13abfd858c329f90aa9a235cb29787c15b8852a0a9330b95",
+    "tests/multivariate/run_tests.R": "254ac36f953fe01f87b6269cdd78ffb3076416a3f91d7b1e66641082a9994d87",
+    "tests/multivariate/expected_counts.R": "c17109890fd14a0ea2986105f816dd3a97f7f85b5f53b72d51b4c488b8d5dc8a"
+  }
+}

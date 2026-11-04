@@ -1,0 +1,39 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[15:32:18]   one-step PM2.5 D1: k=-, 9 s 
+[15:32:50]   one-step PM2.5 D2: k=-, 31 s 
+[15:33:28]   one-step PM2.5 D3: k=-, 38 s 
+[15:36:19]   one-step PM2.5 D4: k=-, 171 s 
+[15:40:26]   one-step PM2.5 D5: k=-, 247 s 
+[15:42:48]   one-step PM2.5 S5: k=-, 142 s 
+[15:49:22] Lumpyngngad C1_sep none recursive: one-step fits 639 s, recursion 394 s 
+[15:54:39] Lumpyngngad C1_sep none cross-fit (4 folds): 317 s 
+[15:55:50] Lumpyngngad C1_sep none hybrid s=24 h=168: 71 s 
+[15:56:57] Lumpyngngad C1_sep none hybrid s=48 h=168: 66 s 
+[15:58:05] Lumpyngngad C1_sep none hybrid s=72 h=168: 68 s 
+[15:59:17] Lumpyngngad C1_sep none hybrid s=24 h=336: 72 s 
+[16:00:14] Lumpyngngad C1_sep none hybrid s=48 h=336: 56 s 
+[16:01:34] Lumpyngngad C1_sep none hybrid s=72 h=336: 80 s 
+[16:02:33] Lumpyngngad C1_sep none hybrid s=24 h=744: 59 s 
+[16:03:22] Lumpyngngad C1_sep none hybrid s=48 h=744: 48 s 
+[16:04:04] Lumpyngngad C1_sep none hybrid s=72 h=744: 42 s 
+[16:04:04] cell Lumpyngngad C1_sep none done in 31.9 min 
+[1] TRUE TRUE

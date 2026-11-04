@@ -1,0 +1,13 @@
+family,r_package,in_repo_package_list,existing_code,current_limitation,needed_for_phase1
+LightGBM,lightgbm,yes (.project_packages),R/06_models.R fit_lgb; R/34 .fit_lgb_l1,univariate: builds its own lag matrix from y_train,"new fit_tabular(X, y, ...) wrapper; seed; early stopping on validation block"
+XGBoost,xgboost,yes,R/06_models.R fit_xgb,univariate; subsample 0.8 with no seed (AUDIT F16),same wrapper; set seed
+CatBoost,catboost (not on CRAN),optional; Windows binary install,R/06_models.R fit_cat / fit_cat_paper,univariate; silent fallback to XGBoost,same wrapper; fail if missing; native categorical for target id
+Linear regression,stats (base),base R,none for tabular X,-,lm.fit on standardized X; expect ill-conditioning for B2 (864 columns)
+Ridge / Lasso / Elastic Net,glmnet,no,none,-,"add glmnet; pick lambda (and alpha) on validation block, not cv.glmnet random folds"
+PCA,stats::prcomp (base),base R,none,-,fit center/scale/rotation on fitting rows only; ncomp on validation
+Sparse PCA,elasticnet::spca or sparsepca,no,none,-,add package; same fitting rule
+PLS,pls,no,none,-,add pls; plsr(validation='none'); ncomp on validation; one PLS per target or PLS2 for pooled
+Mutual-information selection,praznik (or FNN-based kNN estimator),no,none,-,add package; discretization and MI ranking on training rows only
+Model-based selection,glmnet coefficients; lightgbm::lgb.importance,"lightgbm yes, glmnet no",none,-,selection inside the training block; refit on selected columns
+Decomposition reader,arrow,yes,R/35_decomp_io.R get_decomp / get_decomp_multi,joins one station/variable at a time,multi-pollutant join by instant with alignment assertions
+Metrics,base,yes,R/08_metrics.R mase/mae/rmse,no mask argument,masked variants scoring only scorable targets

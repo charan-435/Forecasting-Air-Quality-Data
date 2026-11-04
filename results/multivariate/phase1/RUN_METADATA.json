@@ -1,0 +1,25 @@
+{
+  "run_at": "2026-11-02 17:29:53 UTC",
+  "designs": ["B0", "B1"],
+  "horizons": 24,
+  "family": "lightgbm",
+  "seed": 2026,
+  "tests_passed": true,
+  "elapsed_s": {
+    "B0 24": 0.266,
+    "B1 24": 1.033
+  },
+  "host": "Linux",
+  "package_versions": {
+    "R": "4.3.3",
+    "lightgbm": "4.7.0",
+    "data.table": "1.14.10",
+    "yaml": "2.3.8",
+    "digest": "0.6.34",
+    "jsonlite": "1.8.8",
+    "arrow": "not installed",
+    "nanoparquet": "0.5.2"
+  },
+  "git_commit": "38daa41d68294da98814d551894d208d2fb283d4",
+  "outputs": ["DATASET_HASHES.csv", "DATASET_MANIFEST.json", "FEATURE_MANIFEST_B0.csv", "FEATURE_MANIFEST_B1.csv", "MODEL_CONFIG.yaml", "RUN_METADATA.json", "SAMPLE_COUNTS.csv", "SMOKE_COMPARISON.csv", "SMOKE_PREDICTIONS.csv", "SMOKE_RESULTS.csv", "TEST_SUMMARY.csv", "TEST_SUMMARY.md", "diagnostics"]
+}

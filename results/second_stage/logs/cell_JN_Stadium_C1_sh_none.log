@@ -1,0 +1,38 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[16:50:27] JN_Stadium C1_sh none direct h=24: 37 s 
+[16:52:02] JN_Stadium C1_sh none direct h=168: 95 s 
+[16:52:35] JN_Stadium C1_sh none direct h=336: 32 s 
+[16:52:57] JN_Stadium C1_sh none direct h=744: 22 s 
+[16:56:18]   one-step PM2.5 ALL: k=-, 200 s 
+[17:03:58] JN_Stadium C1_sh none recursive: one-step fits 200 s, recursion 460 s 
+[17:07:56] JN_Stadium C1_sh none cross-fit (4 folds): 238 s 
+[17:09:26] JN_Stadium C1_sh none hybrid s=24 h=168: 89 s 
+[17:10:38] JN_Stadium C1_sh none hybrid s=48 h=168: 72 s 
+[17:11:39] JN_Stadium C1_sh none hybrid s=72 h=168: 61 s 
+[17:12:08] JN_Stadium C1_sh none hybrid s=24 h=336: 29 s 
+[17:12:35] JN_Stadium C1_sh none hybrid s=48 h=336: 26 s 
+[17:13:08] JN_Stadium C1_sh none hybrid s=72 h=336: 32 s 
+[17:13:37] JN_Stadium C1_sh none hybrid s=24 h=744: 29 s 
+[17:14:17] JN_Stadium C1_sh none hybrid s=48 h=744: 40 s 
+[17:14:39] JN_Stadium C1_sh none hybrid s=72 h=744: 21 s 
+[17:14:39] cell JN_Stadium C1_sh none done in 24.8 min 
+[1] TRUE TRUE

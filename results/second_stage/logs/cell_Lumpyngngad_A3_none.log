@@ -1,0 +1,40 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[02:48:55] Lumpyngngad A3 none direct h=24: 8 s 
+[02:49:04] Lumpyngngad A3 none direct h=168: 10 s 
+[02:49:10] Lumpyngngad A3 none direct h=336: 6 s 
+[02:49:16] Lumpyngngad A3 none direct h=744: 5 s 
+[02:49:43]   one-step PM2.5 LEVEL: k=-, 27 s 
+[02:50:23]   one-step SO2 LEVEL: k=-, 40 s 
+[02:50:36]   one-step CO LEVEL: k=-, 13 s 
+[02:51:59] Lumpyngngad A3 none recursive: one-step fits 80 s, recursion 83 s 
+[02:53:23] Lumpyngngad A3 none cross-fit (4 folds): 84 s 
+[02:53:32] Lumpyngngad A3 none hybrid s=24 h=168: 9 s 
+[02:53:39] Lumpyngngad A3 none hybrid s=48 h=168: 7 s 
+[02:53:45] Lumpyngngad A3 none hybrid s=72 h=168: 6 s 
+[02:53:53] Lumpyngngad A3 none hybrid s=24 h=336: 8 s 
+[02:54:02] Lumpyngngad A3 none hybrid s=48 h=336: 9 s 
+[02:54:09] Lumpyngngad A3 none hybrid s=72 h=336: 7 s 
+[02:54:25] Lumpyngngad A3 none hybrid s=24 h=744: 15 s 
+[02:54:40] Lumpyngngad A3 none hybrid s=48 h=744: 15 s 
+[02:55:11] Lumpyngngad A3 none hybrid s=72 h=744: 31 s 
+[02:55:11] cell Lumpyngngad A3 none done in 6.4 min 
+[1] TRUE TRUE

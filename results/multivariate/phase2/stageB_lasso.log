@@ -1,0 +1,8 @@
+[23:22:27] lasso B0 h=24 best=default valMAE=5.926 (1 candidates, 1 seeds, 1 s) 
+[23:22:28] lasso B1 h=24 best=default valMAE=5.927 (1 candidates, 1 seeds, 0 s) 
+[23:22:28] lasso B0 h=168 best=default valMAE=7.273 (1 candidates, 1 seeds, 0 s) 
+[23:22:28] lasso B1 h=168 best=default valMAE=7.273 (1 candidates, 1 seeds, 0 s) 
+[23:22:28] lasso B0 h=336 best=default valMAE=8.013 (1 candidates, 1 seeds, 0 s) 
+[23:22:28] lasso B1 h=336 best=default valMAE=7.961 (1 candidates, 1 seeds, 0 s) 
+[23:22:28] lasso B0 h=744 best=default valMAE=6.154 (1 candidates, 1 seeds, 0 s) 
+[23:22:29] lasso B1 h=744 best=default valMAE=6.154 (1 candidates, 1 seeds, 0 s) 

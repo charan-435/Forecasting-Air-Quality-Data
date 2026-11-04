@@ -1,0 +1,41 @@
+"check","pass"
+"A2 none hybrid files exactly for s < h",TRUE
+"A2 none all forecasts finite",TRUE
+"A2 none h 24 same target hours in every strategy",TRUE
+"A2 none h 24 test MAE < 3 x persistence",TRUE
+"A2 none h 168 same target hours in every strategy",TRUE
+"A2 none h 168 test MAE < 3 x persistence",TRUE
+"A2 pca95 hybrid files exactly for s < h",TRUE
+"A2 pca95 all forecasts finite",TRUE
+"A2 pca95 h 24 same target hours in every strategy",TRUE
+"A2 pca95 h 24 test MAE < 3 x persistence",TRUE
+"A2 pca95 h 168 same target hours in every strategy",TRUE
+"A2 pca95 h 168 test MAE < 3 x persistence",TRUE
+"C2_sep none hybrid files exactly for s < h",TRUE
+"C2_sep none all forecasts finite",TRUE
+"C2_sep none h 24 same target hours in every strategy",TRUE
+"C2_sep none h 24 level = sum of components",TRUE
+"C2_sep none h 24 test MAE < 3 x persistence",TRUE
+"C2_sep none h 168 same target hours in every strategy",TRUE
+"C2_sep none h 168 level = sum of components",TRUE
+"C2_sep none h 168 test MAE < 3 x persistence",TRUE
+"C2_sep pca95 hybrid files exactly for s < h",TRUE
+"C2_sep pca95 all forecasts finite",TRUE
+"C2_sep pca95 h 24 same target hours in every strategy",TRUE
+"C2_sep pca95 h 24 level = sum of components",TRUE
+"C2_sep pca95 h 24 test MAE < 3 x persistence",TRUE
+"C2_sep pca95 h 168 same target hours in every strategy",TRUE
+"C2_sep pca95 h 168 level = sum of components",TRUE
+"C2_sep pca95 h 168 test MAE < 3 x persistence",TRUE
+"A3 none hybrid files exactly for s < h",TRUE
+"A3 none all forecasts finite",TRUE
+"A3 none h 24 same target hours in every strategy",TRUE
+"A3 none h 24 test MAE < 3 x persistence",TRUE
+"A3 none h 168 same target hours in every strategy",TRUE
+"A3 none h 168 test MAE < 3 x persistence",TRUE
+"A3 pca95 hybrid files exactly for s < h",TRUE
+"A3 pca95 all forecasts finite",TRUE
+"A3 pca95 h 24 same target hours in every strategy",TRUE
+"A3 pca95 h 24 test MAE < 3 x persistence",TRUE
+"A3 pca95 h 168 same target hours in every strategy",TRUE
+"A3 pca95 h 168 test MAE < 3 x persistence",TRUE

@@ -1,0 +1,7 @@
+"variable","method","window_h","J","components","n_sampled_t","max_change_from_future_bump","causal_at_t","max_additivity_error","change_from_bump_at_t","change_from_bump_at_t_minus_1","change_from_bump_at_t_minus_31","change_from_bump_at_t_minus_W_plus_1","change_from_bump_at_t_minus_W"
+"PM2.5","mra_haar_J5__raw",2048,5,"D1,D2,D3,D4,D5,S5",40,0,TRUE,3.5527136788005e-15,25,12.5,0.0488281250000001,12.5,0
+"PM10","mra_haar_J5__raw",2048,5,"D1,D2,D3,D4,D5,S5",40,0,TRUE,7.105427357601e-15,25,12.5,0.0488281250000002,12.5,0
+"NO2","mra_haar_J5__raw",2048,5,"D1,D2,D3,D4,D5,S5",40,0,TRUE,4.44089209850063e-16,25,12.5,0.048828125,12.5,0
+"SO2","mra_haar_J5__raw",2048,5,"D1,D2,D3,D4,D5,S5",40,0,TRUE,8.88178419700125e-16,25,12.5,0.0488281250000009,12.5,0
+"O3","mra_haar_J5__raw",2048,5,"D1,D2,D3,D4,D5,S5",40,0,TRUE,1.11022302462516e-15,25,12.5,0.0488281250000001,12.5,0
+"CO","mra_haar_J5__raw",2048,5,"D1,D2,D3,D4,D5,S5",40,0,TRUE,1.11022302462516e-16,25,12.5,0.0488281250000001,12.5,0

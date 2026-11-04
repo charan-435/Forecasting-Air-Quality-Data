@@ -1,0 +1,43 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[10:15:22] Lumpyngngad B0 none direct h=24: 17 s 
+[10:15:32] Lumpyngngad B0 none direct h=168: 10 s 
+[10:15:42] Lumpyngngad B0 none direct h=336: 10 s 
+[10:15:50] Lumpyngngad B0 none direct h=744: 8 s 
+[10:15:51]   one-step PM2.5 D1: k=-, 1 s 
+[10:15:59]   one-step PM2.5 D2: k=-, 9 s 
+[10:16:14]   one-step PM2.5 D3: k=-, 14 s 
+[10:16:45]   one-step PM2.5 D4: k=-, 31 s 
+[10:17:30]   one-step PM2.5 D5: k=-, 45 s 
+[10:17:40]   one-step PM2.5 S5: k=-, 10 s 
+[10:22:37] Lumpyngngad B0 none recursive: one-step fits 111 s, recursion 297 s 
+[10:25:37] Lumpyngngad B0 none cross-fit (4 folds): 179 s 
+[10:26:14] Lumpyngngad B0 none hybrid s=24 h=168: 37 s 
+[10:26:29] Lumpyngngad B0 none hybrid s=48 h=168: 15 s 
+[10:26:43] Lumpyngngad B0 none hybrid s=72 h=168: 14 s 
+[10:26:53] Lumpyngngad B0 none hybrid s=24 h=336: 9 s 
+[10:27:01] Lumpyngngad B0 none hybrid s=48 h=336: 8 s 
+[10:27:09] Lumpyngngad B0 none hybrid s=72 h=336: 7 s 
+[10:27:20] Lumpyngngad B0 none hybrid s=24 h=744: 12 s 
+[10:27:29] Lumpyngngad B0 none hybrid s=48 h=744: 8 s 
+[10:27:36] Lumpyngngad B0 none hybrid s=72 h=744: 7 s 
+[10:27:36] cell Lumpyngngad B0 none done in 12.5 min 
+[1] TRUE TRUE

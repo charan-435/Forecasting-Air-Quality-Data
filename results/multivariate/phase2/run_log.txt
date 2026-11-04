@@ -1,0 +1,202 @@
+[23:19:16] check passed: both test suites, counts verified, hashes written 
+[23:19:36] smoke B0 h=24 best_iter=39 ran=69 
+[23:19:37] smoke B1 h=24 best_iter=49 ran=79 
+[23:19:37] smoke B0 h=168 best_iter=7 ran=37 
+[23:19:37] smoke B1 h=168 best_iter=13 ran=43 
+[23:19:38] smoke B0 h=336 best_iter=33 ran=63 
+[23:19:38] smoke B1 h=336 best_iter=12 ran=42 
+[23:19:38] smoke B0 h=744 best_iter=4 ran=34 
+[23:19:39] smoke B1 h=744 best_iter=4 ran=34 
+[23:20:07] lightgbm B0 h=24 best=num_leaves=31,min_data_in_leaf=20,feature_fraction=0.5,lambda_l2=10 valMAE=5.885 (25 candidates, 5 seeds, 4 s) 
+[23:20:31] lightgbm B1 h=24 best=num_leaves=7,min_data_in_leaf=100,feature_fraction=0.8,lambda_l2=0 valMAE=5.672 (25 candidates, 5 seeds, 24 s) 
+[23:20:33] lightgbm B0 h=168 best=num_leaves=7,min_data_in_leaf=20,feature_fraction=0.8,lambda_l2=0 valMAE=7.468 (25 candidates, 5 seeds, 2 s) 
+[23:20:40] lightgbm B1 h=168 best=num_leaves=15,min_data_in_leaf=100,feature_fraction=0.8,lambda_l2=10 valMAE=7.452 (25 candidates, 5 seeds, 7 s) 
+[23:20:43] lightgbm B0 h=336 best=num_leaves=31,min_data_in_leaf=20,feature_fraction=0.5,lambda_l2=0 valMAE=8.047 (25 candidates, 5 seeds, 3 s) 
+[23:20:51] lightgbm B1 h=336 best=num_leaves=31,min_data_in_leaf=20,feature_fraction=0.8,lambda_l2=0 valMAE=8.228 (25 candidates, 5 seeds, 8 s) 
+[23:20:53] lightgbm B0 h=744 best=num_leaves=7,min_data_in_leaf=20,feature_fraction=0.5,lambda_l2=10 valMAE=6.263 (25 candidates, 5 seeds, 2 s) 
+[23:20:58] lightgbm B1 h=744 best=num_leaves=15,min_data_in_leaf=20,feature_fraction=0.8,lambda_l2=10 valMAE=6.158 (25 candidates, 5 seeds, 5 s) 
+[23:22:16] report written to results/multivariate/phase2/report 
+[23:22:27] ridge B0 h=24 best=default valMAE=6.051 (1 candidates, 1 seeds, 1 s) 
+[23:22:27] lasso B0 h=24 best=default valMAE=5.926 (1 candidates, 1 seeds, 1 s) 
+[23:22:27] elasticnet B0 h=24 best=alpha=0.9 valMAE=5.925 (3 candidates, 1 seeds, 1 s) 
+[23:22:28] lasso B1 h=24 best=default valMAE=5.927 (1 candidates, 1 seeds, 0 s) 
+[23:22:28] ridge B1 h=24 best=default valMAE=6.221 (1 candidates, 1 seeds, 0 s) 
+[23:22:28] lasso B0 h=168 best=default valMAE=7.273 (1 candidates, 1 seeds, 0 s) 
+[23:22:28] ridge B0 h=168 best=default valMAE=7.273 (1 candidates, 1 seeds, 0 s) 
+[23:22:28] elasticnet B1 h=24 best=alpha=0.9 valMAE=5.924 (3 candidates, 1 seeds, 0 s) 
+[23:22:28] elasticnet B0 h=168 best=alpha=0.1 valMAE=7.270 (3 candidates, 1 seeds, 0 s) 
+[23:22:28] lasso B1 h=168 best=default valMAE=7.273 (1 candidates, 1 seeds, 0 s) 
+[23:22:28] lasso B0 h=336 best=default valMAE=8.013 (1 candidates, 1 seeds, 0 s) 
+[23:22:28] ridge B1 h=168 best=default valMAE=7.273 (1 candidates, 1 seeds, 0 s) 
+[23:22:28] ridge B0 h=336 best=default valMAE=8.034 (1 candidates, 1 seeds, 0 s) 
+[23:22:28] elasticnet B1 h=168 best=alpha=0.1 valMAE=7.270 (3 candidates, 1 seeds, 0 s) 
+[23:22:28] elasticnet B0 h=336 best=alpha=0.9 valMAE=8.014 (3 candidates, 1 seeds, 0 s) 
+[23:22:28] lasso B1 h=336 best=default valMAE=7.961 (1 candidates, 1 seeds, 0 s) 
+[23:22:28] lasso B0 h=744 best=default valMAE=6.154 (1 candidates, 1 seeds, 0 s) 
+[23:22:29] ridge B1 h=336 best=default valMAE=8.004 (1 candidates, 1 seeds, 0 s) 
+[23:22:29] ridge B0 h=744 best=default valMAE=6.154 (1 candidates, 1 seeds, 0 s) 
+[23:22:29] lasso B1 h=744 best=default valMAE=6.154 (1 candidates, 1 seeds, 0 s) 
+[23:22:29] elasticnet B1 h=336 best=alpha=0.9 valMAE=7.964 (3 candidates, 1 seeds, 0 s) 
+[23:22:29] ridge B1 h=744 best=default valMAE=6.154 (1 candidates, 1 seeds, 0 s) 
+[23:22:29] elasticnet B0 h=744 best=alpha=0.1 valMAE=6.154 (3 candidates, 1 seeds, 0 s) 
+[23:22:29] elasticnet B1 h=744 best=alpha=0.1 valMAE=6.154 (3 candidates, 1 seeds, 0 s) 
+[23:22:32] xgboost B0 h=24 best=max_depth=6,min_child_weight=1,colsample_bytree=0.5,lambda=10 valMAE=5.890 (16 candidates, 5 seeds, 5 s) 
+[23:22:58] xgboost B1 h=24 best=max_depth=3,min_child_weight=1,colsample_bytree=0.5,lambda=10 valMAE=5.673 (16 candidates, 5 seeds, 26 s) 
+[23:22:59] xgboost B0 h=168 best=max_depth=6,min_child_weight=20,colsample_bytree=0.8,lambda=10 valMAE=7.442 (16 candidates, 5 seeds, 2 s) 
+[23:23:01] catboost B0 h=24 best=depth=6,l2_leaf_reg=10 valMAE=5.922 (4 candidates, 5 seeds, 34 s) 
+[23:23:07] xgboost B1 h=168 best=max_depth=3,min_child_weight=20,colsample_bytree=0.8,lambda=10 valMAE=7.407 (16 candidates, 5 seeds, 8 s) 
+[23:23:10] xgboost B0 h=336 best=max_depth=6,min_child_weight=1,colsample_bytree=0.8,lambda=10 valMAE=7.946 (16 candidates, 5 seeds, 3 s) 
+[23:23:21] xgboost B1 h=336 best=max_depth=6,min_child_weight=1,colsample_bytree=0.8,lambda=1 valMAE=8.153 (16 candidates, 5 seeds, 11 s) 
+[23:23:22] xgboost B0 h=744 best=max_depth=3,min_child_weight=1,colsample_bytree=0.8,lambda=1 valMAE=6.266 (16 candidates, 5 seeds, 1 s) 
+[23:23:32] xgboost B1 h=744 best=max_depth=6,min_child_weight=1,colsample_bytree=0.5,lambda=10 valMAE=6.176 (16 candidates, 5 seeds, 9 s) 
+[23:25:44] check passed: both test suites, counts verified, hashes written 
+[23:25:59] targets h=744 separate B0 PM2.5 best=num_leaves=7,min_data_in_leaf=100 
+[23:25:59] featsel h=744 B0+PM10 done 
+[23:26:00] targets h=168 separate B0 PM2.5 best=num_leaves=31,min_data_in_leaf=20 
+[23:26:00] featsel h=168 B0+PM10 done 
+[23:26:00] targets h=336 separate B0 PM2.5 best=num_leaves=15,min_data_in_leaf=20 
+[23:26:01] featsel h=24 B0+PM10 done 
+[23:26:02] targets h=24 separate B0 PM2.5 best=num_leaves=31,min_data_in_leaf=20 
+[23:26:02] featsel h=744 B0+NO2 done 
+[23:26:02] featsel h=336 B0+PM10 done 
+[23:26:03] targets h=744 separate B1 PM2.5 best=num_leaves=15,min_data_in_leaf=20 
+[23:26:03] featsel h=168 B0+NO2 done 
+[23:26:04] featsel h=744 B0+SO2 done 
+[23:26:05] targets h=744 separate B0 PM10 best=num_leaves=31,min_data_in_leaf=20 
+[23:26:05] targets h=168 separate B1 PM2.5 best=num_leaves=15,min_data_in_leaf=100 
+[23:26:05] featsel h=24 B0+NO2 done 
+[23:26:06] featsel h=744 B0+O3 done 
+[23:26:06] targets h=336 separate B1 PM2.5 best=num_leaves=15,min_data_in_leaf=20 
+[23:26:06] featsel h=168 B0+SO2 done 
+[23:26:06] featsel h=336 B0+NO2 done 
+[23:26:07] targets h=168 separate B0 PM10 best=num_leaves=31,min_data_in_leaf=100 
+[23:26:08] featsel h=744 B0+CO done 
+[23:26:09] featsel h=168 B0+O3 done 
+[23:26:09] featsel h=336 B0+SO2 done 
+[23:26:10] targets h=336 separate B0 PM10 best=num_leaves=31,min_data_in_leaf=20 
+[23:26:10] targets h=744 separate B1 PM10 best=num_leaves=31,min_data_in_leaf=20 
+[23:26:11] featsel h=336 B0+O3 done 
+[23:26:11] featsel h=744 B1-PM2.5 done 
+[23:26:12] featsel h=24 B0+SO2 done 
+[23:26:12] targets h=744 separate B0 NO2 best=num_leaves=7,min_data_in_leaf=100 
+[23:26:12] featsel h=168 B0+CO done 
+[23:26:13] targets h=168 separate B1 PM10 best=num_leaves=15,min_data_in_leaf=100 
+[23:26:14] targets h=168 separate B0 NO2 best=num_leaves=7,min_data_in_leaf=100 
+[23:26:15] targets h=336 separate B1 PM10 best=num_leaves=7,min_data_in_leaf=20 
+[23:26:16] featsel h=744 B1-PM10 done 
+[23:26:16] targets h=744 separate B1 NO2 best=num_leaves=7,min_data_in_leaf=100 
+[23:26:17] targets h=336 separate B0 NO2 best=num_leaves=15,min_data_in_leaf=100 
+[23:26:18] featsel h=336 B0+CO done 
+[23:26:18] targets h=168 separate B1 NO2 best=num_leaves=7,min_data_in_leaf=100 
+[23:26:20] featsel h=24 B0+O3 done 
+[23:26:20] featsel h=744 B1-NO2 done 
+[23:26:20] featsel h=168 B1-PM2.5 done 
+[23:26:21] targets h=168 separate B0 SO2 best=num_leaves=31,min_data_in_leaf=100 
+[23:26:21] targets h=336 separate B1 NO2 best=num_leaves=7,min_data_in_leaf=100 
+[23:26:23] targets h=744 separate B0 SO2 best=num_leaves=15,min_data_in_leaf=20 
+[23:26:24] featsel h=24 B0+CO done 
+[23:26:24] featsel h=744 B1-SO2 done 
+[23:26:25] featsel h=336 B1-PM2.5 done 
+[23:26:26] targets h=24 separate B1 PM2.5 best=num_leaves=7,min_data_in_leaf=100 
+[23:26:29] featsel h=168 B1-PM10 done 
+[23:26:30] featsel h=744 B1-O3 done 
+[23:26:30] targets h=24 separate B0 PM10 best=num_leaves=31,min_data_in_leaf=20 
+[23:26:32] targets h=336 separate B0 SO2 best=num_leaves=31,min_data_in_leaf=20 
+[23:26:33] featsel h=336 B1-PM10 done 
+[23:26:35] featsel h=744 B1-CO done 
+[23:26:35] featsel h=168 B1-NO2 done 
+[23:26:35] featsel h=24 B1-PM2.5 done 
+[23:26:36] targets h=168 separate B1 SO2 best=num_leaves=31,min_data_in_leaf=20 
+[23:26:38] targets h=168 separate B0 O3 best=num_leaves=7,min_data_in_leaf=100 
+[23:26:39] featsel h=744 corr_topk done 
+[23:26:39] featsel h=336 B1-NO2 done 
+[23:26:43] featsel h=168 B1-SO2 done 
+[23:26:43] targets h=24 separate B1 PM10 best=num_leaves=31,min_data_in_leaf=100 
+[23:26:44] featsel h=744 mi_topk done 
+[23:26:44] featsel h=336 B1-SO2 done 
+[23:26:45] targets h=24 separate B0 NO2 best=num_leaves=7,min_data_in_leaf=100 
+[23:26:46] targets h=168 separate B1 O3 best=num_leaves=7,min_data_in_leaf=20 
+[23:26:46] featsel h=744 enet_select done 
+[23:26:47] targets h=336 separate B1 SO2 best=num_leaves=15,min_data_in_leaf=20 
+[23:26:47] targets h=168 separate B0 CO best=num_leaves=15,min_data_in_leaf=20 
+[23:26:48] featsel h=168 B1-O3 done 
+[23:26:50] featsel h=744 rfe done 
+[23:26:51] featsel h=336 B1-O3 done 
+[23:26:51] targets h=24 separate B1 NO2 best=num_leaves=7,min_data_in_leaf=100 
+[23:26:52] targets h=336 separate B0 O3 best=num_leaves=7,min_data_in_leaf=100 
+[23:26:52] targets h=168 separate B1 CO best=num_leaves=31,min_data_in_leaf=100 
+[23:26:53] featsel h=168 B1-CO done 
+[23:26:56] targets h=24 separate B0 SO2 best=num_leaves=7,min_data_in_leaf=20 
+[23:26:56] featsel h=168 corr_topk done 
+[23:26:57] featsel h=744 pca+lightgbm done 
+[23:26:57] featsel h=24 B1-PM10 done 
+[23:26:58] featsel h=336 B1-CO done 
+[23:26:58] featsel h=744 pca+ols (PCR) done 
+[23:27:02] featsel h=744 plsscores+lightgbm done 
+[23:27:02] featsel h=744 pls regression done 
+[23:27:04] featsel h=168 mi_topk done 
+[23:27:04] targets h=336 separate B1 O3 best=num_leaves=15,min_data_in_leaf=100 
+[23:27:04] featsel h=336 corr_topk done 
+[23:27:06] featsel h=168 enet_select done 
+[23:27:07] targets h=336 separate B0 CO best=num_leaves=31,min_data_in_leaf=20 
+[23:27:12] featsel h=336 mi_topk done 
+[23:27:13] targets h=336 separate B1 CO best=num_leaves=15,min_data_in_leaf=20 
+[23:27:14] featsel h=336 enet_select done 
+[23:27:16] featsel h=168 rfe done 
+[23:27:16] targets h=24 separate B1 SO2 best=num_leaves=7,min_data_in_leaf=20 
+[23:27:21] targets h=24 separate B0 O3 best=num_leaves=7,min_data_in_leaf=20 
+[23:27:22] featsel h=336 rfe done 
+[23:27:24] featsel h=168 pca+lightgbm done 
+[23:27:24] featsel h=24 B1-NO2 done 
+[23:27:24] targets h=168 shared pooled_B1_own best=num_leaves=31,min_data_in_leaf=20 
+[23:27:25] targets h=744 separate B1 SO2 best=num_leaves=31,min_data_in_leaf=20 
+[23:27:25] featsel h=168 pca+ols (PCR) done 
+[23:27:27] targets h=744 separate B0 O3 best=num_leaves=15,min_data_in_leaf=100 
+[23:27:28] featsel h=168 plsscores+lightgbm done 
+[23:27:29] featsel h=168 pls regression done 
+[23:27:30] featsel h=24 B1-SO2 done 
+[23:27:31] featsel h=336 pca+lightgbm done 
+[23:27:32] targets h=744 separate B1 O3 best=num_leaves=15,min_data_in_leaf=100 
+[23:27:33] featsel h=336 pca+ols (PCR) done 
+[23:27:33] targets h=744 separate B0 CO best=num_leaves=15,min_data_in_leaf=20 
+[23:27:35] targets h=24 separate B1 O3 best=num_leaves=31,min_data_in_leaf=20 
+[23:27:37] targets h=24 separate B0 CO best=num_leaves=7,min_data_in_leaf=100 
+[23:27:38] featsel h=24 B1-O3 done 
+[23:27:38] featsel h=336 plsscores+lightgbm done 
+[23:27:38] targets h=744 separate B1 CO best=num_leaves=31,min_data_in_leaf=20 
+[23:27:38] featsel h=336 pls regression done 
+[23:27:40] targets h=336 shared pooled_B1_own best=num_leaves=31,min_data_in_leaf=20 
+[23:27:42] targets h=24 separate B1 CO best=num_leaves=7,min_data_in_leaf=20 
+[23:27:51] targets h=168 shared pooled_B1 best=num_leaves=31,min_data_in_leaf=20 
+[23:27:54] targets h=168 shared pooled_B0 best=num_leaves=7,min_data_in_leaf=100 
+[23:27:55] targets h=744 shared pooled_B1_own best=num_leaves=31,min_data_in_leaf=100 
+[23:27:58] targets h=336 shared pooled_B1 best=num_leaves=31,min_data_in_leaf=100 
+[23:28:00] featsel h=24 B1-CO done 
+[23:28:03] targets h=336 shared pooled_B0 best=num_leaves=15,min_data_in_leaf=20 
+[23:28:06] featsel h=24 corr_topk done 
+[23:28:11] targets h=744 shared pooled_B1 best=num_leaves=7,min_data_in_leaf=20 
+[23:28:13] targets h=744 shared pooled_B0 best=num_leaves=7,min_data_in_leaf=100 
+[23:28:15] featsel h=24 mi_topk done 
+[23:28:15] catboost B1 h=24 best=depth=6,l2_leaf_reg=10 valMAE=5.711 (4 candidates, 5 seeds, 314 s) 
+[23:28:16] targets h=24 shared pooled_B1_own best=num_leaves=15,min_data_in_leaf=20 
+[23:28:17] featsel h=24 enet_select done 
+[23:28:21] catboost B0 h=168 best=depth=6,l2_leaf_reg=10 valMAE=7.443 (4 candidates, 5 seeds, 6 s) 
+[23:28:36] featsel h=24 rfe done 
+[23:28:41] featsel h=24 pca+lightgbm done 
+[23:28:42] featsel h=24 pca+ols (PCR) done 
+[23:28:45] featsel h=24 plsscores+lightgbm done 
+[23:28:46] featsel h=24 pls regression done 
+[23:28:54] catboost B1 h=168 best=depth=6,l2_leaf_reg=3 valMAE=7.522 (4 candidates, 5 seeds, 33 s) 
+[23:29:02] catboost B0 h=336 best=depth=6,l2_leaf_reg=3 valMAE=8.201 (4 candidates, 5 seeds, 8 s) 
+[23:29:09] targets h=24 shared pooled_B1 best=num_leaves=31,min_data_in_leaf=100 
+[23:29:19] targets h=24 shared pooled_B0 best=num_leaves=15,min_data_in_leaf=100 
+[23:29:33] catboost B1 h=336 best=depth=6,l2_leaf_reg=3 valMAE=8.216 (4 candidates, 5 seeds, 31 s) 
+[23:29:36] catboost B0 h=744 best=depth=4,l2_leaf_reg=10 valMAE=6.279 (4 candidates, 5 seeds, 3 s) 
+[23:30:01] catboost B1 h=744 best=depth=6,l2_leaf_reg=10 valMAE=6.178 (4 candidates, 5 seeds, 26 s) 
+[23:41:11] report: metrics done 
+[23:43:53] report: B1 vs B0 paired done 
+[23:45:33] report: reference comparisons done 
+[23:47:54] report: featsel paired done 
+[23:52:49] report: targets paired done 
+[23:52:53] report written to results/multivariate/phase2/report 
+[23:58:40] check passed: both test suites, counts verified, hashes written 

@@ -1,0 +1,40 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[03:22:55] Lumpyngngad A3 pca99 direct h=24: 21 s 
+[03:23:16] Lumpyngngad A3 pca99 direct h=168: 21 s 
+[03:23:29] Lumpyngngad A3 pca99 direct h=336: 13 s 
+[03:23:40] Lumpyngngad A3 pca99 direct h=744: 11 s 
+[03:24:51]   one-step PM2.5 LEVEL: k=38, 71 s 
+[03:26:46]   one-step SO2 LEVEL: k=38, 115 s 
+[03:28:11]   one-step CO LEVEL: k=38, 85 s 
+[03:35:18] Lumpyngngad A3 pca99 recursive: one-step fits 271 s, recursion 427 s 
+[03:39:28] Lumpyngngad A3 pca99 cross-fit (4 folds): 250 s 
+[03:39:45] Lumpyngngad A3 pca99 hybrid s=24 h=168: 16 s 
+[03:40:03] Lumpyngngad A3 pca99 hybrid s=48 h=168: 18 s 
+[03:40:21] Lumpyngngad A3 pca99 hybrid s=72 h=168: 18 s 
+[03:40:36] Lumpyngngad A3 pca99 hybrid s=24 h=336: 15 s 
+[03:40:54] Lumpyngngad A3 pca99 hybrid s=48 h=336: 18 s 
+[03:41:16] Lumpyngngad A3 pca99 hybrid s=72 h=336: 22 s 
+[03:41:33] Lumpyngngad A3 pca99 hybrid s=24 h=744: 17 s 
+[03:41:45] Lumpyngngad A3 pca99 hybrid s=48 h=744: 12 s 
+[03:42:04] Lumpyngngad A3 pca99 hybrid s=72 h=744: 19 s 
+[03:42:04] cell Lumpyngngad A3 pca99 done in 19.5 min 
+[1] TRUE TRUE

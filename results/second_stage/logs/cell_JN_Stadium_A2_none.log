@@ -1,0 +1,42 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[02:40:32] JN_Stadium A2 none direct h=24: 7 s 
+[02:40:35] JN_Stadium A2 none direct h=168: 3 s 
+[02:43:04] JN_Stadium A2 none direct h=336: 148 s 
+[02:44:25] JN_Stadium A2 none direct h=744: 82 s 
+[02:44:48]   one-step PM2.5 LEVEL: k=-, 23 s 
+[02:45:08]   one-step PM10 LEVEL: k=-, 20 s 
+[02:45:18]   one-step NO2 LEVEL: k=-, 10 s 
+[02:45:34]   one-step SO2 LEVEL: k=-, 16 s 
+[02:45:57]   one-step CO LEVEL: k=-, 24 s 
+[02:46:50] JN_Stadium A2 none recursive: one-step fits 92 s, recursion 53 s 
+[02:47:43] JN_Stadium A2 none cross-fit (4 folds): 52 s 
+[02:47:46] JN_Stadium A2 none hybrid s=24 h=168: 4 s 
+[02:47:50] JN_Stadium A2 none hybrid s=48 h=168: 3 s 
+[02:47:53] JN_Stadium A2 none hybrid s=72 h=168: 4 s 
+[02:48:06] JN_Stadium A2 none hybrid s=24 h=336: 13 s 
+[02:48:11] JN_Stadium A2 none hybrid s=48 h=336: 6 s 
+[02:48:16] JN_Stadium A2 none hybrid s=72 h=336: 5 s 
+[02:48:25] JN_Stadium A2 none hybrid s=24 h=744: 8 s 
+[02:48:29] JN_Stadium A2 none hybrid s=48 h=744: 5 s 
+[02:48:34] JN_Stadium A2 none hybrid s=72 h=744: 5 s 
+[02:48:34] cell JN_Stadium A2 none done in 8.2 min 
+[1] TRUE TRUE

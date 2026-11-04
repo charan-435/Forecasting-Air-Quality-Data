@@ -1,0 +1,57 @@
+family: lightgbm
+package: lightgbm
+package_version: 4.7.0
+seed: 2026
+note: Starting configuration taken from T1; not tuned for multivariate inputs.
+config_params:
+  objective: regression
+  learning_rate: 0.05
+  num_iterations: 160
+  max_depth: 6
+  num_leaves: 31
+  feature_fraction: 0.8
+  bagging_fraction: 0.8
+  bagging_freq: 1
+  early_stopping_rounds: 30
+  num_threads: 1
+effective_lightgbm_params:
+  objective: regression
+  learning_rate: 0.05
+  max_depth: 6
+  num_leaves: 31
+  feature_fraction: 0.8
+  bagging_fraction: 0.8
+  bagging_freq: 1
+  num_threads: 1
+  metric: l2
+  seed: 2026
+  deterministic: yes
+  force_col_wise: yes
+  verbosity: -1
+max_rounds: 160
+early_stopping_rounds: 30
+selection: fit on train samples; early stopping on validation samples (l2)
+final_fit: refit on train + validation samples with the selected iteration count frozen
+test_use: scored once after the refit; never used for fitting or selection
+transform: identity (original values, no scaling)
+strategy: direct_fixed_horizon
+quality_mask: none
+smoke_selected:
+  B0 24:
+    design: B0
+    horizon_h: 24
+    best_iter: 39
+    iterations_run: 69
+    early_stopped: yes
+    best_validation_l2: 76.4046112
+    refit_rounds: 39
+    n_refit: 4530
+  B1 24:
+    design: B1
+    horizon_h: 24
+    best_iter: 49
+    iterations_run: 79
+    early_stopped: yes
+    best_validation_l2: 68.0871415
+    refit_rounds: 49
+    n_refit: 4530

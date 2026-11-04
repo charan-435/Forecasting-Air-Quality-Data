@@ -1,0 +1,63 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[06:55:43]   one-step PM2.5 D1: k=124, 14 s 
+[06:57:20]   one-step PM2.5 D2: k=124, 97 s 
+[06:58:43]   one-step PM2.5 D3: k=124, 83 s 
+[06:59:30]   one-step PM2.5 D4: k=124, 46 s 
+[07:00:20]   one-step PM2.5 D5: k=124, 50 s 
+[07:00:58]   one-step PM2.5 S5: k=124, 38 s 
+[07:01:06]   one-step PM10 D1: k=125, 8 s 
+[07:01:52]   one-step PM10 D2: k=125, 46 s 
+[07:02:39]   one-step PM10 D3: k=125, 47 s 
+[07:03:26]   one-step PM10 D4: k=125, 47 s 
+[07:04:05]   one-step PM10 D5: k=125, 39 s 
+[07:04:39]   one-step PM10 S5: k=125, 34 s 
+[07:04:51]   one-step NO2 D1: k=125, 12 s 
+[07:05:31]   one-step NO2 D2: k=125, 40 s 
+[07:06:18]   one-step NO2 D3: k=125, 47 s 
+[07:07:12]   one-step NO2 D4: k=125, 54 s 
+[07:07:54]   one-step NO2 D5: k=125, 41 s 
+[07:08:36]   one-step NO2 S5: k=125, 42 s 
+[07:08:42]   one-step SO2 D1: k=125, 6 s 
+[07:09:24]   one-step SO2 D2: k=125, 42 s 
+[07:10:17]   one-step SO2 D3: k=125, 53 s 
+[07:10:59]   one-step SO2 D4: k=125, 42 s 
+[07:11:53]   one-step SO2 D5: k=125, 55 s 
+[07:12:15]   one-step SO2 S5: k=125, 21 s 
+[07:12:39]   one-step CO D1: k=125, 25 s 
+[07:13:28]   one-step CO D2: k=125, 49 s 
+[07:15:27]   one-step CO D3: k=125, 119 s 
+[07:16:14]   one-step CO D4: k=125, 47 s 
+[07:17:11]   one-step CO D5: k=125, 57 s 
+[07:17:50]   one-step CO S5: k=125, 39 s 
+[08:00:40] JN_Stadium C2_sep pca99 recursive: one-step fits 1340 s, recursion 2570 s 
+[08:17:10] JN_Stadium C2_sep pca99 cross-fit (4 folds): 990 s 
+[08:17:56] JN_Stadium C2_sep pca99 hybrid s=24 h=168: 46 s 
+[08:18:47] JN_Stadium C2_sep pca99 hybrid s=48 h=168: 51 s 
+[08:19:31] JN_Stadium C2_sep pca99 hybrid s=72 h=168: 43 s 
+[08:20:11] JN_Stadium C2_sep pca99 hybrid s=24 h=336: 39 s 
+[08:20:46] JN_Stadium C2_sep pca99 hybrid s=48 h=336: 35 s 
+[08:21:18] JN_Stadium C2_sep pca99 hybrid s=72 h=336: 33 s 
+[08:21:38] JN_Stadium C2_sep pca99 hybrid s=24 h=744: 19 s 
+[08:22:08] JN_Stadium C2_sep pca99 hybrid s=48 h=744: 30 s 
+[08:22:27] JN_Stadium C2_sep pca99 hybrid s=72 h=744: 19 s 
+[08:22:27] cell JN_Stadium C2_sep pca99 done in 87.0 min 
+[1] TRUE TRUE

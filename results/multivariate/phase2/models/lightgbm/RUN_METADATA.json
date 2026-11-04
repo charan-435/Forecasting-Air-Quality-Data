@@ -1,0 +1,42 @@
+{
+  "stage": "model",
+  "run_at": "2026-11-02 17:51:01 UTC",
+  "args": ["--stage=model", "--family=lightgbm"],
+  "quality_mask": "none (UNMASKED)",
+  "package_versions": {
+    "R": "4.5.2",
+    "lightgbm": "4.7.0",
+    "xgboost": "3.2.1.1",
+    "catboost": "1.2.8",
+    "glmnet": "5.2",
+    "pls": "2.9.0",
+    "arrow": "26.0.0",
+    "data.table": "1.18.0",
+    "yaml": "2.3.12",
+    "digest": "0.6.39",
+    "jsonlite": "2.0.0",
+    "ggplot2": "4.0.1"
+  },
+  "git_commit": "38daa41d68294da98814d551894d208d2fb283d4",
+  "host": "Windows",
+  "config_sha256": {
+    "base": "4ecdb641bf03a32fd036d14712d5cd4b6ba4b4c2489472f064d2fe7bfbcdc32b",
+    "experiments": "d25e5d4031bf06acea5fabd923d768c02d9829b0ddc24445d7411eeb462a10a1"
+  },
+  "code_sha256": {
+    "R/40_mv_data.R": "0926d36d71b8ef4dc1fd96f3855af88e0e6c2e7928156de15194bdf7cb01a352",
+    "R/41_mv_features.R": "491fdc9372b2ff5abe6848391d381957dcede6345d5266c6f934297a391d5925",
+    "R/43_mv_models.R": "2b9c51f327931d3de43c07d83fab819484d531ad1ecf6a14925d831633e24d77",
+    "R/44_mv_metrics.R": "959eaf00a886f70dfc11778c7169cdf0d3c74c1e045e8991e8c59fca9a2c2027",
+    "R/45_mv_families.R": "e5b704c7646d6fe38af6423d48ddc6434c68b13e59257d410f774ef0992bd8b5",
+    "R/46_mv_featsel.R": "572d897628a4535f7484f0cbdb40915056e5abd747ed3d54fd60aea465bded14",
+    "R/47_mv_eval.R": "285c164eff9edb45d70bce00485bb7f75e755027e400077ff07467be74678cc1",
+    "R/48_mv_runner.R": "dcf47fbe71f319166c9d9305c85fbf06774a0662c646a4200fc2fd4dfb051e87",
+    "run_mv_experiments.R": "d9e52971a6806b942487c5457228e10a4a8263f89f356102833dedf621c06aeb"
+  },
+  "family": "lightgbm",
+  "seeds": [2026, 2027, 2028, 2029, 2030],
+  "n_candidates": 25,
+  "transform": "identity",
+  "selection": "validation MAE of the train-only fit"
+}

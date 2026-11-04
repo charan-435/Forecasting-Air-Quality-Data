@@ -1,0 +1,8 @@
+[23:20:07] lightgbm B0 h=24 best=num_leaves=31,min_data_in_leaf=20,feature_fraction=0.5,lambda_l2=10 valMAE=5.885 (25 candidates, 5 seeds, 4 s) 
+[23:20:31] lightgbm B1 h=24 best=num_leaves=7,min_data_in_leaf=100,feature_fraction=0.8,lambda_l2=0 valMAE=5.672 (25 candidates, 5 seeds, 24 s) 
+[23:20:33] lightgbm B0 h=168 best=num_leaves=7,min_data_in_leaf=20,feature_fraction=0.8,lambda_l2=0 valMAE=7.468 (25 candidates, 5 seeds, 2 s) 
+[23:20:40] lightgbm B1 h=168 best=num_leaves=15,min_data_in_leaf=100,feature_fraction=0.8,lambda_l2=10 valMAE=7.452 (25 candidates, 5 seeds, 7 s) 
+[23:20:43] lightgbm B0 h=336 best=num_leaves=31,min_data_in_leaf=20,feature_fraction=0.5,lambda_l2=0 valMAE=8.047 (25 candidates, 5 seeds, 3 s) 
+[23:20:51] lightgbm B1 h=336 best=num_leaves=31,min_data_in_leaf=20,feature_fraction=0.8,lambda_l2=0 valMAE=8.228 (25 candidates, 5 seeds, 8 s) 
+[23:20:53] lightgbm B0 h=744 best=num_leaves=7,min_data_in_leaf=20,feature_fraction=0.5,lambda_l2=10 valMAE=6.263 (25 candidates, 5 seeds, 2 s) 
+[23:20:58] lightgbm B1 h=744 best=num_leaves=15,min_data_in_leaf=20,feature_fraction=0.8,lambda_l2=10 valMAE=6.158 (25 candidates, 5 seeds, 5 s) 

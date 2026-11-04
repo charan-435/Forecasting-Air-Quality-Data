@@ -1,0 +1,38 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[16:38:25] Lumpyngngad C1_sh pca95 direct h=24: 87 s 
+[16:38:48] Lumpyngngad C1_sh pca95 direct h=168: 22 s 
+[16:39:09] Lumpyngngad C1_sh pca95 direct h=336: 20 s 
+[16:39:30] Lumpyngngad C1_sh pca95 direct h=744: 21 s 
+[16:41:59]   one-step PM2.5 ALL: k=30, 148 s 
+[16:59:16] Lumpyngngad C1_sh pca95 recursive: one-step fits 148 s, recursion 1037 s 
+[17:06:12] Lumpyngngad C1_sh pca95 cross-fit (4 folds): 415 s 
+[17:06:33] Lumpyngngad C1_sh pca95 hybrid s=24 h=168: 20 s 
+[17:06:50] Lumpyngngad C1_sh pca95 hybrid s=48 h=168: 16 s 
+[17:07:07] Lumpyngngad C1_sh pca95 hybrid s=72 h=168: 16 s 
+[17:07:28] Lumpyngngad C1_sh pca95 hybrid s=24 h=336: 21 s 
+[17:07:52] Lumpyngngad C1_sh pca95 hybrid s=48 h=336: 23 s 
+[17:08:08] Lumpyngngad C1_sh pca95 hybrid s=72 h=336: 16 s 
+[17:08:31] Lumpyngngad C1_sh pca95 hybrid s=24 h=744: 22 s 
+[17:08:51] Lumpyngngad C1_sh pca95 hybrid s=48 h=744: 19 s 
+[17:09:07] Lumpyngngad C1_sh pca95 hybrid s=72 h=744: 16 s 
+[17:09:07] cell Lumpyngngad C1_sh pca95 done in 32.2 min 
+[1] TRUE TRUE

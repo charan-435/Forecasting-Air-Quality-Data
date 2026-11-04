@@ -1,0 +1,11 @@
+There were 20 warnings (use warnings() to see them)
+2026-11-03 13:24:46  === preprocess active=shillong ===
+2026-11-03 13:24:46  ingest shillong_lumpyngngad adapter=vonter_parquet
+2026-11-03 13:24:48  shillong_lumpyngngad duplicate raw timestamps averaged: 0
+2026-11-03 13:24:55  ingest shillong_jnstadium adapter=vonter_parquet
+2026-11-03 13:24:56  shillong_jnstadium duplicate raw timestamps averaged: 0
+2026-11-03 13:25:02  imputation benchmark before 2023-10-01 n_art=500
+2026-11-03 13:25:03  benchmark parallel workers=8
+2026-11-03 13:25:32  wrote D:\TSA\Forecasting-Air-Quality-Data/store/shillong/clean/series.parquet rows=140160
+There were 16 warnings (use warnings() to see them)
+Time difference of 45.37816 secs

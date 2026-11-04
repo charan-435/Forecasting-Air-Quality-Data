@@ -1,0 +1,5 @@
+"design","block","n","same_targets","max_abs_pred_diff"
+"B0","validation",1464,TRUE,4.9737991503207e-14
+"B0","test",2208,TRUE,4.9737991503207e-14
+"B1","validation",1464,TRUE,4.9737991503207e-14
+"B1","test",2208,TRUE,4.9737991503207e-14

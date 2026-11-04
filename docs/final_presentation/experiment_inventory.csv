@@ -1,0 +1,10 @@
+experiment_id,dataset,station,target,architecture,model,forecast_strategy,horizon,status,source
+CPCB-PHASE1,CPCB,CPCB,PM2.5,B0/B1,LightGBM,direct_fixed_horizon,24,completed,results/multivariate/phase1/SMOKE_RESULTS.csv
+CPCB-PHASE2,CPCB,CPCB,PM2.5,B0/B1,LightGBM/XGBoost/CatBoost/Ridge/Lasso/ElasticNet,direct_fixed_horizon,"24,168,336,744",completed,results/multivariate/phase2/report/HORIZON_COMPARISON_B0_B1.csv
+CPCB-FEATSEL,CPCB,CPCB,PM2.5,B1,LightGBM/linear transforms,direct_fixed_horizon,"24,168,336,744",completed,results/multivariate/phase2/report/FEATSEL_COMPARISON.csv
+CPCB-TARGETS,CPCB,CPCB,six pollutants,B0/B1 separate/shared,LightGBM,direct_fixed_horizon,"24,168,336,744",completed,results/multivariate/phase2/report/TARGETS_METRICS.csv
+SHILLONG-ARCH-LUMP,Shillong,Lumpyngngad,PM2.5/all usable pollutants,A0-A3/B0-B3/C1-C3,LightGBM and families2,direct_fixed_horizon,"24,168,336,744",completed,results/shillong_arch/REPORT.md
+SHILLONG-ARCH-JN,Shillong,JN_Stadium,PM2.5/all usable pollutants,A0-A3/B0-B3/C1-C3,LightGBM and families2,direct_fixed_horizon,"24,168,336,744",completed,results/shillong_arch/REPORT.md
+SECOND-PCA-TESTS,Shillong,Lumpyngngad/JN_Stadium,PM2.5,A2/C2_sep/A3 + PCA variants,LightGBM,direct/recursive/hybrid proposed,"24,168,336,744",partial-tests-only,results/second_stage/tests/TEST_RESULTS.csv
+LEGACY-WAVE-BAKEOFF,CPCB paper,CPCB/ID1,six pollutants,decomposed/raw variants,WaveCatBoost/WaveLGB/WaveXGB/SARIMA,recursive multi-step,1/7/14/31 days,completed-with-audit-caveats,results/scores.csv
+LEGACY-PAPER-PROTOCOL,CPCB paper,CPCB/ID1,PM2.5,two-sided MODWT,Wave models,leaky rolling protocol,not comparable,completed-with-audit-caveats,results/paper_protocol.rds

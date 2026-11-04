@@ -1,0 +1,35 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[13:43:28] full JN_Stadium PM2.5 h=744 lightgbm A0 valMAE=12.063 n_val=416 (3 s) 
+[13:43:29] full JN_Stadium PM2.5 h=744 lightgbm A1 valMAE=12.083 n_val=416 (1 s) 
+[13:44:35] full JN_Stadium PM2.5 h=744 lightgbm A2 valMAE=11.832 n_val=416 (66 s) 
+[13:45:17] full JN_Stadium PM2.5 h=744 lightgbm A3 valMAE=12.106 n_val=416 (42 s) 
+[13:45:32] full JN_Stadium PM2.5 h=744 lightgbm B0 valMAE=12.497 n_val=416 (15 s) 
+[13:45:37] full JN_Stadium PM2.5 h=744 lightgbm B1 valMAE=11.812 n_val=416 (5 s) 
+[13:45:53] full JN_Stadium PM2.5 h=744 lightgbm B2 valMAE=12.131 n_val=416 (16 s) 
+[13:46:00] full JN_Stadium PM2.5 h=744 lightgbm B3 valMAE=12.207 n_val=416 (7 s) 
+[13:46:42] full JN_Stadium PM2.5 h=744 lightgbm C1_sep valMAE=10.991 n_val=416 (41 s) 
+[13:46:59] full JN_Stadium PM2.5 h=744 lightgbm C1_sh valMAE=10.968 n_val=416 (17 s) 
+[13:49:12] full JN_Stadium PM2.5 h=744 lightgbm C2_sep valMAE=11.721 n_val=416 (132 s) 
+[13:54:32] full JN_Stadium PM2.5 h=744 lightgbm C2_sh valMAE=10.193 n_val=416 (320 s) 
+[14:04:31] full JN_Stadium PM2.5 h=744 lightgbm C3_sep valMAE=11.645 n_val=416 (599 s) 
+[14:09:29] full JN_Stadium PM2.5 h=744 lightgbm C3_sh valMAE=11.351 n_val=416 (297 s) 
+[14:09:29] full JN_Stadium h=744 done in 1567 s 

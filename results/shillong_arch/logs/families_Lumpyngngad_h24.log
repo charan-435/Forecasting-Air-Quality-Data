@@ -1,0 +1,42 @@
+Warning: package 'plotly' was built under R version 4.5.3
+Warning: package 'shiny' was built under R version 4.5.3
+Warning: package 'DT' was built under R version 4.5.3
+Warning: package 'forecast' was built under R version 4.5.3
+Warning: package 'tseries' was built under R version 4.5.3
+Warning: package 'urca' was built under R version 4.5.3
+Warning: package 'imputeTS' was built under R version 4.5.3
+Warning: package 'zoo' was built under R version 4.5.3
+Warning: package 'xgboost' was built under R version 4.5.3
+Warning: package 'lightgbm' was built under R version 4.5.3
+Warning: package 'waveslim' was built under R version 4.5.3
+Warning: package 'multitaper' was built under R version 4.5.3
+Warning: package 'future' was built under R version 4.5.3
+Warning: package 'future.apply' was built under R version 4.5.3
+Warning: package 'furrr' was built under R version 4.5.3
+Warning: package 'arrow' was built under R version 4.5.3
+Warning: package 'EMD' was built under R version 4.5.3
+Warning: package 'fields' was built under R version 4.5.3
+Warning: package 'spam' was built under R version 4.5.3
+Warning: package 'locfit' was built under R version 4.5.3
+[14:24:03] Lumpyngngad stage-2 shortlist: A0, B0, A3, C3_sep 
+[14:24:17] families Lumpyngngad PM2.5 h=24 xgboost A0 valMAE=7.869 n_val=1241 (10 s) 
+[14:24:47] families Lumpyngngad PM2.5 h=24 xgboost B0 valMAE=8.277 n_val=1241 (29 s) 
+[14:25:00] families Lumpyngngad PM2.5 h=24 xgboost A3 valMAE=7.332 n_val=1241 (13 s) 
+[14:31:44] families Lumpyngngad PM2.5 h=24 xgboost C3_sep valMAE=7.938 n_val=1241 (403 s) 
+[14:32:21] families Lumpyngngad PM2.5 h=24 catboost A0 valMAE=7.830 n_val=1241 (37 s) 
+[14:34:26] families Lumpyngngad PM2.5 h=24 catboost B0 valMAE=8.302 n_val=1241 (124 s) 
+[14:35:40] families Lumpyngngad PM2.5 h=24 catboost A3 valMAE=7.251 n_val=1241 (74 s) 
+[14:53:05] families Lumpyngngad PM2.5 h=24 catboost C3_sep valMAE=7.590 n_val=1241 (1045 s) 
+[14:53:05] families Lumpyngngad PM2.5 h=24 ridge A0 valMAE=8.723 n_val=1241 (0 s) 
+[14:53:05] families Lumpyngngad PM2.5 h=24 ridge B0 valMAE=9.259 n_val=1241 (0 s) 
+[14:53:05] families Lumpyngngad PM2.5 h=24 ridge A3 valMAE=8.056 n_val=1241 (0 s) 
+[14:53:22] families Lumpyngngad PM2.5 h=24 ridge C3_sep valMAE=8.659 n_val=1241 (16 s) 
+[14:53:22] families Lumpyngngad PM2.5 h=24 lasso A0 valMAE=8.676 n_val=1241 (0 s) 
+[14:53:23] families Lumpyngngad PM2.5 h=24 lasso B0 valMAE=8.576 n_val=1241 (1 s) 
+[14:53:23] families Lumpyngngad PM2.5 h=24 lasso A3 valMAE=7.550 n_val=1241 (0 s) 
+[14:53:44] families Lumpyngngad PM2.5 h=24 lasso C3_sep valMAE=7.436 n_val=1241 (21 s) 
+[14:53:44] families Lumpyngngad PM2.5 h=24 elasticnet A0 valMAE=8.622 n_val=1241 (0 s) 
+[14:53:45] families Lumpyngngad PM2.5 h=24 elasticnet B0 valMAE=8.557 n_val=1241 (1 s) 
+[14:53:46] families Lumpyngngad PM2.5 h=24 elasticnet A3 valMAE=7.556 n_val=1241 (0 s) 
+[14:54:37] families Lumpyngngad PM2.5 h=24 elasticnet C3_sep valMAE=7.452 n_val=1241 (51 s) 
+[14:54:37] families Lumpyngngad h=24 done in 1847 s 
