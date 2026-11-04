@@ -146,16 +146,19 @@ for (job in jobs) {
   if (use_scale) {
     sc <- minmax_fit(split$y_train)
     ytr <- minmax_apply(split$y_train, sc)
+    yte <- minmax_apply(split$y_test, sc)
   } else {
     sc <- NULL
     ytr <- split$y_train
+    yte <- split$y_test
   }
-  message(sprintf("[%s] %s %s %s h=%s",
+  message(sprintf("[%s] %s %s %s h=%s (rolled 1-step)",
                   format(Sys.time(), "%H:%M:%S"), job$sensor, job$pollutant,
                   job$method, job$horizon))
   t0 <- proc.time()[3]
   out <- tryCatch(
-    fit_and_forecast(job$method, ytr, h = job$h, params = params, J = J_use),
+    fit_and_forecast(job$method, ytr, h = job$h, params = params, J = J_use,
+                     y_future = yte),
     error = function(e) {
       message("  ERROR: ", e$message)
       NULL
@@ -316,15 +319,17 @@ for (job in filter_jobs) {
   split  <- chrono_split(s$y, s$times, job$h)
   sc     <- minmax_fit(split$y_train)
   ytr    <- minmax_apply(split$y_train, sc)
+  yte    <- minmax_apply(split$y_test, sc)
 
-  message(sprintf("[%s] FILTER %s | %s %s %s h=%s",
+  message(sprintf("[%s] FILTER %s | %s %s %s h=%s (rolled)",
                   format(Sys.time(), "%H:%M:%S"),
                   toupper(job$filter),
                   job$sensor, job$pollutant, job$method, job$horizon))
   t0  <- proc.time()[3]
   out <- tryCatch(
     fit_and_forecast(job$method, ytr, h = job$h,
-                     params = params, J = J_use, filter = job$filter),
+                     params = params, J = J_use, filter = job$filter,
+                     y_future = yte),
     error = function(e) { message("  ERROR: ", e$message); NULL }
   )
   elapsed <- proc.time()[3] - t0

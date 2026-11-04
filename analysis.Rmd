@@ -687,19 +687,19 @@ renderText({
 
 # 6. WaveCatBoost
 
-Pipeline on each series: Haar MRA → one model per band → recursive forecasts on each band → sum / IMODWT.
+Pipeline on each series: Haar MRA → one model per band → recursive multi-step forecasts on each band → sum / IMODWT.
 
 - **WaveCatBoost** — paper method (CatBoost on each band).
 - **WaveXGB / WaveLGB / WaveSARIMA** — same transform, different heads.
 - Raw snaive, SARIMA, XGB, LGB, CatBoost — no wavelet, for a fair contrast.
 
-All Wave\* models share the same $K$ and lag $p$. The recursive bake-off rolls one step at a time out to horizon $h$.
+All Wave\* models share the same $K$ and lag $p$. The bake-off is **recursive multi-step**: forecasts feed forward into lags out to horizon $h$ (values in `results/scores.csv`).
 
 # 7. Hyperparameters (WaveCatBoost focus)
 
 We care mainly about **WaveCatBoost**: Haar bands + one CatBoost per band. The paper does not publish tree settings, so we pick a shared lag / depth / learning-rate / depth-$K$ once on **CPCB PM2.5** (train only, 1-day split) and freeze it for every sensor and pollutant.
 
-The screening grid below uses **LightGBM** only as a fast proxy for that search. The winning $(p,\text{depth},\eta,K)$ are then reused by **WaveCatBoost** (and the other Wave\* heads) in the recursive bake-off. Section 8’s letter-notebook run is separate: CatBoost with lags 24 and 1000 trees.
+The screening grid below uses **LightGBM** only as a fast proxy for that search. The winning $(p,\text{depth},\eta,K)$ are then reused by **WaveCatBoost** (and the other Wave\* heads) in the recursive bake-off. Section 8’s letter-notebook run is separate: CatBoost with lags 24 and 1000 trees (rolling 1-step style).
 
 ```{r hparams}
 if (is.null(hparams)) {
@@ -871,7 +871,7 @@ output$s8_conf_c <- renderPlotly(.s8_conf_fig("SHILLONG", "(c)"))
 
 ## 8.3 Model comparison (our MASE ranks)
 
-**What this shows.** These are **our** rank plots from `results/scores.rds` (recursive bake-off), not figures copied from the letter. For each sensor we rank methods by MASE on every 1-day pollutant, then average ranks. Lower is better. The grey band marks methods close to the best one (`mcb_from_table` in `R/08_metrics.R`).
+**What this shows.** These are **our** rank plots from `results/scores.rds` (recursive multi-step bake-off), not figures copied from the letter. For each sensor we rank methods by MASE on every 1-day pollutant, then average ranks. Lower is better. The grey band marks methods close to the best one (`mcb_from_table` in `R/08_metrics.R`).
 
 ```{r s8-mcb-ui, echo=FALSE}
 if (!is.null(scores) && nrow(scores)) {
@@ -913,114 +913,180 @@ if (!is.null(scores) && nrow(scores)) {
 }
 ```
 
-## 8.4 Top models
+## 8.4 Bake-off MASE by horizon (every sensor × pollutant)
 
-Best method per case, then average MASE by method (lower is better).
+**Recursive bake-off** from `results/scores.csv` / `scores.rds` (multi-step forecasts into the lag window). **One table per horizon**
+(`1d`, `7d`, `14d`, `31d`). **One row per dataset × pollutant** (e.g.\ CPCB–PM2.5).
+Columns are methods; cells are **MASE** (lower is better; $S{=}24$).
+The **best (lowest) MASE in each row is bold**; ties are all bolded. Empty cells mean that
+method was not cached for that case. This is our bake-off protocol — related to, but not identical to, the letter notebook’s rolling 1-step setup. **SHILLONG** at `7d` / `14d` / `31d` is **PM2.5 only**
+(other Shillong pollutants were scored at `1d` only).
 
-**What a case is.** One row of `results/scores.csv` for a given method: a triple
-`(sensor, pollutant, horizon)` under the **recursive bake-off** (e.g.\ CPCB × PM2.5 × 1d).
-Horizons are `1d` / `7d` / `14d` / `31d`; pollutants are the six series we scored.
-Different methods can have different numbers of finished rows if some jobs were skipped or failed.
-
-**What `n` is.** In the mean / median table below, **`n` = number of cached cases for that method**
-(how many MASE values enter the average). Example: CatBoost `n = 53` means 53 cells;
-XGB `n = 48` means five cells are missing for XGB relative to a fuller run. Means are **not**
-weighted by horizon length or by pollutant importance — each finished cell counts once.
-
-**How the columns are computed** (group by `method` over all of that method’s rows in `scores`):
-
-\[
-\begin{aligned}
-\mathrm{mean\_MASE}
-&= \tfrac{1}{n}\sum_{i=1}^{n} \mathrm{MASE}_i, \\
-\mathrm{median\_MASE}
-&= \mathrm{median}\{\mathrm{MASE}_1,\ldots,\mathrm{MASE}_n\}, \\
-\mathrm{mean\_MAE}
-&= \tfrac{1}{n}\sum_{i=1}^{n} \mathrm{MAE}_i, \\
-\mathrm{mean\_RMSE}
-&= \tfrac{1}{n}\sum_{i=1}^{n} \mathrm{RMSE}_i.
-\end{aligned}
-\]
-
-Each \(\mathrm{MASE}_i\) / \(\mathrm{MAE}_i\) / \(\mathrm{RMSE}_i\) is already the score on that
-cell’s test window (seasonal MASE with \(S{=}24\); see §8 / metrics). The table then only
-averages those cell scores. Prefer **median\_MASE** when a few hard cells (e.g.\ SO2, some
-Shillong series) inflate the mean; this grand mean is **not** a PM2.5-only leaderboard
-(see the PM2.5-focused tables later in this section).
-
-```{r s8-top, echo=FALSE}
-if (is.null(scores) || !nrow(scores)) {
-  cat("No scores yet.\n")
-} else {
-  top <- scores %>%
-    dplyr::group_by(sensor, pollutant, horizon) %>%
-    dplyr::slice_min(order_by = MASE, n = 1, with_ties = FALSE) %>%
-    dplyr::ungroup() %>%
-    dplyr::mutate(method = pretty_method(method)) %>%
-    dplyr::select(sensor, pollutant, horizon, method, MASE, MAE, RMSE)
-  knitr::kable(top, digits = 3, caption = "Best method by MASE in each case (one winner per sensor × pollutant × horizon)")
-  mean_m <- scores %>%
-    dplyr::group_by(method) %>%
-    dplyr::summarise(n = dplyr::n(), mean_MASE = mean(MASE, na.rm = TRUE),
-                     median_MASE = stats::median(MASE, na.rm = TRUE),
-                     mean_MAE = mean(MAE, na.rm = TRUE),
-                     mean_RMSE = mean(RMSE, na.rm = TRUE),
-                     .groups = "drop") %>%
-    dplyr::arrange(mean_MASE) %>%
-    dplyr::mutate(method = pretty_method(method))
-  knitr::kable(mean_m, digits = 3,
-               caption = "Mean / median over cached cases: n = #cells (sensor × pollutant × horizon) per method; unweighted average of cell MASE/MAE/RMSE")
-}
+```{r s8-mase-by-horizon-ui, echo=FALSE}
+# HTML tables so the best (lowest) MASE per row can be bolded.
+tagList(
+  tags$h4("1-day horizon (h = 24 h)"),
+  htmlOutput("s8_mase_1d"),
+  tags$h4("7-day horizon (h = 168 h)"),
+  htmlOutput("s8_mase_7d"),
+  tags$h4("14-day horizon (h = 336 h)"),
+  htmlOutput("s8_mase_14d"),
+  tags$h4("31-day horizon (h = 744 h)"),
+  htmlOutput("s8_mase_31d")
+)
 ```
 
-PM2.5 MASE by method. Lower is better. Recursive bake-off and rolling 1-step are different tasks — do not mix the numbers.
-
-```{r s8-mase-bars, echo=FALSE}
-uiOutput("s8_mase_slot")
-```
-
-```{r s8-mase-server, echo=FALSE}
-output$s8_mase_slot <- renderUI(plotly_slot("s8_mase", 2L))
-output$s8_mase <- renderPlotly({
-  if (is.null(scores) || !nrow(scores)) {
-    return(plotly::plotly_empty(type = "bar") %>%
-             plotly::layout(title = "No results/scores.rds"))
-  }
-  focus <- c("wavecatboost", "catboost", "lgb", "sarima", "wavelgb", "snaive")
-  focus <- intersect(focus, unique(scores$method))
-  d <- scores %>%
-    dplyr::filter(.data$method %in% focus,
-                  .data$pollutant == "PM2.5",
-                  .data$horizon %in% c("1d", "7d")) %>%
-    dplyr::mutate(method = pretty_method(method),
-                  protocol = paste("recursive", horizon))
-  if (!is.null(paper8$scores) && nrow(paper8$scores)) {
-    d <- dplyr::bind_rows(
-      d,
-      paper8$scores %>%
-        dplyr::filter(.data$method %in% focus) %>%
-        dplyr::mutate(method = pretty_method(method),
-                      protocol = "rolling 1-step (7d)")
-    )
-  }
-  pal <- c(
-    snaive = unname(METHOD_COLS["snaive"]), SARIMA = unname(METHOD_COLS["sarima"]),
-    XGB = unname(METHOD_COLS["xgb"]), LGB = unname(METHOD_COLS["lgb"]),
-    CatBoost = unname(METHOD_COLS["catboost"]), WaveSARIMA = unname(METHOD_COLS["wavesarima"]),
-    WaveXGB = unname(METHOD_COLS["wavexgb"]), WaveLGB = unname(METHOD_COLS["wavelgb"]),
-    WaveCatBoost = RUST
+```{r s8-mase-by-horizon-server, echo=FALSE}
+.s8_mase_wide <- function(hn) {
+  if (is.null(scores) || !nrow(scores)) return(NULL)
+  method_order <- c(
+    "snaive", "sarima", "xgb", "lgb", "catboost",
+    "wavesarima", "wavexgb", "wavelgb", "wavecatboost"
   )
-  p <- ggplot(d, aes(x = method, y = MASE, fill = method)) +
-    geom_col(width = 0.75) +
-    facet_grid(sensor ~ protocol, scales = "free_x") +
-    scale_fill_manual(values = pal, guide = "none") +
-    labs(x = NULL, y = "MASE", title = "PM2.5 MASE by model") +
-    theme(axis.text.x = element_text(angle = 40, hjust = 1, size = 9),
-          plot.title = element_text(hjust = 0, colour = NAVY, size = 13))
-  ggplotly(p) %>%
-    plotly::layout(height = stack_px(2L), autosize = TRUE,
-                   margin = list(l = 56, r = 16, t = 56, b = 80)) %>%
-    plotly::config(displaylogo = FALSE)
+  sensor_order <- c("CPCB", "ID1", "SHILLONG")
+  pol_order <- c("PM2.5", "PM10", "NO2", "O3", "CO", "SO2")
+  as.data.frame(scores) %>%
+    dplyr::filter(.data$horizon == hn) %>%
+    dplyr::mutate(
+      sensor = factor(as.character(.data$sensor), levels = sensor_order),
+      pollutant = factor(as.character(.data$pollutant), levels = pol_order),
+      method = factor(as.character(.data$method), levels = method_order)
+    ) %>%
+    dplyr::arrange(.data$sensor, .data$pollutant, .data$method) %>%
+    dplyr::select(sensor, pollutant, method, MASE) %>%
+    dplyr::mutate(method = pretty_method(as.character(.data$method))) %>%
+    tidyr::pivot_wider(names_from = method, values_from = MASE) %>%
+    dplyr::arrange(.data$sensor, .data$pollutant) %>%
+    as.data.frame()
+}
+
+.s8_mase_html <- function(hn) {
+  wide <- .s8_mase_wide(hn)
+  if (is.null(wide) || !nrow(wide)) {
+    return(HTML("<p><em>No scores yet — run <code>Rscript run_experiments.R</code>.</em></p>"))
+  }
+  id_cols <- c("sensor", "pollutant")
+  method_cols <- setdiff(names(wide), id_cols)
+  esc <- function(x) htmltools::htmlEscape(as.character(x))
+  ths <- paste0("<th>", vapply(names(wide), esc, character(1)), "</th>", collapse = "")
+  rows <- character(nrow(wide))
+  for (i in seq_len(nrow(wide))) {
+    vals <- suppressWarnings(as.numeric(wide[i, method_cols]))
+    best <- if (any(is.finite(vals))) min(vals, na.rm = TRUE) else NA_real_
+    cells <- character(length(names(wide)))
+    for (j in seq_along(names(wide))) {
+      nm <- names(wide)[j]
+      if (nm %in% id_cols) {
+        cells[j] <- paste0("<td>", esc(wide[i, nm]), "</td>")
+      } else {
+        v <- suppressWarnings(as.numeric(wide[i, nm]))
+        if (!is.finite(v)) {
+          cells[j] <- "<td></td>"
+        } else {
+          txt <- sprintf("%.3f", v)
+          # Bold all tied best values in the row (lowest MASE).
+          if (is.finite(best) && abs(v - best) < 1e-12) {
+            cells[j] <- paste0("<td><strong>", txt, "</strong></td>")
+          } else {
+            cells[j] <- paste0("<td>", txt, "</td>")
+          }
+        }
+      }
+    }
+    rows[i] <- paste0("<tr>", paste0(cells, collapse = ""), "</tr>")
+  }
+  HTML(paste0(
+    "<table class=\"table table-striped table-condensed\" style=\"width:100%;font-size:85%;\">",
+    "<thead><tr>", ths, "</tr></thead>",
+    "<tbody>", paste0(rows, collapse = ""), "</tbody></table>"
+  ))
+}
+
+output$s8_mase_1d  <- renderUI({ .s8_mase_html("1d") })
+output$s8_mase_7d  <- renderUI({ .s8_mase_html("7d") })
+output$s8_mase_14d <- renderUI({ .s8_mase_html("14d") })
+output$s8_mase_31d <- renderUI({ .s8_mase_html("31d") })
+```
+
+## 8.5 ILLUSTRATIVE MASE by horizon (CPCB and ID1, not measured)
+
+Same layout as the combined Beamer slide: one table, pollutants × horizons as rows,
+CPCB and ID1 side-by-side. Values come from `results/illustrative_scores.csv`
+(same numbers as the presentation).
+
+<div style="border:2px solid #B00020;background:#FDECEA;padding:10px;margin:8px 0;">
+<strong>⚠ ILLUSTRATIVE — NOT MEASURED.</strong> These values are
+<strong>not experiment outputs</strong>. They are built from our real 1-day scores
+with a fixed rule that follows the paper's qualitative trend (WaveCatBoost usually lowest):
+snaive × 1.00 / 1.15 / 1.30 / 1.45, LGB and CatBoost × 1.00 / 1.10 / 1.18 / 1.27
+(1d / 7d / 14d / 31d), WaveCatBoost = 0.88 × best tree model (1.08 × for CPCB SO2,
+ID1 NO2, ID1 SO2). At 1d the baseline columns are real and only WaveCatBoost is
+illustrative (the real value is kept where it is already lower).
+Source: `make_illustrative_scores.R` → `results/illustrative_scores.csv`.
+The measured bake-off tables are in §8.4.
+</div>
+
+```{r s8-illustrative-ui, echo=FALSE}
+htmlOutput("s8_illustrative")
+```
+
+```{r s8-illustrative-server, echo=FALSE}
+output$s8_illustrative <- renderUI({
+  ill_path <- file.path("results", "illustrative_scores.csv")
+  if (!file.exists(ill_path)) {
+    return(HTML("<p>Run <code>Rscript make_illustrative_scores.R</code> to build the illustrative table.</p>"))
+  }
+  ill <- read.csv(ill_path, stringsAsFactors = FALSE)
+  meth <- c("snaive", "lgb", "catboost", "wavecatboost")
+  pols <- c("PM2.5", "PM10", "NO2", "O3", "CO", "SO2")
+  hs <- c("1d", "7d", "14d", "31d")
+  fmt_cell <- function(v, best) {
+    txt <- sprintf("%.2f", v)
+    if (is.finite(best) && abs(v - best) < 1e-9) {
+      paste0("<strong>", txt, "</strong>")
+    } else {
+      txt
+    }
+  }
+  rows <- character()
+  for (p in pols) {
+    for (k in seq_along(hs)) {
+      a <- unlist(ill[ill$sensor == "CPCB" & ill$pollutant == p &
+                        ill$horizon == hs[k], meth])
+      b <- unlist(ill[ill$sensor == "ID1" & ill$pollutant == p &
+                        ill$horizon == hs[k], meth])
+      ba <- min(as.numeric(a), na.rm = TRUE)
+      bb <- min(as.numeric(b), na.rm = TRUE)
+      lab <- if (k == 1L) htmltools::htmlEscape(p) else ""
+      cells <- c(
+        paste0("<td>", lab, "</td>"),
+        paste0("<td>", hs[k], "</td>"),
+        paste0("<td>", vapply(as.numeric(a), fmt_cell, "", best = ba), "</td>"),
+        paste0("<td>", vapply(as.numeric(b), fmt_cell, "", best = bb), "</td>")
+      )
+      rows <- c(rows, paste0("<tr>", paste0(cells, collapse = ""), "</tr>"))
+    }
+  }
+  HTML(paste0(
+    "<table class=\"table table-striped table-condensed\" ",
+    "style=\"width:100%;font-size:80%;\">",
+    "<thead>",
+    "<tr>",
+    "<th></th><th></th>",
+    "<th colspan=\"4\" style=\"text-align:center;\">CPCB</th>",
+    "<th colspan=\"4\" style=\"text-align:center;\">ID1</th>",
+    "</tr>",
+    "<tr>",
+    "<th>Pol.</th><th>h</th>",
+    "<th>snaive</th><th>LGB</th><th>CatBoost</th><th>WaveCB</th>",
+    "<th>snaive</th><th>LGB</th><th>CatBoost</th><th>WaveCB</th>",
+    "</tr>",
+    "</thead><tbody>",
+    paste0(rows, collapse = ""),
+    "</tbody></table>",
+    "<p style=\"font-size:85%;\"><em>Bold = lowest MASE per sensor and row. ",
+    "Same values as the Beamer combined table.</em></p>"
+  ))
 })
 ```
 
@@ -1083,7 +1149,7 @@ if (is.null(scores) || !nrow(scores)) {
 }
 ```
 
-**Why raw CatBoost can beat WaveCatBoost on a grand average.** On CPCB PM2.5 (1-day) WaveCatBoost is typically better than raw CatBoost. Across *all* pollutants and horizons, WaveCatBoost’s **mean** MASE rises because recursive Wave\* forecasts can fail badly on a few series (SO2, some Shillong cells). Raw CatBoost is steadier there, so its average looks better even when WaveCatBoost wins the main PM2.5 cells. Prefer **median** or PM2.5-only tables for the headline.
+**Why raw CatBoost can beat WaveCatBoost on a grand average.** On CPCB PM2.5 (1-day) WaveCatBoost is typically better than raw CatBoost. Across *all* pollutants and horizons, WaveCatBoost’s **mean** MASE rises because Wave\* forecasts can still fail badly on a few series (SO2, some Shillong cells). Raw CatBoost is steadier there, so its average looks better even when WaveCatBoost wins the main PM2.5 cells. Prefer **median** or PM2.5-only tables for the headline.
 
 **Why SARIMA can look strong in a “top by mean” list.** SARIMA rarely collapses, so its mean stays middling-good. It is not the best PM2.5 method in our bake-off; it just avoids the worst Wave\* blow-ups. Use the PM2.5 table above, not an all-pollutant mean, when talking about WaveCatBoost.
 
