@@ -60,8 +60,34 @@ decomposition:
   scale: raw                  # -> mra_haar_J5__raw
   # window_h, J, filter, pad are read from config/decomp.yaml at run time.
 
+# Starting point: kaisen's LightGBM screen config (config/decomp.yaml: regression_l1,
+# num_leaves 31, learning_rate 0.05, min_data_in_leaf 50, feature_fraction 0.8, seed 7).
+# The grid spans it; validation picks per architecture (per component for B0/B2).
 lightgbm:
   objective: regression_l1
+  feature_fraction: 0.8
   num_threads: 1
   seed: 7
   deterministic: true
+  max_rounds: 3000
+  early_stopping_rounds: 100
+  grid:
+    num_leaves: [15, 31, 63]
+    learning_rate: [0.03, 0.1]
+    min_data_in_leaf: [20, 50, 100]
+
+architectures:
+  run: [B0, A1, B1, B2, B3]
+  # B2/B3 covariates at the origin only: same_level = the other five pollutants'
+  # component of the target's level (5 features); all_levels = all six components
+  # of each other pollutant (30). Chosen on validation.
+  covariate_sets: [same_level, all_levels]
+  # Shared models (B1, B3): rows weighted by their component's training sd, so the
+  # L1 loss on standardised targets equals the sum of original-unit component errors.
+  shared_weighting: component_sd
+  datasets: [clean, unmasked]   # unmasked = control for research questions 1 and 10
+
+comparison:
+  bootstrap_reps: 2000
+  block_length: 24     # moving-block bootstrap over time-ordered test targets
+  dm_lag: 23           # Newey-West lag h - 1 for the Diebold-Mariano test

@@ -4,8 +4,10 @@
 #
 #   Rscript run_preprocessed_experiment.R phase1   # guard snapshot, audit, cleaned dataset
 #   Rscript run_preprocessed_experiment.R phase2   # decomposition + data tests
+#   Rscript run_preprocessed_experiment.R phase3   # smoke run of B0, A1, B1, B2, B3 + model tests
+#   Rscript run_preprocessed_experiment.R phase4   # full run (clean + unmasked control) + evaluation
 #   Rscript run_preprocessed_experiment.R verify   # protected files unchanged?
-# Single steps: guard | audit | preprocess | decompose | test-data | verify
+# Single steps: guard | audit | preprocess | decompose | test-data | smoke | full | evaluate | verify
 
 options(warn = 1)
 file_arg <- grep("^--file=", commandArgs(trailingOnly = FALSE), value = TRUE)
@@ -26,6 +28,8 @@ set.seed(cfg$seed)
 steps <- switch(args[1],
   phase1 = c("guard", "audit", "preprocess", "verify"),
   phase2 = c("decompose", "test-data", "verify"),
+  phase3 = c("smoke", "verify"),
+  phase4 = c("full", "evaluate", "verify"),
   args)
 
 for (s in steps) {
@@ -50,6 +54,18 @@ for (s in steps) {
       tr <- pe_test_data(cfg)
       print(tr, right = FALSE)
       if (!all(tr$pass)) stop("data tests failed: ", paste(tr$test[!tr$pass], collapse = "; "))
+    },
+    smoke = {
+      sm <- pe_smoke(cfg)
+      print(sm$table[, c("arch", "n_features", "n_fit_train", "n_eval_val", "n_eval_test", "val_MAE", "seconds")])
+      tm <- pe_test_models(cfg, sm)
+      print(tm[, c("rule", "test", "pass")], right = FALSE)
+      if (!all(tm$pass)) stop("model tests failed: ", paste(tm$test[!tm$pass], collapse = "; "))
+    },
+    full = pe_full(cfg),
+    evaluate = {
+      ev <- pe_evaluate(cfg)
+      print(ev$pol[ev$pol$block == "test", ], row.names = FALSE)
     },
     verify = pe_guard_verify(cfg, stage = paste(args, collapse = "_")),
     stop("unknown step ", s))

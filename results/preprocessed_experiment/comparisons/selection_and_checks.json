@@ -1,0 +1,18 @@
+{
+  "best_decomposed_by_validation": "B3",
+  "validation_MAE": {
+    "B0": 7.25715316695313,
+    "B1": 7.14996568535123,
+    "B2": 7.03476758021608,
+    "B3": 6.97205669916861
+  },
+  "reconstruction_check_max_abs": {
+    "clean B0": 7.105427357601e-15,
+    "clean B1": 7.105427357601e-15,
+    "clean B2": 7.105427357601e-15,
+    "clean B3": 7.105427357601e-15
+  },
+  "MASE_scale_train": 4.35601321464537,
+  "n_test": 658,
+  "n_val": 757
+}
