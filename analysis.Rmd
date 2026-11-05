@@ -18,6 +18,7 @@ runtime: shiny
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
                       fig.width = 9, fig.height = 5, dpi = 120)
 source("R/load_all.R")
+source("R/reporting/result_tables.R")
 
 series_path <- file.path(PROC_DIR, "series.rds")
 if (file.exists(series_path)) {
@@ -75,25 +76,6 @@ pretty_method <- function(x) {
     snaive = "snaive", sarima = "SARIMA", xgb = "XGB", lgb = "LGB",
     catboost = "CatBoost", wavesarima = "WaveSARIMA", wavexgb = "WaveXGB",
     wavelgb = "WaveLGB", wavecatboost = "WaveCatBoost", .default = x)
-}
-
-plot_mcb_gg <- function(mcb, title) {
-  mcb <- mcb %>%
-    dplyr::mutate(
-      label = paste0(pretty_method(model), " \u2013 ", sprintf("%.2f", mean_rank)),
-      label = factor(label, levels = label),
-      inside = mean_rank <= min(mean_rank) + critical_distance[1] / 2
-    )
-  cd_top <- min(mcb$mean_rank) + mcb$critical_distance[1] / 2
-  ggplot(mcb, aes(x = label, y = mean_rank)) +
-    annotate("rect", xmin = -Inf, xmax = Inf, ymin = 0, ymax = cd_top,
-             fill = "grey75", alpha = 0.45) +
-    geom_linerange(aes(ymin = lo, ymax = hi), colour = "#4C6A8A", linewidth = 0.7) +
-    geom_point(aes(colour = inside), size = 2.6) +
-    scale_colour_manual(values = c(`TRUE` = RUST, `FALSE` = NAVY), guide = "none") +
-    labs(x = NULL, y = "Mean rank (lower is better)", title = title) +
-    theme(axis.text.x = element_text(angle = 42, hjust = 1, size = 9),
-          plot.title = element_text(hjust = 0, colour = NAVY, size = 13))
 }
 
 panel_h <- function() 140L
@@ -704,18 +686,18 @@ We care mainly about **WaveCatBoost**: Haar bands + one CatBoost per band. The p
 
 The screening grid below uses **LightGBM** only as a fast proxy for that search. The winning $(p,\text{depth},\eta,K)$ are then reused by **WaveCatBoost** (and the other Wave\* heads) in the recursive bake-off. Section 8’s letter-notebook run is separate: CatBoost with lags 24 and 1000 trees (rolling 1-step style).
 
-```{r hparams}
+```{r hparams, results="asis"}
 if (is.null(hparams)) {
   cat("No results/paper/hparams.rds yet. Run scripts/experiments/run_experiments.R from the project root.\n")
 } else {
   cat(hparams$reason, "\n")
   if (!is.null(hparams$grid_lgb)) {
-    knitr::kable(head(hparams$grid_lgb, 8), digits = 3,
-                 caption = "Screening grid (LightGBM proxy on train) — settings reused by WaveCatBoost")
+    print(best_kable(head(hparams$grid_lgb, 8), columns = "val_MASE", digits = 3,
+                 caption = "Screening grid (LightGBM proxy on train) — settings reused by WaveCatBoost"))
   }
   if (!is.null(hparams$grid_wave)) {
-    knitr::kable(hparams$grid_wave, digits = 3,
-                 caption = "Wave depth K grid at the winning lag / depth / eta")
+    print(best_kable(hparams$grid_wave, columns = "val_MASE", digits = 3,
+                 caption = "Wave depth K grid at the winning lag / depth / eta"))
   }
 }
 ```
@@ -897,51 +879,7 @@ output$s8_conf_b <- renderPlotly(.s8_conf_fig("ID1", "(b)"))
 output$s8_conf_c <- renderPlotly(.s8_conf_fig("SHILLONG", "(c)"))
 ```
 
-## 8.3 Model comparison (our MASE ranks)
-
-**What this shows.** These are **our** rank plots from `results/paper/scores.rds` (recursive multi-step bake-off), not figures copied from the letter. For each sensor we rank methods by MASE on every 1-day pollutant, then average ranks. Lower is better. The grey band marks methods close to the best one (`mcb_from_table` in `R/core/08_metrics.R`).
-
-```{r s8-mcb-ui, echo=FALSE}
-if (!is.null(scores) && nrow(scores)) {
-  shiny::fluidRow(
-    shiny::column(4, shiny::plotOutput("s8_mcb_cpcb", height = "400px")),
-    shiny::column(4, shiny::plotOutput("s8_mcb_id1", height = "400px")),
-    shiny::column(4, shiny::plotOutput("s8_mcb_shillong", height = "400px"))
-  )
-}
-```
-
-```{r s8-mcb-server, echo=FALSE}
-if (!is.null(scores) && nrow(scores)) {
-  mcb_sensor <- function(s) {
-    d <- dplyr::filter(scores, .data$sensor == s, .data$horizon == "1d")
-    if (nrow(d) < 4) return(NULL)
-    tryCatch(mcb_from_table(d, case_cols = "pollutant"), error = function(e) NULL)
-  }
-  output$s8_mcb_cpcb <- renderPlot({
-    m <- mcb_sensor("CPCB")
-    if (is.null(m)) return(invisible())
-    print(plot_mcb_gg(m, "(a) Our ranks — CPCB, 1-day MASE"))
-  })
-  output$s8_mcb_id1 <- renderPlot({
-    m <- mcb_sensor("ID1")
-    if (is.null(m)) return(invisible())
-    print(plot_mcb_gg(m, "(b) Our ranks — ID1, 1-day MASE"))
-  })
-  output$s8_mcb_shillong <- renderPlot({
-    m <- mcb_sensor("SHILLONG")
-    if (is.null(m)) {
-      plot.new()
-      title("(c) Our ranks — SHILLONG, 1-day MASE", col.main = NAVY)
-      mtext("No 1-day scores yet. Run Rscript scripts/experiments/run_new_dataset.R")
-      return(invisible())
-    }
-    print(plot_mcb_gg(m, "(c) Our ranks — SHILLONG, 1-day MASE"))
-  })
-}
-```
-
-## 8.4 Bake-off MASE by horizon (every sensor × pollutant)
+## 8.3 Bake-off MASE by horizon (every sensor × pollutant)
 
 
 ```{r s8-illustrative-ui, echo=FALSE}
@@ -1020,7 +958,7 @@ $$
 
 We focus on **PM2.5** (the main target). The chart and table compare recorded 1-day MASE for CPCB and ID1 using the same five methods as the presentation.
 
-```{r scores-pm25-bars, echo=FALSE, fig.width=8, fig.height=4.2}
+```{r scores-pm25-bars, echo=FALSE, fig.width=8, fig.height=4.2, results="asis"}
 score_path <- file.path("results", "paper", "scores.csv")
 if (!file.exists(score_path)) {
   cat("Run Rscript scripts/experiments/run_experiments.R to generate results/paper/scores.csv.")
@@ -1050,11 +988,11 @@ if (!file.exists(score_path)) {
     dplyr::select(Model = model, sensor, MASE) %>%
     dplyr::arrange(.data$Model, .data$sensor) %>%
     tidyr::pivot_wider(names_from = sensor, values_from = MASE)
-  knitr::kable(comparison_table, digits = 2, caption = "Recorded 1-day PM2.5 MASE")
+  print(best_kable(comparison_table, columns = c("CPCB", "ID1"), digits = 2, caption = "Recorded 1-day PM2.5 MASE"))
 }
 ```
 
-```{r scores-pm25}
+```{r scores-pm25, results="asis"}
 if (is.null(scores) || !nrow(scores)) {
   cat("No results/paper/scores.rds yet. Run Rscript scripts/experiments/run_experiments.R from the project root.\n")
 } else {
@@ -1074,16 +1012,16 @@ if (is.null(scores) || !nrow(scores)) {
     ) %>%
     dplyr::arrange(median_MASE) %>%
     dplyr::mutate(method = pretty_method(method))
-  knitr::kable(sum_tbl, digits = 3,
-               caption = "PM2.5 only — sorted by median MASE (recursive bake-off)")
+  print(best_kable(sum_tbl, columns = c("mean_MASE", "median_MASE", "mean_MAE"), digits = 3,
+               caption = "PM2.5 only — sorted by median MASE (recursive bake-off)"))
 
   wide1d <- s_pm %>%
     dplyr::filter(.data$horizon == "1d") %>%
     dplyr::select(sensor, method, MASE) %>%
     dplyr::mutate(method = pretty_method(method)) %>%
     tidyr::pivot_wider(names_from = method, values_from = MASE)
-  knitr::kable(wide1d, digits = 3,
-               caption = "PM2.5, 1-day MASE by sensor (lower is better)")
+  print(best_kable(wide1d, columns = setdiff(names(wide1d), "sensor"), by_row = TRUE, digits = 3,
+               caption = "PM2.5, 1-day MASE by sensor (lower is better)"))
 
   mcb_pm <- tryCatch(
     mcb_from_table(s_pm %>% dplyr::filter(.data$horizon == "1d"),
@@ -1092,11 +1030,9 @@ if (is.null(scores) || !nrow(scores)) {
   )
   if (!is.null(mcb_pm)) {
     mcb_pm <- mcb_pm %>% dplyr::mutate(model = pretty_method(model))
-    knitr::kable(mcb_pm, digits = 3,
-                 caption = "Our 1-day PM2.5 ranks (from scores.rds)")
-    renderPlot({
-      print(plot_mcb_gg(mcb_pm, "Our ranks — PM2.5, 1-day MASE"))
-    }, height = function() max(420L, round(panel_h() * 2.8)))
+    print(best_kable(mcb_pm, columns = "mean_rank", digits = 3,
+                 caption = "Our 1-day PM2.5 ranks (from scores.rds)"))
+
   }
 }
 ```
@@ -1117,7 +1053,7 @@ Fourier splits the spectrum into octave bands that match the Haar layout ($J = K
 
 Unlike MODWT, a global FFT mixes events across the whole series — there is no local $D_{1,t}$ tied only to time $t$.
 
-```{r fourier-scores}
+```{r fourier-scores, results="asis"}
 fs <- ext_scores
 if (is.null(fs) || !nrow(fs)) fs <- filter_scores
 if (is.null(fs) || !nrow(fs)) {
@@ -1137,8 +1073,8 @@ if (is.null(fs) || !nrow(fs)) {
   if (!nrow(sub)) {
     cat("Fourier rows are not in the cache yet. Run scripts/experiments/run_extensions.R.\n")
   } else {
-    knitr::kable(sub, digits = 3,
-                 caption = "WaveLGB, 1-day: Haar MODWT vs Fourier bands")
+    print(best_kable(sub, columns = c("MASE", "MAE", "RMSE"), groups = c("sensor", "pollutant"), digits = 3,
+                 caption = "WaveLGB, 1-day: Haar MODWT vs Fourier bands"))
   }
 }
 ```
@@ -1229,7 +1165,7 @@ if (is.null(sp_emd) || !requireNamespace("EMD", quietly = TRUE)) {
 }
 ```
 
-```{r emd-scores}
+```{r emd-scores, results="asis"}
 fs <- ext_scores
 if (is.null(fs) || !nrow(fs)) {
   cat("No extension scores yet. Run Rscript scripts/experiments/run_extensions.R\n")
@@ -1243,13 +1179,13 @@ if (is.null(fs) || !nrow(fs)) {
   if (!nrow(sub) || !any(sub$filter == "emd")) {
     cat("EMD rows are not in the cache yet. Run scripts/experiments/run_extensions.R (needs EMD package).\n")
   } else {
-    knitr::kable(sub, digits = 3,
-                 caption = "WaveLGB, 1-day PM2.5: Haar MODWT vs Fourier vs EMD")
+    print(best_kable(sub, columns = c("MASE", "MAE", "RMSE"), groups = c("sensor", "pollutant"), digits = 3,
+                 caption = "WaveLGB, 1-day PM2.5: Haar MODWT vs Fourier vs EMD"))
     wide <- sub %>%
       dplyr::select(sensor, filter, MASE) %>%
       tidyr::pivot_wider(names_from = filter, values_from = MASE)
-    knitr::kable(wide, digits = 3,
-                 caption = "Same cells, MASE side-by-side (lower is better)")
+    print(best_kable(wide, columns = setdiff(names(wide), "sensor"), by_row = TRUE, digits = 3,
+                 caption = "Same cells, MASE side-by-side (lower is better)"))
   }
 }
 ```
@@ -1283,8 +1219,8 @@ if (!is.null(fs) && nrow(fs) && any(fs$filter == "emd")) {
 | Locality | Scale $j$ tied to lag $2^{j-1}$ in the pyramid | Local period can change over time inside one IMF |
 | Channel count | Exactly $J$ details + 1 smooth | $M$ IMFs vary; we **fold** into $J{+}1$ slots |
 | Leakage control | Decompose train only; periodic boundary | Same train-only rule; `boundary="periodic"` |
-| CPCB PM2.5 1d MASE (WaveLGB) | **1.031** | **7.460** |
-| ID1 PM2.5 1d MASE (WaveLGB) | **0.360** | **0.616** |
+| CPCB PM2.5 1d MASE (WaveLGB) | **1.031** | 7.460 |
+| ID1 PM2.5 1d MASE (WaveLGB) | **0.360** | 0.616 |
 
 **Conclusions.** (1) Under a matched WaveLGB head, **Haar MODWT beats EMD** on both scored PM2.5 series; the CPCB gap is large. (2) EMD’s adaptivity does not help recursive band forecasting here: unstable IMF counts, mode mixing, and folding slow IMFs into $S_J$ hurt more than they help. (3) Fourier (global octave FFT) also loses to Haar, but far less dramatically than EMD — so the win is specifically for **local multiscale wavelets**, not “any band split.” (4) Keep EMD out of the headline bake-off; treat it as a negative control that justifies sticking with Haar.
 
@@ -1292,7 +1228,7 @@ if (!is.null(fs) && nrow(fs) && any(fs$filter == "emd")) {
 
 Haar has 2 taps; D4 has 4; LA8 has 8. Reconstruction is still $Y_t = \sum_k D_{k,t} + S_{K,t}$. The table is **WaveCatBoost**, 1-day, all six pollutants on CPCB and ID1 (`results/filter_scores` from `scripts/experiments/run_filter_ablation_catboost.R`). The IITG deck Extensions section shows the same 12-cell table.
 
-```{r filter-scores}
+```{r filter-scores, results="asis"}
 fs <- filter_scores
 if (is.null(fs) || !nrow(fs)) fs <- ext_scores
 if (is.null(fs) || !nrow(fs)) {
@@ -1308,16 +1244,16 @@ if (is.null(fs) || !nrow(fs)) {
     dplyr::select(sensor, pollutant, filter, MASE) %>%
     tidyr::pivot_wider(names_from = filter, values_from = MASE) %>%
     dplyr::arrange(sensor, pollutant)
-  knitr::kable(fw, digits = 3,
+  print(best_kable(fw, columns = setdiff(names(fw), c("sensor", "pollutant")), by_row = TRUE, digits = 3,
                caption = paste0(
                  if (identical(prefer, "wavecatboost")) "WaveCatBoost" else "WaveLGB",
-                 " 1-day MASE by filter — all pollutants (lower is better)"))
+                 " 1-day MASE by filter — all pollutants (lower is better)")))
   winners <- sub %>%
     dplyr::group_by(sensor, pollutant) %>%
     dplyr::slice_min(order_by = MASE, n = 1, with_ties = FALSE) %>%
     dplyr::ungroup() %>%
     dplyr::count(filter, name = "n_best")
-  knitr::kable(winners, caption = "How often each filter has the lowest MASE")
+  print(best_kable(winners, columns = "n_best", maximize = "n_best", digits = 0, caption = "How often each filter has the lowest MASE"))
 }
 ```
 
@@ -1389,6 +1325,47 @@ if (!is.null(fs) && nrow(fs) && "wavecatboost" %in% fs$method) {
 }
 ```
 
+## 10.4 Shillong model and architecture comparisons
+
+These plots use the saved PM2.5 test results for Lumpyngngad. Errors are measured in ug/m3. The boosting comparison uses the same four candidate designs for each model and selects each design using validation MAE before showing its test MAE.
+
+```{r shillong-plots-setup, include=FALSE}
+source("R/reporting/shillong_plots.R")
+shillong_figures <- make_shillong_extension_plots()
+```
+
+### Inter-boosting model comparison
+
+```{r shillong-boosting-comparison, fig.width=10, fig.height=5}
+shillong_figures$boosting
+```
+
+### Architecture errors relative to A0
+
+```{r shillong-architecture-ratios, fig.width=11, fig.height=8}
+shillong_figures$all_architectures
+```
+
+### Decomposed PM2.5 designs relative to B0
+
+```{r shillong-band-ratios, fig.width=11, fig.height=5}
+shillong_figures$band_models
+```
+
+### Cross-band designs relative to C1_sh
+
+```{r shillong-cross-band-ratios, fig.width=11, fig.height=6}
+shillong_figures$cross_band
+```
+
+### Architecture comparison
+
+This chart compares the 14 LightGBM input architectures by mean test MAE across the four horizons.
+
+```{r shillong-architecture-comparison, fig.width=10, fig.height=5}
+shillong_figures$architecture
+```
+
 <style>
 .experiment-qna .qna-table {
   overflow-x: auto;
@@ -1420,7 +1397,7 @@ if (!is.null(fs) && nrow(fs) && "wavecatboost" %in% fs$method) {
 
 ::: {.experiment-qna}
 
-## 10.4 What we learned from the extension experiments
+## 10.5 What we learned from the extension experiments
 
 We used three sets of experiments to study forecasting at Lumpyngngad in Shillong: the 14-design comparison, a second study of forecasting strategies, and the short-horizon notebook. We also include the cleaned CPCB experiment in a separate subsection.
 
@@ -1508,7 +1485,7 @@ We compared A2, which uses three pollutants, with A0, which uses PM2.5 alone.
 | Comparison | 24 h | 168 h | 336 h | 744 h |
 | :--- | :---: | :---: | :---: | :---: |
 | Ratio | 0.93\* | 0.70\* | 0.73\* | 0.87\* |
-| MAE, A2 vs A0 | 9.11 vs 9.84 | 10.94 vs 15.64 | 12.29 vs 16.82 | 11.42 vs 13.10 |
+| MAE, A2 vs A0 | **9.11** vs 9.84 | **10.94** vs 15.64 | **12.29** vs 16.82 | **11.42** vs 13.10 |
 
 :::
 
@@ -1531,8 +1508,8 @@ Adding the other pollutants' bands to the decomposed design (C2_sep vs C1_sep) g
 
 | Pair | 24 h | 168 h | 336 h | 744 h |
 | :--- | :---: | :---: | :---: | :---: |
-| B1 vs B0 (6–7 inputs per band) | 1.01 | 0.98 | 0.94 | 0.98 |
-| C1_sh vs C1_sep (144) | 1.04 | 0.88\* | 0.91\* | 1.02 |
+| B1 vs B0 (6–7 inputs per band) | **1.01** | 0.98 | 0.94 | **0.98** |
+| C1_sh vs C1_sep (144) | 1.04 | **0.88**\* | **0.91**\* | 1.02 |
 | C2_sh vs C2_sep (432) | 1.58\* | 1.33\* | 1.10 | 1.15\* |
 | C3_sh vs C3_sep (439) | 1.57\* | 1.25\* | 1.12 | 1.12\* |
 
@@ -1554,10 +1531,10 @@ We compared C1_sep with B0 to test whether each band benefits from the other PM2
 
 | Horizon | Best model | Persistence | Hour-of-day climatology |
 | :--- | :---: | :---: | :---: |
-| 24 h | 8.78 (A3, lasso) | 10.03 (−12%) | 16.76 (−48%) |
-| 168 h | 9.95 (A3, lasso) | 13.28 (−25%) | 18.32 (−46%) |
-| 336 h | 12.29 (A2, LightGBM) | 15.70 (−22%) | 16.61 (−26%) |
-| 744 h | 11.21 (A3, CatBoost) | 14.65 (−23%) | 18.94 (−41%) |
+| 24 h | **8.78** (A3, lasso) | 10.03 (−12%) | 16.76 (−48%) |
+| 168 h | **9.95** (A3, lasso) | 13.28 (−25%) | 18.32 (−46%) |
+| 336 h | **12.29** (A2, LightGBM) | 15.70 (−22%) | 16.61 (−26%) |
+| 744 h | **11.21** (A3, CatBoost) | 14.65 (−23%) | 18.94 (−41%) |
 
 :::
 
@@ -1717,7 +1694,7 @@ The table compares test MAE for the two saved runs.
 
 | Reference | Validation MAE | Test MAE |
 | :--- | :---: | :---: |
-| Five designs | 6.97–7.35 | 7.42–8.06 |
+| Five designs | **6.97–7.35** | 7.42–8.06 |
 | Persistence | 7.97–8.05 | 8.12–8.13 |
 | Training mean | 9.53–9.84 | 7.38–7.39 |
 | Hour-of-day climatology | 9.44–9.84 | **7.05** |

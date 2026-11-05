@@ -13,6 +13,7 @@ R/
   preprocessing/                Hourly aggregation, quality checks and imputation
   decomposition/                Causal decomposition and stored components
   preprocessed_experiment/       Cleaned CPCB experiment
+  reporting/                    Saved-result plots and table formatting
   load_all.R                    Shared R loader
 scripts/
   experiments/                  Forecasting experiment entry points
@@ -29,7 +30,7 @@ results/
   extensions/                   Filter, Fourier and EMD experiment results
   shillong/                     Direct forecasts and imported architecture evidence
   preprocessed_experiment/      Cleaned CPCB predictions and comparisons
-  illustrative/                 Extrapolated values for report Section 8.4
+  illustrative/                 Extrapolated values for report Section 8.3
 presentation/                   Current PDF, LaTeX, bibliography and figures
 docs/                           Reference paper and historical audit
 tests/                          Preprocessing, decomposition and cleaned-CPCB checks
@@ -81,7 +82,7 @@ The Q&A's supplied second-stage summaries are recorded explanations and are not 
 
 ### Illustrative values
 
-Section 8.4 reads `results/illustrative/illustrative_scores.csv`. These extrapolated values are labelled illustrative. Recreate them with `Rscript scripts/figures/make_illustrative_scores.R`. Measured scores are in `results/paper/`.
+Section 8.3 reads `results/illustrative/illustrative_scores.csv`. These extrapolated values are labelled illustrative. Recreate them with `Rscript scripts/figures/make_illustrative_scores.R`. Measured scores are in `results/paper/`.
 
 ## Presentation
 
