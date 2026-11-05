@@ -1,0 +1,303 @@
+2026-10-30 22:42:59  === decomp input_hash=78f783c357338683 n_rows=147080 ===
+2026-10-30 22:43:01  workers=8
+2026-10-30 22:43:01  D1 pass coef_haar_J10__raw
+2026-10-30 22:43:02  coef_haar_J10__raw projected hours=0 s_per_1k=0
+2026-10-30 22:43:02  wrote coef_haar_J10__raw CPCB PM2.5 rows=8880
+2026-10-30 22:43:02  wrote coef_haar_J10__raw ID1 PM2.5 rows=9505
+2026-10-30 22:43:02  wrote coef_haar_J10__raw CPCB PM10 rows=8880
+2026-10-30 22:43:03  wrote coef_haar_J10__raw ID1 PM10 rows=9505
+2026-10-30 22:43:03  wrote coef_haar_J10__raw CPCB NO2 rows=8880
+2026-10-30 22:43:03  wrote coef_haar_J10__raw ID1 NO2 rows=9505
+2026-10-30 22:43:03  wrote coef_haar_J10__raw CPCB SO2 rows=8880
+2026-10-30 22:43:03  wrote coef_haar_J10__raw ID1 SO2 rows=9505
+2026-10-30 22:43:03  wrote coef_haar_J10__raw CPCB O3 rows=8880
+2026-10-30 22:43:03  wrote coef_haar_J10__raw ID1 O3 rows=9505
+2026-10-30 22:43:03  wrote coef_haar_J10__raw CPCB CO rows=8880
+2026-10-30 22:43:03  wrote coef_haar_J10__raw ID1 CO rows=9505
+2026-10-30 22:43:03  wrote coef_haar_J10__raw CPCB AT rows=8880
+2026-10-30 22:43:04  wrote coef_haar_J10__raw ID1 AT rows=9505
+2026-10-30 22:43:04  wrote coef_haar_J10__raw CPCB RH rows=8880
+2026-10-30 22:43:04  wrote coef_haar_J10__raw ID1 RH rows=9505
+2026-10-30 22:43:04  D1 pass coef_haar_J10__log
+2026-10-30 22:43:05  coef_haar_J10__log projected hours=0 s_per_1k=0.028
+2026-10-30 22:43:05  wrote coef_haar_J10__log CPCB PM2.5 rows=8880
+2026-10-30 22:43:05  wrote coef_haar_J10__log ID1 PM2.5 rows=9505
+2026-10-30 22:43:05  wrote coef_haar_J10__log CPCB PM10 rows=8880
+2026-10-30 22:43:05  wrote coef_haar_J10__log ID1 PM10 rows=9505
+2026-10-30 22:43:05  wrote coef_haar_J10__log CPCB NO2 rows=8880
+2026-10-30 22:43:05  wrote coef_haar_J10__log ID1 NO2 rows=9505
+2026-10-30 22:43:05  wrote coef_haar_J10__log CPCB SO2 rows=8880
+2026-10-30 22:43:05  wrote coef_haar_J10__log ID1 SO2 rows=9505
+2026-10-30 22:43:05  wrote coef_haar_J10__log CPCB O3 rows=8880
+2026-10-30 22:43:06  wrote coef_haar_J10__log ID1 O3 rows=9505
+2026-10-30 22:43:06  wrote coef_haar_J10__log CPCB CO rows=8880
+2026-10-30 22:43:06  wrote coef_haar_J10__log ID1 CO rows=9505
+2026-10-30 22:43:06  D1 pass coef_d4_J9__raw
+2026-10-30 22:43:07  coef_d4_J9__raw projected hours=0 s_per_1k=0.023
+2026-10-30 22:43:07  wrote coef_d4_J9__raw CPCB PM2.5 rows=8880
+2026-10-30 22:43:08  wrote coef_d4_J9__raw ID1 PM2.5 rows=9505
+2026-10-30 22:43:08  wrote coef_d4_J9__raw CPCB PM10 rows=8880
+2026-10-30 22:43:08  wrote coef_d4_J9__raw ID1 PM10 rows=9505
+2026-10-30 22:43:08  wrote coef_d4_J9__raw CPCB NO2 rows=8880
+2026-10-30 22:43:09  wrote coef_d4_J9__raw ID1 NO2 rows=9505
+2026-10-30 22:43:09  wrote coef_d4_J9__raw CPCB SO2 rows=8880
+2026-10-30 22:43:09  wrote coef_d4_J9__raw ID1 SO2 rows=9505
+2026-10-30 22:43:10  wrote coef_d4_J9__raw CPCB O3 rows=8880
+2026-10-30 22:43:10  wrote coef_d4_J9__raw ID1 O3 rows=9505
+2026-10-30 22:43:10  wrote coef_d4_J9__raw CPCB CO rows=8880
+2026-10-30 22:43:10  wrote coef_d4_J9__raw ID1 CO rows=9505
+2026-10-30 22:43:11  wrote coef_d4_J9__raw CPCB AT rows=8880
+2026-10-30 22:43:11  wrote coef_d4_J9__raw ID1 AT rows=9505
+2026-10-30 22:43:11  wrote coef_d4_J9__raw CPCB RH rows=8880
+2026-10-30 22:43:11  wrote coef_d4_J9__raw ID1 RH rows=9505
+2026-10-30 22:43:12  D1 pass coef_d4_J9__log
+2026-10-30 22:43:12  coef_d4_J9__log projected hours=0 s_per_1k=0.021
+2026-10-30 22:43:12  wrote coef_d4_J9__log CPCB PM2.5 rows=8880
+2026-10-30 22:43:13  wrote coef_d4_J9__log ID1 PM2.5 rows=9505
+2026-10-30 22:43:13  wrote coef_d4_J9__log CPCB PM10 rows=8880
+2026-10-30 22:43:13  wrote coef_d4_J9__log ID1 PM10 rows=9505
+2026-10-30 22:43:14  wrote coef_d4_J9__log CPCB NO2 rows=8880
+2026-10-30 22:43:14  wrote coef_d4_J9__log ID1 NO2 rows=9505
+2026-10-30 22:43:14  wrote coef_d4_J9__log CPCB SO2 rows=8880
+2026-10-30 22:43:15  wrote coef_d4_J9__log ID1 SO2 rows=9505
+2026-10-30 22:43:15  wrote coef_d4_J9__log CPCB O3 rows=8880
+2026-10-30 22:43:15  wrote coef_d4_J9__log ID1 O3 rows=9505
+2026-10-30 22:43:16  wrote coef_d4_J9__log CPCB CO rows=8880
+2026-10-30 22:43:16  wrote coef_d4_J9__log ID1 CO rows=9505
+2026-10-30 22:43:16  D1 pass coef_la8_J8__raw
+2026-10-30 22:43:17  coef_la8_J8__raw projected hours=0 s_per_1k=0.037
+2026-10-30 22:43:17  wrote coef_la8_J8__raw CPCB PM2.5 rows=8880
+2026-10-30 22:43:18  wrote coef_la8_J8__raw ID1 PM2.5 rows=9505
+2026-10-30 22:43:18  wrote coef_la8_J8__raw CPCB PM10 rows=8880
+2026-10-30 22:43:18  wrote coef_la8_J8__raw ID1 PM10 rows=9505
+2026-10-30 22:43:19  wrote coef_la8_J8__raw CPCB NO2 rows=8880
+2026-10-30 22:43:19  wrote coef_la8_J8__raw ID1 NO2 rows=9505
+2026-10-30 22:43:20  wrote coef_la8_J8__raw CPCB SO2 rows=8880
+2026-10-30 22:43:20  wrote coef_la8_J8__raw ID1 SO2 rows=9505
+2026-10-30 22:43:20  wrote coef_la8_J8__raw CPCB O3 rows=8880
+2026-10-30 22:43:21  wrote coef_la8_J8__raw ID1 O3 rows=9505
+2026-10-30 22:43:21  wrote coef_la8_J8__raw CPCB CO rows=8880
+2026-10-30 22:43:22  wrote coef_la8_J8__raw ID1 CO rows=9505
+2026-10-30 22:43:22  wrote coef_la8_J8__raw CPCB AT rows=8880
+2026-10-30 22:43:22  wrote coef_la8_J8__raw ID1 AT rows=9505
+2026-10-30 22:43:23  wrote coef_la8_J8__raw CPCB RH rows=8880
+2026-10-30 22:43:23  wrote coef_la8_J8__raw ID1 RH rows=9505
+2026-10-30 22:43:24  D1 pass coef_la8_J8__log
+2026-10-30 22:43:25  coef_la8_J8__log projected hours=0 s_per_1k=0.035
+2026-10-30 22:43:25  wrote coef_la8_J8__log CPCB PM2.5 rows=8880
+2026-10-30 22:43:25  wrote coef_la8_J8__log ID1 PM2.5 rows=9505
+2026-10-30 22:43:26  wrote coef_la8_J8__log CPCB PM10 rows=8880
+2026-10-30 22:43:26  wrote coef_la8_J8__log ID1 PM10 rows=9505
+2026-10-30 22:43:27  wrote coef_la8_J8__log CPCB NO2 rows=8880
+2026-10-30 22:43:27  wrote coef_la8_J8__log ID1 NO2 rows=9505
+2026-10-30 22:43:27  wrote coef_la8_J8__log CPCB SO2 rows=8880
+2026-10-30 22:43:28  wrote coef_la8_J8__log ID1 SO2 rows=9505
+2026-10-30 22:43:28  wrote coef_la8_J8__log CPCB O3 rows=8880
+2026-10-30 22:43:29  wrote coef_la8_J8__log ID1 O3 rows=9505
+2026-10-30 22:43:29  wrote coef_la8_J8__log CPCB CO rows=8880
+2026-10-30 22:43:29  wrote coef_la8_J8__log ID1 CO rows=9505
+2026-10-30 22:44:13  === decomp input_hash=78f783c357338683 n_rows=147080 ===
+2026-10-30 22:44:15  workers=8
+2026-10-30 22:44:15  D1 pass mra_haar_J5__raw
+2026-10-30 22:44:16  mra_haar_J5__raw projected hours=0.02 s_per_1k=7.2
+2026-10-30 22:44:32  wrote mra_haar_J5__raw CPCB PM2.5 rows=8880
+2026-10-30 22:44:47  wrote mra_haar_J5__raw ID1 PM2.5 rows=9505
+2026-10-30 22:45:02  wrote mra_haar_J5__raw CPCB PM10 rows=8880
+2026-10-30 22:45:18  wrote mra_haar_J5__raw ID1 PM10 rows=9505
+2026-10-30 22:45:33  wrote mra_haar_J5__raw CPCB NO2 rows=8880
+2026-10-30 22:45:48  wrote mra_haar_J5__raw ID1 NO2 rows=9505
+2026-10-30 22:46:03  wrote mra_haar_J5__raw CPCB SO2 rows=8880
+2026-10-30 22:46:19  wrote mra_haar_J5__raw ID1 SO2 rows=9505
+2026-10-30 22:46:47  wrote mra_haar_J5__raw CPCB O3 rows=8880
+2026-10-30 22:47:03  wrote mra_haar_J5__raw ID1 O3 rows=9505
+2026-10-30 22:47:18  wrote mra_haar_J5__raw CPCB CO rows=8880
+2026-10-30 22:47:34  wrote mra_haar_J5__raw ID1 CO rows=9505
+2026-10-30 22:47:35  D1 pass mra_haar_J5__log
+2026-10-30 22:47:35  mra_haar_J5__log projected hours=0.005 s_per_1k=1.8
+2026-10-30 22:47:49  wrote mra_haar_J5__log CPCB PM2.5 rows=8880
+2026-10-30 22:48:05  wrote mra_haar_J5__log ID1 PM2.5 rows=9505
+2026-10-30 22:48:19  wrote mra_haar_J5__log CPCB PM10 rows=8880
+2026-10-30 22:48:36  wrote mra_haar_J5__log ID1 PM10 rows=9505
+2026-10-30 22:48:50  wrote mra_haar_J5__log CPCB NO2 rows=8880
+2026-10-30 22:49:06  wrote mra_haar_J5__log ID1 NO2 rows=9505
+2026-10-30 22:49:20  wrote mra_haar_J5__log CPCB SO2 rows=8880
+2026-10-30 22:49:36  wrote mra_haar_J5__log ID1 SO2 rows=9505
+2026-10-30 22:49:50  wrote mra_haar_J5__log CPCB O3 rows=8880
+2026-10-30 22:50:05  wrote mra_haar_J5__log ID1 O3 rows=9505
+2026-10-30 22:50:20  wrote mra_haar_J5__log CPCB CO rows=8880
+2026-10-30 22:50:36  wrote mra_haar_J5__log ID1 CO rows=9505
+2026-10-30 22:50:36  D1 pass mra_haar_J9__raw
+2026-10-30 22:50:37  mra_haar_J9__raw projected hours=0.014 s_per_1k=5
+2026-10-30 22:51:16  wrote mra_haar_J9__raw CPCB PM2.5 rows=8880
+2026-10-30 22:52:34  wrote mra_haar_J9__raw ID1 PM2.5 rows=9505
+2026-10-30 22:53:46  wrote mra_haar_J9__raw CPCB PM10 rows=8880
+2026-10-30 22:54:28  wrote mra_haar_J9__raw ID1 PM10 rows=9505
+2026-10-30 22:55:07  wrote mra_haar_J9__raw CPCB NO2 rows=8880
+2026-10-30 22:55:50  wrote mra_haar_J9__raw ID1 NO2 rows=9505
+2026-10-30 22:56:29  wrote mra_haar_J9__raw CPCB SO2 rows=8880
+2026-10-30 22:57:12  wrote mra_haar_J9__raw ID1 SO2 rows=9505
+2026-10-30 22:57:51  wrote mra_haar_J9__raw CPCB O3 rows=8880
+2026-10-30 22:58:33  wrote mra_haar_J9__raw ID1 O3 rows=9505
+2026-10-30 22:59:13  wrote mra_haar_J9__raw CPCB CO rows=8880
+2026-10-30 23:00:36  wrote mra_haar_J9__raw ID1 CO rows=9505
+2026-10-30 23:00:37  D1 pass mra_haar_J9__log
+2026-10-30 23:00:37  mra_haar_J9__log projected hours=0.028 s_per_1k=9.8
+2026-10-30 23:01:17  wrote mra_haar_J9__log CPCB PM2.5 rows=8880
+2026-10-30 23:02:00  wrote mra_haar_J9__log ID1 PM2.5 rows=9505
+2026-10-30 23:02:56  wrote mra_haar_J9__log CPCB PM10 rows=8880
+2026-10-30 23:03:38  wrote mra_haar_J9__log ID1 PM10 rows=9505
+2026-10-30 23:04:39  wrote mra_haar_J9__log CPCB NO2 rows=8880
+2026-10-30 23:05:21  wrote mra_haar_J9__log ID1 NO2 rows=9505
+2026-10-30 23:06:02  wrote mra_haar_J9__log CPCB SO2 rows=8880
+2026-10-30 23:06:43  wrote mra_haar_J9__log ID1 SO2 rows=9505
+2026-10-30 23:07:21  wrote mra_haar_J9__log CPCB O3 rows=8880
+2026-10-30 23:08:27  wrote mra_haar_J9__log ID1 O3 rows=9505
+2026-10-30 23:09:33  wrote mra_haar_J9__log CPCB CO rows=8880
+2026-10-30 23:10:44  wrote mra_haar_J9__log ID1 CO rows=9505
+2026-10-30 23:10:45  D1 pass mra_d4_J5__raw
+2026-10-30 23:10:45  mra_d4_J5__raw projected hours=0.025 s_per_1k=8.8
+2026-10-30 23:11:42  wrote mra_d4_J5__raw CPCB PM2.5 rows=8880
+2026-10-30 23:12:29  wrote mra_d4_J5__raw ID1 PM2.5 rows=9505
+2026-10-30 23:15:02  === decomp input_hash=78f783c357338683 n_rows=147080 ===
+2026-10-30 23:15:04  workers=8
+2026-10-30 23:15:04  D1 pass mra_d4_J5__raw
+2026-10-30 23:15:05  mra_d4_J5__raw projected hours=0.015 s_per_1k=5.2
+2026-10-30 23:17:08  wrote mra_d4_J5__raw CPCB PM2.5 rows=8880
+2026-10-30 23:17:08  wrote mra_d4_J5__raw ID1 PM2.5 rows=9505
+2026-10-30 23:17:08  wrote mra_d4_J5__raw CPCB PM10 rows=8880
+2026-10-30 23:17:08  wrote mra_d4_J5__raw ID1 PM10 rows=9505
+2026-10-30 23:17:08  wrote mra_d4_J5__raw CPCB NO2 rows=8880
+2026-10-30 23:17:08  wrote mra_d4_J5__raw ID1 NO2 rows=9505
+2026-10-30 23:17:08  wrote mra_d4_J5__raw CPCB SO2 rows=8880
+2026-10-30 23:17:08  wrote mra_d4_J5__raw ID1 SO2 rows=9505
+2026-10-30 23:17:08  wrote mra_d4_J5__raw CPCB O3 rows=8880
+2026-10-30 23:17:08  wrote mra_d4_J5__raw ID1 O3 rows=9505
+2026-10-30 23:17:08  wrote mra_d4_J5__raw CPCB CO rows=8880
+2026-10-30 23:17:08  wrote mra_d4_J5__raw ID1 CO rows=9505
+2026-10-30 23:17:08  D1 pass mra_d4_J5__log
+2026-10-30 23:17:09  mra_d4_J5__log projected hours=0.019 s_per_1k=6.6
+2026-10-30 23:19:00  wrote mra_d4_J5__log CPCB PM2.5 rows=8880
+2026-10-30 23:19:00  wrote mra_d4_J5__log ID1 PM2.5 rows=9505
+2026-10-30 23:19:00  wrote mra_d4_J5__log CPCB PM10 rows=8880
+2026-10-30 23:19:00  wrote mra_d4_J5__log ID1 PM10 rows=9505
+2026-10-30 23:19:00  wrote mra_d4_J5__log CPCB NO2 rows=8880
+2026-10-30 23:19:00  wrote mra_d4_J5__log ID1 NO2 rows=9505
+2026-10-30 23:19:00  wrote mra_d4_J5__log CPCB SO2 rows=8880
+2026-10-30 23:19:00  wrote mra_d4_J5__log ID1 SO2 rows=9505
+2026-10-30 23:19:00  wrote mra_d4_J5__log CPCB O3 rows=8880
+2026-10-30 23:19:00  wrote mra_d4_J5__log ID1 O3 rows=9505
+2026-10-30 23:19:00  wrote mra_d4_J5__log CPCB CO rows=8880
+2026-10-30 23:19:00  wrote mra_d4_J5__log ID1 CO rows=9505
+2026-10-30 23:19:00  D1 pass mra_d4_J8__raw
+2026-10-30 23:19:01  mra_d4_J8__raw projected hours=0.034 s_per_1k=12
+2026-10-30 23:23:21  wrote mra_d4_J8__raw CPCB PM2.5 rows=8880
+2026-10-30 23:23:21  wrote mra_d4_J8__raw ID1 PM2.5 rows=9505
+2026-10-30 23:23:21  wrote mra_d4_J8__raw CPCB PM10 rows=8880
+2026-10-30 23:23:21  wrote mra_d4_J8__raw ID1 PM10 rows=9505
+2026-10-30 23:23:21  wrote mra_d4_J8__raw CPCB NO2 rows=8880
+2026-10-30 23:23:21  wrote mra_d4_J8__raw ID1 NO2 rows=9505
+2026-10-30 23:23:21  wrote mra_d4_J8__raw CPCB SO2 rows=8880
+2026-10-30 23:23:21  wrote mra_d4_J8__raw ID1 SO2 rows=9505
+2026-10-30 23:23:21  wrote mra_d4_J8__raw CPCB O3 rows=8880
+2026-10-30 23:23:21  wrote mra_d4_J8__raw ID1 O3 rows=9505
+2026-10-30 23:23:21  wrote mra_d4_J8__raw CPCB CO rows=8880
+2026-10-30 23:23:21  wrote mra_d4_J8__raw ID1 CO rows=9505
+2026-10-30 23:23:21  D1 pass mra_d4_J8__log
+2026-10-30 23:23:23  mra_d4_J8__log projected hours=0.066 s_per_1k=23.2
+2026-10-30 23:28:23  wrote mra_d4_J8__log CPCB PM2.5 rows=8880
+2026-10-30 23:28:23  wrote mra_d4_J8__log ID1 PM2.5 rows=9505
+2026-10-30 23:28:23  wrote mra_d4_J8__log CPCB PM10 rows=8880
+2026-10-30 23:28:23  wrote mra_d4_J8__log ID1 PM10 rows=9505
+2026-10-30 23:28:23  wrote mra_d4_J8__log CPCB NO2 rows=8880
+2026-10-30 23:28:23  wrote mra_d4_J8__log ID1 NO2 rows=9505
+2026-10-30 23:28:23  wrote mra_d4_J8__log CPCB SO2 rows=8880
+2026-10-30 23:28:23  wrote mra_d4_J8__log ID1 SO2 rows=9505
+2026-10-30 23:28:23  wrote mra_d4_J8__log CPCB O3 rows=8880
+2026-10-30 23:28:24  wrote mra_d4_J8__log ID1 O3 rows=9505
+2026-10-30 23:28:24  wrote mra_d4_J8__log CPCB CO rows=8880
+2026-10-30 23:28:24  wrote mra_d4_J8__log ID1 CO rows=9505
+2026-10-30 23:28:24  D1 pass mra_la8_J5__raw
+2026-10-30 23:28:25  mra_la8_J5__raw projected hours=0.054 s_per_1k=19
+2026-10-30 23:33:04  wrote mra_la8_J5__raw CPCB PM2.5 rows=8880
+2026-10-30 23:33:04  wrote mra_la8_J5__raw ID1 PM2.5 rows=9505
+2026-10-30 23:33:04  wrote mra_la8_J5__raw CPCB PM10 rows=8880
+2026-10-30 23:33:04  wrote mra_la8_J5__raw ID1 PM10 rows=9505
+2026-10-30 23:33:04  wrote mra_la8_J5__raw CPCB NO2 rows=8880
+2026-10-30 23:33:04  wrote mra_la8_J5__raw ID1 NO2 rows=9505
+2026-10-30 23:33:04  wrote mra_la8_J5__raw CPCB SO2 rows=8880
+2026-10-30 23:33:04  wrote mra_la8_J5__raw ID1 SO2 rows=9505
+2026-10-30 23:33:04  wrote mra_la8_J5__raw CPCB O3 rows=8880
+2026-10-30 23:33:04  wrote mra_la8_J5__raw ID1 O3 rows=9505
+2026-10-30 23:33:04  wrote mra_la8_J5__raw CPCB CO rows=8880
+2026-10-30 23:33:04  wrote mra_la8_J5__raw ID1 CO rows=9505
+2026-10-30 23:33:04  D1 pass mra_la8_J5__log
+2026-10-30 23:33:06  mra_la8_J5__log projected hours=0.065 s_per_1k=22.8
+2026-10-30 23:37:42  wrote mra_la8_J5__log CPCB PM2.5 rows=8880
+2026-10-30 23:37:42  wrote mra_la8_J5__log ID1 PM2.5 rows=9505
+2026-10-30 23:37:42  wrote mra_la8_J5__log CPCB PM10 rows=8880
+2026-10-30 23:37:42  wrote mra_la8_J5__log ID1 PM10 rows=9505
+2026-10-30 23:37:42  wrote mra_la8_J5__log CPCB NO2 rows=8880
+2026-10-30 23:37:42  wrote mra_la8_J5__log ID1 NO2 rows=9505
+2026-10-30 23:37:42  wrote mra_la8_J5__log CPCB SO2 rows=8880
+2026-10-30 23:37:42  wrote mra_la8_J5__log ID1 SO2 rows=9505
+2026-10-30 23:37:42  wrote mra_la8_J5__log CPCB O3 rows=8880
+2026-10-30 23:37:42  wrote mra_la8_J5__log ID1 O3 rows=9505
+2026-10-30 23:37:42  wrote mra_la8_J5__log CPCB CO rows=8880
+2026-10-30 23:37:42  wrote mra_la8_J5__log ID1 CO rows=9505
+2026-10-30 23:37:42  D1 pass mra_la8_J8__raw
+2026-10-30 23:37:44  mra_la8_J8__raw projected hours=0.1 s_per_1k=35
+2026-10-30 23:52:37  wrote mra_la8_J8__raw CPCB PM2.5 rows=8880
+2026-10-30 23:52:37  wrote mra_la8_J8__raw ID1 PM2.5 rows=9505
+2026-10-30 23:52:37  wrote mra_la8_J8__raw CPCB PM10 rows=8880
+2026-10-30 23:52:37  wrote mra_la8_J8__raw ID1 PM10 rows=9505
+2026-10-30 23:52:37  wrote mra_la8_J8__raw CPCB NO2 rows=8880
+2026-10-30 23:52:37  wrote mra_la8_J8__raw ID1 NO2 rows=9505
+2026-10-30 23:52:37  wrote mra_la8_J8__raw CPCB SO2 rows=8880
+2026-10-30 23:52:37  wrote mra_la8_J8__raw ID1 SO2 rows=9505
+2026-10-30 23:52:37  wrote mra_la8_J8__raw CPCB O3 rows=8880
+2026-10-30 23:52:37  wrote mra_la8_J8__raw ID1 O3 rows=9505
+2026-10-30 23:52:37  wrote mra_la8_J8__raw CPCB CO rows=8880
+2026-10-30 23:52:37  wrote mra_la8_J8__raw ID1 CO rows=9505
+2026-10-30 23:52:37  D1 pass mra_la8_J8__log
+2026-10-30 23:52:39  mra_la8_J8__log projected hours=0.069 s_per_1k=24.4
+2026-10-31 00:05:56  wrote mra_la8_J8__log CPCB PM2.5 rows=8880
+2026-10-31 00:05:56  wrote mra_la8_J8__log ID1 PM2.5 rows=9505
+2026-10-31 00:05:56  wrote mra_la8_J8__log CPCB PM10 rows=8880
+2026-10-31 00:05:56  wrote mra_la8_J8__log ID1 PM10 rows=9505
+2026-10-31 00:05:56  wrote mra_la8_J8__log CPCB NO2 rows=8880
+2026-10-31 00:05:56  wrote mra_la8_J8__log ID1 NO2 rows=9505
+2026-10-31 00:05:56  wrote mra_la8_J8__log CPCB SO2 rows=8880
+2026-10-31 00:05:56  wrote mra_la8_J8__log ID1 SO2 rows=9505
+2026-10-31 00:05:56  wrote mra_la8_J8__log CPCB O3 rows=8880
+2026-10-31 00:05:56  wrote mra_la8_J8__log ID1 O3 rows=9505
+2026-10-31 00:05:56  wrote mra_la8_J8__log CPCB CO rows=8880
+2026-10-31 00:05:56  wrote mra_la8_J8__log ID1 CO rows=9505
+2026-10-31 00:05:56  D1 pass mstl__raw
+2026-10-31 00:05:58  mstl__raw projected hours=0.054 s_per_1k=19
+2026-10-31 00:13:02  wrote mstl__raw CPCB PM2.5 rows=8880
+2026-10-31 00:13:02  wrote mstl__raw ID1 PM2.5 rows=9505
+2026-10-31 00:13:02  wrote mstl__raw CPCB PM10 rows=8880
+2026-10-31 00:13:02  wrote mstl__raw ID1 PM10 rows=9505
+2026-10-31 00:13:02  wrote mstl__raw CPCB NO2 rows=8880
+2026-10-31 00:13:02  wrote mstl__raw ID1 NO2 rows=9505
+2026-10-31 00:13:02  wrote mstl__raw CPCB SO2 rows=8880
+2026-10-31 00:13:02  wrote mstl__raw ID1 SO2 rows=9505
+2026-10-31 00:13:02  wrote mstl__raw CPCB O3 rows=8880
+2026-10-31 00:13:02  wrote mstl__raw ID1 O3 rows=9505
+2026-10-31 00:13:02  wrote mstl__raw CPCB CO rows=8880
+2026-10-31 00:13:02  wrote mstl__raw ID1 CO rows=9505
+2026-10-31 00:13:03  D1 pass mstl__log
+2026-10-31 00:13:05  mstl__log projected hours=0.117 s_per_1k=41.2
+2026-10-31 00:19:50  wrote mstl__log CPCB PM2.5 rows=8880
+2026-10-31 00:19:50  wrote mstl__log ID1 PM2.5 rows=9505
+2026-10-31 00:19:50  wrote mstl__log CPCB PM10 rows=8880
+2026-10-31 00:19:50  wrote mstl__log ID1 PM10 rows=9505
+2026-10-31 00:19:50  wrote mstl__log CPCB NO2 rows=8880
+2026-10-31 00:19:50  wrote mstl__log ID1 NO2 rows=9505
+2026-10-31 00:19:50  wrote mstl__log CPCB SO2 rows=8880
+2026-10-31 00:19:50  wrote mstl__log ID1 SO2 rows=9505
+2026-10-31 00:19:50  wrote mstl__log CPCB O3 rows=8880
+2026-10-31 00:19:50  wrote mstl__log ID1 O3 rows=9505
+2026-10-31 00:19:50  wrote mstl__log CPCB CO rows=8880
+2026-10-31 00:19:50  wrote mstl__log ID1 CO rows=9505
+2026-10-31 00:37:48  screen pairs=12 methods=20 workers=8

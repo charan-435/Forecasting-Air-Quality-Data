@@ -1,10 +1,38 @@
+# Local R sessions
+.RData
+.Rhistory
+.Rproj.user/
+.ipynb_checkpoints/
+Rplots.pdf
 
-# Videos
-Group_8.mp4
-Slides_6-8.mp4
+# Render and editor intermediates
+analysis.html
+analysis_files/
+analysis_cache/
+*.knit.md
+*.utf8.md
+tmp_*
+__pycache__/
+.DS_Store
+Thumbs.db
 
-# Markdown
-WaveCatBoost_18_20_Slide_Content.md
+# LaTeX build products. Keep sources, figure assets and final PDFs.
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.fls
+*.fdb_latexmk
+*.bbl
+*.blg
+*.synctex.gz
 
-# Ppt
-ATSA_Presentation.pptx
+# Large upstream downloads and presentation recordings
+data/raw/vonter/
+*.mp4
+
+# Regenerable runtime metadata
+results/**/run_log.txt
+data/processed/*_group_series.rds

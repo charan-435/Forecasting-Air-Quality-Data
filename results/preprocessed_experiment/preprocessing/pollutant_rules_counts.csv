@@ -1,0 +1,7 @@
+"pollutant","lower_bound","upper_bound","lower_reason","upper_reason","hours","masked","masked_pct","n_fill_code","n_negative","n_out_of_bounds","n_stuck","n_pm_ratio","flagged_fill_code","flagged_negative","flagged_out_of_bounds","flagged_stuck","flagged_pm_ratio","clipped_to_bound","converted_to_na","imputed","left_na_no_history","spike_flag_info_only"
+"PM2.5",0,1000,"concentration cannot be negative (kaisen bounds)","repository physical bound; none of the CPCB values reaches it",8880,2844,32.03,2637,0,0,1,206,2637,0,0,2380,206,0,2844,2700,144,344
+"PM10",0,2000,"concentration cannot be negative (kaisen bounds)","repository physical bound; none of the CPCB values reaches it",8880,2843,32.02,2637,0,0,0,206,2637,0,0,2379,206,0,2843,2699,144,295
+"NO2",0,1000,"concentration cannot be negative (kaisen bounds)","repository physical bound; none of the CPCB values reaches it",8880,2637,29.7,2637,0,0,0,0,2637,0,0,2379,0,0,2637,2493,144,353
+"SO2",0,1000,"concentration cannot be negative (kaisen bounds)","repository physical bound; none of the CPCB values reaches it",8880,2637,29.7,2637,0,0,0,0,2637,0,0,2379,0,0,2637,2493,144,785
+"O3",0,1000,"concentration cannot be negative (kaisen bounds)","repository physical bound; none of the CPCB values reaches it",8880,2637,29.7,2637,0,0,0,0,2637,0,0,2379,0,0,2637,2493,144,493
+"CO",0,50,"concentration cannot be negative (kaisen bounds)","repository physical bound; none of the CPCB values reaches it",8880,2637,29.7,2637,0,0,0,0,2637,0,0,2379,0,0,2637,2493,144,336

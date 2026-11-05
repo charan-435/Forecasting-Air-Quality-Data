@@ -1,0 +1,6 @@
+"arch","n_features","features","n_fit_train","n_eval_val","n_eval_test","val_MAE","first_test_target","seconds"
+"B0",24,"lag1 lag2 lag3 lag4 lag5 lag6 lag7 lag8 lag9 lag10 lag11 lag12 lag13 lag14 lag15 lag16 lag17 lag18 lag19 lag20 lag21 lag22 lag23 lag24",600,200,200,8.66779981088138,"2023-05-01",1.3
+"A1",29,"lag1 lag2 lag3 lag4 lag5 lag6 lag7 lag8 lag9 lag10 lag11 lag12 lag13 lag14 lag15 lag16 lag17 lag18 lag19 lag20 lag21 lag22 lag23 lag24 cov_PM10 cov_NO2 cov_SO2 cov_O3 cov_CO",600,200,200,8.1403980106862,"2023-05-01",0.2
+"B1",25,"lag1 lag2 lag3 lag4 lag5 lag6 lag7 lag8 lag9 lag10 lag11 lag12 lag13 lag14 lag15 lag16 lag17 lag18 lag19 lag20 lag21 lag22 lag23 lag24 component",600,200,200,8.65627951172199,"2023-05-01",0.9
+"B2",29,"lag1 lag2 lag3 lag4 lag5 lag6 lag7 lag8 lag9 lag10 lag11 lag12 lag13 lag14 lag15 lag16 lag17 lag18 lag19 lag20 lag21 lag22 lag23 lag24 cov_PM10 cov_NO2 cov_SO2 cov_O3 cov_CO",600,200,200,8.05761954678267,"2023-05-01",2.4
+"B3",30,"lag1 lag2 lag3 lag4 lag5 lag6 lag7 lag8 lag9 lag10 lag11 lag12 lag13 lag14 lag15 lag16 lag17 lag18 lag19 lag20 lag21 lag22 lag23 lag24 component cov_PM10 cov_NO2 cov_SO2 cov_O3 cov_CO",600,200,200,8.26208031675698,"2023-05-01",2.4
