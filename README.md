@@ -1,24 +1,104 @@
-# WaveCatBoost in R
+# Air-quality forecasting with WaveCatBoost
 
-EDA-driven R implementation of Borah et al., *A Novel Hybrid Approach for Efficiently Forecasting Air Quality Data* (IEEE Sensors Letters, 2025), plus AR/SARIMA and other boosting models with and without MODWT.
+R implementation of Borah et al., *A Novel Hybrid Approach for Efficiently Forecasting Air Quality Data*, with experiments on the paper's CPCB/ID1 data and Shillong air-quality data.
 
-Data: [jborah2/WaveCatBoost-Time-Series-Model](https://github.com/jborah2/WaveCatBoost-Time-Series-Model).
+Open `analysis.Rmd` in RStudio and select **Run Document** to view the interactive report. Its default test horizon is seven days. The current deck is `presentation/main.pdf`, with Beamer source in `presentation/main.tex` and `presentation/segments/`.
 
-## Files
+## Directory guide
 
-- `WaveCatBoost.ipynb` — code notebook (R kernel). Open in Cursor / Jupyter and run from the project root.
-- `analysis.Rmd` — interactive report (`runtime: shiny`). Open in RStudio and click **Run Document**.
-- `run_experiments.R` — bake-off (6 pollutants × 2 sensors × 4 horizons). Writes `results/`.
-- `R/` — helpers (MODWT, models, conformal, metrics).
-- `data/raw/` — `CPCB.csv`, `ID1.csv`.
-
-## Run
-
-```bat
-"C:\Program Files\R\R-4.5.1\bin\Rscript.exe" run_experiments.R quick
-"C:\Program Files\R\R-4.5.1\bin\Rscript.exe" run_experiments.R
+```text
+analysis.Rmd                    Interactive report
+R/
+  core/                         Data loading, models, wavelets and metrics
+  preprocessing/                Hourly aggregation, quality checks and imputation
+  decomposition/                Causal decomposition and stored components
+  preprocessed_experiment/       Cleaned CPCB experiment
+  load_all.R                    Shared R loader
+scripts/
+  experiments/                  Forecasting experiment entry points
+  preprocessing/                Build hourly and decomposition stores
+  figures/                      Regenerate presentation figures and tables
+  validation/                   Smoke check
+config/                         Preprocessing and experiment settings
+data/
+  raw/                          CPCB.csv, ID1.csv and Shillong station extract
+  processed/                    Hourly data and cached ERA5 reanalysis
+store/                          Prepared inputs and causal component stores
+results/
+  paper/                        Saved forecasts, scores and tuning results
+  extensions/                   Filter, Fourier and EMD experiment results
+  shillong/                     Direct forecasts and imported architecture evidence
+  preprocessed_experiment/      Cleaned CPCB predictions and comparisons
+  illustrative/                 Extrapolated values for report Section 8.4
+presentation/                   Current PDF, LaTeX, bibliography and figures
+docs/                           Reference paper and historical audit
+tests/                          Preprocessing, decomposition and cleaned-CPCB checks
 ```
 
-Then open `WaveCatBoost.ipynb` (R kernel) or `analysis.Rmd` in RStudio.
+Run the commands below from the repository root. `Rscript` must be on PATH, or use the full path to your R installation. The main runners also resolve the repository root when launched by absolute path.
 
-CatBoost’s R package is not on CRAN. If it is missing, CatBoost slots fall back to XGBoost; WaveLGBM / WaveXGB still measure the MODWT effect.
+## Environment and data
+
+`R/core/00_packages.R` lists the analysis packages loaded by `R/load_all.R`. The report also needs `rmarkdown`, `knitr`, and RStudio or Pandoc. The shared loader can install missing analysis packages.
+
+CatBoost is required to reproduce CatBoost scores. The existing implementation falls back to XGBoost when CatBoost is unavailable, which changes the fitted models and results. Keep the cached scores when viewing the recorded experiment.
+
+The paper CSVs originated from [jborah2/WaveCatBoost-Time-Series-Model](https://github.com/jborah2/WaveCatBoost-Time-Series-Model). The Shillong extract contains Lumpyngngad and JN Stadium separately. JN Stadium supplies neighbour inputs in the direct-forecast experiment. Delhi is outside the final report's scope.
+
+## Reproduce the available experiments
+
+| Result | Command |
+|---|---|
+| Paper CPCB/ID1 comparison | `Rscript scripts/experiments/run_experiments.R` |
+| Shillong hourly benchmark | `Rscript scripts/experiments/run_new_dataset.R` |
+| Paper-protocol forecast panels and residual intervals | `Rscript scripts/experiments/run_paper_protocol.R` |
+| Haar, D4 and LA8 comparison | `Rscript scripts/experiments/run_filter_ablation_catboost.R` |
+| Fourier and EMD comparison | `Rscript scripts/experiments/run_extensions.R` |
+| Shillong direct forecasts at 1, 6 and 24 hours | `Rscript scripts/experiments/run_shillong_direct.R` |
+| Separate conformal calibration experiment | `Rscript scripts/experiments/run_conformal.R` |
+
+The main runners reuse saved caches. A cached invocation can finish without refitting models. Preserve copies of the recorded caches before forcing a new experiment. The paper-protocol cache retains the evaluation protocol and limitations discussed in the report and audit.
+
+For the cleaned CPCB comparison, prepare the shared inputs and run the four phases in order.
+
+```sh
+Rscript scripts/preprocessing/run_preprocess.R paper
+Rscript scripts/experiments/run_preprocessed_experiment.R phase1
+Rscript scripts/experiments/run_preprocessed_experiment.R phase2
+Rscript scripts/experiments/run_preprocessed_experiment.R phase3
+Rscript scripts/experiments/run_preprocessed_experiment.R phase4
+```
+
+Phase 1 creates a fresh integrity snapshot. Historical snapshots referred to the old repository layout and were removed during cleanup.
+
+For the optional Shillong store, run `Rscript scripts/preprocessing/run_preprocess.R shillong`. To rebuild the shared Haar component store, run `Rscript scripts/preprocessing/run_decomp.R mra_haar_J5 --skip-screen --skip-diag`.
+
+### Imported study results
+
+`results/shillong/architecture/` contains the imported 14-design report and CSVs used in the presentation and Q&A. The original architecture-training runner, configuration and second-stage training code were absent before cleanup. Those experiments cannot be refitted end to end from this checkout. Their supplied evidence is retained. The short-horizon notebook experiment is preserved in `run_shillong_direct.R`.
+
+The Q&A's supplied second-stage summaries are recorded explanations and are not generated dynamically by `analysis.Rmd`.
+
+### Illustrative values
+
+Section 8.4 reads `results/illustrative/illustrative_scores.csv`. These extrapolated values are labelled illustrative. Recreate them with `Rscript scripts/figures/make_illustrative_scores.R`. Measured scores are in `results/paper/`.
+
+## Presentation
+
+```sh
+Rscript scripts/figures/make_slide_figs.R
+Rscript scripts/figures/make_conformal_figs.R
+Rscript scripts/figures/make_shillong_arch_figs.R
+```
+
+Compile `presentation/main.tex` from the `presentation/` directory with a Beamer-capable LaTeX installation, for example `latexmk -pdf main.tex` or `tectonic main.tex`. The current PDF was rebuilt from this source with uniform Latin Modern fonts and automatic page numbering.
+
+## Checks
+
+```sh
+Rscript scripts/validation/smoke_test.R
+Rscript tests/phase1a/run_all.R
+Rscript tests/phase1b/run_all.R
+```
+
+The historical audit and diagnostics are in `docs/audit/`. Its report documents the earlier implementation and includes line numbers from that version.

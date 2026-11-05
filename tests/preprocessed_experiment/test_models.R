@@ -1,5 +1,5 @@
 # Model-phase tests (leakage and alignment rules 1-13 of the task).
-# Run through: Rscript run_preprocessed_experiment.R smoke
+# Run through: Rscript scripts/experiments/run_preprocessed_experiment.R smoke
 
 pe_test_models <- function(cfg, smoke) {
   res <- list()

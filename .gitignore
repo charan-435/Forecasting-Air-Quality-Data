@@ -1,34 +1,38 @@
+# Local R sessions
+.RData
+.Rhistory
+.Rproj.user/
+.ipynb_checkpoints/
+Rplots.pdf
 
-# Videos
-*.mp4
-Group_8.mp4
-Slides_6-8.mp4
-ATSA_Presentation_updated.mp4
-
-# Markdown
-WaveCatBoost_18_20_Slide_Content.md
-
-# Ppt
-ATSA_Presentation.pptx
-
-# Python
+# Render and editor intermediates
+analysis.html
+analysis_files/
+analysis_cache/
+*.knit.md
+*.utf8.md
+tmp_*
 __pycache__/
+.DS_Store
+Thumbs.db
 
-# Vonter full-year CPCB dumps (600MB+); keep small station extracts
-data/raw/vonter/*.parquet
-data/raw/vonter/*.zip
-data/raw/vonter/*.csv
+# LaTeX build products. Keep sources, figure assets and final PDFs.
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.fls
+*.fdb_latexmk
+*.bbl
+*.blg
+*.synctex.gz
 
-# Experiment noise
-results/run_log.txt
-results/conformal_log.txt
-results/paper_protocol_log.txt
+# Large upstream downloads and presentation recordings
+data/raw/vonter/
+*.mp4
+
+# Regenerable runtime metadata
+results/**/run_log.txt
 data/processed/*_group_series.rds
-
-# Upstream letter repo (cloned only to compare protocol)
-_orig_wavecatboost/
-_orig_nb_cells.txt
-_inspect_orig_nb.py
-_fix_protocol_cache.R
-_check_s8.R
-_patch_bands.R

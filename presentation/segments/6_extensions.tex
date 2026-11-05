@@ -1,0 +1,221 @@
+% Extensions (from analysis.Rmd §10) — last content section
+
+\subsection{Extensions overview}
+\begin{frame}{Extensions --- overview}
+  \begin{itemize}\setlength\itemsep{0.4em}
+    \item \textbf{Other wavelet filters:} Haar vs D4 vs LA8 (WaveCatBoost).
+    \item \textbf{Fourier bands} vs Haar MODWT (WaveLGB).
+    \item \textbf{Shillong A0--C3:} input / decomp designs on Lumpyngngad PM$_{2.5}$.
+  \end{itemize}
+\end{frame}
+
+\subsection{Wavelet filters}
+\begin{frame}{Haar vs D4 vs LA8 (WaveCatBoost, 1-day MASE)}
+  {\scriptsize
+  Same WaveCatBoost head; only the MODWT filter $(p_m,q_m)$ changes
+  ($S_{0,t}=Y_t$, indices mod $N$):
+  \[
+    D_{j,t}=\sum_{m=0}^{M-1}p_m\,S_{j-1,(t-2^{j-1}m)\bmod N},\quad
+    S_{j,t}=\sum_{m=0}^{M-1}q_m\,S_{j-1,(t-2^{j-1}m)\bmod N}.
+  \]
+  }
+  {\tiny
+  \centering
+  \renewcommand{\arraystretch}{1.15}
+  \begin{tabular}{@{}l@{\hspace{0.6em}}l@{}}
+    \textbf{Haar} ($M{=}2$) &
+      $q=(\tfrac12,\tfrac12)$,\ $p=(\tfrac12,-\tfrac12)$ \\
+    \textbf{D4} ($M{=}4$) &
+      $q\approx(0.483,\,0.837,\,0.224,\,-0.129)$,\
+      $p\approx(-0.129,\,-0.224,\,0.837,\,-0.483)$ \\
+    \textbf{LA8} ($M{=}8$) &
+      $q\approx(-0.076,\,-0.030,\,0.498,\,0.804,\,0.298,\,-0.099,\,-0.013,\,0.032)$ \\
+      & $p\approx(0.032,\,0.013,\,-0.099,\,-0.298,\,0.804,\,-0.498,\,-0.030,\,0.076)$ \\
+  \end{tabular}
+  }
+  \vspace{0.25em}
+  {\tiny
+  \centering
+  \resizebox{0.98\linewidth}{!}{%
+  \begin{tabular}{llccc llccc}
+    \toprule
+    Sensor & Pol. & Haar & D4 & LA8 &
+    Sensor & Pol. & Haar & D4 & LA8 \\
+    \midrule
+    CPCB & NO$_2$     & 0.541 & \textbf{0.510} & 0.529 &
+    ID1  & NO$_2$     & \textbf{1.252} & 1.346 & 1.330 \\
+    CPCB & PM$_{2.5}$ & \textbf{0.727} & 0.909 & 0.955 &
+    ID1  & PM$_{2.5}$ & \textbf{0.421} & 0.457 & 0.502 \\
+    CPCB & O$_3$      & \textbf{1.014} & 1.212 & 1.119 &
+    ID1  & O$_3$      & \textbf{0.935} & 0.940 & 0.964 \\
+    CPCB & CO         & \textbf{0.885} & 0.993 & 1.200 &
+    ID1  & CO         & \textbf{0.798} & 1.001 & 1.170 \\
+    CPCB & SO$_2$     & 6.232 & 6.041 & \textbf{5.972} &
+    ID1  & SO$_2$     & \textbf{1.320} & 1.390 & 1.379 \\
+    CPCB & PM$_{10}$  & 0.535 & \textbf{0.524} & 0.538 &
+    ID1  & PM$_{10}$  & \textbf{0.368} & 0.445 & 0.462 \\
+    \bottomrule
+  \end{tabular}%
+  }
+  }
+  \vspace{0.2em}
+  {\scriptsize
+  Haar best on \textbf{9/12} cells; D4 on 2; LA8 on 1 --- Haar stays the default.
+  }
+\end{frame}
+
+\subsection{Fourier comparison}
+\begin{frame}{Fourier vs Haar MODWT (WaveLGB, 1-day)}
+  {\footnotesize
+  Octave FFT bands matched to Haar layout ($J{=}5$, $p{=}24$).
+  Global sinusoids --- no local $D_{1,t}$ (\texttt{extension\_scores}, Rmd §10.1).
+  }
+  \vspace{0.35em}
+  {\scriptsize
+  \centering
+  \begin{tabular}{llcc}
+    \toprule
+    Sensor & Pollutant & Haar & Fourier \\
+    \midrule
+    CPCB & NO$_2$     & \textbf{0.518} & 0.692 \\
+    CPCB & PM$_{2.5}$ & \textbf{1.031} & 1.272 \\
+    ID1  & NO$_2$     & \textbf{1.259} & 1.438 \\
+    ID1  & PM$_{2.5}$ & \textbf{0.360} & 0.473 \\
+    \bottomrule
+  \end{tabular}
+  }
+  \vspace{0.45em}
+  \begin{itemize}
+    \item Haar wins every scored cell.
+    \item Fourier smears spikes across frequencies; lags still carry a little of the event.
+  \end{itemize}
+\end{frame}
+
+
+\subsection{Shillong study}
+\begin{frame}{Shillong: Experiment overview}
+  \centering
+  {\small Lumpyngngad PM$_{2.5}$: 24, 168, 336 and 744 hours}\par\medskip
+  \begin{tikzpicture}[
+    box/.style={text width=10.3cm,align=center,inner sep=6pt,font=\small},
+    >=Latex
+  ]
+    \node[box,fill=blue!7] (input) {\textbf{1. Input representation}\\
+      Raw pollutant histories or causal Haar bands};
+    \node[box,fill=green!7,below=0.25cm of input] (info) {\textbf{2. Information supplied}\\
+      PM$_{2.5}$ / SO$_2$ and CO / Weather / Cross-band histories};
+    \node[box,fill=orange!9,below=0.25cm of info] (models) {\textbf{3. Model structure and learner}\\
+      Separate or shared models; CatBoost, LightGBM, XGBoost};
+    \draw[->] (input) -- (info);
+    \draw[->] (info) -- (models);
+  \end{tikzpicture}
+  \par\medskip
+  {\small PM$_{2.5}$ forecasts: compare designs across forecast horizons}\par
+  {\scriptsize 2023 split: Jan--Jul training / Aug--Sep validation / Oct--Dec test}
+\end{frame}
+
+\subsection{Shillong: Raw inputs}
+\begin{frame}{Shillong A: Raw-input architectures}
+  {\small All designs also use hour-of-day and day-of-week inputs.}\par\medskip
+  \scriptsize
+  \begin{tabularx}{\linewidth}{@{}p{0.10\linewidth}Xp{0.28\linewidth}@{}}
+    \toprule
+    Design & Input features & Purpose \\
+    \midrule
+    A0 & Previous 24 hourly PM$_{2.5}$ values & PM$_{2.5}$ baseline \\[0.7em]
+    A1 & A0 + humidity, wind speed, wind direction and rain & Weather information \\[0.7em]
+    A2 & Previous 24 hourly values of PM$_{2.5}$, SO$_2$ and CO (72 pollutant inputs) & Other pollutants \\[0.7em]
+    A3 & A2 + humidity, wind speed, wind direction and rain & Pollutants + weather \\
+    \bottomrule
+  \end{tabularx}
+  \par\medskip
+  A0/A1 use PM$_{2.5}$ history. A2/A3 add SO$_2$ and CO histories.
+\end{frame}
+
+\subsection{Shillong: Decomposed inputs}
+\begin{frame}{Shillong B: Decomposed PM2.5 inputs}
+  {\small Causal Haar decomposition produces six components.}
+  \[
+    D_1,\ D_2,\ D_3,\ D_4,\ D_5,\ S_5
+  \]
+  \small
+  \begin{tabularx}{\linewidth}{@{}lX@{}}
+    \toprule
+    Design & Input and modelling setup \\
+    \midrule
+    B0 & Six PM$_{2.5}$ bands; one model per band \\[0.5em]
+    B1 & Same bands; one shared model with a band identifier \\[0.5em]
+    B2 & B0 + weather \\[0.5em]
+    B3 & B1 + weather \\
+    \bottomrule
+  \end{tabularx}
+  \par\medskip
+  B0/B2 fit six separate component models.\par
+  B1/B3 use one shared model and a band identifier.
+\end{frame}
+
+\subsection{Shillong: Cross-component inputs}
+\begin{frame}{Shillong C: Cross-component inputs}
+  {\small Can a band benefit from other bands' and pollutants' histories?}\par\medskip
+  \scriptsize
+  \begin{tabularx}{\linewidth}{@{}p{0.13\linewidth}Xp{0.26\linewidth}@{}}
+    \toprule
+    Design & Input features & Modelling setup \\
+    \midrule
+    C1 (sep) & Histories of all six PM$_{2.5}$ bands (144 inputs) & Separate model per band \\[0.5em]
+    C1 (sh) & Same C1 information & One shared model \\[0.5em]
+    C2 (sep) & Histories of all six bands of PM$_{2.5}$, SO$_2$ and CO (432 inputs) & Separate model per band \\[0.5em]
+    C2 (sh) & Same C2 information & One shared model \\[0.5em]
+    C3 (sep) & C2 + weather & Separate model per band \\[0.5em]
+    C3 (sh) & C2 + weather & One shared model \\
+    \bottomrule
+  \end{tabularx}
+\end{frame}
+
+\subsection{Shillong findings}
+\begin{frame}{Shillong: Main findings at Lumpyngngad}
+  \small
+  \textbf{Multivariate pollutant inputs --- strong benefit}\par
+  SO$_2$ and CO histories improve PM$_{2.5}$ forecasts at every horizon.
+  \par\medskip
+  \textbf{Wavelet decomposition --- no consistent gain}\par
+  Raw pollutant histories generally perform better.
+  \par\medskip
+  \textbf{Weather inputs --- horizon dependent}\par
+  Little benefit at 24 h; often worse at longer horizons.
+  \par\medskip
+  \textbf{Cross-band information --- mixed results}\par
+  Helps at 24 and 744 h, but hurts at 168 h.
+  \par\medskip
+  {\scriptsize Architecture comparisons use LightGBM on the same test targets.}
+\end{frame}
+
+\subsection{Boosting-model comparison}
+\begin{frame}{Shillong: Boosting-model comparison}
+  {\small Same four designs: A0, A3, B0 and C3 (sh). Four forecast horizons.\par
+  16 matched test comparisons. Lower mean rank is better.}\par\medskip
+  \centering
+  \begin{tabular}{lrr}
+    \toprule
+    Boosting model & Mean rank & Cases won (of 16) \\
+    \midrule
+    CatBoost & 1.625 & 9 \\
+    LightGBM & 2.000 & 4 \\
+    XGBoost & 2.375 & 3 \\
+    \bottomrule
+  \end{tabular}
+  \par\medskip
+  {\small A3 test MAE by horizon}\par\smallskip
+  \scriptsize
+  \begin{tabular}{lrrrr}
+    \toprule
+    Model & 24 h & 168 h & 336 h & 744 h \\
+    \midrule
+    CatBoost & 8.95 & 10.25 & 12.32 & 11.21 \\
+    LightGBM & 9.04 & 10.82 & 12.51 & 12.31 \\
+    XGBoost & 10.10 & 11.45 & 14.53 & 13.15 \\
+    \bottomrule
+  \end{tabular}
+  \par\medskip
+  CatBoost wins the most matched comparisons among the three boosters.
+\end{frame}

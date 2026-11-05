@@ -3,7 +3,7 @@
 Leak-free preprocessing ends here. Later phases (decomposition, origins, models)
 read `store/clean/` and must follow `store/clean/policy.yaml`.
 
-Build: `Rscript run_preprocess.R` from the project root.
+Build: `Rscript scripts/preprocessing/run_preprocess.R` from the project root.
 Config: `config/preprocess.yaml`. Log: `store/preprocess_log.txt`.
 No plots. Tables: `store/DATA_QUALITY.md`. Column dictionary: `store/clean/README.md`.
 
@@ -18,7 +18,6 @@ by their native interval before binning.
 | `active` | Sources | Preprocess |
 |---|---|---|
 | `paper` | `data/raw/CPCB.csv`, `data/raw/ID1.csv` | **Skipped** — already hourly / paper-ready |
-| `delhi` | ITO, R K Puram 15-min CPCB (`data/raw/delhi/`) | Full causal pipeline |
 | `shillong` | Lumpyngngad, JN Stadium 15-min CPCB | Full causal pipeline |
 
 ## Policy (also in `store/clean/policy.yaml`)

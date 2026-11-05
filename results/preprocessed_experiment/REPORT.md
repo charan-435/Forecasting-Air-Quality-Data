@@ -118,7 +118,7 @@ Plot: `plots/paired_differences_test.png`.
    RMSE for all five, significant only for B1. On test, MAE improved for B0 (−0.28, CI includes 0),
    was essentially unchanged for B3, slightly worse for B1 and B2 (CIs include 0) and **worse for A1
    (+0.43, CI 0.17–0.66)**. RMSE on test improved for B0, B2 and B3 (−0.3 to −0.4, CIs include 0) and
-   worsened for A1. The existing kaisen CPCB scores (`results/scores.csv`, e.g. WaveCatBoost 1-day
+   worsened for A1. The existing kaisen CPCB scores (`results/paper/scores.csv`, e.g. WaveCatBoost 1-day
    MAE 3.02) are **not comparable**: they are recursive forecasts from one origin over the last 24 h,
    scored on the store values including synthetic fills, with an imputed-data MASE scale; they are
    copied to `comparisons/kaisen_existing_scores_context.csv` as context only.
@@ -188,10 +188,10 @@ test block's hours in the original series.
 ## 8. Reproduce
 
 ```
-Rscript run_preprocessed_experiment.R phase1   # guard snapshot, audit, cleaned dataset   (~1 min)
-Rscript run_preprocessed_experiment.R phase2   # decompositions + data tests                (~5 min)
-Rscript run_preprocessed_experiment.R phase3   # smoke run + model tests                    (~1 min)
-Rscript run_preprocessed_experiment.R phase4   # full run, both datasets + evaluation       (~14 min)
+Rscript scripts/experiments/run_preprocessed_experiment.R phase1   # guard snapshot, audit, cleaned dataset   (~1 min)
+Rscript scripts/experiments/run_preprocessed_experiment.R phase2   # decompositions + data tests                (~5 min)
+Rscript scripts/experiments/run_preprocessed_experiment.R phase3   # smoke run + model tests                    (~1 min)
+Rscript scripts/experiments/run_preprocessed_experiment.R phase4   # full run, both datasets + evaluation       (~14 min)
 ```
 
 R 4.5.3, lightgbm 4.7.0, arrow 26.0.0; exact package versions, code and data hashes, seed and

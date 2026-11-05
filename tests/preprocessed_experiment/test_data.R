@@ -1,4 +1,4 @@
-# Data-phase tests (Phases 1-2). Run through: Rscript run_preprocessed_experiment.R test-data
+# Data-phase tests (Phases 1-2). Run through: Rscript scripts/experiments/run_preprocessed_experiment.R test-data
 
 pe_test_data <- function(cfg) {
   res <- list()

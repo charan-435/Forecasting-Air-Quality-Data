@@ -1,7 +1,7 @@
 # CPCB preprocessed experiment — Phases 1–2: audit, cleaned dataset, decomposition
 
 Base: branch `kaisen` @ `38daa41` (no other work used). Run with
-`Rscript run_preprocessed_experiment.R phase1` then `phase2`. Config:
+`Rscript scripts/experiments/run_preprocessed_experiment.R phase1` then `phase2`. Config:
 `config/preprocessed_experiment.yaml`. Every output is under `store/preprocessed_experiment/`
 or `results/preprocessed_experiment/`.
 
@@ -74,7 +74,7 @@ CPCB value reaches them. High genuine values are kept (e.g. PM10 peaks of 320–
 
 ## 3. Missing values (`preprocessing/imputation_counts.csv`, `store/.../imputation_choice.yaml`)
 
-- kaisen's causal fills (`R/22_impute.R`), one method per pollutant and gap-length bucket, chosen by
+- kaisen's causal fills (`R/preprocessing/22_impute.R`), one method per pollutant and gap-length bucket, chosen by
   kaisen's artificial-gap benchmark run on the **training block only** (`selection_end` = end of training).
 - **Only parameter-free, past-only methods** (M1 last value, M2/M3 same hour 24/168 h earlier, M4,
   M5/M6 trailing 28-day hour-of-day climatology). A first run with kaisen's full set showed that M7/M8
@@ -136,5 +136,5 @@ components at ≤ t identical); stored components equal a fresh computation.
 |---|---|---|
 | use the existing S3 split | none exists | PE-S3, documented above |
 | use existing `mra_haar_J5__raw` as reference | store never generated | same method, cleaned + unmasked control in the experiment store |
-| compare with existing T1 / unmasked results | no T1 results; `results/scores.csv` is the deprecated recursive single-origin protocol | planned: the same five architectures on the unmasked control, same origins and code |
+| compare with existing T1 / unmasked results | no T1 results; `results/paper/scores.csv` is the deprecated recursive single-origin protocol | planned: the same five architectures on the unmasked control, same origins and code |
 | leave `results/multivariate/`, Phase 1/2 multivariate untouched | do not exist | nothing to protect beyond the guard |

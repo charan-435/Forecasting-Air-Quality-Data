@@ -1,7 +1,0 @@
-sensor,pollutant,decomp_id,validity,n_decomp_rows,n_complete6,n_aligned_finite,md5,path
-CPCB,PM2.5,mra_haar_J5__raw,basic,8880,6833,6833,3d1a72b96033c1ea33f1693307c5bf34,C:\Users\chara\Desktop\atsa_project/store/decomp/method=mra_haar_J5__raw/station=CPCB/variable=PM2.5.parquet
-CPCB,PM10,mra_haar_J5__raw,basic,8880,6833,6833,d9a7aac0fe2d393a4753c89a7b075807,C:\Users\chara\Desktop\atsa_project/store/decomp/method=mra_haar_J5__raw/station=CPCB/variable=PM10.parquet
-CPCB,NO2,mra_haar_J5__raw,basic,8880,6833,6833,86197137f042fd9227d03caa85758bf4,C:\Users\chara\Desktop\atsa_project/store/decomp/method=mra_haar_J5__raw/station=CPCB/variable=NO2.parquet
-CPCB,SO2,mra_haar_J5__raw,basic,8880,6833,6833,132ca409cac8fd90c29214e0ff94baa8,C:\Users\chara\Desktop\atsa_project/store/decomp/method=mra_haar_J5__raw/station=CPCB/variable=SO2.parquet
-CPCB,O3,mra_haar_J5__raw,basic,8880,6833,6833,cb5155e48fa3c38d26b9456e6ac53c0c,C:\Users\chara\Desktop\atsa_project/store/decomp/method=mra_haar_J5__raw/station=CPCB/variable=O3.parquet
-CPCB,CO,mra_haar_J5__raw,basic,8880,6833,6833,32b7e591dd80f19808c334a883e10f4e,C:\Users\chara\Desktop\atsa_project/store/decomp/method=mra_haar_J5__raw/station=CPCB/variable=CO.parquet

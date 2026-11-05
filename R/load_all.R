@@ -4,12 +4,12 @@ local({
   this_dir <- file.path(getwd(), "R")
   if (!dir.exists(this_dir) && dir.exists("R")) this_dir <- "R"
   files <- c(
-    "00_packages.R", "01_constants.R", "02_data.R", "03_preprocess.R",
-    "20_ingest.R", "21_quality.R", "22_impute.R", "23_store_clean.R",
-    "30_decomp_registry.R", "31_decomp_causal.R", "32_decomp_trailing.R",
-    "33_decomp_diagnostics.R", "34_decomp_screen.R", "35_decomp_io.R",
-    "04_modwt.R", "05_features.R", "06_models.R", "07_conformal.R",
-    "08_metrics.R", "09_hparams.R", "10_eda_design.R"
+    "core/00_packages.R", "core/01_constants.R", "core/02_data.R", "core/03_preprocess.R",
+    "preprocessing/20_ingest.R", "preprocessing/21_quality.R", "preprocessing/22_impute.R", "preprocessing/23_store_clean.R",
+    "decomposition/30_decomp_registry.R", "decomposition/31_decomp_causal.R", "decomposition/32_decomp_trailing.R",
+    "decomposition/33_decomp_diagnostics.R", "decomposition/34_decomp_screen.R", "decomposition/35_decomp_io.R",
+    "core/04_modwt.R", "core/05_features.R", "core/06_models.R", "core/07_conformal.R",
+    "core/08_metrics.R", "core/09_hparams.R", "core/10_eda_design.R"
   )
   for (f in files) {
     path <- file.path(this_dir, f)

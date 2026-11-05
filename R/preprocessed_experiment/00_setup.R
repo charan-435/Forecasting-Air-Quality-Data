@@ -40,7 +40,7 @@ pe_protected_files <- function(cfg) {
   all <- list.files(PROJECT_ROOT, recursive = TRUE, all.files = TRUE, no.. = TRUE)
   own <- c("^\\.git/", paste0("^", cfg$paths$store, "/"), paste0("^", cfg$paths$results, "/"),
            "^R/preprocessed_experiment/", "^tests/preprocessed_experiment/",
-           "^config/preprocessed_experiment\\.yaml$", "^run_preprocessed_experiment\\.R$")
+           "^config/preprocessed_experiment\\.yaml$", "^scripts/experiments/run_preprocessed_experiment\\.R$")
   keep <- !Reduce(`|`, lapply(own, function(p) grepl(p, all)))
   sort(all[keep])
 }
@@ -88,7 +88,7 @@ pe_guard_verify <- function(cfg, stage = "") {
 
 pe_provenance <- function(cfg, phase) {
   code <- c(list.files(file.path(PROJECT_ROOT, "R", "preprocessed_experiment"), full.names = TRUE),
-            file.path(PROJECT_ROOT, "run_preprocessed_experiment.R"), cfg$.path)
+            file.path(PROJECT_ROOT, "scripts/experiments/run_preprocessed_experiment.R"), cfg$.path)
   code <- code[file.exists(code)]
   list(
     phase = phase,
@@ -102,7 +102,7 @@ pe_provenance <- function(cfg, phase) {
                                           character(1)),
                                    sub(paste0(PROJECT_ROOT, "/"), "", code, fixed = TRUE))),
     seed = cfg$seed,
-    command = paste(c("Rscript run_preprocessed_experiment.R", commandArgs(trailingOnly = TRUE)),
+    command = paste(c("Rscript scripts/experiments/run_preprocessed_experiment.R", commandArgs(trailingOnly = TRUE)),
                     collapse = " ")
   )
 }

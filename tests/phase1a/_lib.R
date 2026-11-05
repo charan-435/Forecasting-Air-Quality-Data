@@ -4,10 +4,10 @@ if (!isTRUE(get0(".P1A_LIB", ifnotfound = FALSE))) {
     else if (file.exists("../R/load_all.R")) setwd("..")
   }
   source("R/load_all.R")
-  sys.source("R/20_ingest.R", envir = .GlobalEnv)
-  sys.source("R/21_quality.R", envir = .GlobalEnv)
-  sys.source("R/22_impute.R", envir = .GlobalEnv)
-  sys.source("R/23_store_clean.R", envir = .GlobalEnv)
+  sys.source("R/preprocessing/20_ingest.R", envir = .GlobalEnv)
+  sys.source("R/preprocessing/21_quality.R", envir = .GlobalEnv)
+  sys.source("R/preprocessing/22_impute.R", envir = .GlobalEnv)
+  sys.source("R/preprocessing/23_store_clean.R", envir = .GlobalEnv)
   P1A_FAILS <<- character()
   P1A_PASSES <<- character()
   p1a_ok <- function(id, cond, msg) {
