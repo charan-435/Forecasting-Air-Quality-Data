@@ -1,0 +1,245 @@
+/* Reserve a separate, fixed-width column for the floating contents menu. */
+.main-container {
+  width: calc(100% - 32px) !important;
+  max-width: 1320px !important;
+  margin-right: auto;
+  margin-left: auto;
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.main-container > .row {
+  display: block !important;
+  margin-right: 0;
+  margin-left: 0;
+}
+
+#TOC.tocify {
+  box-sizing: border-box;
+  min-width: 0;
+  margin: 0 !important;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: white;
+  z-index: 20;
+}
+
+@media (min-width: 900px) {
+  .main-container > .row > [class*="col-"]:not(.toc-content) {
+    float: left !important;
+    width: 250px !important;
+    padding: 0 !important;
+  }
+
+  #TOC.tocify {
+    position: fixed !important;
+    top: 24px !important;
+    width: 250px !important;
+    max-width: 250px !important;
+    max-height: calc(100vh - 48px);
+  }
+
+  .main-container .toc-content {
+    float: none !important;
+    width: calc(100% - 280px) !important;
+    max-width: 1000px !important;
+    margin-left: 280px !important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+}
+
+@media (max-width: 899px) {
+  .main-container > .row > [class*="col-"]:not(.toc-content) {
+    float: none !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin-bottom: 24px;
+  }
+
+  #TOC.tocify {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 240px;
+  }
+
+  .main-container .toc-content {
+    float: none !important;
+    clear: both;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+}
+
+/* Keep content inside its reserved column. */
+.toc-content,
+.toc-content .section,
+.toc-content .shiny-html-output {
+  box-sizing: border-box;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.toc-content h1,
+.toc-content h2,
+.toc-content h3,
+.toc-content h4 {
+  overflow-wrap: anywhere;
+}
+
+.toc-content .well,
+.toc-content .shiny-input-container {
+  box-sizing: border-box;
+  max-width: 100%;
+}
+
+.tocify .tocify-item,
+.tocify .tocify-item a {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.toc-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+.plot-slot {
+  clear: both;
+  position: relative;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.js-plotly-plot,
+.plot-container.plotly,
+.toc-content .html-widget,
+.toc-content .shiny-plot-output {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.js-plotly-plot,
+.plot-container.plotly {
+  width: 100% !important;
+}
+
+/* Wide tables and equations scroll within their own box. */
+.toc-content table {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.toc-content pre,
+.toc-content .MathJax_Display,
+.toc-content .math.display,
+.toc-content .pagedtable-wrapper {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.experiment-qna .qna-table {
+  min-width: 0;
+  max-width: 100%;
+  margin: 1em 0;
+}
+
+/* Native table layout keeps columns aligned and gives results room to breathe. */
+.toc-content .result-table,
+.toc-content .qna-table {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  margin: 1.25em 0 1.75em;
+  overflow-x: auto;
+}
+
+.toc-content .result-table > table,
+.toc-content .qna-table > table {
+  display: table;
+  table-layout: auto;
+  width: 100%;
+  max-width: none;
+  overflow: visible;
+  border-collapse: collapse;
+  font-size: 1em;
+}
+
+.toc-content .result-table th,
+.toc-content .result-table td,
+.toc-content .qna-table th,
+.toc-content .qna-table td {
+  padding: 0.75em 1em;
+  line-height: 1.5;
+  vertical-align: middle;
+}
+
+.toc-content .result-table th:not(:first-child),
+.toc-content .result-table td:not(:first-child),
+.toc-content .qna-table th:not(:first-child),
+.toc-content .qna-table td:not(:first-child) {
+  min-width: 6em;
+}
+
+.toc-content .result-table caption,
+.toc-content .qna-table caption {
+  padding: 0 0 0.75em;
+  line-height: 1.5;
+}
+
+.toc-content .result-table thead th,
+.toc-content .qna-table thead th {
+  border-bottom: 2px solid #d7e0e5;
+}
+
+.experiment-qna table {
+  border-collapse: collapse;
+}
+
+.experiment-qna table th,
+.experiment-qna table td {
+  text-align: center !important;
+  vertical-align: middle;
+  padding: 0.5em 0.7em;
+}
+
+.experiment-qna table th:first-child,
+.experiment-qna table td:first-child {
+  text-align: left !important;
+  min-width: 9em;
+}
+
+.experiment-qna table th {
+  white-space: normal;
+}
+
+.experiment-qna table td:not(:first-child) {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Keep the cost-table headings on the same column grid as their values. */
+.toc-content .cost-comparison > table {
+  table-layout: fixed;
+  min-width: 780px;
+}
+.toc-content .cost-comparison th,
+.toc-content .cost-comparison td {
+  vertical-align: top;
+  overflow-wrap: break-word;
+  min-width: 0;
+}
+.toc-content .cost-comparison th:nth-child(1),
+.toc-content .cost-comparison td:nth-child(1) { width: 28%; text-align: left; }
+.toc-content .cost-comparison th:nth-child(2),
+.toc-content .cost-comparison td:nth-child(2) { width: 33%; text-align: left; }
+.toc-content .cost-comparison th:nth-child(n+3),
+.toc-content .cost-comparison td:nth-child(n+3) { width: 13%; text-align: center; }

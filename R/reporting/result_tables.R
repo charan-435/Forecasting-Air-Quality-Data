@@ -30,6 +30,8 @@ best_kable <- function(data, columns, groups = character(), by_row = FALSE,
     }
   }
   alignment <- ifelse(vapply(data, is.numeric, logical(1)), "r", "l")
-  knitr::kable(formatted, format = "html", escape = FALSE, align = alignment,
-                digits = digits, caption = caption)
+  table <- knitr::kable(formatted, format = "html", escape = FALSE, align = alignment,
+                         digits = digits, caption = caption)
+  structure(paste0('<div class="result-table">', paste(table, collapse = "\n"), '</div>'),
+              class = "knitr_kable", format = "html")
 }

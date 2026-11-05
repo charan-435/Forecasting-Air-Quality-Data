@@ -77,10 +77,9 @@
     h_m(x_i)\approx
     -\left.\frac{\partial L(y_i,F)}{\partial F}\right|_{F=F_{m-1}(x_i)}
   \]
-  \textbf{3. Ordered boosting and symmetric trees}\par
+  \textbf{3. Ordered boosting}\par
   Ordered gradients use a model fitted on preceding observations.
   This reduces prediction shift.\par
-  Same split at each depth. $2^d$ leaves, so $d=6\Rightarrow64$ leaves.
 \end{frame}
 
 \subsection{Hyperparameters}
@@ -278,7 +277,7 @@
 
 \begin{frame}{Do the intervals work? (7-day test)}
   {\footnotesize
-  \textbf{Purpose:} letter-style 7-day PM$_{2.5}$ band --- does truth sit inside the
+  \textbf{Purpose:} paper-style 7-day PM$_{2.5}$ band --- does truth sit inside the
   95\% window around WaveCatBoost?
   }
   \vspace{0.3em}
@@ -311,7 +310,7 @@
   }
   \vspace{0.7em}
   \begin{exampleblock}{Protocol}
-    Rolling 1-step WaveCatBoost (letter notebook) + 95\% quantile of
+    Rolling 1-step WaveCatBoost (paper notebook) + 95\% quantile of
     $|Y-\widehat Y|$ on the plotted 7-day window ($\alpha=0.05$).
   \end{exampleblock}
 \end{frame}

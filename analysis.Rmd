@@ -9,6 +9,7 @@ output:
     theme: flatly
     highlight: tango
     df_print: paged
+    css: R/reporting/report.css
 runtime: shiny
 ---
 
@@ -16,7 +17,8 @@ runtime: shiny
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
-                      fig.width = 9, fig.height = 5, dpi = 120)
+                      fig.width = 9, fig.height = 5, dpi = 120,
+                      out.width = "100%")
 source("R/load_all.R")
 source("R/reporting/result_tables.R")
 
@@ -204,12 +206,7 @@ shiny::observeEvent(input$dataset_group, {
 ```
 
 
-```{r plot-css, echo=FALSE}
-shiny::tags$style(HTML("
-  .plot-slot { clear: both; position: relative; }
-  .js-plotly-plot, .plot-container.plotly { width: 100% !important; }
-"))
-```
+
 
 ```{r eda-series, echo=FALSE}
 s_re <- reactive({
@@ -379,7 +376,7 @@ At $k = 1$ the next hour tracks this hour closely. At $k = 24$ a second pattern 
 
 ## 2.5 From EDA to the modelling pipeline
 
-The plots above are not decoration: each finding locks a design choice before any bake-off score. All quantities below use the **training** window only (`eda_design_summary` / `eda_design_decisions` in `R/core/10_eda_design.R`).
+The plots above are not decoration: each finding locks a design choice before any model comparison score. All quantities below use the **training** window only (`eda_design_summary` / `eda_design_decisions` in `R/core/10_eda_design.R`).
 
 **What we check.** (1) Diurnal vs weekly amplitude → seasonality $S$. (2) ACF at lags 1 and 24 → which lag features matter. (3) PACF cutoff → lag window $p$. (4) Residuals of the seasonal naive ($Y_t - Y_{t-24}$) → whether we need more than snaive. (5) Haar MRA band size: MAD of $D_1$ and $S_K$, plus a $D_1$ spike tail (99th abs quantile), all relative to $Y$ → whether a multi-scale / Wave\* path is justified. We do **not** use energy-by-level plots for these decisions.
 
@@ -442,7 +439,7 @@ renderText({
   s  <- eda_design_summary(sp$y_train, sp$t_train, J = J, filter = "haar")
   paste0(
     "Locked for this sensor/pollutant (train only): S = ", s$S,
-    ", bake-off p = ", s$p_lags,
+    ", model comparison p = ", s$p_lags,
     " (PACF suggests ", s$p_suggested, "), ",
     if (isTRUE(s$multi_scale)) {
       "multi-scale MODWT justified (D1 and S both move) → WaveCatBoost path."
@@ -459,7 +456,7 @@ renderText({
 })
 ```
 
-That is the reason for the pipeline in later sections: **$S{=}24$ baselines and MASE**, **lag-$p$ tree features**, and — when train MRA shows both fast and slow structure — **Haar MODWT with one CatBoost (or LGB/XGB) per band, then sum**. The bake-off then ranks those models; EDA only chooses the architecture family.
+That is the reason for the pipeline in later sections: **$S{=}24$ baselines and MASE**, **lag-$p$ tree features**, and — when train MRA shows both fast and slow structure — **Haar MODWT with one CatBoost (or LGB/XGB) per band, then sum**. The model comparison then ranks those models; EDA only chooses the architecture family.
 
 # 3. Preprocessing and train / test split
 
@@ -678,37 +675,18 @@ Pipeline on each series: Haar MRA → one model per band → recursive multi-ste
 - **WaveXGB / WaveLGB / WaveSARIMA** — same transform, different heads.
 - Raw snaive, SARIMA, XGB, LGB, CatBoost — no wavelet, for a fair contrast.
 
-All Wave\* models share the same $K$ and lag $p$. The bake-off is **recursive multi-step**: forecasts feed forward into lags out to horizon $h$ (values in `results/paper/scores.csv`).
+All Wave\* models share the same $K$ and lag $p$. The model comparison is **recursive multi-step**: forecasts feed forward into lags out to horizon $h$ (values in `results/paper/scores.csv`).
 
 # 7. Hyperparameters (WaveCatBoost focus)
 
 We care mainly about **WaveCatBoost**: Haar bands + one CatBoost per band. The paper does not publish tree settings, so we pick a shared lag / depth / learning-rate / depth-$K$ once on **CPCB PM2.5** (train only, 1-day split) and freeze it for every sensor and pollutant.
 
-The screening grid below uses **LightGBM** only as a fast proxy for that search. The winning $(p,\text{depth},\eta,K)$ are then reused by **WaveCatBoost** (and the other Wave\* heads) in the recursive bake-off. Section 8’s letter-notebook run is separate: CatBoost with lags 24 and 1000 trees (rolling 1-step style).
-
-```{r hparams, results="asis"}
-if (is.null(hparams)) {
-  cat("No results/paper/hparams.rds yet. Run scripts/experiments/run_experiments.R from the project root.\n")
-} else {
-  cat(hparams$reason, "\n")
-  if (!is.null(hparams$grid_lgb)) {
-    print(best_kable(head(hparams$grid_lgb, 8), columns = "val_MASE", digits = 3,
-                 caption = "Screening grid (LightGBM proxy on train) — settings reused by WaveCatBoost"))
-  }
-  if (!is.null(hparams$grid_wave)) {
-    print(best_kable(hparams$grid_wave, columns = "val_MASE", digits = 3,
-                 caption = "Wave depth K grid at the winning lag / depth / eta"))
-  }
-}
-```
-
-Search space: $p \in \{24,48\}$, depth $\in \{4,6\}$, $\eta \in \{0.05,0.1\}$, 150 rounds with early stopping. Modelling caps $K$ at 5.
 
 ## 7.1 Wavelet depth — K = 5 versus K = 9
 
 Here $K$ denotes the wavelet depth. Increasing $K$ from 5 to 9 preserves $D_1,\ldots,D_5$ and splits the old smooth component $S_5$ into five slower components, $D_6,D_7,D_8,D_9,S_9$. The number of component models increases from six to ten.
 
-The saved LightGBM proxy search on CPCB PM2.5 gives validation MASE **1.895608 at $K=5$** and **1.863917 at $K=9$**, a reduction of about **1.7%** on one 24-hour validation window. These values come from the wave-depth grid in results/paper/hparams.rds. The recursive bake-off caps the selected depth at $K=5$.
+The saved LightGBM proxy search on CPCB PM2.5 gives validation MASE **1.895608 at $K=5$** and **1.863917 at $K=9$**, a reduction of about **1.7%** on one 24-hour validation window. These values come from the wave-depth grid in results/paper/hparams.rds. The recursive model comparison caps the selected depth at $K=5$.
 
 With $p=24$, the model has only 24 hourly lag values for each component. The added components represent much slower variation, so this short input history covers only a small part of their characteristic timescales. The validation result provides limited evidence for the extra depth.
 
@@ -716,25 +694,29 @@ With $p=24$, the model has only 24 hourly lag values for each component. The add
 
 Let $N$ be the series length, $n$ the number of training rows, $p=24$ the number of lags, $T$ the number of trees, $d$ the tree depth, $h$ the forecast horizon, and $G=8$ the number of grid configurations.
 
-| Step | Cost or operation count | $K=5$ | $K=9$ | Change |
-|---|---|---|---|---|
+::: {.result-table .cost-comparison}
+
+| Step | Cost / count | $K=5$ | $K=9$ | Change |
+|:---|:---|:---:|:---:|:---:|
 | Number of band models | $K+1$ | 6 | 10 | $1.67\times$ |
 | Storing the bands | $O((K+1)N)$ | $6N$ | $10N$ | $1.67\times$ |
 | MODWT decomposition using a pyramid or cumulative-sum implementation | $O(NK)$ | $5N$ | $9N$ | $1.8\times$ |
 | Decomposition using expanded filters and direct convolution | $O(N2^{K+1})$ | $64N$ | $1024N$ | $16\times$ |
 | Fitting one wave method | $(K+1)$ fits. Simplified fit costs are $O(Tnp)$ for LightGBM and $O(Tdnp)$ for CatBoost | 6 fits | 10 fits | $1.67\times$ |
 | Grid search | $G(K+1)$ fits | 48 | 80 | $1.67\times$ |
-| Whole bake-off, 48 cases and four wave methods | $192(K+1)$ fits | 1,152 | 1,920 | 768 extra fits |
+| Whole model comparison, 48 cases and four wave methods | $192(K+1)$ fits | 1,152 | 1,920 | 768 extra fits |
 | Recursive 744-hour forecast, CatBoost with 120 trees of depth 6 | $h(K+1)Td$ split comparisons | 3.2 million | 5.4 million | $1.67\times$ |
 | Haar warm-up or boundary support per side | $2^K-1$ hours | 31 | 511 | $16.5\times$ |
 
+:::
+
 These are operation-count estimates. Actual runtime depends on the implementation and learner. The $O(NK)$ row describes the forward MODWT pyramid; this repository's additive MRA also reconstructs each band separately. The direct-convolution row describes an implementation using expanded filters. The 120-tree forecast row is an illustrative workload. A causal filter has a past-only warm-up, while circular MRA has boundary effects.
 
-Moving to $K=9$ therefore adds about **67% more component fits and recursive tree evaluations**, increases stored band values by the same proportion, and expands the Haar support from 31 to 511 hours. The measured validation improvement is 1.7% on one window, which supports retaining the $K=5$ cap for the reported bake-off.
+Moving to $K=9$ therefore adds about **67% more component fits and recursive tree evaluations**, increases stored band values by the same proportion, and expands the Haar support from 31 to 511 hours. The measured validation improvement is 1.7% on one window, which supports retaining the $K=5$ cap for the reported model comparison.
 
 # 8. Forecasts and conformal intervals
 
-Section 8.1–8.2 follow the letter notebook protocol: Haar MODWT on the series, CatBoost on each band (lags 24, 1000 trees), rolling **1-step** forecasts, then IMODWT. Plots use a **7-day** test window. Run `Rscript scripts/experiments/run_paper_protocol.R` if panels are empty.
+Section 8.1–8.2 follow the paper notebook protocol: Haar MODWT on the series, CatBoost on each band (lags 24, 1000 trees), rolling **1-step** forecasts, then IMODWT. Plots use a **7-day** test window. Run `Rscript scripts/experiments/run_paper_protocol.R` if panels are empty.
 
 Reported intervals here use the **paper residual PI** on that window (95\% quantile of $|Y-\widehat Y|$, $\alpha=0.05$).
 
@@ -804,7 +786,7 @@ output$s8_four <- renderPlotly({
 ```
 
 ```{r s8-alert}
-# Paper-notebook residual PI only (letter Fig. 2 style).
+# Paper-notebook residual PI only (paper Fig. 2 style).
   if (!is.null(paper8)) {
   dplyr::bind_rows(lapply(setdiff(names(paper8), c("scores", "four")), function(s) {
       w <- paper8[[s]]$methods$wavecatboost
@@ -827,7 +809,7 @@ uiOutput("s8_conf_c_slot")
 ```
 
 ```{r s8-conf-server, echo=FALSE}
-.s8_conf_fig <- function(sname, letter) {
+.s8_conf_fig <- function(sname, panel_label) {
   w <- paper8[[sname]]$methods$wavecatboost
   z <- NULL
   t_hat <- y_obs <- NULL
@@ -837,7 +819,7 @@ uiOutput("s8_conf_c_slot")
     y_obs <- paper8[[sname]]$y_test
   }
   h <- stack_px(1L)
-  ttl <- sprintf("%s  %s  PM2.5  |  forecast horizon = 7 days", letter, sname)
+  ttl <- sprintf("%s  %s  PM2.5  |  forecast horizon = 7 days", panel_label, sname)
   if (is.null(z) || is.null(z$yhat)) {
     return(plotly::plotly_empty(type = "scatter", height = h) %>%
              plotly::layout(title = paste(ttl, "— run Rscript scripts/experiments/run_paper_protocol.R")))
@@ -879,7 +861,7 @@ output$s8_conf_b <- renderPlotly(.s8_conf_fig("ID1", "(b)"))
 output$s8_conf_c <- renderPlotly(.s8_conf_fig("SHILLONG", "(c)"))
 ```
 
-## 8.3 Bake-off MASE by horizon (every sensor × pollutant)
+## 8.3 model comparison MASE by horizon (every sensor × pollutant)
 
 
 ```{r s8-illustrative-ui, echo=FALSE}
@@ -992,54 +974,6 @@ if (!file.exists(score_path)) {
 }
 ```
 
-```{r scores-pm25, results="asis"}
-if (is.null(scores) || !nrow(scores)) {
-  cat("No results/paper/scores.rds yet. Run Rscript scripts/experiments/run_experiments.R from the project root.\n")
-} else {
-  focus <- c("wavecatboost", "catboost", "lgb", "sarima", "wavelgb", "snaive")
-  focus <- intersect(focus, unique(scores$method))
-  s_pm <- scores %>%
-    dplyr::filter(.data$pollutant == "PM2.5", .data$method %in% focus)
-
-  sum_tbl <- s_pm %>%
-    dplyr::group_by(method) %>%
-    dplyr::summarise(
-      n = dplyr::n(),
-      mean_MASE = mean(MASE, na.rm = TRUE),
-      median_MASE = stats::median(MASE, na.rm = TRUE),
-      mean_MAE = mean(MAE, na.rm = TRUE),
-      .groups = "drop"
-    ) %>%
-    dplyr::arrange(median_MASE) %>%
-    dplyr::mutate(method = pretty_method(method))
-  print(best_kable(sum_tbl, columns = c("mean_MASE", "median_MASE", "mean_MAE"), digits = 3,
-               caption = "PM2.5 only — sorted by median MASE (recursive bake-off)"))
-
-  wide1d <- s_pm %>%
-    dplyr::filter(.data$horizon == "1d") %>%
-    dplyr::select(sensor, method, MASE) %>%
-    dplyr::mutate(method = pretty_method(method)) %>%
-    tidyr::pivot_wider(names_from = method, values_from = MASE)
-  print(best_kable(wide1d, columns = setdiff(names(wide1d), "sensor"), by_row = TRUE, digits = 3,
-               caption = "PM2.5, 1-day MASE by sensor (lower is better)"))
-
-  mcb_pm <- tryCatch(
-    mcb_from_table(s_pm %>% dplyr::filter(.data$horizon == "1d"),
-                   case_cols = "sensor"),
-    error = function(e) NULL
-  )
-  if (!is.null(mcb_pm)) {
-    mcb_pm <- mcb_pm %>% dplyr::mutate(model = pretty_method(model))
-    print(best_kable(mcb_pm, columns = "mean_rank", digits = 3,
-                 caption = "Our 1-day PM2.5 ranks (from scores.rds)"))
-
-  }
-}
-```
-
-**Why raw CatBoost can beat WaveCatBoost on a grand average.** On CPCB PM2.5 (1-day) WaveCatBoost is typically better than raw CatBoost. Across *all* pollutants and horizons, WaveCatBoost’s **mean** MASE rises because Wave\* forecasts can still fail badly on a few series (SO2, some Shillong cells). Raw CatBoost is steadier there, so its average looks better even when WaveCatBoost wins the main PM2.5 cells. Prefer **median** or PM2.5-only tables for the headline.
-
-**Why SARIMA can look strong in a “top by mean” list.** SARIMA rarely collapses, so its mean stays middling-good. It is not the best PM2.5 method in our bake-off; it just avoids the worst Wave\* blow-ups. Use the PM2.5 table above, not an all-pollutant mean, when talking about WaveCatBoost.
 
 ---
 
@@ -1062,11 +996,11 @@ if (is.null(fs) || !nrow(fs)) {
   params <- tibble::tibble(
     setting = c("Head", "Horizon", "Depth J (= K)", "Detail bands", "Smooth",
                 "Band rule", "Lag p", "Boundary"),
-    value = c("WaveLGB (same as Haar bake-off)", "1 day", "5",
+    value = c("WaveLGB (same as Haar model comparison)", "1 day", "5",
               "D1 … D5", "S5 (DC + leftover low frequencies)",
               "period in [2^j, 2^{j+1}) → Dj", "24", "periodic / full-window FFT")
   )
-  knitr::kable(params, caption = "Fourier band setup (fourier_mra)")
+  print(best_kable(params, columns = character(), caption = "Fourier band setup (fourier_mra)"))
   sub <- fs %>%
     dplyr::filter(filter %in% c("haar", "fourier"), horizon == "1d") %>%
     dplyr::select(sensor, pollutant, filter, MASE, MAE, RMSE)
@@ -1114,7 +1048,7 @@ $$
 
 ### Mapping onto Wave\* slots $(D_1,\ldots,D_K,S_K)$
 
-The bake-off expects the same $K{+}1$ additive channels as Haar. `emd_mra()` in `R/core/04_modwt.R` folds EMD into that layout with $J=K=5$:
+The model comparison expects the same $K{+}1$ additive channels as Haar. `emd_mra()` in `R/core/04_modwt.R` folds EMD into that layout with $J=K=5$:
 
 $$
 D_{j,t}=\mathrm{IMF}_{j,t}\ (j=1,\ldots,\min(J,M)),
@@ -1122,6 +1056,8 @@ D_{j,t}=\mathrm{IMF}_{j,t}\ (j=1,\ldots,\min(J,M)),
 S_{J,t}=r_{M,t}+\sum_{j>J}\mathrm{IMF}_{j,t}
 $$
 (pad $D_j\equiv 0$ if $M<J$). Fastest IMF $\to D_1$; leftover slow IMFs merge into the smooth $S_J$. Forecast rebuild is still $\widehat Y=\sum_j\widehat D_j+\widehat S_J$.
+
+::: {.result-table}
 
 | Setting | Value |
 |---|---|
@@ -1131,7 +1067,9 @@ $$
 | Lag $p$ | 24 |
 | Boundary | `boundary = "periodic"` in `EMD::emd` |
 | Scope | **CPCB and ID1 PM2.5 only** (EMD on full hourly train is slow; `EMD_KEYS` in `scripts/experiments/run_extensions.R`) |
-| Not in | headline `scores.csv` bake-off — extension cache only |
+| Not in | headline `scores.csv` model comparison — extension cache only |
+
+:::
 
 ```{r emd-demo-imf}
 # Illustrative IMFs on a short train prefix (not the test set).
@@ -1213,6 +1151,8 @@ if (!is.null(fs) && nrow(fs) && any(fs$filter == "emd")) {
 
 ### Comparison with MODWT (takeaways)
 
+::: {.result-table}
+
 | | Haar MODWT (paper) | EMD (this extension) |
 |---|---|---|
 | Basis | Fixed Haar filters, octave scales $2^j$ | Data-driven IMFs; no preset frequencies |
@@ -1222,7 +1162,9 @@ if (!is.null(fs) && nrow(fs) && any(fs$filter == "emd")) {
 | CPCB PM2.5 1d MASE (WaveLGB) | **1.031** | 7.460 |
 | ID1 PM2.5 1d MASE (WaveLGB) | **0.360** | 0.616 |
 
-**Conclusions.** (1) Under a matched WaveLGB head, **Haar MODWT beats EMD** on both scored PM2.5 series; the CPCB gap is large. (2) EMD’s adaptivity does not help recursive band forecasting here: unstable IMF counts, mode mixing, and folding slow IMFs into $S_J$ hurt more than they help. (3) Fourier (global octave FFT) also loses to Haar, but far less dramatically than EMD — so the win is specifically for **local multiscale wavelets**, not “any band split.” (4) Keep EMD out of the headline bake-off; treat it as a negative control that justifies sticking with Haar.
+:::
+
+**Conclusions.** (1) Under a matched WaveLGB head, **Haar MODWT beats EMD** on both scored PM2.5 series; the CPCB gap is large. (2) EMD’s adaptivity does not help recursive band forecasting here: unstable IMF counts, mode mixing, and folding slow IMFs into $S_J$ hurt more than they help. (3) Fourier (global octave FFT) also loses to Haar, but far less dramatically than EMD — so the win is specifically for **local multiscale wavelets**, not “any band split.” (4) Keep EMD out of the headline model comparison; treat it as a negative control that justifies sticking with Haar.
 
 ## 10.3 Other wavelet filters (Haar, D4, LA8)
 
@@ -1243,6 +1185,7 @@ if (is.null(fs) || !nrow(fs)) {
   fw <- sub %>%
     dplyr::select(sensor, pollutant, filter, MASE) %>%
     tidyr::pivot_wider(names_from = filter, values_from = MASE) %>%
+    dplyr::select(sensor, pollutant, haar, d4, la8) %>%
     dplyr::arrange(sensor, pollutant)
   print(best_kable(fw, columns = setdiff(names(fw), c("sensor", "pollutant")), by_row = TRUE, digits = 3,
                caption = paste0(
@@ -1252,7 +1195,8 @@ if (is.null(fs) || !nrow(fs)) {
     dplyr::group_by(sensor, pollutant) %>%
     dplyr::slice_min(order_by = MASE, n = 1, with_ties = FALSE) %>%
     dplyr::ungroup() %>%
-    dplyr::count(filter, name = "n_best")
+    dplyr::count(filter, name = "n_best") %>%
+    dplyr::arrange(match(filter, c("haar", "d4", "la8")))
   print(best_kable(winners, columns = "n_best", maximize = "n_best", digits = 0, caption = "How often each filter has the lowest MASE"))
 }
 ```
@@ -1306,24 +1250,6 @@ if (!is.null(fs_plot) && nrow(fs_plot)) {
 }
 ```
 
-```{r filter-scores-takeaway, echo=FALSE}
-fs <- filter_scores
-if (!is.null(fs) && nrow(fs) && "wavecatboost" %in% fs$method) {
-  w <- fs %>%
-    dplyr::filter(.data$method == "wavecatboost", .data$horizon == "1d",
-                  .data$filter %in% c("haar", "d4", "la8")) %>%
-    dplyr::group_by(sensor, pollutant) %>%
-    dplyr::slice_min(order_by = MASE, n = 1, with_ties = FALSE) %>%
-    dplyr::ungroup()
-  n <- nrow(w)
-  n_haar <- sum(w$filter == "haar")
-  paste0(
-    "Across ", n, " sensor×pollutant cells, Haar is best on ", n_haar,
-    ". Longer filters (D4 / LA8) sometimes win a single cell but do not beat Haar overall — ",
-    "Haar stays the default (and matches the paper)."
-  )
-}
-```
 
 ## 10.4 Shillong model and architecture comparisons
 
@@ -1366,34 +1292,6 @@ This chart compares the 14 LightGBM input architectures by mean test MAE across 
 shillong_figures$architecture
 ```
 
-<style>
-.experiment-qna .qna-table {
-  overflow-x: auto;
-  margin: 1em 0;
-}
-.experiment-qna table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.experiment-qna table th,
-.experiment-qna table td {
-  text-align: center !important;
-  vertical-align: middle;
-  padding: 0.5em 0.7em;
-}
-.experiment-qna table th:first-child,
-.experiment-qna table td:first-child {
-  text-align: left !important;
-  min-width: 9em;
-}
-.experiment-qna table th {
-  white-space: normal;
-}
-.experiment-qna table td:not(:first-child) {
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}
-</style>
 
 ::: {.experiment-qna}
 
