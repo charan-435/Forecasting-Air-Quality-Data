@@ -1,255 +1,134 @@
-﻿% WaveCatBoost methodology + conformal prediction
+% WaveCatBoost methodology + conformal prediction
 
-\begin{frame}{WaveCatBoost pipeline}
+\begin{frame}{Error metrics}
   \centering
-  \begin{tikzpicture}[
-    font=\scriptsize,
-    box/.style={draw, rounded corners=2pt, align=center, inner sep=3.5pt, minimum height=0.75cm},
-    arr/.style={-{Latex}, thick}
-  ]
-    \node[box, fill=blue!12] (y) {$Y_t$};
-    \node[box, fill=blue!12, right=0.45cm of y] (mra) {Haar MRA\\$D_1{\ldots}D_K,S_K$};
-    \node[box, fill=orange!18, right=0.45cm of mra] (cb) {CatBoost\\per band};
-    \node[box, fill=orange!18, right=0.45cm of cb] (rec) {lags $p{=}24$\\recursive};
-    \node[box, fill=green!15, right=0.45cm of rec] (inv) {$\widehat Y=\sum \widehat D_k+\widehat S_K$};
-
-    \draw[arr] (y) -- (mra);
-    \draw[arr] (mra) -- (cb);
-    \draw[arr] (cb) -- (rec);
-    \draw[arr] (rec) -- (inv);
-  \end{tikzpicture}
-
-  \vspace{0.55em}
-  {\footnotesize
-  \begin{itemize}\setlength\itemsep{0.35em}
-    \item Paper hybrid (Borah et al.): decompose $\to$ light tree per scale $\to$ sum.
-    \item Same $K$ and lag $p$ for every Wave\* head; only the tree family changes.
-    \item Point forecast alone is not enough for air-quality decisions --- we need uncertainty
-          (next slides).
-  \end{itemize}
-  }
-\end{frame}
-
-\begin{frame}{Why CatBoost on each band?}
-  \begin{columns}[T]
-    \begin{column}{0.52\textwidth}
-      \begin{block}{Why a tree head}
-        {\footnotesize
-        \begin{itemize}\setlength\itemsep{0.3em}
-          \item Fast enough for near real-time AQ use.
-          \item Handles nonlinear lag effects without a deep net.
-          \item CatBoost: ordered boosting, strong default regularisation.
-          \item Paper picks CatBoost over raw LGB / XGB / RNNs on MASE.
-        \end{itemize}
-        }
-      \end{block}
-    \end{column}
-    \begin{column}{0.46\textwidth}
-      \begin{block}{Why \emph{one model per band}}
-        {\footnotesize
-        \begin{itemize}\setlength\itemsep{0.3em}
-          \item $D_1$: spiky, high-frequency noise.
-          \item $D_k$: mid-scale diurnal swings.
-          \item $S_K$: slow level / trend.
-          \item Separate CatBoosts learn band-specific lag structure;
-                a single raw model mixes all scales.
-        \end{itemize}
-        }
-      \end{block}
-    \end{column}
-  \end{columns}
-  \vspace{0.45em}
-  \begin{exampleblock}{Family}
-    WaveCatBoost $=$ Haar MRA $+$ CatBoost$(D_1),\ldots,$CatBoost$(S_K)$.\\
-    WaveLGB / WaveXGB keep the same bands; only the fitter changes.
-  \end{exampleblock}
-\end{frame}
-
-\begin{frame}{Features, recursive forecast, reconstruct}
-  {\footnotesize
-  \textbf{Features (each band).} Lag vector of length $p$:
+  Mean absolute scaled error (MASE)\par\medskip
+  $N$ is the training length, $h$ is the forecast horizon, and $S=24$ hours.
   \[
-    \mathbf{x}_t^{(k)}
-    =\big(D_{k,t-1},\ldots,D_{k,t-p}\big)
-    \quad\text{(same for $S_K$)}.
+    \mathrm{MASE} = \frac{N-S}{h}\,
+    \frac{\sum_{t=N+1}^{N+h}|\hat Y_t-Y_t|}
+         {\sum_{t=S+1}^{N}|Y_t-Y_{t-S}|}.
   \]
-  No calendar / weather covariates in the letter WaveCatBoost head.
-  }
-  \vspace{0.25em}
-  \begin{columns}[T]
-    \begin{column}{0.48\textwidth}
-      \begin{block}{Recursive $h$-step}
-        {\footnotesize
-        For $i=1,\ldots,h$ on each band:
-        \begin{enumerate}\setlength\itemsep{0.2em}
-          \item Build lag row from history.
-          \item Predict next value with CatBoost.
-          \item Append prediction; roll the window.
-        \end{enumerate}
-        Multi-step uses \emph{its own} forecasts as lags
-        (honest bake-off protocol).
-        }
-      \end{block}
-    \end{column}
-    \begin{column}{0.50\textwidth}
-      \begin{block}{Reconstruct}
-        {\footnotesize
-        Additive MRA $\Rightarrow$ just sum:
-        \[
-          \widehat Y_{t+i}
-          =\sum_{k=1}^{K}\widehat D_{k,t+i}
-           +\widehat S_{K,t+i}.
-        \]
-        Equivalent to IMODWT when bands are
-        Haar MRA details $+$ smooth.\\[0.25em]
-        Letter notebook also uses rolling
-        \textbf{1-step} (observed lags) ---
-        that is Table~1, not the recursive bake-off.
-        }
-      \end{block}
-    \end{column}
-  \end{columns}
+  The denominator measures seasonal-naive error on the training data.
 \end{frame}
 
-\begin{frame}{WaveCatBoost hyperparameters}
-  {\footnotesize
-  Paper does not publish tree settings. We screen once on \textbf{CPCB PM$_{2.5}$}
-  (train only, 1-day split) and freeze for every sensor / pollutant.
-  }
-  \vspace{0.35em}
+\begin{frame}{Model comparison}
   \centering
-  {\footnotesize
-  \begin{tabular}{lc}
-    \toprule
-    Setting & Frozen value \\
-    \midrule
-    Wavelet filter & Haar \\
-    Depth $K$ ($J$) & 5 (capped; WaveLGB CV preferred 9) \\
-    Lag $p$ & 24 \\
-    Tree depth & 6 \\
-    Learning rate $\eta$ & 0.05 \\
-    Rounds / early stop & 160 / 30 \\
-    \bottomrule
-  \end{tabular}
-  }
-  \vspace{0.45em}
-  \begin{itemize}\setlength\itemsep{0.25em}
-    \item Screening grid uses \textbf{LightGBM as a fast proxy}; winning
-          $(p,\text{depth},\eta,K)$ reused by WaveCatBoost.
-    \item Letter-notebook 1-step run: CatBoost, lags 24, 1000 trees
-          (separate from the recursive bake-off).
-  \end{itemize}
+  PM$_{2.5}$, 1-day horizon. Lower MASE is better.\par\medskip
+  \includegraphics[width=0.93\linewidth]{mase_pm25_model_comparison.pdf}
 \end{frame}
 
-\begin{frame}{WaveCatBoost --- training sketch}
+\begin{frame}{CatBoost: From Trees to Ordered Boosting}
+  \small
+  \textbf{1. Decision tree}
+  \[
+    f(x)=w_j \quad \text{if }x\in R_j
+  \]
+  Each leaf predicts a value.\par\smallskip
+  \textbf{2. Gradient boosting}
+  \[
+    F_0(x)=c,\qquad
+    r_i=y_i-F_{m-1}(x_i),\qquad h_m(x_i)\approx r_i
+  \]
+  \[
+    F_m(x)=F_{m-1}(x)+\eta h_m(x),
+    \qquad \eta\text{ is the learning rate.}
+  \]
+  \[
+    h_m(x_i)\approx
+    -\left.\frac{\partial L(y_i,F)}{\partial F}\right|_{F=F_{m-1}(x_i)}
+  \]
+  \textbf{3. Ordered boosting and symmetric trees}\par
+  Ordered gradients use a model fitted on preceding observations.
+  This reduces prediction shift.\par
+  Same split at each depth. $2^d$ leaves, so $d=6\Rightarrow64$ leaves.
+\end{frame}
+
+\begin{frame}{Our Hyperparameters vs Original Paper}
+  \small
+  The paper followed a predefined protocol. We used a limited grid search
+  to select the lag window, tree depth and learning rate.
+  \medskip
   \centering
-  \begin{tikzpicture}[
-    font=\scriptsize,
-    box/.style={draw, rounded corners=2pt, align=center, inner sep=3pt,
-                minimum width=2.15cm, minimum height=0.62cm},
-    arr/.style={-{Latex}, thick}
-  ]
-    \node[box, fill=blue!12] (train) {Train $Y_{1:n}$};
-    \node[box, fill=blue!12, right=0.55cm of train] (mra) {Haar MRA\\$K{=}5$};
-    \node[box, fill=orange!18, below=0.55cm of mra] (d1) {CatBoost on $D_1$};
-    \node[box, fill=orange!18, left=0.35cm of d1] (d2) {$\cdots$};
-    \node[box, fill=orange!18, right=0.35cm of d1] (sk) {CatBoost on $S_K$};
-    \node[box, fill=green!15, below=0.55cm of d1] (fc) {Recursive forecast\\each band $\to$ sum};
-
-    \draw[arr] (train) -- (mra);
-    \draw[arr] (mra) -- (d1);
-    \draw[arr] (mra.south west) -- (d2.north);
-    \draw[arr] (mra.south east) -- (sk.north);
-    \draw[arr] (d1) -- (fc);
-    \draw[arr] (d2) -- (fc);
-    \draw[arr] (sk) -- (fc);
-  \end{tikzpicture}
-
-  \vspace{0.55em}
-  {\footnotesize
-  \begin{itemize}\setlength\itemsep{0.3em}
-    \item Fit CatBoosts on \textbf{train bands only}; scaler also fit on train.
-    \item Val (14\,d) used only for the one-time hyperparameter screen.
-    \item Test $=$ last $h$ hours; score MASE / MAE / RMSE after inverse scaling.
-  \end{itemize}
-  }
-\end{frame}
-
-% ---- Metrics + bake-off (before conformal) ----
-\begin{frame}{Error metrics (formulas)}
-  {\footnotesize
-  With train length $N$, horizon $h$, seasonality $S{=}24$:
-  \[
-    \mathrm{MASE}
-    =\frac{\tfrac1h\sum_{t=1}^{h}|\widehat Y_t-Y_t|}
-          {\tfrac1{N-S}\sum_{t=S+1}^{N}|Y_t-Y_{t-S}|}
-  \]
-  (equivalent to paper Eq.~(6) / Hyndman seasonal MASE).\\[0.4em]
-  \[
-    \mathrm{MAE}=\tfrac1h\sum_{t=1}^{h}|\widehat Y_t-Y_t|,
-    \qquad
-    \mathrm{RMSE}=\sqrt{\tfrac1h\sum_{t=1}^{h}(\widehat Y_t-Y_t)^2}.
-  \]
-  }
-  \vspace{0.3em}
-  \begin{itemize}
-    \item MASE $<1$: better than seasonal naive on the train scale.
-    \item Lower is better for all three.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Our recursive bake-off (1-day MASE)}
   {\scriptsize
-  \centering
-  \begin{tabular}{llcccc}
+  \begin{tabular}{lll}
     \toprule
-    Sensor & Pol. & snaive & LGB & CatBoost & WaveCatBoost \\
+    Parameter & Original paper & Our implementation \\
     \midrule
-    CPCB & PM$_{2.5}$ & 2.02 & 0.74 & 0.82 & \textbf{0.71} \\
-    CPCB & PM$_{10}$  & 1.46 & 0.52 & 0.75 & 0.53 \\
-    CPCB & NO$_2$     & 0.72 & 0.52 & 0.51 & 0.55 \\
-    ID1  & PM$_{2.5}$ & 0.71 & 0.84 & 0.67 & 0.42 \\
-    ID1  & PM$_{10}$  & 0.66 & 0.81 & 0.73 & 0.41 \\
-    ID1  & NO$_2$     & 1.20 & 1.08 & 1.06 & 1.24 \\
+    Lag window ($p$) & 24 & $24,48 \rightarrow 24$ \\
+    Wavelet depth ($K$) & $\lfloor\ln N\rfloor$, capped at 9 & 5 \\
+    Tree depth & Default 6 & $4,6 \rightarrow 6$ \\
+    Learning rate ($\eta$) & Automatic selection & $0.05,0.10 \rightarrow 0.05$ \\
     \bottomrule
   \end{tabular}
   }
-  \vspace{0.35em}
-  \begin{itemize}
-    \item \textbf{Protocol:} recursive multi-step from one origin (\texttt{scores.csv}).
-    \item Fair for ``does wavelet help vs raw CatBoost / LGB?'' --- \textbf{not} Table~1.
-  \end{itemize}
+  \[
+    2\;(p)\times2\;(\mathrm{depth})\times2\;(\eta)
+    =\boxed{8\text{ combinations}}
+  \]
+  \[
+    \boxed{p=24,\quad \mathrm{depth}=6,\quad \eta=0.05}
+  \]
+  \begin{flushleft}
+  \scriptsize
+  Lag window: one daily cycle (24 h) versus two (48 h).\\
+  Tree depth: 4 versus 6. Learning rate: 0.05 versus 0.10.\\
+  Wavelet depth: $K=5$, using the energy-based choice and practical limits.
+  The CPCB theoretical depth is $K=9$.\par\smallskip
+  LightGBM selected the settings reused across the tree-based experiments.
+  CatBoost was not independently tuned. The paper's core approach was retained.
+  \end{flushleft}
 \end{frame}
 
 % ---- Conformal / uncertainty ----
 \begin{frame}{Why conformal prediction?}
   \begin{columns}[c]
-    \begin{column}{0.46\textwidth}
+    \begin{column}{0.48\textwidth}
       \centering
-      \begin{tikzpicture}[font=\scriptsize, >=Latex]
-        % Point forecast only
-        \node[anchor=west] at (0,2.15) {\textbf{Point forecast}};
-        \draw[thick, gray!50] (0,1.55) -- (3.6,1.55);
-        \fill[red!70!black] (1.9,1.55) circle (2.2pt);
-        \node[above] at (1.9,1.55) {$\widehat Y_t$};
-        \node[gray, below] at (1.9,1.15) {``PM$_{2.5}=20$''};
+      \begin{tikzpicture}[
+        font=\scriptsize,
+        >=Latex,
+        panel/.style={draw=gray!40, rounded corners=3pt, inner sep=6pt,
+                      fill=gray!3, minimum width=4.05cm}
+      ]
+        % ---- Panel 1: point forecast ----
+        \node[panel, minimum height=1.7cm] (p1) {};
+        \node[anchor=north west, font=\scriptsize\bfseries]
+              at ([xshift=4pt,yshift=-4pt]p1.north west) {Point forecast};
+        \draw[thick, gray!55] ([yshift=-0.22cm]p1.west) ++(0.4,0) -- ++(3.15,0);
+        \coordinate (pf) at ([yshift=-0.22cm]p1.center);
+        \fill[red!70!black] (pf) circle (2.5pt);
+        \node[above=2pt] at (pf) {$\widehat Y_t$};
+        \node[below=4pt, gray] at (pf) {``PM$_{2.5}=20$''};
 
-        % Conformal band
-        \node[anchor=west] at (0,0.55) {\textbf{+ conformal band}};
-        \fill[blue!12] (0.55,-0.55) rectangle (3.25,0.35);
-        \draw[thick, blue!55!black] (0.55,-0.55) -- (3.25,-0.55);
-        \draw[thick, blue!55!black] (0.55,0.35) -- (3.25,0.35);
-        \node[left] at (0.55,0.35) {$U_t$};
-        \node[left] at (0.55,-0.55) {$L_t$};
-        \fill[red!70!black] (1.9,-0.10) circle (2.2pt);
-        \node[right] at (2.05,-0.10) {$\widehat Y_t$};
-        \fill[black] (2.55,-0.25) circle (1.6pt);
-        \node[right] at (2.65,-0.25) {$Y_t$};
+        % ---- Arrow between panels ----
+        \draw[-{Latex}, thick, gray!55] ([yshift=-0.18cm]p1.south) -- ++(0,-0.32);
+
+        % ---- Panel 2: conformal band ----
+        \node[panel, minimum height=2.25cm, below=0.62cm of p1] (p2) {};
+        \node[anchor=north west, font=\scriptsize\bfseries]
+              at ([xshift=4pt,yshift=-4pt]p2.north west) {+ conformal band};
+        \fill[orange!16] ([xshift=0.72cm,yshift=-1.05cm]p2.north west)
+              rectangle ([xshift=-0.42cm,yshift=0.42cm]p2.south east);
+        \draw[thick, orange!70!black]
+              ([xshift=0.72cm,yshift=-1.05cm]p2.north west)
+              -- ([xshift=-0.42cm,yshift=-1.05cm]p2.north east);
+        \draw[thick, orange!70!black]
+              ([xshift=0.72cm,yshift=0.42cm]p2.south west)
+              -- ([xshift=-0.42cm,yshift=0.42cm]p2.south east);
+        \node[left=2pt, font=\tiny] at ([xshift=0.72cm,yshift=-1.05cm]p2.north west) {$U_t$};
+        \node[left=2pt, font=\tiny] at ([xshift=0.72cm,yshift=0.42cm]p2.south west) {$L_t$};
+        \coordinate (yh) at ([yshift=-0.08cm]p2.center);
+        \coordinate (yt) at ([xshift=0.85cm,yshift=-0.35cm]p2.center);
+        \fill[red!70!black] (yh) circle (2.5pt);
+        \node[right=3pt] at (yh) {$\widehat Y_t$};
+        \fill[black] (yt) circle (1.9pt);
+        \node[right=2pt] at (yt) {$Y_t$};
       \end{tikzpicture}
     \end{column}
-    \begin{column}{0.52\textwidth}
+    \begin{column}{0.50\textwidth}
       {\footnotesize
-      \begin{itemize}\setlength\itemsep{0.55em}
+      \begin{itemize}\setlength\itemsep{0.85em}
         \item \textbf{Need:} alerts need a safe range, not one risky guess.
         \item \textbf{Recipe:} use recent $|Y-\widehat Y|$ to set width ---
               large recent errors $\Rightarrow$ wider band.
@@ -262,36 +141,60 @@
     \end{column}
   \end{columns}
   \vspace{0.55em}
-  \begin{block}{One line}
-    From $\widehat Y_t$ alone to a band $[L_t,U_t]$ with target coverage $1-\alpha=95\%$.
-  \end{block}
+  {\footnotesize
+  \centering
+  From $\widehat Y_t$ alone to a band $[L_t,U_t]$ with target coverage $1-\alpha=95\%$.\par
+  }
 \end{frame}
 
 \begin{frame}{Conformal formula}
-  \[
-    CS_t=\frac{|Y_t-\widehat Y_t|}{\widehat U_t},
-    \qquad
-    CQ_t=Q_{1-\alpha}\!\big(CS_{t-\kappa+1:t}\big),
-    \qquad
-    PI_t=\widehat Y_t\pm CQ_t\,\widehat U_t
-  \]
   {\footnotesize
-  \begin{itemize}\setlength\itemsep{0.22em}
-    \item $Y_t$, $\widehat Y_t$: observed value and WaveCatBoost forecast.
-    \item $CS_t$: nonconformity --- absolute error scaled by $\widehat U_t$.
-    \item $\alpha$: miscoverage rate ($\alpha=0.05$ $\Rightarrow$ 95\% target).
-    \item $\kappa$: calibration window length (we try $\{24,168,336\}$~h).
-    \item Band edges: $L_t=\widehat Y_t-CQ_t\widehat U_t$,\
-          $U_t=\widehat Y_t+CQ_t\widehat U_t$
-          (clip $L_t\ge 0$).
-  \end{itemize}
+  \centering
+  \renewcommand{\arraystretch}{1.35}
+  \begin{tabular}{@{}r@{\hspace{0.7em}}c@{}}
+    \textbf{Score}
+      & $CS_t=\dfrac{|Y_t-\widehat Y_t|}{\widehat U_t}$ \\
+    \textbf{Quantile}
+      & $CQ_t=Q_{1-\alpha}\!\big(CS_{t-\kappa+1:t}\big)$ \\
+    \textbf{Interval}
+      & $PI_t=\widehat Y_t\pm CQ_t\,\widehat U_t$ \\
+  \end{tabular}
   }
-  \vspace{0.15em}
-  \begin{exampleblock}{How to use it}
-    Fit on train $\to$ compute $CS$ on a held-out calibration window $\to$
-    pick $\kappa$ so cal.\ coverage $\approx 95\%$ $\to$ apply $CQ\,\widehat U$
-    on the test hours. Coverage $=$ fraction of test points with $Y_t\in[L_t,U_t]$.
-  \end{exampleblock}
+  \vspace{0.35em}
+  {\scriptsize
+  \centering
+  Band edges:
+  $L_t=\widehat Y_t-CQ_t\widehat U_t$,\
+  $U_t=\widehat Y_t+CQ_t\widehat U_t$
+  (clip $L_t\ge 0$).
+  \par
+  }
+  \vspace{0.4em}
+  \begin{columns}[T]
+    \begin{column}{0.48\textwidth}
+      {\footnotesize
+      \begin{itemize}\setlength\itemsep{0.35em}
+        \item $Y_t$, $\widehat Y_t$: truth / WaveCatBoost.
+        \item $\widehat U_t$: local error scale (next slide).
+        \item $CS_t$: scaled $|$error$|$ (nonconformity).
+        \item $\alpha{=}0.05$ $\Rightarrow$ 95\% target.
+        \item $\kappa\in\{24,168,336\}$~h (cal.\ window).
+      \end{itemize}
+      }
+    \end{column}
+    \begin{column}{0.50\textwidth}
+      \begin{exampleblock}{How to use it}
+        {\scriptsize
+        \begin{enumerate}\setlength\itemsep{0.2em}
+          \item Fit on train; residuals on a cal.\ window.
+          \item Build $CS_t$; pick $\kappa$ for $\approx 95\%$ cal.\ coverage.
+          \item Test: band $\widehat Y_t\pm CQ_t\widehat U_t$.
+          \item Coverage $=$ share of $Y_t\in[L_t,U_t]$.
+        \end{enumerate}
+        }
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}{How $\widehat U_t$ and $CQ_t$ are computed}

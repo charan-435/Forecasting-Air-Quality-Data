@@ -56,7 +56,8 @@ if (!CONF_ONLY) {
     c("snaive", "sarima", "lgb", "catboost", "wavelgb", "wavecatboost")
   }
   POLS <- FOUR_POLLUTANTS
-  HNS <- if (QUICK) "1d" else c("1d", "7d")
+  # 1d: four pollutants; 7d/14d/31d: PM2.5 only (same as historical Shillong bake-off).
+  HNS <- if (QUICK) "1d" else c("1d", "7d", "14d", "31d")
 
   cache <- load_cache(cache_path)
   jobs <- list()
@@ -64,8 +65,7 @@ if (!CONF_ONLY) {
     s <- series[[paste(NEW_SENSOR, p, sep = "_")]]
     if (is.null(s)) next
     for (hn in HNS) {
-      # 7-day only for PM2.5 (conformal + comparison); 1-day for four pollutants.
-      if (identical(hn, "7d") && !identical(p, "PM2.5")) next
+      if (hn %in% c("7d", "14d", "31d") && !identical(p, "PM2.5")) next
       h <- HORIZONS[[hn]]
       if (h >= length(s$y)) next
       for (m in METHODS) {
@@ -88,16 +88,19 @@ if (!CONF_ONLY) {
     if (use_scale) {
       sc <- minmax_fit(split$y_train)
       ytr <- minmax_apply(split$y_train, sc)
+      yte <- minmax_apply(split$y_test, sc)
     } else {
       sc <- NULL
       ytr <- split$y_train
+      yte <- split$y_test
     }
-    message(sprintf("[%s] %s %s %s h=%s",
+    message(sprintf("[%s] %s %s %s h=%s (rolled)",
                     format(Sys.time(), "%H:%M:%S"), job$sensor, job$pollutant,
                     job$method, job$horizon))
     t0 <- proc.time()[3]
     out <- tryCatch(
-      fit_and_forecast(job$method, ytr, h = job$h, params = params, J = J_use),
+      fit_and_forecast(job$method, ytr, h = job$h, params = params, J = J_use,
+                       y_future = yte),
       error = function(e) {
         message("  ERROR: ", e$message)
         NULL

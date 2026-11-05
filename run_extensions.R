@@ -91,15 +91,17 @@ for (job in jobs) {
   split <- chrono_split(s$y, s$times, job$h)
   sc    <- minmax_fit(split$y_train)
   ytr   <- minmax_apply(split$y_train, sc)
+  yte   <- minmax_apply(split$y_test, sc)
 
-  message(sprintf("[%s] %s | %s %s h=%s",
+  message(sprintf("[%s] %s | %s %s h=%s (rolled)",
                   format(Sys.time(), "%H:%M:%S"),
                   toupper(job$filter),
                   job$sensor, job$pollutant, job$horizon))
   t0  <- proc.time()[3]
   out <- tryCatch(
     fit_and_forecast("wavelgb", ytr, h = job$h,
-                     params = params, J = J_use, filter = job$filter),
+                     params = params, J = J_use, filter = job$filter,
+                     y_future = yte),
     error = function(e) { message("  ERROR: ", e$message); NULL }
   )
   elapsed <- proc.time()[3] - t0

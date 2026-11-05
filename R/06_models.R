@@ -57,6 +57,31 @@ forecast_arima_obj <- function(fit, h) {
   as.numeric(forecast::forecast(fit, h = h)$mean)
 }
 
+# Rolled 1-step: each origin uses observed history (teacher forcing), no retrain
+# of the coefficient structure beyond applying the frozen model to the prefix.
+walkforward_arima <- function(fit, y_hist, y_future, season = SEASONALITY) {
+  y <- as.numeric(y_hist)
+  y_future <- as.numeric(y_future)
+  h <- length(y_future)
+  fc <- numeric(h)
+  for (i in seq_len(h)) {
+    fit_i <- tryCatch(
+      forecast::Arima(stats::ts(y, frequency = season), model = fit),
+      error = function(e) {
+        forecast::auto.arima(
+          stats::ts(y, frequency = season),
+          stepwise = TRUE, approximation = TRUE, seasonal = TRUE,
+          max.p = 2, max.q = 2, max.P = 1, max.Q = 1, max.d = 1, max.D = 1,
+          trace = FALSE
+        )
+      }
+    )
+    fc[i] <- as.numeric(forecast::forecast(fit_i, h = 1L)$mean)[1L]
+    y <- c(y, y_future[i])
+  }
+  fc
+}
+
 fit_sarima_auto <- function(y_train, season = SEASONALITY) {
   forecast::auto.arima(
     stats::ts(y_train, frequency = season),
@@ -330,10 +355,10 @@ wave_forecast_components <- function(wave_fit, y_train, h, fitter_kind = "tree")
   list(components = fc, yhat = mra_forecast_sum(fc))
 }
 
-# Honest 1-step-ahead evaluation: at origin t the model sees y[1:t] only.
-# Haar MRA is recomputed on that prefix (test hour t+1 is not in the filter).
+# Honest rolled 1-step: at origin t the model sees y[1:t] only.
+# MRA is recomputed on that prefix (test hour t+1 is not in the filter).
 # Frozen component models (trained on the pre-test window).
-wave_walkforward_1step <- function(wave_fit, y, n_train, h) {
+wave_walkforward_1step <- function(wave_fit, y, n_train, h, fitter_kind = "tree") {
   y <- as.numeric(y)
   n <- length(y)
   n_train <- as.integer(n_train)
@@ -341,6 +366,7 @@ wave_walkforward_1step <- function(wave_fit, y, n_train, h) {
   if (n_train + h > n) stop("walk-forward window exceeds series length.")
   filt <- wave_fit$filter %||% "haar"
   J <- as.integer(wave_fit$J)
+  fitter_kind <- tolower(fitter_kind)
   yhat <- numeric(h)
   for (i in seq_len(h)) {
     origin <- n_train + i - 1L
@@ -349,7 +375,15 @@ wave_walkforward_1step <- function(wave_fit, y, n_train, h) {
     acc <- 0
     for (nm in names(wave_fit$models)) {
       fit <- wave_fit$models[[nm]]
-      acc <- acc + predict_tree_row(fit, last_lag_row(comps[[nm]], fit$p))
+      if (fitter_kind == "tree") {
+        acc <- acc + predict_tree_row(fit, last_lag_row(comps[[nm]], fit$p))
+      } else {
+        fit_i <- tryCatch(
+          forecast::Arima(stats::ts(comps[[nm]], frequency = SEASONALITY), model = fit),
+          error = function(e) fit
+        )
+        acc <- acc + as.numeric(forecast::forecast(fit_i, h = 1L)$mean)[1L]
+      }
     }
     yhat[i] <- acc
   }
@@ -372,61 +406,111 @@ wave_fit_sarima <- function(y_train, J, filter = "haar") {
 }
 
 # ---- One-shot dispatcher --------------------------------------------------
+# y_future: if provided, use rolled (walk-forward 1-step) with observed lags;
+#           if NULL, use recursive multi-step from one origin (legacy).
 
 fit_and_forecast <- function(method, y_train, h,
                               params = default_tree_params(),
                               J = 5L,
-                              filter = "haar") {
+                              filter = "haar",
+                              y_future = NULL) {
   method <- tolower(method)
+  y_train <- as.numeric(y_train)
+  rolled <- !is.null(y_future)
+  if (rolled) {
+    y_future <- as.numeric(y_future)
+    h <- length(y_future)
+  }
+
   if (method == "snaive") {
-    return(list(yhat = forecast_snaive(y_train, h), method = method))
+    yhat <- if (rolled) {
+      walkforward_snaive(y_train, y_future)
+    } else {
+      forecast_snaive(y_train, h)
+    }
+    return(list(yhat = yhat, method = method, protocol = if (rolled) "rolled" else "recursive"))
   }
   if (method == "ar") {
     fit <- fit_ar(y_train, params$p)
-    return(list(yhat = forecast_arima_obj(fit, h), method = method, fit = fit))
+    yhat <- if (rolled) walkforward_arima(fit, y_train, y_future) else forecast_arima_obj(fit, h)
+    return(list(yhat = yhat, method = method, fit = fit,
+                protocol = if (rolled) "rolled" else "recursive"))
   }
   if (method == "sarima") {
     fit <- fit_sarima_auto(y_train)
-    return(list(yhat = forecast_arima_obj(fit, h), method = method, fit = fit))
+    yhat <- if (rolled) walkforward_arima(fit, y_train, y_future) else forecast_arima_obj(fit, h)
+    return(list(yhat = yhat, method = method, fit = fit,
+                protocol = if (rolled) "rolled" else "recursive"))
   }
   if (method == "xgb") {
     fit <- fit_xgb(y_train, params)
-    return(list(yhat = recursive_tree_forecast(fit, y_train, h),
-                method = method, fit = fit))
+    yhat <- if (rolled) {
+      walkforward_tree_forecast(fit, y_train, y_future)
+    } else {
+      recursive_tree_forecast(fit, y_train, h)
+    }
+    return(list(yhat = yhat, method = method, fit = fit,
+                protocol = if (rolled) "rolled" else "recursive"))
   }
   if (method == "lgb") {
     fit <- fit_lgb(y_train, params)
-    return(list(yhat = recursive_tree_forecast(fit, y_train, h),
-                method = method, fit = fit))
+    yhat <- if (rolled) {
+      walkforward_tree_forecast(fit, y_train, y_future)
+    } else {
+      recursive_tree_forecast(fit, y_train, h)
+    }
+    return(list(yhat = yhat, method = method, fit = fit,
+                protocol = if (rolled) "rolled" else "recursive"))
   }
   if (method == "catboost") {
     fit <- fit_cat(y_train, params)
-    return(list(yhat = recursive_tree_forecast(fit, y_train, h),
-                method = method, fit = fit))
+    yhat <- if (rolled) {
+      walkforward_tree_forecast(fit, y_train, y_future)
+    } else {
+      recursive_tree_forecast(fit, y_train, h)
+    }
+    return(list(yhat = yhat, method = method, fit = fit,
+                protocol = if (rolled) "rolled" else "recursive"))
   }
   if (method == "wavexgb") {
     wf <- wave_fit_components(y_train, J, fit_xgb, params, filter = filter)
+    if (rolled) {
+      yhat <- wave_walkforward_1step(wf, c(y_train, y_future), length(y_train), h, "tree")
+      return(list(yhat = yhat, method = method, fit = wf, protocol = "rolled"))
+    }
     fc <- wave_forecast_components(wf, y_train, h, "tree")
     return(list(yhat = fc$yhat, method = method, fit = wf,
-                components = fc$components))
+                components = fc$components, protocol = "recursive"))
   }
   if (method == "wavelgb") {
     wf <- wave_fit_components(y_train, J, fit_lgb, params, filter = filter)
+    if (rolled) {
+      yhat <- wave_walkforward_1step(wf, c(y_train, y_future), length(y_train), h, "tree")
+      return(list(yhat = yhat, method = method, fit = wf, protocol = "rolled"))
+    }
     fc <- wave_forecast_components(wf, y_train, h, "tree")
     return(list(yhat = fc$yhat, method = method, fit = wf,
-                components = fc$components))
+                components = fc$components, protocol = "recursive"))
   }
   if (method == "wavecatboost") {
     wf <- wave_fit_components(y_train, J, fit_cat, params, filter = filter)
+    if (rolled) {
+      yhat <- wave_walkforward_1step(wf, c(y_train, y_future), length(y_train), h, "tree")
+      return(list(yhat = yhat, method = method, fit = wf, protocol = "rolled"))
+    }
     fc <- wave_forecast_components(wf, y_train, h, "tree")
     return(list(yhat = fc$yhat, method = method, fit = wf,
-                components = fc$components))
+                components = fc$components, protocol = "recursive"))
   }
   if (method == "wavesarima") {
     wf <- wave_fit_sarima(y_train, J, filter = filter)
+    if (rolled) {
+      yhat <- wave_walkforward_1step(wf, c(y_train, y_future), length(y_train), h, "sarima")
+      return(list(yhat = yhat, method = method, fit = wf, protocol = "rolled"))
+    }
     fc <- wave_forecast_components(wf, y_train, h, "sarima")
     return(list(yhat = fc$yhat, method = method, fit = wf,
-                components = fc$components))
+                components = fc$components, protocol = "recursive"))
   }
   stop("Unknown method: ", method)
 }
