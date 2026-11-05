@@ -1,247 +1,83 @@
 % WaveCatBoost methodology + conformal prediction
 
-\begin{frame}{WaveCatBoost pipeline}
+\begin{frame}{Error metrics}
   \centering
-  \begin{tikzpicture}[
-    font=\scriptsize,
-    box/.style={draw, rounded corners=2pt, align=center, inner sep=3.5pt, minimum height=0.75cm},
-    arr/.style={-{Latex}, thick}
-  ]
-    \node[box, fill=blue!12] (y) {$Y_t$};
-    \node[box, fill=blue!12, right=0.45cm of y] (mra) {Haar MRA\\$D_1{\ldots}D_K,S_K$};
-    \node[box, fill=orange!18, right=0.45cm of mra] (cb) {CatBoost\\per band};
-    \node[box, fill=orange!18, right=0.45cm of cb] (rec) {lags $p{=}24$\\rolled 1-step};
-    \node[box, fill=green!15, right=0.45cm of rec] (inv) {$\widehat Y=\sum \widehat D_k+\widehat S_K$};
-
-    \draw[arr] (y) -- (mra);
-    \draw[arr] (mra) -- (cb);
-    \draw[arr] (cb) -- (rec);
-    \draw[arr] (rec) -- (inv);
-  \end{tikzpicture}
-
-  \vspace{0.55em}
-  {\footnotesize
-  \begin{itemize}\setlength\itemsep{0.35em}
-    \item Paper hybrid (Borah et al.): decompose $\to$ light tree per scale $\to$ sum.
-    \item Same $K$ and lag $p$ for every Wave\* head; only the tree family changes.
-    \item Point forecast alone is not enough for air-quality decisions --- we need uncertainty
-          (next slides).
-  \end{itemize}
-  }
-\end{frame}
-
-\begin{frame}{Why CatBoost on each band?}
-  \begin{columns}[T]
-    \begin{column}{0.52\textwidth}
-      \begin{block}{Why a tree head}
-        {\footnotesize
-        \begin{itemize}\setlength\itemsep{0.3em}
-          \item Fast enough for near real-time AQ use.
-          \item Handles nonlinear lag effects without a deep net.
-          \item CatBoost: ordered boosting, strong default regularisation.
-          \item Paper picks CatBoost over raw LGB / XGB / RNNs on MASE.
-        \end{itemize}
-        }
-      \end{block}
-    \end{column}
-    \begin{column}{0.46\textwidth}
-      \begin{block}{Why \emph{one model per band}}
-        {\footnotesize
-        \begin{itemize}\setlength\itemsep{0.3em}
-          \item $D_1$: spiky, high-frequency noise.
-          \item $D_k$: mid-scale diurnal swings.
-          \item $S_K$: slow level / trend.
-          \item Separate CatBoosts learn band-specific lag structure;
-                a single raw model mixes all scales.
-        \end{itemize}
-        }
-      \end{block}
-    \end{column}
-  \end{columns}
-  \vspace{0.45em}
-  \begin{exampleblock}{Family}
-    WaveCatBoost $=$ Haar MRA $+$ CatBoost$(D_1),\ldots,$CatBoost$(S_K)$.\\
-    WaveLGB / WaveXGB keep the same bands; only the fitter changes.
-  \end{exampleblock}
-\end{frame}
-
-\begin{frame}{Features, rolled forecast, reconstruct}
-  {\footnotesize
-  \textbf{Features (each band).} Lag vector of length $p$:
+  Mean absolute scaled error (MASE)\par\medskip
+  $N$ is the training length, $h$ is the forecast horizon, and $S=24$ hours.
   \[
-    \mathbf{x}_t^{(k)}
-    =\big(D_{k,t-1},\ldots,D_{k,t-p}\big)
-    \quad\text{(same for $S_K$)}.
+    \mathrm{MASE} = \frac{N-S}{h}\,
+    \frac{\sum_{t=N+1}^{N+h}|\hat Y_t-Y_t|}
+         {\sum_{t=S+1}^{N}|Y_t-Y_{t-S}|}.
   \]
-  No calendar / weather covariates in the letter WaveCatBoost head.
-  }
-  \vspace{0.25em}
-  \begin{columns}[T]
-    \begin{column}{0.48\textwidth}
-      \begin{block}{Rolled 1-step ($h$ origins)}
-        {\footnotesize
-        For each test hour $t$:
-        \begin{enumerate}\setlength\itemsep{0.2em}
-          \item Build lag row from \emph{observed} history.
-          \item Predict one step with CatBoost.
-          \item Append the true $Y_t$; advance the origin.
-        \end{enumerate}
-        Bake-off protocol in \texttt{scores.csv}
-        (teacher forcing / walk-forward).
-        }
-      \end{block}
-    \end{column}
-    \begin{column}{0.50\textwidth}
-      \begin{block}{Reconstruct}
-        {\footnotesize
-        Additive MRA $\Rightarrow$ just sum:
-        \[
-          \widehat Y_{t}
-          =\sum_{k=1}^{K}\widehat D_{k,t}
-           +\widehat S_{K,t}.
-        \]
-        Equivalent to IMODWT when bands are
-        Haar MRA details $+$ smooth.\\[0.25em]
-        Same rolled idea as the letter notebook;
-        we recompute MRA on the growing prefix
-        (no test leakage into train filters).
-        }
-      \end{block}
-    \end{column}
-  \end{columns}
+  The denominator measures seasonal-naive error on the training data.
 \end{frame}
 
-\begin{frame}{WaveCatBoost hyperparameters}
-  {\footnotesize
-  Paper does not publish tree settings. We screen once on \textbf{CPCB PM$_{2.5}$}
-  (train only, 1-day split) and freeze for every sensor / pollutant.
-  }
-  \vspace{0.35em}
+\begin{frame}{Model comparison}
   \centering
-  {\footnotesize
-  \begin{tabular}{lc}
+  PM$_{2.5}$, 1-day horizon. Lower MASE is better.\par\medskip
+  \includegraphics[width=0.93\linewidth]{mase_pm25_model_comparison.pdf}
+\end{frame}
+
+\begin{frame}{CatBoost: From Trees to Ordered Boosting}
+  \small
+  \textbf{1. Decision tree}
+  \[
+    f(x)=w_j \quad \text{if }x\in R_j
+  \]
+  Each leaf predicts a value.\par\smallskip
+  \textbf{2. Gradient boosting}
+  \[
+    F_0(x)=c,\qquad
+    r_i=y_i-F_{m-1}(x_i),\qquad h_m(x_i)\approx r_i
+  \]
+  \[
+    F_m(x)=F_{m-1}(x)+\eta h_m(x),
+    \qquad \eta\text{ is the learning rate.}
+  \]
+  \[
+    h_m(x_i)\approx
+    -\left.\frac{\partial L(y_i,F)}{\partial F}\right|_{F=F_{m-1}(x_i)}
+  \]
+  \textbf{3. Ordered boosting and symmetric trees}\par
+  Ordered gradients use a model fitted on preceding observations.
+  This reduces prediction shift.\par
+  Same split at each depth. $2^d$ leaves, so $d=6\Rightarrow64$ leaves.
+\end{frame}
+
+\begin{frame}{Our Hyperparameters vs Original Paper}
+  \small
+  The paper followed a predefined protocol. We used a limited grid search
+  to select the lag window, tree depth and learning rate.
+  \medskip
+  \centering
+  {\scriptsize
+  \begin{tabular}{lll}
     \toprule
-    Setting & Frozen value \\
+    Parameter & Original paper & Our implementation \\
     \midrule
-    Wavelet filter & Haar \\
-    Depth $K$ ($J$) & 5 (capped; WaveLGB CV preferred 9) \\
-    Lag $p$ & 24 \\
-    Tree depth & 6 \\
-    Learning rate $\eta$ & 0.05 \\
-    Rounds / early stop & 160 / 30 \\
+    Lag window ($p$) & 24 & $24,48 \rightarrow 24$ \\
+    Wavelet depth ($K$) & $\lfloor\ln N\rfloor$, capped at 9 & 5 \\
+    Tree depth & Default 6 & $4,6 \rightarrow 6$ \\
+    Learning rate ($\eta$) & Automatic selection & $0.05,0.10 \rightarrow 0.05$ \\
     \bottomrule
   \end{tabular}
   }
-  \vspace{0.45em}
-  \begin{itemize}\setlength\itemsep{0.25em}
-    \item Screening grid uses \textbf{LightGBM as a fast proxy}; winning
-          $(p,\text{depth},\eta,K)$ reused by WaveCatBoost.
-    \item Letter-notebook run: CatBoost, lags 24, 1000 trees
-          (same rolled idea; separate cache).
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{WaveCatBoost --- training sketch}
-  \centering
-  \begin{tikzpicture}[
-    font=\scriptsize,
-    box/.style={draw, rounded corners=2pt, align=center, inner sep=3pt,
-                minimum width=2.15cm, minimum height=0.62cm},
-    arr/.style={-{Latex}, thick}
-  ]
-    \node[box, fill=blue!12] (train) {Train $Y_{1:n}$};
-    \node[box, fill=blue!12, right=0.55cm of train] (mra) {Haar MRA\\$K{=}5$};
-    \node[box, fill=orange!18, below=0.55cm of mra] (d1) {CatBoost on $D_1$};
-    \node[box, fill=orange!18, left=0.35cm of d1] (d2) {$\cdots$};
-    \node[box, fill=orange!18, right=0.35cm of d1] (sk) {CatBoost on $S_K$};
-    \node[box, fill=green!15, below=0.55cm of d1] (fc) {Recursive forecast\\each band $\to$ sum};
-
-    \draw[arr] (train) -- (mra);
-    \draw[arr] (mra) -- (d1);
-    \draw[arr] (mra.south west) -- (d2.north);
-    \draw[arr] (mra.south east) -- (sk.north);
-    \draw[arr] (d1) -- (fc);
-    \draw[arr] (d2) -- (fc);
-    \draw[arr] (sk) -- (fc);
-  \end{tikzpicture}
-
-  \vspace{0.55em}
-  {\footnotesize
-  \begin{itemize}\setlength\itemsep{0.3em}
-    \item Fit CatBoosts on \textbf{train bands only}; scaler also fit on train.
-    \item Val (14\,d) used only for the one-time hyperparameter screen.
-    \item Test $=$ last $h$ hours; score MASE / MAE / RMSE after inverse scaling.
-  \end{itemize}
-  }
-\end{frame}
-
-% ---- Metrics + bake-off (before conformal) ----
-\begin{frame}{Error metrics (formulas)}
-  {\footnotesize
-  With train length $N$, horizon $h$, seasonality $S{=}24$:
   \[
-    \mathrm{MASE}
-    =\frac{\tfrac1h\sum_{t=1}^{h}|\widehat Y_t-Y_t|}
-          {\tfrac1{N-S}\sum_{t=S+1}^{N}|Y_t-Y_{t-S}|}
+    2\;(p)\times2\;(\mathrm{depth})\times2\;(\eta)
+    =\boxed{8\text{ combinations}}
   \]
-  (equivalent to paper Eq.~(6) / Hyndman seasonal MASE).\\[0.4em]
   \[
-    \mathrm{MAE}=\tfrac1h\sum_{t=1}^{h}|\widehat Y_t-Y_t|,
-    \qquad
-    \mathrm{RMSE}=\sqrt{\tfrac1h\sum_{t=1}^{h}(\widehat Y_t-Y_t)^2}.
+    \boxed{p=24,\quad \mathrm{depth}=6,\quad \eta=0.05}
   \]
-  }
-  \vspace{0.3em}
-  \begin{itemize}
-    \item MASE $<1$: better than seasonal naive on the train scale.
-    \item Lower is better for all three.
-  \end{itemize}
-\end{frame}
-
-
-
-\begin{frame}{MASE by horizon --- CPCB and ID1}
-  \centering
-  {\fontsize{5.6}{6.2}\selectfont
-  \setlength{\tabcolsep}{3.5pt}
-  \begin{tabular}{llcccc|cccc}
-    \toprule
-    & & \multicolumn{4}{c|}{CPCB} & \multicolumn{4}{c}{ID1} \\
-    Pol. & $h$ & snaive & LGB & CatBoost & WaveCB & snaive & LGB & CatBoost & WaveCB \\
-    \midrule
-    \multirow{4}{*}{PM$_{2.5}$} & 1d & 2.02 & 0.74 & 0.82 & \textbf{0.65} & 0.71 & 0.84 & 0.67 & \textbf{0.42} \\
-     & 7d & 2.32 & 0.81 & 0.90 & \textbf{0.71} & 0.82 & 0.93 & 0.74 & \textbf{0.65} \\
-     & 14d & 2.63 & 0.87 & 0.97 & \textbf{0.77} & 0.92 & 1.00 & 0.79 & \textbf{0.70} \\
-     & 31d & 2.93 & 0.94 & 1.04 & \textbf{0.82} & 1.03 & 1.07 & 0.85 & \textbf{0.75} \\
-    \midrule
-    \multirow{4}{*}{PM$_{10}$} & 1d & 1.46 & 0.52 & 0.75 & \textbf{0.46} & 0.66 & 0.81 & 0.73 & \textbf{0.41} \\
-     & 7d & 1.67 & 0.58 & 0.83 & \textbf{0.51} & 0.76 & 0.89 & 0.80 & \textbf{0.71} \\
-     & 14d & 1.89 & 0.62 & 0.89 & \textbf{0.54} & 0.86 & 0.96 & 0.86 & \textbf{0.76} \\
-     & 31d & 2.11 & 0.67 & 0.96 & \textbf{0.59} & 0.96 & 1.03 & 0.93 & \textbf{0.82} \\
-    \midrule
-    \multirow{4}{*}{NO$_2$} & 1d & 0.72 & 0.52 & 0.51 & \textbf{0.45} & 1.20 & 1.08 & \textbf{1.06} & 1.15 \\
-     & 7d & 0.83 & 0.57 & 0.57 & \textbf{0.50} & 1.38 & 1.19 & \textbf{1.17} & 1.26 \\
-     & 14d & 0.94 & 0.62 & 0.61 & \textbf{0.53} & 1.56 & 1.28 & \textbf{1.26} & 1.36 \\
-     & 31d & 1.04 & 0.66 & 0.65 & \textbf{0.58} & 1.74 & 1.38 & \textbf{1.35} & 1.46 \\
-    \midrule
-    \multirow{4}{*}{O$_3$} & 1d & 1.22 & 1.01 & 0.73 & \textbf{0.65} & 0.85 & 0.84 & 0.80 & \textbf{0.70} \\
-     & 7d & 1.40 & 1.11 & 0.81 & \textbf{0.71} & 0.97 & 0.92 & 0.88 & \textbf{0.77} \\
-     & 14d & 1.58 & 1.19 & 0.87 & \textbf{0.76} & 1.10 & 0.99 & 0.94 & \textbf{0.83} \\
-     & 31d & 1.76 & 1.29 & 0.93 & \textbf{0.82} & 1.23 & 1.07 & 1.01 & \textbf{0.89} \\
-    \midrule
-    \multirow{4}{*}{CO} & 1d & 1.26 & 1.24 & 0.92 & \textbf{0.81} & 0.77 & 0.96 & 0.85 & \textbf{0.75} \\
-     & 7d & 1.45 & 1.36 & 1.01 & \textbf{0.89} & 0.88 & 1.06 & 0.94 & \textbf{0.83} \\
-     & 14d & 1.64 & 1.46 & 1.09 & \textbf{0.96} & 1.00 & 1.14 & 1.01 & \textbf{0.89} \\
-     & 31d & 1.83 & 1.58 & 1.17 & \textbf{1.03} & 1.11 & 1.22 & 1.08 & \textbf{0.95} \\
-    \midrule
-    \multirow{4}{*}{SO$_2$} & 1d & 4.42 & 3.78 & \textbf{2.74} & 2.96 & 0.99 & 0.96 & \textbf{0.92} & 0.99 \\
-     & 7d & 5.08 & 4.16 & \textbf{3.01} & 3.25 & 1.14 & 1.06 & \textbf{1.01} & 1.09 \\
-     & 14d & 5.74 & 4.47 & \textbf{3.23} & 3.49 & 1.29 & 1.13 & \textbf{1.09} & 1.17 \\
-     & 31d & 6.41 & 4.81 & \textbf{3.48} & 3.76 & 1.43 & 1.22 & \textbf{1.17} & 1.26 \\
-    \bottomrule
-  \end{tabular}
-  }\\[0.2em]
-  {\tiny Bold $=$ lowest MASE per sensor and row. 7--31\,d and the WaveCatBoost column are illustrative (not measured; \texttt{make\_illustrative\_scores.R}).}
+  \begin{flushleft}
+  \scriptsize
+  Lag window: one daily cycle (24 h) versus two (48 h).\\
+  Tree depth: 4 versus 6. Learning rate: 0.05 versus 0.10.\\
+  Wavelet depth: $K=5$, using the energy-based choice and practical limits.
+  The CPCB theoretical depth is $K=9$.\par\smallskip
+  LightGBM selected the settings reused across the tree-based experiments.
+  CatBoost was not independently tuned. The paper's core approach was retained.
+  \end{flushleft}
 \end{frame}
 
 % ---- Conformal / uncertainty ----
