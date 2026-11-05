@@ -1,7 +1,0 @@
-sensor,pollutant,component,model_id,model,mean_val_MASE,mean_val_MAE,n_horizons,hyperparameters,random_seed,selected_on,used_test
-CPCB,PM2.5,D1,lgb,LightGBM,0.41543899334815015,0.8627818282509168,1,"{""p"":24,""nrounds"":160,""max_depth"":6,""eta"":0.05,""early_stopping"":30,""val_hours"":336,""lgb_leaves"":31}",NA,validation,FALSE
-CPCB,PM2.5,D2,lgb,LightGBM,0.37214176347245903,0.4969215964616146,1,"{""p"":24,""nrounds"":160,""max_depth"":6,""eta"":0.05,""early_stopping"":30,""val_hours"":336,""lgb_leaves"":31}",NA,validation,FALSE
-CPCB,PM2.5,D3,dlinear,DLinear,0.5129609886583785,0.6003242581957418,1,"{""p"":24,""kernel"":25,""trend"":""causal_moving_average"",""seasonal"":""ols_linear"",""tune"":""validation_only_kernel_grid""}",7,validation,FALSE
-CPCB,PM2.5,D4,catboost,CatBoost,0.4219150458435677,0.5128647733336903,1,"{""p"":24,""nrounds"":160,""max_depth"":6,""eta"":0.05,""early_stopping"":30,""val_hours"":336,""lgb_leaves"":31}",7,validation,FALSE
-CPCB,PM2.5,D5,sarima,SARIMA,0.18419561913528248,0.2472095949773671,1,"{""seasonal"":false,""stepwise"":true,""approximation"":true,""max.p"":3,""max.q"":1,""max.d"":1,""source"":""wave_fit_sarima"",""arimaorder"":[3,0,1]}",7,validation,FALSE
-CPCB,PM2.5,S5,dlinear,DLinear,0.15487529210843898,0.33140594244119165,1,"{""p"":24,""kernel"":25,""trend"":""causal_moving_average"",""seasonal"":""ols_linear"",""tune"":""validation_only_kernel_grid""}",7,validation,FALSE

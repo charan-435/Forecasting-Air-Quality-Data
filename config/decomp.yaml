@@ -1,5 +1,5 @@
 # Leak-free decomposition store (Phase 1b).
-#   Rscript run_decomp.R
+#   Rscript scripts/preprocessing/run_decomp.R
 # Test period after selection_end is never used by diagnostics D3 or the screen.
 
 window_h: 2048

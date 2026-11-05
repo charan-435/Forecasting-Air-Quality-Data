@@ -1,5 +1,5 @@
 # CPCB parallel preprocessed experiment (architectures B0, A1, B1, B2, B3).
-#   Rscript run_preprocessed_experiment.R <phase>
+#   Rscript scripts/experiments/run_preprocessed_experiment.R <phase>
 # Every output goes to store/preprocessed_experiment/ and results/preprocessed_experiment/.
 # Shared configs, stores and results are read only.
 
@@ -44,7 +44,7 @@ validity:
   action: na           # invalid values become NA; nothing is clipped to a bound
 
 imputation:
-  # kaisen causal fills (R/22_impute.R), method per variable and gap bucket
+  # kaisen causal fills (R/preprocessing/22_impute.R), method per variable and gap bucket
   # chosen by kaisen's artificial-gap benchmark on the TRAINING block only.
   # Only the parameter-free, past-only methods are allowed: M1 last value,
   # M2/M3 same hour 24 h / 168 h earlier, M4 M1-then-M2, M5/M6 trailing 28-day

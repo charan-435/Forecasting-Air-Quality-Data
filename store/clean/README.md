@@ -1,6 +1,6 @@
 # Clean hourly store (Phase 1a)
 
-Built by `Rscript run_preprocess.R` from `config/preprocess.yaml`.
+Built by `Rscript scripts/preprocessing/run_preprocess.R` from `config/preprocess.yaml`.
 No plots. Tables live in `store/DATA_QUALITY.md`.
 
 ## Time labelling
@@ -56,7 +56,6 @@ and no causal fill is applied.
 ## Dataset switch
 
 - `active: paper` — CPCB.csv / ID1.csv, already hourly; quality and imputation are skipped.
-- `active: delhi` — 15-min CPCB CAAQMS (ITO, R K Puram); full causal preprocess.
 - `active: shillong` — 15-min CPCB CAAQMS (Lumpyngngad, JN Stadium); full causal preprocess.
 
-Override: `Rscript run_preprocess.R paper`, `delhi`, or `shillong`.
+Override: `Rscript scripts/preprocessing/run_preprocess.R paper` or `shillong`.
