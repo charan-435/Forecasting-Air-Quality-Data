@@ -80,9 +80,13 @@ For the optional Shillong store, run `Rscript scripts/preprocessing/run_preproce
 
 The Q&A's supplied second-stage summaries are recorded explanations and are not generated dynamically by `analysis.Rmd`.
 
-### Illustrative values
+### Score sources
 
-Section 8.3 reads `results/illustrative/illustrative_scores.csv`. These extrapolated values are labelled illustrative. Recreate them with `Rscript scripts/figures/make_illustrative_scores.R`. Measured scores are in `results/paper/`.
+Sections 8.3 and 9 use measured recursive scores from `results/paper/scores.csv` (also mirrored in `scores.rds`). The older extrapolated `results/illustrative/` files are retained as historical examples and are not displayed in the report. Sections 8.1–8.2 use the separate rolling one-step `paper_protocol.rds` cache; their scores are not interchangeable with recursive scores.
+
+The root `ATSA_Presentation.pptx` retains the older paper-overview layout, but its results table now uses the same recorded project scores. Its explicitly labelled published-paper figures remain reference material. Refresh its native table with `python scripts/figures/sync_pptx_scores.py`. The current project deck is `presentation/main.pdf`, built from `presentation/main.tex`.
+
+Run `Rscript scripts/figures/sync_recorded_results.R` to refresh the web demo from saved results, without fitting models. This also synchronizes forecast-cache score summaries to the CSV. Predictions from incompatible or unavailable runs are not attached to those summaries; the original cache is retained in `docs/audit/legacy_forecast_cache_2026-11-07.rds`. The demo film/viewer uses the separate paper-protocol cache, matching report Sections 8.1–8.2. Run `Rscript scripts/validation/check_result_caches.R` and `python scripts/validation/check_report_scores.py` to check the report, slide tables and web data against their saved sources. The supplied component and second-stage study summaries cannot be independently verified from the retained results.
 
 ## Presentation
 

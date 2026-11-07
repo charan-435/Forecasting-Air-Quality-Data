@@ -716,7 +716,7 @@ Moving to $K=9$ therefore adds about **67% more component fits and recursive tre
 
 # 8. Forecasts and conformal intervals
 
-Section 8.1–8.2 follow the paper notebook protocol: Haar MODWT on the series, CatBoost on each band (lags 24, 1000 trees), rolling **1-step** forecasts, then IMODWT. Plots use a **7-day** test window. Run `Rscript scripts/experiments/run_paper_protocol.R` if panels are empty.
+Section 8.1–8.2 follow the paper notebook protocol: Haar MODWT on the series, CatBoost on each band ($K=9$, lags 24, 1000 trees), rolling **1-step** forecasts, then IMODWT. Plots use a **7-day** test window. Run `Rscript scripts/experiments/run_paper_protocol.R` if panels are empty.
 
 Reported intervals here use the **paper residual PI** on that window (95\% quantile of $|Y-\widehat Y|$, $\alpha=0.05$).
 
@@ -861,20 +861,27 @@ output$s8_conf_b <- renderPlotly(.s8_conf_fig("ID1", "(b)"))
 output$s8_conf_c <- renderPlotly(.s8_conf_fig("SHILLONG", "(c)"))
 ```
 
-## 8.3 model comparison MASE by horizon (every sensor × pollutant)
+## 8.3 Recorded MASE by horizon (every sensor × pollutant)
+
+These are the recorded recursive forecasting results, also used in Section 9 and the presentation. They differ from the rolling one-step paper-protocol panels in Sections 8.1–8.2.
 
 
-```{r s8-illustrative-ui, echo=FALSE}
-htmlOutput("s8_illustrative")
+```{r s8-recorded-ui, echo=FALSE}
+htmlOutput("s8_recorded")
 ```
 
-```{r s8-illustrative-server, echo=FALSE}
-output$s8_illustrative <- renderUI({
-  ill_path <- file.path("results", "illustrative", "illustrative_scores.csv")
-  if (!file.exists(ill_path)) {
-    return(HTML("<p>Run <code>Rscript scripts/figures/make_illustrative_scores.R</code> to build the illustrative table.</p>"))
+```{r s8-recorded-server, echo=FALSE}
+output$s8_recorded <- renderUI({
+  score_path <- file.path("results", "paper", "scores.csv")
+  if (!file.exists(score_path)) {
+    return(HTML("<p>Recorded results are not available.</p>"))
   }
-  ill <- read.csv(ill_path, stringsAsFactors = FALSE)
+  recorded <- read.csv(score_path, stringsAsFactors = FALSE)
+  ill <- recorded %>%
+    dplyr::filter(sensor %in% c("CPCB", "ID1"),
+                  method %in% c("snaive", "lgb", "catboost", "wavecatboost")) %>%
+    dplyr::select(sensor, pollutant, horizon, method, MASE) %>%
+    tidyr::pivot_wider(names_from = method, values_from = MASE)
   meth <- c("snaive", "lgb", "catboost", "wavecatboost")
   pols <- c("PM2.5", "PM10", "NO2", "O3", "CO", "SO2")
   hs <- c("1d", "7d", "14d", "31d")
@@ -906,8 +913,8 @@ output$s8_illustrative <- renderUI({
     }
   }
   HTML(paste0(
-    "<table class=\"table table-striped table-condensed\" ",
-    "style=\"width:100%;font-size:80%;\">",
+    "<div class=\"result-table\"><table class=\"table table-striped\" ",
+    "style=\"width:100%;\">",
     "<thead>",
     "<tr>",
     "<th></th><th></th>",
@@ -921,8 +928,8 @@ output$s8_illustrative <- renderUI({
     "</tr>",
     "</thead><tbody>",
     paste0(rows, collapse = ""),
-    "</tbody></table>",
-    "<p style=\"font-size:85%;\"><em>Bold = lowest MASE per sensor and row. "
+    "</tbody></table></div>",
+    "<p style=\"font-size:85%;\"><em>Bold = lowest MASE among the four shown methods per sensor and row. Recorded experiment results.</em></p>"
 
   ))
 })
@@ -1327,13 +1334,13 @@ The table shows PM2.5 test MAE with LightGBM. Lower values mean smaller errors.
 | A1 | 9.72 | 16.42 | 18.71 | 16.55 |
 | A2 | 9.11 | 10.94 | **12.29** | **11.42** |
 | A3 | **9.04** | 10.82 | 12.51 | 12.31 |
-| B0 | 10.38 | 14.22 | 16.09 | 15.69 |
+| B0 | 10.38 | 14.21 | 16.09 | 15.69 |
 | B1 | 10.44 | 13.90 | 15.20 | 15.39 |
 | B2 | 10.31 | 15.15 | 18.15 | 18.47 |
 | B3 | 10.24 | 14.23 | 15.98 | 16.45 |
 | C1_sep | 9.81 | 15.43 | 16.90 | 14.10 |
 | C1_sh | 10.16 | 13.51 | 15.41 | 14.31 |
-| C2_sep | 9.54 | 10.45 | 13.90 | 13.07 |
+| C2_sep | 9.54 | 10.45 | 13.90 | 13.06 |
 | C2_sh | 15.12 | 13.85 | 15.22 | 15.03 |
 | C3_sep | 9.99 | **10.42** | 13.96 | 13.44 |
 | C3_sh | 15.68 | 13.05 | 15.62 | 15.08 |
@@ -1346,7 +1353,7 @@ The table shows PM2.5 test MAE with LightGBM. Lower values mean smaller errors.
 
 - **Same inputs, with and without Haar:**
   - B0 vs A0: 1.05, 0.91, 0.96, 1.20\*.
-  - C2_sep vs A2: 1.05, 0.96, 1.13\*, 1.14\*.
+  - C2_sep vs A2: 1.05, 0.95, 1.13\*, 1.14\*.
   - So decomposition is never significantly better and is significantly worse three times.
 - **Best design per horizon:** an undecomposed design wins 3 of 4 horizons with LightGBM. Counting every model family, it wins all 4 (at 168 h, A3 with lasso scores 9.95 vs C3_sep's 10.42).
 - **Beating persistence:** undecomposed designs beat it in 11 of 16 design × horizon cells; decomposed designs in 16 of 40.
@@ -1360,7 +1367,7 @@ The table shows PM2.5 test MAE with LightGBM. Lower values mean smaller errors.
 
 #### Q2. Where does a decomposed model's error come from?
 
-We compared test MAE for the individual components and the reconstructed series.
+The individual-component values are supplied study results and have not been independently verified. The reconstructed-series values agree with the recorded results.
 
 ::: {.qna-table}
 
@@ -1368,7 +1375,7 @@ We compared test MAE for the individual components and the reconstructed series.
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | D1–D5 (each) | 2.9–3.8 | 2.8–4.4 | 3.0–4.2 | 2.7–4.2 | 2.7–3.7 | 2.7–4.0 |
 | S5 (slow, over 64 h) | 5.87 | 10.97 | 13.88 | 12.87 | 7.74 | 9.58 |
-| Whole series | 10.38 | 14.22 | 16.09 | 15.69 | 10.45 | 13.07 |
+| Whole series | 10.38 | 14.21 | 16.09 | 15.69 | 10.45 | 13.06 |
 
 :::
 
@@ -1407,7 +1414,7 @@ Adding the other pollutants' bands to the decomposed design (C2_sep vs C1_sep) g
 | Pair | 24 h | 168 h | 336 h | 744 h |
 | :--- | :---: | :---: | :---: | :---: |
 | B1 vs B0 (6–7 inputs per band) | **1.01** | 0.98 | 0.94 | **0.98** |
-| C1_sh vs C1_sep (144) | 1.04 | **0.88**\* | **0.91**\* | 1.02 |
+| C1_sh vs C1_sep (144) | 1.04 | **0.88**\* | **0.91**\* | 1.01 |
 | C2_sh vs C2_sep (432) | 1.58\* | 1.33\* | 1.10 | 1.15\* |
 | C3_sh vs C3_sep (439) | 1.57\* | 1.25\* | 1.12 | 1.12\* |
 
@@ -1442,15 +1449,15 @@ We compared C1_sep with B0 to test whether each band benefits from the other PM2
 
 This comparison covers four designs at four horizons, giving 16 cases.
 
-- **Cells won:** elastic net 6, ridge 4, lasso 3, CatBoost 2, LightGBM 1, XGBoost 0.
-- **Mean rank:** elastic net 2.47, lasso 2.53, ridge 3.03, CatBoost 3.66, LightGBM 4.44, XGBoost 4.88.
+- **Cells won:** lasso 5, elastic net 4, ridge 4, CatBoost 2, LightGBM 1, XGBoost 0.
+- **Mean rank:** elastic net 2.50, lasso 2.50, ridge 3.06, CatBoost 3.62, LightGBM 4.44, XGBoost 4.88 (the same 16 design–horizon cases, using average ranks for ties).
 - **The learner can change the design verdict:** C3_sh at 24 h scores 15.68 with LightGBM but 10.16 with elastic net.
 
 **Answer.** Linear models won most of the comparisons. Among the boosted trees, CatBoost had the best average rank and gave the lowest 744 h error. The choice of learner matters when interpreting the architecture study, since that initial comparison used LightGBM, which ranked second-last in this family comparison.
 
 #### Q9. Can validation pick the winner in advance?
 
-- **Architecture study:** the validation pick is also the test winner in 19 of 36 cells.
+- **Architecture study:** the validation pick is also the test winner in 19 of 32 saved cells.
   - Linear families: 12 of 12.
   - CatBoost: 2 of 4.
   - XGBoost: 1 of 4.
@@ -1482,6 +1489,8 @@ We tested five designs with LightGBM for SO2 and CO. The table reports MAE.
 ### Comparing forecast strategies at Lumpyngngad
 
 #### Q11. Recursive or direct forecasting?
+
+The second-stage figures in Q11–Q13 are supplied study results and have not been independently verified.
 
 The table counts cases where recursive forecasting had significantly lower or higher MAE than direct forecasting.
 
@@ -1553,7 +1562,7 @@ We also compared two CPCB runs with the following setup.
 
 - 16,235 of 53,280 pollutant-hours (30%) were masked and filled causally.
 - LightGBM with MAE as the training loss, seed 7, 24 h only, 658 test hours, no paired tests saved.
-- Two runs exist: the masked data and an unmasked control. Which run is which still needs confirming.
+- The `clean` run uses masked data; `unmasked` is the control, as identified by the recorded experiment labels.
 - The labels differ from Shillong's:
   - B0: raw PM2.5 lags.
   - A1: decomposed PM2.5.
@@ -1567,7 +1576,7 @@ The table compares test MAE for the two saved runs.
 
 ::: {.qna-table}
 
-| Design | Run 1 | Run 2 |
+| Design | Clean (masked) | Unmasked control |
 | :--- | :---: | :---: |
 | B0 raw, PM2.5 only | **7.48** | 7.76 |
 | A1 decomposed, PM2.5 only | 7.84 | **7.42** |
@@ -1577,7 +1586,7 @@ The table compares test MAE for the two saved runs.
 
 :::
 
-**Answer.** The differences between runs range from 0.05 to 0.42 MAE, and the best design changes between them. We still need to identify which run used the masked data and which used the unmasked control before attributing these differences to cleaning.
+**Answer.** The differences between runs range from 0.05 to 0.42 MAE, and the best design changes between them. The saved dataset labels identify the first column as cleaned data and the second as the unmasked control; cleaning does not improve every design.
 
 #### Q16. Is decomposition useful on cleaned data?
 
@@ -1595,7 +1604,7 @@ The table compares test MAE for the two saved runs.
 | Five designs | **6.97–7.35** | 7.42–8.06 |
 | Persistence | 7.97–8.05 | 8.12–8.13 |
 | Training mean | 9.53–9.84 | 7.38–7.39 |
-| Hour-of-day climatology | 9.44–9.84 | **7.05** |
+| Hour-of-day climatology | 9.44–9.84 | **7.05–7.06** |
 
 :::
 

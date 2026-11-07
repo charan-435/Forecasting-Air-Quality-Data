@@ -338,7 +338,7 @@
 
     ctx.fillStyle = ink;
     ctx.font = '600 13px "App Sans", Segoe UI, sans-serif';
-    ctx.fillText("CPCB PM2.5, 7-day recursive test", x0, 18);
+    ctx.fillText("CPCB PM2.5, 7-day paper-protocol rolling one-step", x0, 18);
     ctx.fillStyle = muted;
     ctx.font = '10px "App Mono", Consolas, monospace';
     ctx.fillText(`n = ${N} hours`, x0, H - 12);

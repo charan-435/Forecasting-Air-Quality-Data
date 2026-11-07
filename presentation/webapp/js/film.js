@@ -34,8 +34,8 @@
     const BAND = ["#A64B2A", "#C4A35A", "#2E6B4F", "#5B7C99", "#6B4C9A", "#1F3A5F"];
 
     const STAGES = [
-      { t0: 0, t1: 11, id: 0, title: "1. series", body: "CPCB PM2.5, 7-day test window from our forecast cache." },
-      { t0: 11, t1: 24, id: 1, title: "2. Haar bands", body: "Split into D1..D5 detail bands and smooth S5." },
+      { t0: 0, t1: 11, id: 0, title: "1. series", body: "CPCB PM2.5, 7-day rolling one-step paper-protocol run (report 8.1–8.2)." },
+      { t0: 11, t1: 24, id: 1, title: "2. band illustration", body: "Illustrative scales; fitted paper-protocol forecasts use Haar K = 9." },
       { t0: 24, t1: 36, id: 2, title: "3. CatBoost", body: "One CatBoost model per band, lag window p = 24." },
       { t0: 36, t1: 48, id: 3, title: "4. reconstruct", body: `Sum band forecasts. WaveCatBoost MASE ${M.mase_wavecatboost.toFixed(2)}` },
       { t0: 48, t1: 60, id: 4, title: "5. vs snaive", body: `snaive MASE ${M.mase_snaive.toFixed(2)}, WaveCatBoost ${M.mase_wavecatboost.toFixed(2)}` },

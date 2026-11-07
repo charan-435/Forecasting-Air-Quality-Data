@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>WaveCatBoost · ATSA Group 8</title>
-  <meta name="description" content="WaveCatBoost bake-off viewer: datasets, pipeline film, scores, CSV upload." />
+  <meta name="description" content="WaveCatBoost model comparison viewer: datasets, pipeline film, scores, CSV upload." />
   <link rel="stylesheet" href="css/app.css" />
 </head>
 <body>
@@ -26,7 +26,7 @@
         </div>
         <div class="nav-group">
           <div class="nav-label">Results</div>
-          <button type="button" data-page="scores">Bake-off scores</button>
+          <button type="button" data-page="scores">model comparison scores</button>
           <button type="button" data-page="methods">Methods</button>
           <button type="button" data-page="share">Share / cite</button>
         </div>
@@ -157,7 +157,7 @@
         <div class="page-head">
           <div class="kicker">Film</div>
           <h1>Pipeline film</h1>
-          <p class="lead">CPCB PM2.5, 7-day recursive window from the bake-off cache.</p>
+          <p class="lead">CPCB PM2.5, 7-day rolling one-step paper-protocol run, matching report Sections 8.1–8.2. The band animation is illustrative; fitted forecasts use K = 9.</p>
         </div>
         <div class="block tight">
           <div class="film-stage">
@@ -185,7 +185,7 @@
         <div class="page-head">
           <div class="kicker">Forecasts</div>
           <h1>Forecast viewer</h1>
-          <p class="lead">Cached <span class="mono">CPCB|PM2.5|7d</span> paths.</p>
+          <p class="lead">CPCB PM2.5 paper-protocol rolling one-step paths (report Sections 8.1–8.2), separate from the recursive scores table.</p>
         </div>
         <div class="controls">
           <label class="check"><input type="checkbox" id="showAct" checked /> Actual</label>
@@ -206,7 +206,7 @@
       <section class="page" data-page="scores">
         <div class="page-head">
           <div class="kicker">Results</div>
-          <h1>Bake-off scores</h1>
+          <h1>model comparison scores</h1>
           <p class="lead">Recursive multi-step errors. Best MASE is highlighted.</p>
         </div>
         <div class="controls">
@@ -241,7 +241,7 @@
             pre-test window, Haar MODWT into bands \(D_1,\ldots,D_K,S_K\), fit one CatBoost per band
             with lag window \(p\), forecast each band, sum to \(\widehat Y\).
           </p>
-          <h3>Our bake-off</h3>
+          <h3>Our model comparison</h3>
           <ul>
             <li>Horizons: 1d / 7d / 14d / 31d (24 / 168 / 336 / 744 hours)</li>
             <li>One chronological origin per horizon; nested windows share the same end</li>
