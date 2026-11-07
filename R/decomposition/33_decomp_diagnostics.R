@@ -1,5 +1,5 @@
-# D1–D6 diagnostics. D1/D2 are hard fails. D3 uses data after t on purpose
-# and is never written into the feature/decomp values.
+# D1-D6 diagnostics. D1/D2 hard fail.
+# D3 may peek after t on purpose; never store those values as features.
 
 .dominant_period <- function(x) {
   x <- as.numeric(x)

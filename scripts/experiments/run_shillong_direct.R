@@ -41,7 +41,6 @@ cat("15-min extract:", file.exists(FIFTEEN), FIFTEEN, "\n")
 cat("hourly cache:  ", file.exists(HOURLY), HOURLY, "\n")
 cat("ERA5 cache:    ", file.exists(ERA5), ERA5, "\n")
 
-
 raw <- arrow::read_parquet(FIFTEEN)
 names(raw) <- gsub("\u00b5", "u", names(raw))
 raw <- raw %>%
@@ -86,7 +85,6 @@ cov <- raw %>%
             .groups = "drop")
 print(as.data.frame(cov))
 
-
 pm <- raw %>%
   mutate(month = format(timestamp, "%Y-%m")) %>%
   group_by(station, month) %>%
@@ -100,7 +98,6 @@ p <- ggplot(pm, aes(month, pct, fill = station)) +
   coord_cartesian(ylim = c(0, 100)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ggsave(file.path(FIGDIR, "pm25_15min_coverage.png"), p, width = 9.5, height = 3.6, dpi = 110)
-
 
 mean_if <- function(x, n_min = MIN_SLOTS) {
   n <- sum(!is.na(x))
@@ -193,7 +190,6 @@ cmp <- bind_rows(
 cat("\nCoverage after our average (not after someone else's impute)\n")
 print(as.data.frame(cmp))
 
-
 prim <- hourly %>% filter(station_id == PRIMARY) %>% arrange(timestamp)
 nb   <- hourly %>% filter(station_id == NEIGHBOUR) %>% arrange(timestamp)
 
@@ -223,7 +219,6 @@ print(round(cor(both %>% select(-timestamp), use = "pairwise.complete.obs")[, "p
 cat("\nHours where both stations observed PM2.5:",
     sum(complete.cases(both$pm25, both$nb_pm25)), "\n")
 
-
 aug <- prim %>%
   filter(timestamp >= as.POSIXct("2023-08-01", tz = "UTC"),
          timestamp <  as.POSIXct("2023-08-15", tz = "UTC")) %>%
@@ -250,7 +245,6 @@ p <- ggplot(comp, aes(timestamp, value)) +
   labs(title = "Lumpyngngad 1-14 Aug 2023 — Haar MRA, J=5 (EDA, circular, interpolated <=6 h)",
        x = NULL, y = NULL)
 ggsave(file.path(FIGDIR, "haar_mra_august.png"), p, width = 10, height = 8, dpi = 110)
-
 
 LAGS <- c(1L, 2L, 3L, 6L, 12L, 24L, 48L, 168L)
 HORIZONS <- c(1L, 6L, 24L)
@@ -305,7 +299,6 @@ HAAR_COLS <- c(paste0("W", 1:5), "V5")
 cat("rows", nrow(frame), "haar", paste(HAAR_COLS, collapse = " "), "\n")
 cat("train hours", sum(frame$timestamp <= TRAIN_END),
     "test hours", sum(frame$timestamp > TRAIN_END), "\n")
-
 
 fit_predict <- function(X_tr, y_tr, X_te) {
   dtr <- lightgbm::lgb.Dataset(as.matrix(X_tr), label = as.numeric(y_tr))
@@ -401,7 +394,6 @@ print(as.data.frame(mutate(mase_wide, across(where(is.numeric), ~ round(.x, 3)))
 cat("\nfull table\n")
 print(as.data.frame(mutate(tab, across(where(is.numeric), ~ round(.x, 3)))))
 readr::write_csv(tab, file.path(FIGDIR, "direct_scores.csv"))
-
 
 plot_df <- bind_rows(
   preds_h24$snaive %>% transmute(timestamp, value = y, model = "observed"),

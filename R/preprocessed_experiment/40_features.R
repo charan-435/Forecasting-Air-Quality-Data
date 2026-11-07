@@ -1,8 +1,6 @@
-# Phase 3: model data, sample sets and feature matrices for B0, A1, B1, B2, B3.
-#
-# Origin t = the latest hour whose data are used. Lags: lag1 = value at t (most recent),
-# lag24 = value at t-23. Covariates (A1, B2, B3) = other pollutants at t only, never
-# lagged. Target = value at t + h (direct forecast, h = forecast$horizon_h).
+# Phase 3: features for B0, A1, B1, B2, B3.
+# Origin t = latest hour used. lag1 = y_t, lag24 = y_{t-23}.
+# Covariates (A1/B2/B3) = other pollutants at t only. Target = y_{t+h}.
 
 PE_COMPS <- c(paste0("D", 1:5), "S5")
 PE_ARCHS <- c("B0", "A1", "B1", "B2", "B3")
@@ -63,8 +61,6 @@ pe_model_data <- function(cfg, dataset = c("clean", "unmasked")) {
        sets = sets, train_hours = train_hours, trainval_hours = trainval_hours)
 }
 
-# ---- scaling (fitted on the fitting period only) ------------------------------
-
 # Mean/sd of every input series and every component over warm hours <= last_hour.
 pe_scalers <- function(md, last_hour) {
   rows <- which(md$warm & seq_len(md$n) <= last_hour)
@@ -83,8 +79,6 @@ pe_scalers <- function(md, last_hour) {
 
 pe_z <- function(x, s) (x - s[["mean"]]) / s[["sd"]]
 pe_unz <- function(z, s) z * s[["sd"]] + s[["mean"]]
-
-# ---- features -----------------------------------------------------------------
 
 pe_lags <- function(s, idx, L) {
   m <- vapply(seq_len(L) - 1L, function(k) s[idx - k], numeric(length(idx)))

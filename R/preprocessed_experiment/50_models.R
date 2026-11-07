@@ -1,6 +1,6 @@
-# Phase 3-4: LightGBM for every architecture. Validation for early stopping and
-# selection; refit on train + validation with frozen parameters and iteration count;
-# one test prediction. The test block is never passed to tuning code.
+# Phase 3-4: LightGBM per architecture.
+# Tune on val, refit train+val with frozen params, one test prediction.
+# Test never enters tuning.
 
 pe_grid <- function(cfg, smoke = FALSE) {
   if (smoke) return(data.frame(num_leaves = 31L, learning_rate = 0.05, min_data_in_leaf = 50L))
@@ -37,8 +37,6 @@ pe_lgb_fit <- function(cfg, g, X, y, w = NULL, Xv = NULL, yv = NULL, wv = NULL,
 }
 
 pe_mae <- function(e) mean(abs(e))
-
-# ---- one architecture on one dataset ------------------------------------------
 
 # Returns validation and test predictions (component and target level), the tuning
 # table and the selected configuration.

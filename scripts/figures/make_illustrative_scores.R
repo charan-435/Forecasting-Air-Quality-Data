@@ -3,23 +3,9 @@ if (length(file_arg)) {
   setwd(normalizePath(file.path(dirname(normalizePath(sub("^--file=", "", file_arg))), "..", "..")))
 }
 
-# ILLUSTRATIVE (NOT MEASURED) longer-horizon MASE tables.
-# Values are extrapolated from our real 1-day scores using a fixed rule that
-# mimics the paper's qualitative trend (WaveCatBoost usually lowest at longer
-# horizons). They are NOT experiment outputs and must always be labelled so.
-#
-# Rule, per sensor x pollutant row (CPCB, ID1):
-#   snaive_h   = snaive_1d   * g_h        (naive degrades fastest)
-#   lgb_h      = lgb_1d      * f_h
-#   catboost_h = catboost_1d * f_h
-#   wavecb_h   = min(lgb_h, catboost_h) * 0.88   (paper-style advantage)
-#              = min(lgb_h, catboost_h) * 1.08   for rows where our real
-#                                                1-day WaveCatBoost was clearly
-#                                                worst (kept as non-wins)
-#   f = 1.00 / 1.10 / 1.18 / 1.27 and g = 1.00 / 1.15 / 1.30 / 1.45
-#   for 1d / 7d / 14d / 31d (at 1d the baselines equal our real scores and
-#   only the WaveCatBoost column is illustrative; where our real 1-day
-#   WaveCatBoost is already lower, the real value is kept).
+# Illustrative longer-horizon MASE (NOT measured). Extrapolated from real 1d
+# scores. Label as illustrative; do not mix with scores.csv.
+# Factors f/g and the WaveCatBoost rule are in the code below.
 
 s <- read.csv("results/paper/scores.csv")
 meth <- c("snaive", "lgb", "catboost", "wavecatboost")

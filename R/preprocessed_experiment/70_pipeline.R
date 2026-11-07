@@ -1,4 +1,4 @@
-# Phase 3 (smoke), Phase 4 (full run) and the tables/plots for Phase 5.
+# Smoke (phase 3), full run (phase 4), tables/plots (phase 5).
 
 pe_arch_doc <- function(cfg) {
   list(

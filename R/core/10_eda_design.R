@@ -1,5 +1,5 @@
-# EDA → modelling design. Train-window only; no test used for decisions.
-# (No energy-by-level plots; multi-scale evidence uses band amplitudes.)
+# Train-window EDA for design choices (no test).
+# Band amplitudes, not energy-by-level plots.
 
 .eda_finite <- function(y) {
   y <- as.numeric(y)

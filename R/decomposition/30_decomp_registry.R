@@ -137,8 +137,6 @@ read_clean_long <- function() {
   tibble::as_tibble(arrow::read_parquet(p))
 }
 
-# ---- engine ----------------------------------------------------------------
-
 .method_available <- function(entry) {
   fn_ok <- exists(entry$fn, envir = .GlobalEnv, inherits = TRUE)
   if (!fn_ok) return(FALSE)

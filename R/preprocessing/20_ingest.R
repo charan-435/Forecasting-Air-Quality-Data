@@ -1,5 +1,5 @@
-# Ingest adapters and end-labelled hourly regularisation.
-# Hour t = mean of readings in (t-1h, t]. Known at time t.
+# Ingest + end-labelled hourly bins.
+# Hour t = mean of (t-1h, t]; known at t.
 
 CANON_VARS <- c("PM2.5", "PM10", "NO2", "SO2", "O3", "CO", "AT", "RH")
 

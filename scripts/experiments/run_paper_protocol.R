@@ -1,9 +1,7 @@
-# Paper notebook protocol (jborah2/WaveCatBoost-Time-Series-Model):
-#   Haar MODWT on the full series, K = ln N, CatBoost(lags=24, 1000 trees, auto η)
-#   per coefficient, walk-forward 1-step (teacher forcing), then IMODWT.
-# AUDIT F2 / F7: test sits in the circular filter. Do not mix with scores.csv.
+# Paper notebook protocol (full-series Haar MODWT + rolling 1-step CatBoost).
+# AUDIT F2/F7: test leaks into the circular filter. Do not mix with scores.csv.
 #
-#   "C:/Program Files/R/R-4.5.1/bin/Rscript.exe" scripts/experiments/run_paper_protocol.R
+#   Rscript scripts/experiments/run_paper_protocol.R
 
 file_arg <- grep("^--file=", commandArgs(trailingOnly = FALSE), value = TRUE)
 if (length(file_arg)) setwd(normalizePath(file.path(dirname(normalizePath(sub("^--file=", "", file_arg))), "..", "..")))

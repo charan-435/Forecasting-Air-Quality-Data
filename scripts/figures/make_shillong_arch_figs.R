@@ -37,7 +37,6 @@ mae$h_lab <- factor(paste0("h = ", mae$h, " h"),
 mae$arch <- factor(mae$arch,
                    levels = c("A0", "A1", "A2", "A3", "B0", "C2_sep", "Persist."))
 
-# ---- Bar chart ----
 png(file.path(outdir, "lump_test_mae_bars.png"), width = 1600, height = 620, res = 140)
 op <- par(mfrow = c(1, 4), mar = c(6.2, 4.2, 3.5, 0.8), oma = c(0, 0, 2.2, 0))
 cols <- c(A0 = BLUE, A1 = BLUE, A2 = GREEN, A3 = GREEN,
@@ -56,7 +55,6 @@ mtext("Lumpyngngad PM2.5 --- test MAE by architecture (LightGBM seed mean)",
 par(op)
 dev.off()
 
-# ---- A2/A0 ratio ----
 a0 <- mae$MAE[mae$arch == "A0"]
 a2 <- mae$MAE[mae$arch == "A2"]
 ratio <- a2 / a0
@@ -71,7 +69,6 @@ text(bp, ratio + 0.04, sprintf("%.2f", ratio), col = NAVY, cex = 1.05, font = 2)
 mtext("Ratio < 1: multivariate lags beat univariate", side = 3, line = 0.15, cex = 0.85, col = GREY)
 dev.off()
 
-# ---- Numbers board ----
 png(file.path(outdir, "lump_test_mae_table.png"), width = 1200, height = 560, res = 140)
 par(mar = c(1, 1, 3.5, 1))
 plot.new()
@@ -93,7 +90,6 @@ for (i in seq_along(rows)) {
 }
 dev.off()
 
-# ---- Architecture map (simple schematic) ----
 png(file.path(outdir, "arch_family_map.png"), width = 1400, height = 720, res = 140)
 par(mar = c(1, 1, 3.2, 1))
 plot.new()

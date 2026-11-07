@@ -1,4 +1,4 @@
-# Write the clean hourly store, policy, and a table-only quality report.
+# Write clean hourly store, policy, quality table.
 
 CLEAN_COLS <- c(
   "station", "variable", "timestamp",

@@ -1,7 +1,6 @@
-# Weighted conformal prediction intervals (paper §II-C), plus a simple alert rule.
-# CS_t = |Y_t - Yhat_t| / U_t
-# CQ_t = (1-alpha) quantile of CS in a trailing window of length kappa
-# PI_t = Yhat_t ± CQ_t * U_t
+# Weighted conformal PIs (paper II-C) + a simple alert rule.
+# CS = |Y - Yhat| / U; CQ = (1-a) quantile over a trailing window;
+# PI = Yhat +/- CQ * U.
 
 rolling_mae <- function(err, win) {
   e <- abs(as.numeric(err))
@@ -160,7 +159,6 @@ interval_width <- function(lo, hi) {
   mean(hi - lo, na.rm = TRUE)
 }
 
-# ---- Extension: conformalized quantile regression (CQR) -------------------
 # Romano, Patterson, Candès (2019). Quantile LightGBM at α/2 and 1-α/2 on
 # lag-p features, then a split-conformal correction on a hold-out window.
 # Same train / cal / test cut as conformal_wavecatboost_1step.

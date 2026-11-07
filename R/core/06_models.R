@@ -1,7 +1,7 @@
-# Point-forecast models. Recursive 1-step iteration out to horizon h.
-# Tree models share the same lag-p design matrix. AR/SARIMA use original scale.
+# Point forecasts. Recursive 1-step out to horizon h.
+# Trees share lag-p features; AR/SARIMA stay on original scale.
 
-# Null-coalescing helper (avoids importing magrittr for one operator).
+# %||% without pulling in magrittr.
 `%||%` <- function(a, b) if (!is.null(a)) a else b
 
 default_tree_params <- function() {
@@ -41,13 +41,9 @@ split_val <- function(X, y, val_hours) {
   )
 }
 
-# ---- Seasonal naive -------------------------------------------------------
-
 forecast_snaive <- function(y_train, h, season = SEASONALITY) {
   as.numeric(forecast::snaive(stats::ts(y_train, frequency = season), h = h)$mean)
 }
-
-# ---- AR / SARIMA ----------------------------------------------------------
 
 fit_ar <- function(y_train, p) {
   stats::arima(y_train, order = c(p, 0, 0), method = "CSS")
@@ -91,8 +87,6 @@ fit_sarima_auto <- function(y_train, season = SEASONALITY) {
   )
 }
 
-# ---- XGBoost --------------------------------------------------------------
-
 fit_xgb <- function(y_train, params = default_tree_params()) {
   sup <- supervised_from_series(y_train, params$p)
   sp  <- split_val(sup$X, sup$y, params$val_hours)
@@ -120,8 +114,6 @@ fit_xgb <- function(y_train, params = default_tree_params()) {
 predict_xgb_row <- function(fit, row) {
   as.numeric(predict(fit$model, xgboost::xgb.DMatrix(row)))
 }
-
-# ---- LightGBM -------------------------------------------------------------
 
 fit_lgb <- function(y_train, params = default_tree_params()) {
   sup <- supervised_from_series(y_train, params$p)
@@ -152,8 +144,6 @@ fit_lgb <- function(y_train, params = default_tree_params()) {
 predict_lgb_row <- function(fit, row) {
   as.numeric(predict(fit$model, row))
 }
-
-# ---- CatBoost (Ordered) or XGBoost fallback -------------------------------
 
 fit_cat <- function(y_train, params = default_tree_params(),
                     catboost_ok = isTRUE(get0("CATBOOST_AVAILABLE",
@@ -329,7 +319,6 @@ paper_wave_insample <- function(models, y_train, J, max_n = 400L) {
   list(y = tail(y_train, L), yhat = as.numeric(haar_imodwt(What, Vhat)))
 }
 
-# ---- Wave hybrids: one model per MRA component, then sum ------------------
 # filter: "haar" (paper default), "d4", "la8"  — passed to generic_mra().
 
 wave_fit_components <- function(y_train, J, fitter, params, filter = "haar") {
@@ -405,7 +394,6 @@ wave_fit_sarima <- function(y_train, J, filter = "haar") {
        filter = filter)
 }
 
-# ---- One-shot dispatcher --------------------------------------------------
 # y_future: if provided, use rolled (walk-forward 1-step) with observed lags;
 #           if NULL, use recursive multi-step from one origin (legacy).
 

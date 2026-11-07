@@ -1,4 +1,4 @@
-# Past-only hourly quality flags. Masking writes NA into value_masked.
+# Past-only quality flags. Masked values become NA in value_masked.
 
 .stuck_limit <- function(variable, cfg) {
   sh <- cfg$stuck_hours

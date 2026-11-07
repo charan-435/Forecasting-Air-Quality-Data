@@ -1,4 +1,4 @@
-# Imputation, clipping of impossible values, train-only min-max, chronological splits.
+# Impute, clip bad values, train-only min-max, chronological splits.
 
 clip_impossible <- function(x, pollutant) {
   x[x < 0] <- NA_real_
@@ -11,9 +11,8 @@ clip_impossible <- function(x, pollutant) {
   x
 }
 
-# DEPRECATED for the Phase 1a store. Full-series na_seadec looks ahead
-# (AUDIT F10). Use value_filled_causal from R/preprocessing/22_impute.R.
-# Kept so v1 scripts/experiments/run_experiments.R still reproduces archived scores.
+# v1 only (AUDIT F10: full-series na_seadec looks ahead).
+# Prefer value_filled_causal. Kept for archived bake-off scores.
 impute_hourly <- function(x, period = SEASONALITY) {
   x <- as.numeric(x)
   n_ok <- sum(is.finite(x))
@@ -31,9 +30,8 @@ impute_hourly <- function(x, period = SEASONALITY) {
   as.numeric(out)
 }
 
-# DEPRECATED for the Phase 1 store. Fits on whatever vector is passed; the
-# v1 caller used y_fit (train+val). Use get_origin_stats() min/max instead
-# (AUDIT F12). Kept so v1 scripts/experiments/run_experiments.R still reproduces archived scores.
+# v1 only (AUDIT F12). Prefer get_origin_stats() min/max.
+# Kept for archived bake-off scores.
 minmax_fit <- function(x) {
   x <- x[is.finite(x)]
   list(min = min(x), max = max(x))
@@ -49,9 +47,8 @@ minmax_invert <- function(x, fit) {
   x * (fit$max - fit$min) + fit$min
 }
 
-# Chronological train / val / test. Test is the last h hours and never enters
-# the scaler, Haar MRA, or hyperparameter grid. Val is the last val_hours of
-# what remains (early stopping only). Train is everything before val.
+# Chronological train/val/test. Test = last h hours (never in scaler/MRA/grid).
+# Val = last val_hours of the rest (early stopping). Train = before val.
 chrono_split_tvt <- function(y, times, h, val_hours = VAL_HOURS) {
   y <- as.numeric(y)
   n <- length(y)
@@ -73,10 +70,8 @@ chrono_split_tvt <- function(y, times, h, val_hours = VAL_HOURS) {
   )
 }
 
-# DEPRECATED for the Phase 1 store. Nested last-h test windows (AUDIT F3).
-# Use get_origins() / config/store.yaml. Kept so v1 scripts/experiments/run_experiments.R still
-# reproduces archived scores.
-# Bake-off helper: "train" = pre-test window (train+val). Test is still held out.
+# v1 only (AUDIT F3 nested windows). Prefer get_origins().
+# Here "train" means pre-test (train+val); test still held out.
 chrono_split <- function(y, times, h, val_hours = VAL_HOURS) {
   sp <- chrono_split_tvt(y, times, h, val_hours)
   list(

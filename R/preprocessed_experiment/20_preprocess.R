@@ -1,7 +1,6 @@
-# Phase 1b: invalid pollutant values -> NA, kaisen causal imputation, cleaned store.
-# Mirrors kaisen run_preprocess() step by step (benchmark -> choose -> fit M7/M8 ->
-# impute_station) with selection_end = end of the training block, and writes only
-# to the experiment store (run_preprocess() would overwrite config/imputation_choice.yaml).
+# Phase 1b: mask bad values, causal impute, write cleaned store.
+# Same steps as run_preprocess() but writes only under the experiment store
+# so we do not overwrite config/imputation_choice.yaml.
 
 PE_REASONS <- c("fill_code", "negative", "out_of_bounds", "stuck", "pm_ratio")
 
@@ -19,7 +18,7 @@ pe_rule_table <- function(cfg, pp) {
               as.integer(pp$stuck_hours$default)),
       sprintf("PM2.5 > %.2f x PM10 in the same hour; both PM values", pp$pm_ratio_max)),
     justification = c(
-      "Synthetic fills (column-mean-like constants written into all six pollutants at once); independent sensors reporting to 6+ decimals cannot repeat a joint vector",
+      "Synthetic fills (column-mean-like constants written into all six pollutants at once); sensors with 6+ decimal places cannot repeat a joint vector",
       "Concentrations cannot be negative",
       "Physically implausible for ambient air (repository bounds)",
       "A sensor reporting an identical averaged value for >= 6 h is frozen",
@@ -40,7 +39,6 @@ pe_preprocess <- function(cfg) {
   fc <- pe_fill_codes(w, P, times <= train_end, cfg$validity$fill_code_min_hours)
   pm_bad <- is.finite(w$`PM2.5`) & is.finite(w$PM10) & w$`PM2.5` > pp$pm_ratio_max * w$PM10
 
-  # ---- flags (precedence = order of PE_REASONS) --------------------------------
   parts <- list()
   for (v in P) {
     sv <- long[long$variable == v, ]
@@ -68,7 +66,6 @@ pe_preprocess <- function(cfg) {
   }
   hourly <- dplyr::bind_rows(parts)
 
-  # ---- causal imputation, kaisen methods, fitted on the training block only -----
   cfg_train <- pp
   cfg_train$selection_end <- format(train_end + 3600, "%Y-%m-%d %H:%M")
   sel <- pp_parse_time(cfg_train$selection_end, cfg$tz)
@@ -83,7 +80,6 @@ pe_preprocess <- function(cfg) {
   filled$no_history <- !is.finite(filled$value_filled_causal)
   pe_write_csv(bench, file.path(out, "imputation_benchmark_training_block.csv"))
 
-  # ---- store ------------------------------------------------------------------
   sdir <- pe_dir(cfg, "store", "clean")
   arrow::write_parquet(filled, file.path(sdir, "series.parquet"))
   pe_write_csv(bench, file.path(sdir, "imputation_benchmark.csv"))
@@ -105,8 +101,6 @@ pe_preprocess <- function(cfg) {
          " pollutant-hours; store ", file.path(cfg$paths$store, "clean", "series.parquet"))
   invisible(filled)
 }
-
-# ---- diagnostics --------------------------------------------------------------
 
 pe_preprocess_report <- function(cfg, pp, long, filled, choice, out) {
   P <- cfg$pollutants
@@ -203,8 +197,6 @@ pe_preprocess_report <- function(cfg, pp, long, filled, choice, out) {
   ggplot2::ggsave(file.path(pdir, "removed_counts.png"), g3, width = 7, height = 4, dpi = 120)
   invisible(TRUE)
 }
-
-# ---- split availability (needs the decomposition warm-up) ---------------------
 
 pe_eligibility <- function(cfg, filled, W) {
   pol <- decomp_policy()

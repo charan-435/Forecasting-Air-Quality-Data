@@ -1,6 +1,6 @@
-# MODWT / IMODWT / MRA — paper method: Haar (Percival pyramid).
-# Extension: generic_mra() also supports D4, LA8 (waveslim), Fourier bands, and EMD.
-# Circular convolution: decompose TRAIN only so test values never leak into coefficients.
+# MODWT / IMODWT / MRA (Haar as in the paper).
+# generic_mra() also does D4, LA8, Fourier bands, EMD.
+# Decompose train only so test never leaks into coefficients.
 
 roll_right <- function(x, s) {
   n <- length(x)

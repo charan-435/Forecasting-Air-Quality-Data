@@ -1,4 +1,4 @@
-# MASE (paper), MAE, RMSE, and MCB / Nemenyi ranks.
+# MASE, MAE, RMSE, MCB/Nemenyi ranks.
 
 mase <- function(y_train, y_test, yhat, season = SEASONALITY) {
   y_test <- as.numeric(y_test)

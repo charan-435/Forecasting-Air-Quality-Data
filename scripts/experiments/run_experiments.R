@@ -1,9 +1,7 @@
-# Heavy bake-off. Writes results/*.rds so analysis.Rmd can load them.
-# Resume-safe: each (sensor, pollutant, horizon, method) is cached.
+# Full bake-off. Caches each (sensor, pollutant, horizon, method).
 #
-# Usage (from the project root):
-#   "C:/Program Files/R/R-4.5.1/bin/Rscript.exe" scripts/experiments/run_experiments.R
-#   "C:/Program Files/R/R-4.5.1/bin/Rscript.exe" scripts/experiments/run_experiments.R quick
+#   Rscript scripts/experiments/run_experiments.R
+#   Rscript scripts/experiments/run_experiments.R quick
 
 args <- commandArgs(trailingOnly = TRUE)
 QUICK <- any(tolower(args) %in% c("quick", "--quick", "-q"))
@@ -40,7 +38,6 @@ save_cache <- function(obj, path) {
   saveRDS(obj, path)
 }
 
-# ---- 1. Data --------------------------------------------------------------
 message("Loading raw datasets...")
 raw <- load_raw_datasets(include_new = FALSE)
 series <- prepare_all_series(raw)
@@ -63,7 +60,6 @@ eda_df <- dplyr::bind_rows(eda)
 saveRDS(eda_df, eda_path)
 print(eda_df)
 
-# ---- 2. Hyperparameters on CPCB PM2.5 ------------------------------------
 pm_key <- "CPCB_PM2.5"
 J_elbow <- choose_J(series[[pm_key]]$y)$J_elbow
 if (file.exists(hparam_path)) {
@@ -108,7 +104,6 @@ params <- hp$params
 params$nrounds <- min(params$nrounds, 120L)
 J_use <- hp$J
 
-# ---- 3. Bake-off ----------------------------------------------------------
 cache <- load_cache(cache_path)
 horizons_use <- if (QUICK) HORIZONS["1d"] else HORIZONS
 
@@ -217,7 +212,6 @@ readr::write_csv(scores, file.path(RES_DIR, "scores.csv"))
 message("Score table:")
 print(scores)
 
-# ---- 4. Conformal intervals for WaveCatBoost, both sensors, PM2.5, 7d ----
 # Prefer the dedicated scripts/experiments/run_conformal.R output (hold-out calibration).
 if (file.exists(conformal_path)) {
   message("Conformal results already present; skipping refit.")
@@ -272,8 +266,6 @@ saveRDS(conf_out, conformal_path)
 
 message("Done. Cached ", length(cache), " forecasts.")
 
-
-# ---- 5. Filter ablation: Haar vs D4 vs LA8 -------------------------------
 # Primary comparison uses WaveCatBoost (paper head). WaveLGB rows may remain
 # in the cache from earlier runs. Scope: PM2.5 + NO2, both sensors.
 # Results land in results/extensions/filter_scores.rds (separate from the main scores).

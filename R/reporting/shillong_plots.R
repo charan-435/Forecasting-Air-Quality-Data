@@ -1,4 +1,4 @@
-# Presentation of saved Shillong metrics. This file does not fit forecasting models.
+# Plots for saved Shillong metrics (no model fitting).
 make_shillong_extension_plots <- function(directory = "results/shillong/architecture") {
   metrics <- read.csv(file.path(directory, "LEVEL_METRICS.csv")) %>%
     dplyr::filter(station == "Lumpyngngad", target == "PM2.5", component == "LEVEL")

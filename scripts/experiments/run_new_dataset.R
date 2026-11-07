@@ -22,7 +22,6 @@ hparam_path <- file.path(RES_DIR, "hparams.rds")
 load_cache <- function(path) if (file.exists(path)) readRDS(path) else list()
 save_cache <- function(obj, path) saveRDS(obj, path)
 
-# ---- 1. Paper preprocess for SHILLONG ------------------------------------
 message("=== SHILLONG paper preprocess (15-min → hourly) ===")
 sh <- ensure_new_dataset(force = FALSE)
 if (is.null(sh$hourly)) stop("Could not build SHILLONG hourly series.")
@@ -146,7 +145,6 @@ if (!CONF_ONLY) {
   message("Score rows: ", nrow(scores))
 }
 
-# ---- 2. Conformal on CPCB, ID1, SHILLONG ---------------------------------
 message("=== 7-day conformal (walk-forward 1-step) ===")
 conf_path <- file.path(RES_DIR, "conformal.rds")
 conf_out <- if (file.exists(conf_path)) readRDS(conf_path) else list()

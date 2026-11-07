@@ -1,13 +1,12 @@
-# CPCB parallel preprocessed experiment: architectures B0, A1, B1, B2, B3 at h = 24.
-# Separate from every existing pipeline: reads shared data/config, writes only to
-# store/preprocessed_experiment/ and results/preprocessed_experiment/.
+# CPCB cleaned experiment: B0, A1, B1, B2, B3 at h=24.
+# Writes only under store/preprocessed_experiment/ and results/preprocessed_experiment/.
 #
-#   Rscript scripts/experiments/run_preprocessed_experiment.R phase1   # guard snapshot, audit, cleaned dataset
-#   Rscript scripts/experiments/run_preprocessed_experiment.R phase2   # decomposition + data tests
-#   Rscript scripts/experiments/run_preprocessed_experiment.R phase3   # smoke run of B0, A1, B1, B2, B3 + model tests
-#   Rscript scripts/experiments/run_preprocessed_experiment.R phase4   # full run (clean + unmasked control) + evaluation
-#   Rscript scripts/experiments/run_preprocessed_experiment.R verify   # protected files unchanged?
-# Single steps: guard | audit | preprocess | decompose | test-data | smoke | full | evaluate | verify
+#   Rscript scripts/experiments/run_preprocessed_experiment.R phase1
+#   Rscript scripts/experiments/run_preprocessed_experiment.R phase2
+#   Rscript scripts/experiments/run_preprocessed_experiment.R phase3
+#   Rscript scripts/experiments/run_preprocessed_experiment.R phase4
+#   Rscript scripts/experiments/run_preprocessed_experiment.R verify
+# Steps: guard | audit | preprocess | decompose | test-data | smoke | full | evaluate | verify
 
 options(warn = 1)
 file_arg <- grep("^--file=", commandArgs(trailingOnly = FALSE), value = TRUE)

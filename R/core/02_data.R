@@ -1,4 +1,4 @@
-# Load and standardise the GitHub datasets, plus extra 15-min CAAQMS groups.
+# Load paper CSVs and extra 15-min CAAQMS groups.
 
 dataset_group_choices <- function() {
   c("Original (paper CPCB / ID1 / SHILLONG)" = "paper",

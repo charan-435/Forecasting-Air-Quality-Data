@@ -1,7 +1,6 @@
-# Natively causal MODWT analysis coefficients.
-# Haar: the repo pyramid h̃=(1,−1)/2, g̃=(1,1)/2 looking only backward.
-# D4/LA8: à trous with the same taps looking only backward. waveslim
-# periodic MODWT fails D1 (AUDIT F1) and is never stored.
+# Causal MODWT analysis coeffs (backward taps only).
+# Haar pyramid as in the repo. D4/LA8 a trous same way.
+# waveslim periodic MODWT fails D1 (AUDIT F1); do not store it.
 
 decomp_coef_haar <- function(x_full, params = list(J = 10L)) {
   J <- as.integer(params$J %||% 10L)

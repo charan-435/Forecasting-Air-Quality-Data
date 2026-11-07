@@ -19,7 +19,6 @@ dir.create(outdir, recursive = TRUE, showWarnings = FALSE)
 raw <- load_raw_datasets(include_new = TRUE)
 series <- prepare_all_series(raw)
 
-# ---- Full series: paper Meghalaya (CPCB) + Shillong (no train/val/test lines) ----
 plot_full_series <- function(s, file, title) {
   png(file, width = 1400, height = 520, res = 140)
   par(mar = c(4, 4.2, 3.2, 1))
@@ -35,7 +34,6 @@ plot_full_series(series[["SHILLONG_PM2.5"]],
                  file.path(outdir, "series_shillong_pm25.png"),
                  "Shillong PM2.5 --- original series")
 
-# ---- Diagnostics 2x2 on CPCB PM2.5 train (for ACF stability) ----
 s <- series[["CPCB_PM2.5"]]
 y <- s$y
 t <- s$times
@@ -95,7 +93,6 @@ boxplot(ytr ~ dow, outline = FALSE, col = "#EEF1F5", xlab = NULL,
         ylab = "PM2.5", main = "CPCB PM2.5 --- Day of week")
 dev.off()
 
-# ---- EDA → pipeline: snaive residuals + decision board (no energy plots) ----
 ttr <- t[seq_len(n_train)]
 sumr <- eda_design_summary(ytr, ttr, J = 5L, filter = "haar")
 dec  <- eda_design_decisions(sumr)
@@ -130,7 +127,6 @@ for (i in seq_len(n_row)) {
 par(op)
 dev.off()
 
-# ---- Haar MRA panel on high-variance CPCB week ----
 win <- min(14L * 24L, n_train)
 starts <- seq(1L, n_train - win + 1L, by = 24L)
 sds <- vapply(starts, function(i) stats::sd(ytr[i:(i + win - 1L)], na.rm = TRUE), numeric(1))
@@ -148,7 +144,6 @@ for (k in 1:4) {
 plot(ts, mra$S, type = "l", col = "#2E6B4F", ylab = "S4", xlab = "Time")
 dev.off()
 
-# ---- Filter taps (waveslim uses hpf/lpf) ----
 d4 <- waveslim::wave.filter("d4")
 la8 <- waveslim::wave.filter("la8")
 filters <- list(

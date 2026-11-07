@@ -1,6 +1,6 @@
-# Phase 1a: audit the CPCB hourly data before any value is touched.
+# Phase 1a: audit CPCB hourly data before changing values.
 
-# CPCB rows of the kaisen Phase 1a store, six pollutants, one row per hour and variable.
+# One row per hour x pollutant from the Phase 1a store.
 pe_load_source <- function(cfg) {
   x <- arrow::read_parquet(file.path(PROJECT_ROOT, cfg$source$series))
   x <- x[x$station == cfg$station & x$variable %in% cfg$pollutants, ]

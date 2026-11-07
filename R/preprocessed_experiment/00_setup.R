@@ -1,5 +1,5 @@
-# Setup for the CPCB preprocessed experiment: config, paths, logging, integrity guard.
-# Shared R/ helpers are sourced unchanged; nothing here edits them.
+# Paths, config, logging, integrity check for the CPCB cleaned experiment.
+# Does not edit shared R/ helpers.
 
 pe_cfg <- function(path = file.path(PROJECT_ROOT, "config", "preprocessed_experiment.yaml")) {
   cfg <- yaml::read_yaml(path)
@@ -33,7 +33,6 @@ pe_redirect_shared_logs <- function(cfg) {
 
 pe_time <- function(x, cfg) lubridate::ymd_hm(x, tz = cfg$tz)
 
-# ---- integrity guard ----------------------------------------------------------
 # Hash every file outside .git and the experiment's own paths.
 
 pe_protected_files <- function(cfg) {
@@ -83,8 +82,6 @@ pe_guard_verify <- function(cfg, stage = "") {
   if (!ok) stop("Protected files changed: ", paste(c(changed, removed, added), collapse = ", "))
   invisible(TRUE)
 }
-
-# ---- reproducibility record ---------------------------------------------------
 
 pe_provenance <- function(cfg, phase) {
   code <- c(list.files(file.path(PROJECT_ROOT, "R", "preprocessed_experiment"), full.names = TRUE),

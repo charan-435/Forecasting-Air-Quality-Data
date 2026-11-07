@@ -1,5 +1,5 @@
-# Small time-based grid on PM2.5 CPCB (1-day horizon). Chosen values are
-# reused for the full bake-off. We never peek at the test window.
+# Small grid on CPCB PM2.5 (1-day). Reuse winners for the full bake-off.
+# Never look at the test window.
 
 grid_search_tree <- function(y_train, method = "lgb",
                              p_grid = c(24L, 48L),

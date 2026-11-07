@@ -1,7 +1,5 @@
-# Phase 2: trailing Haar MRA J5 (mra_haar_J5__raw) of the cleaned CPCB pollutants.
-# Same engine and settings as kaisen run_decomp() (run_trailing_series + decomp_mra_haar,
-# window_h / J / filter / pad from config/decomp.yaml). This wrapper exists only so the
-# checkpoint, parquet and manifest go to the experiment store, not store/decomp/.
+# Phase 2: trailing Haar MRA J5 on cleaned CPCB.
+# Same engine as run_decomp(); outputs go to the experiment store.
 
 pe_decomp_entry <- function(cfg) {
   dc <- decomp_cfg()

@@ -1,5 +1,5 @@
-# Cheap ranking of decomposition methods. Train only on t+h < screen_start.
-# Score only targets ≤ selection_end. Not a final model result.
+# Quick ranking of decomp methods. Train with t+h < screen_start;
+# score targets up to selection_end. Not a final result.
 
 .f0_lag_idx <- c(1:24, 48, 72, 168)
 

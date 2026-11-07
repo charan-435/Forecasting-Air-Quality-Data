@@ -1,5 +1,5 @@
-# Load (and optionally install) packages used by the WaveCatBoost R analysis.
-# CatBoost is not on CRAN; we try a GitHub binary and fall back to XGBoost.
+# Packages for the WaveCatBoost analysis.
+# CatBoost is not on CRAN; try GitHub binary, else fall back to XGBoost.
 
 .project_packages <- c(
   "readr", "dplyr", "tidyr", "tibble", "purrr", "stringr",

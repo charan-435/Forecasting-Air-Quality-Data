@@ -1,5 +1,5 @@
-# Two-sided methods on a trailing window ending at t. The engine keeps the last
-# (unpadded) row, so the stored value at t uses only data ≤ t.
+# Two-sided methods on a window ending at t; keep last unpadded row
+# so the stored value at t only uses data up to t.
 
 ar_forecast_ls <- function(y, h = 48L, p = 48L) {
   y <- as.numeric(y)

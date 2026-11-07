@@ -1,6 +1,6 @@
-# Phase 4-5: metrics, baselines, paired comparisons and plots.
+# Phase 4-5: metrics, baselines, paired plots.
 
-# MASE denominators from the TRAINING block only, seasonal period `season`.
+# MASE denom from training only (seasonal period `season`).
 pe_mase_scale <- function(x, hours, season) {
   hours <- hours[hours > season]
   mean(abs(x[hours] - x[hours - season]), na.rm = TRUE)
@@ -26,8 +26,6 @@ pe_baselines <- function(md, block) {
              train_mean = mean(fit_y[hours], na.rm = TRUE),
              hour_of_day = as.numeric(hod_mean[tgt_hod]))
 }
-
-# ---- paired comparison --------------------------------------------------------
 
 pe_block_boot_idx <- function(n, L, B, seed) {
   set.seed(seed)

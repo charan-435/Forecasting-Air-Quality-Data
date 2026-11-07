@@ -1,4 +1,4 @@
-# Causal gap filling. Fills are model inputs only and are never scored.
+# Causal gap fills for model inputs only (never scored).
 
 .gap_bookkeeping <- function(masked, long_gap_hours = 72L) {
   n <- length(masked)
