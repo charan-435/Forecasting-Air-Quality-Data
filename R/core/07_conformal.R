@@ -14,6 +14,8 @@ rolling_mae <- function(err, win) {
 }
 
 .robust_u <- function(u_cal, err, y_cal, k) {
+  # A flat calibration tail can make the final local scale misleadingly tiny.
+  # Fall back to calibration-wide error summaries, without using test targets.
   u_star <- tail(u_cal, 1)
   y_tail <- tail(as.numeric(y_cal), k)
   degenerate <- !is.finite(u_star) || u_star < 1e-8 ||
@@ -39,8 +41,9 @@ conformal_from_residuals <- function(y_cal, yhat_cal, yhat_test,
   u_star <- .robust_u(u_cal, err, y_cal, k)
   h <- length(yhat_test)
 
-  # 1-step historical: after each test hour is observed, U can update.
-  # Deployed multi-step (y_test = NULL): copy the robust calibration scale.
+  # Rolling one-step evaluation can update its scale after an hour is observed.
+  # Append that error AFTER forming the current band, so it helps only later hours.
+  # With no observations arriving during a multi-step path, freeze the calibration scale.
   if (!is.null(y_test) && length(y_test) == h) {
     u_test <- numeric(h)
     err_all <- err

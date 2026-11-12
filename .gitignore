@@ -12,6 +12,7 @@ analysis_cache/
 *.knit.md
 *.utf8.md
 tmp_*
+/tmp/
 __pycache__/
 .DS_Store
 Thumbs.db
@@ -36,3 +37,29 @@ data/raw/vonter/
 # Regenerable runtime metadata
 results/**/run_log.txt
 data/processed/*_group_series.rds
+
+# Keep only PDFs from the report folder, including figure PDFs in subfolders.
+/report/**
+!/report/**/
+!/report/**/*.pdf
+
+# Local deployment records and credentials
+/rsconnect/
+.Renviron
+.Renviron.*
+.env
+.env.*
+!.env.example
+
+# Dependency caches and generated app builds
+node_modules/
+dist/
+.venv/
+venv/
+renv/library/
+renv/staging/
+*.py[cod]
+
+# Retired presentation archive (keep the current Beamer source and PDF)
+/presentation/legacy/
+*.tsbuildinfo

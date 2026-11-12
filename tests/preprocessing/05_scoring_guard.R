@@ -1,4 +1,4 @@
-source("tests/phase1a/_lib.R")
+source("tests/preprocessing/_lib.R")
 path <- file.path(PROJECT_ROOT, "store", "clean", "series.parquet")
 if (!file.exists(path)) {
   p1a_ok("scoring_guard_skip", TRUE, "no series.parquet yet — run preprocess first (checked in 08/09)")

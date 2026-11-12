@@ -1,4 +1,4 @@
-source("tests/phase1a/_lib.R")
+source("tests/preprocessing/_lib.R")
 path <- file.path(PROJECT_ROOT, "store", "clean", "series.parquet")
 need_rebuild <- TRUE
 if (file.exists(path)) {

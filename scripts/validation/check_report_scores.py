@@ -85,15 +85,6 @@ for row in read('results/paper/mase_wide.csv'):
         if m not in ['sensor','pollutant','horizon'] and v and v != 'NA':
             eq(v,scores[(row['sensor'],row['pollutant'],row['horizon'],m)]['MASE'],'mase_wide.csv')
 
-# Check the editable PowerPoint table against the same source, without flattening it.
-import zipfile, xml.etree.ElementTree as ET
-with zipfile.ZipFile(ROOT/'ATSA_Presentation.pptx') as z:
-    ns={'a':'http://schemas.openxmlformats.org/drawingml/2006/main'}
-    root=ET.fromstring(z.read('ppt/slides/slide18.xml'))
-    for tr in root.findall('.//a:tbl/a:tr',ns)[1:]:
-        cells=[''.join(t.text or '' for t in c.findall('.//a:t',ns)) for c in tr.findall('a:tc',ns)]
-        for method,v in zip(['xgb','catboost','wavecatboost'],cells[2:]):
-            eq(v,f"{float(scores[cells[0],'PM2.5',cells[1].replace(' ',''),method]['MASE']):.2f}",'PowerPoint native result table')
 # Check all filter and Fourier score cells in the PDF's LaTeX source.
 tex=text('presentation/segments/6_extensions.tex').split('\\subsection{Shillong')[0]
 tex=re.sub(r'\\textbf\{([^}]*)\}',r'\1',tex)

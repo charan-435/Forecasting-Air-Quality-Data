@@ -15,4 +15,4 @@ Upload stays local. Only seasonal naive runs in the browser; WaveCatBoost is in 
 
 ## Recorded results
 
-The scores table uses `results/paper/scores.csv`. The film and forecast viewer use `results/paper/paper_protocol.rds`, matching report Sections 8.1–8.2 (rolling one-step, K = 9); the band animation is illustrative. These protocols have different scores and are labelled separately. Refresh exports from the repository root with `Rscript scripts/figures/sync_recorded_results.R`. No models are fitted.
+This viewer retains its recorded exports. Refresh current app data with the Lab exporters under scripts/figures/.

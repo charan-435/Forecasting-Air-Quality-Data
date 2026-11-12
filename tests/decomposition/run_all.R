@@ -1,4 +1,4 @@
-# Rscript tests/phase1b/run_all.R   (from the project root)
+# Rscript tests/decomposition/run_all.R   (from the project root)
 
 file_arg <- grep("^--file=", commandArgs(trailingOnly = FALSE), value = TRUE)
 if (length(file_arg)) {
@@ -15,7 +15,7 @@ P1B_FAILS <<- character()
 P1B_PASSES <<- character()
 for (s in scripts) {
   cat("\n==== ", s, " ====\n", sep = "")
-  sys.source(file.path("tests", "phase1b", s), envir = .GlobalEnv)
+  sys.source(file.path("tests", "decomposition", s), envir = .GlobalEnv)
 }
 cat("\n==== SUMMARY ====\n")
 cat("PASS", length(P1B_PASSES), " FAIL", length(P1B_FAILS), "\n")

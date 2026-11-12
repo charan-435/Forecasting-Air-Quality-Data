@@ -235,6 +235,8 @@ predict_tree_row <- function(fit, row) {
 }
 
 recursive_tree_forecast <- function(fit, y_hist, h) {
+  # No actuals arrive during this forecast path: each prediction becomes history
+  # for the next step. Keep this separate from the rolling one-step evaluator.
   y  <- as.numeric(y_hist)
   p  <- fit$p
   fc <- numeric(h)
@@ -322,6 +324,9 @@ paper_wave_insample <- function(models, y_train, J, max_n = 400L) {
 # filter: "haar" (paper default), "d4", "la8"  — passed to generic_mra().
 
 wave_fit_components <- function(y_train, J, fitter, params, filter = "haar") {
+  # This is the original periodic MRA path, retained for the recorded benchmark.
+  # Train-only decomposition still has boundary effects; causal stores use a
+  # separate implementation under R/decomposition/.
   mra    <- generic_mra(y_train, J, filter = filter)
   comps  <- c(mra$D, list(S = mra$S))
   models <- lapply(comps, function(comp) fitter(comp, params))

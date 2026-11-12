@@ -1,4 +1,4 @@
-source("tests/phase1b/_lib.R")
+source("tests/decomposition/_lib.R")
 sv <- .p1b_synth_sv(200L)
 sv$fill_method[50:80] <- "M1"
 sv$frac_filled_24h[60:90] <- 0.8

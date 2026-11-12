@@ -1,4 +1,4 @@
-# Smoke (phase 3), full run (phase 4), tables/plots (phase 5).
+# Smoke fits run in phase 3; full fitting and evaluation both run in phase 4.
 
 pe_arch_doc <- function(cfg) {
   list(
@@ -91,6 +91,8 @@ pe_load_results <- function(cfg) {
 }
 
 pe_evaluate <- function(cfg) {
+  # Every paired comparison below needs exactly the same ordered test targets.
+  # Compare reconstructed pollutant forecasts, not a sum of component error scores.
   cmp <- pe_dir(cfg, "results", "comparisons")
   res <- pe_load_results(cfg)
   mds <- lapply(setNames(unlist(cfg$architectures$datasets), unlist(cfg$architectures$datasets)),

@@ -228,7 +228,7 @@ decomp_ssa <- function(x_window, params = list(L = 168L, n_rc = 8L)) {
   cbind(M, REM = rem)
 }
 
-# Dummy trailing method used by tests/phase1b/08_dummy_method.R.
+# Dummy trailing method used by tests/decomposition/08_dummy_method.R.
 # Mean of the window plus remainder. Additive, causal at the last row.
 decomp_ma_rem <- function(x_window, params = list()) {
   x <- as.numeric(x_window)

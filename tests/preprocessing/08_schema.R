@@ -1,4 +1,4 @@
-source("tests/phase1a/_lib.R")
+source("tests/preprocessing/_lib.R")
 path <- file.path(PROJECT_ROOT, "store", "clean", "series.parquet")
 if (!file.exists(path)) run_preprocess(active = "paper", force = TRUE)
 d <- tibble::as_tibble(arrow::read_parquet(path))

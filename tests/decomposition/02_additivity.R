@@ -1,4 +1,4 @@
-source("tests/phase1b/_lib.R")
+source("tests/decomposition/_lib.R")
 set.seed(3)
 sv <- .p1b_synth_sv(512L)
 x <- sv$value_filled_causal

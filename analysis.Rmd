@@ -19,7 +19,8 @@ runtime: shiny
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
                       fig.width = 9, fig.height = 5, dpi = 120,
                       out.width = "100%")
-source("R/load_all.R")
+source("R/reporting/load_report.R")
+load_report_helpers()
 source("R/reporting/result_tables.R")
 
 series_path <- file.path(PROC_DIR, "series.rds")
@@ -182,7 +183,7 @@ tibble::tibble(
 }
 ```
 
-`r if (isTRUE(get0("CATBOOST_AVAILABLE", ifnotfound = FALSE))) "CatBoost is available (ordered boosting)." else "**CatBoost is not installed** — CatBoost / WaveCatBoost fall back to XGBoost."`
+This report displays saved model predictions and scores. No models are fitted while viewing it.
 
 ```{r series-controls, echo=FALSE}
 inputPanel(

@@ -349,7 +349,9 @@ run_preprocess <- function(active = NULL, cfg_path = NULL, force = FALSE, cfg = 
   if (!length(sources)) stop("No sources for active=", cfg$active)
 
   r_files <- c("R/preprocessing/20_ingest.R", "R/preprocessing/21_quality.R", "R/preprocessing/22_impute.R",
-               "R/preprocessing/23_store_clean.R", "scripts/preprocessing/run_preprocess.R")
+               # Build the self-reference so R Markdown does not recursively scan this file.
+               file.path("R", "preprocessing", "23_store_clean.R"),
+               "scripts/preprocessing/run_preprocess.R")
   hash <- digest::digest(list(
     active = cfg$active,
     yaml = yaml::as.yaml(cfg),

@@ -1,6 +1,8 @@
 # MASE, MAE, RMSE, MCB/Nemenyi ranks.
 
 mase <- function(y_train, y_test, yhat, season = SEASONALITY) {
+  # The denominator describes training-period naive error, not the test baseline.
+  # MASE > 1 can therefore coexist with beating persistence on a harder test block.
   y_test <- as.numeric(y_test)
   yhat <- as.numeric(yhat)
   y_train <- as.numeric(y_train)

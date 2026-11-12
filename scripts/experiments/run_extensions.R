@@ -2,7 +2,7 @@
 # Writes results/extensions/extension_scores.rds so analysis.Rmd can load them.
 #
 # Usage (project root):
-#   "C:/Program Files/R/R-4.5.1/bin/Rscript.exe" scripts/experiments/run_extensions.R
+#   Rscript scripts/experiments/run_extensions.R
 
 file_arg <- grep("^--file=", commandArgs(trailingOnly = FALSE), value = TRUE)
 if (length(file_arg)) {

@@ -1,8 +1,8 @@
 # WaveCatBoost filter ablation: Haar vs D4 vs LA8 (1-day).
-# Appends/updates rows in results/filter_scores.{rds,csv} and filter_cache.rds.
+# Saves rows and fit caches under results/extensions/filter_*.
 #
 # Usage (project root):
-#   "C:/Program Files/R/R-4.5.1/bin/Rscript.exe" scripts/experiments/run_filter_ablation_catboost.R
+#   Rscript scripts/experiments/run_filter_ablation_catboost.R
 
 file_arg <- grep("^--file=", commandArgs(trailingOnly = FALSE), value = TRUE)
 if (length(file_arg)) {

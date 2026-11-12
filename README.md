@@ -1,108 +1,207 @@
 # Air-quality forecasting with WaveCatBoost
 
-R implementation of Borah et al., *A Novel Hybrid Approach for Efficiently Forecasting Air Quality Data*, with experiments on the paper's CPCB/ID1 data and Shillong air-quality data.
+This is our Applied Time Series Analysis course project on Borah et al., *A Novel Hybrid Approach for Efficiently Forecasting Air Quality Data* (IEEE Sensors Letters, 2025).
 
-Open `analysis.Rmd` in RStudio and select **Run Document** to view the interactive report. Its default test horizon is seven days. The current deck is `presentation/main.pdf`, with Beamer source in `presentation/main.tex` and `presentation/segments/`.
+The method splits an hourly pollutant series into wavelet components, forecasts each component, and combines the forecasts. We compare it with simpler models, try other filters and inputs, and check how data cleaning affects the results.
 
-## Directory guide
+Start with [the interactive R report](analysis.Rmd), [the presentation](presentation/main.pdf), or [WaveCatBoost Lab](https://charanponaganti.github.io/wavecatboost-learn/). Run the commands below from the repository root.
 
-```text
-analysis.Rmd                    Interactive report
-R/
-  core/                         Data loading, models, wavelets and metrics
-  preprocessing/                Hourly aggregation, quality checks and imputation
-  decomposition/                Causal decomposition and stored components
-  preprocessed_experiment/       Cleaned CPCB experiment
-  reporting/                    Saved-result plots and table formatting
-  load_all.R                    Shared R loader
-scripts/
-  experiments/                  Forecasting experiment entry points
-  preprocessing/                Build hourly and decomposition stores
-  figures/                      Regenerate presentation figures and tables
-  validation/                   Smoke check
-config/                         Preprocessing and experiment settings
-data/
-  raw/                          CPCB.csv, ID1.csv and Shillong station extract
-  processed/                    Hourly data and cached ERA5 reanalysis
-store/                          Prepared inputs and causal component stores
-results/
-  paper/                        Saved forecasts, scores and tuning results
-  extensions/                   Filter, Fourier and EMD experiment results
-  shillong/                     Direct forecasts and imported architecture evidence
-  preprocessed_experiment/      Cleaned CPCB predictions and comparisons
-presentation/                   Current PDF, LaTeX, bibliography and figures
-docs/                           Reference paper and historical audit
-tests/                          Preprocessing, decomposition and cleaned-CPCB checks
-```
+## Find your way around
 
-Run the commands below from the repository root. `Rscript` must be on PATH, or use the full path to your R installation. The main runners also resolve the repository root when launched by absolute path.
-
-## Environment and data
-
-`R/core/00_packages.R` lists the analysis packages loaded by `R/load_all.R`. The report also needs `rmarkdown`, `knitr`, and RStudio or Pandoc. The shared loader can install missing analysis packages.
-
-CatBoost is required to reproduce CatBoost scores. The existing implementation falls back to XGBoost when CatBoost is unavailable, which changes the fitted models and results. Keep the cached scores when viewing the recorded experiment.
-
-The paper CSVs originated from [jborah2/WaveCatBoost-Time-Series-Model](https://github.com/jborah2/WaveCatBoost-Time-Series-Model). The Shillong extract contains Lumpyngngad and JN Stadium separately. JN Stadium supplies neighbour inputs in the direct-forecast experiment. Delhi is outside the final report's scope.
-
-## Reproduce the available experiments
-
-| Result | Command |
+| Location | What belongs here |
 |---|---|
-| Paper CPCB/ID1 comparison | `Rscript scripts/experiments/run_experiments.R` |
-| Shillong hourly benchmark | `Rscript scripts/experiments/run_new_dataset.R` |
-| Paper-protocol forecast panels and residual intervals | `Rscript scripts/experiments/run_paper_protocol.R` |
-| Haar, D4 and LA8 comparison | `Rscript scripts/experiments/run_filter_ablation_catboost.R` |
-| Fourier and EMD comparison | `Rscript scripts/experiments/run_extensions.R` |
-| Shillong direct forecasts at 1, 6 and 24 hours | `Rscript scripts/experiments/run_shillong_direct.R` |
-| Separate conformal calibration experiment | `Rscript scripts/experiments/run_conformal.R` |
+| [analysis.Rmd](analysis.Rmd) | Interactive R report and project discussion. Open it in RStudio and choose **Run Document**. |
+| [R/](R/README.md) | Shared data preparation, models, metrics, and reporting functions. |
+| [scripts/](scripts/README.md) | Commands that prepare inputs, run experiments, draw figures, or check results. |
+| [config/](config/README.md) | Source paths, quality rules, decomposition settings, and cleaned-CPCB experiment settings. |
+| [data/](data/README.md) | Original sensor files and reusable hourly inputs. |
+| [store/](store/README.md) | Quality masks, causal fills, eligibility policies, and stored components. |
+| [results/](results/README.md) | Recorded predictions, scores, tuning choices, and experiment reports. |
+| [tests/](tests/README.md) | Checks grouped by preprocessing, decomposition, and the cleaned experiment. |
+| [presentation/](presentation/README.md) | Current Beamer slides, figures, and the older PowerPoint overview. |
+| [lab/](lab/README.md) | React/TypeScript educational app displaying committed result exports. It does not train models. |
+| report/ | Final report and figure PDFs. Only PDFs are versioned here; editable sources are in the accompanying Overleaf ZIP. |
+| docs/ | Assigned paper, supplementary cover, and historical implementation audit. |
 
-The main runners reuse saved caches. A cached invocation can finish without refitting models. Preserve copies of the recorded caches before forcing a new experiment. The paper-protocol cache retains the evaluation protocol and limitations discussed in the report and audit.
+Numbered R filenames indicate loading order. Normally you call a script under scripts/, which loads the helpers; you do not run each numbered file by hand.
 
-For the cleaned CPCB comparison, prepare the shared inputs and run the four phases in order.
+## 1. Set up the tools
 
-```sh
+Use R with RStudio for the interactive report. The package list and setup are in [R/core/00_packages.R](R/core/00_packages.R).
+
+~~~sh
+Rscript -e "source('R/core/00_packages.R')"
+~~~
+
+The shared loader installs missing CRAN dependencies and attempts a Windows CatBoost binary installation. Its first run needs internet access. The R report also needs rmarkdown, knitr, and Pandoc; RStudio supplies the usual Pandoc integration.
+
+~~~r
+install.packages(c("rmarkdown", "knitr"))
+~~~
+
+CatBoost must be available to reproduce its scores. Otherwise the code uses a labelled XGBoost fallback, which is a different experiment. On systems other than Windows, install the CatBoost R package separately.
+
+If PowerShell cannot find Rscript, use the full path to your installation. For example, with R 4.6.1:
+
+~~~powershell
+& "C:/Program Files/R/R-4.6.1/bin/Rscript.exe" scripts/validation/smoke_test.R
+~~~
+
+Run that in PowerShell, not at the R console. In the commands below, replace Rscript with the same full-path invocation when needed.
+
+Python's standard library is sufficient for the recorded-score validator. Report figures also need numpy, pandas, and matplotlib; checking a compiled PDF's page count needs pypdf. The project does not currently have a complete dependency lockfile, so record package versions with any new fit.
+
+## 2. Check the inputs
+
+| Experiment | Input |
+|---|---|
+| Original CPCB/ID1 comparison | data/raw/CPCB.csv and data/raw/ID1.csv |
+| Cleaned CPCB comparison | The CPCB file and the shared hourly store prepared in step 4 |
+| Shillong studies | data/raw/shillong/shillong_15min_2023.parquet |
+| Shillong weather extension | Cached data/processed/era5_shillong_2023.parquet, or internet access for the direct runner to retrieve it |
+
+The original hourly files came from the [paper's companion repository](https://github.com/jborah2/WaveCatBoost-Time-Series-Model). The Shillong extract contains Lumpyngngad and JN Stadium separately. The original benchmark's SHILLONG group is a different evaluation from the later two-station architecture study.
+
+## 3. Inspect recorded results
+
+The CSVs and experiment reports can be read without fitting anything.
+
+~~~sh
+python scripts/validation/check_report_scores.py
+Rscript scripts/validation/check_result_caches.R
+~~~
+
+The Python command checks displayed values against saved sources without changing them. The R command checks saved cache consistency.
+
+| Question | Saved result | Protocol |
+|---|---|---|
+| Nine original methods | results/paper/scores.csv | Recursive terminal-origin forecasts. Filter to CPCB/ID1 for the paper-data summary. |
+| Rolling forecast panels | results/paper/paper_protocol.rds | Rolling one-step forecasts, separate from recursive scores. |
+| Haar, D4, and LA8 | results/extensions/filter_scores.csv | One-day filter ablation. |
+| Effect of cleaning | results/preprocessed_experiment/comparisons/metrics_pollutant_level.csv | Direct 24-hour predictions on common valid targets. |
+| Current calibrated intervals | results/paper/conformal.rds | Recorded rolling one-step split-conformal intervals. |
+| Larger Shillong study | results/shillong/architecture/REPORT.md | Imported direct-horizon study with incomplete training code. |
+
+Do not pool these protocols in one ranking. The older audit's conformal results differ from the later one-step cache. Presentation residual bands use a quantile fitted on displayed residuals: roughly 95% plotted coverage is descriptive, not independent calibration evidence.
+
+## 4. Reproduce the cleaned CPCB experiment
+
+~~~sh
 Rscript scripts/preprocessing/run_preprocess.R paper
 Rscript scripts/experiments/run_preprocessed_experiment.R phase1
 Rscript scripts/experiments/run_preprocessed_experiment.R phase2
 Rscript scripts/experiments/run_preprocessed_experiment.R phase3
 Rscript scripts/experiments/run_preprocessed_experiment.R phase4
-```
+~~~
 
-Phase 1 creates a fresh integrity snapshot. Historical snapshots referred to the old repository layout and were removed during cleanup.
+| Step | Work | Main output |
+|---|---|---|
+| Prepare | Build shared hourly inputs | store/clean/ |
+| phase1 | Fresh integrity snapshot, audit, invalid-value masks, past-only input fills | results/preprocessed_experiment/data_audit/ and its separate clean store |
+| phase2 | Trailing Haar components and data/target checks | store/preprocessed_experiment/ and tests/data_tests.csv |
+| phase3 | Small smoke fit and model-interface checks | results/preprocessed_experiment/smoke/ |
+| phase4 | Tune, refit, and evaluate B0/A1/B1/B2/B3 on clean and unmasked inputs | Architecture predictions and comparisons/ tables |
 
-For the optional Shillong store, run `Rscript scripts/preprocessing/run_preprocess.R shillong`. To rebuild the shared Haar component store, run `Rscript scripts/preprocessing/run_decomp.R mra_haar_J5 --skip-screen --skip-diag`.
+[config/preprocessed_experiment.yaml](config/preprocessed_experiment.yaml) records the settings: direct 24-hour targets, 24 input lags, training through 28 February 2023, validation through 30 April, and later valid test targets. LightGBM uses seed 7 and an 18-setting grid. Filled values are inputs; invalid targets are not scored.
 
-### Imported study results
+Read [the experiment report](results/preprocessed_experiment/REPORT.md) for measured outcomes and paired intervals. Run phases in order after project edits: the integrity snapshot belongs to the files present at phase1.
 
-`results/shillong/architecture/` contains the imported 14-design report and CSVs used in the presentation and Q&A. The original architecture-training runner, configuration and second-stage training code were absent before cleanup. Those experiments cannot be refitted end to end from this checkout. Their supplied evidence is retained. The short-horizon notebook experiment is preserved in `run_shillong_direct.R`.
+## 5. Reproduce other available experiments
 
-The Q&A's supplied second-stage summaries are recorded explanations and are not generated dynamically by `analysis.Rmd`.
+~~~sh
+# Original recursive comparison; completed fits may be loaded from cache.
+Rscript scripts/experiments/run_experiments.R
 
-### Score sources
+# Smaller one-day run: seasonal naive, SARIMA, and LightGBM variants.
+Rscript scripts/experiments/run_experiments.R quick
 
-Sections 8.3 and 9 use measured recursive scores from `results/paper/scores.csv` (also mirrored in `scores.rds`). Sections 8.1–8.2 use the separate rolling one-step `paper_protocol.rds` cache; their scores are not interchangeable with recursive scores.
+# One-day WaveCatBoost filter comparison and the narrower extensions.
+Rscript scripts/experiments/run_filter_ablation_catboost.R
+Rscript scripts/experiments/run_extensions.R
 
-The root `ATSA_Presentation.pptx` retains the older paper-overview layout, but its results table now uses the same recorded project scores. Its explicitly labelled published-paper figures remain reference material. Refresh its native table with `python scripts/figures/sync_pptx_scores.py`. The current project deck is `presentation/main.pdf`, built from `presentation/main.tex`.
+# Rolling panels/descriptive bands, then the separate calibrated experiment.
+Rscript scripts/experiments/run_paper_protocol.R
+Rscript scripts/experiments/run_conformal.R
 
-Run `Rscript scripts/figures/sync_recorded_results.R` to refresh the web demo from saved results, without fitting models. This also synchronizes forecast-cache score summaries to the CSV. Predictions from incompatible or unavailable runs are not attached to those summaries; the original cache is retained in `docs/audit/legacy_forecast_cache_2026-11-07.rds`. The demo film/viewer uses the separate paper-protocol cache, matching report Sections 8.1–8.2. Run `Rscript scripts/validation/check_result_caches.R` and `python scripts/validation/check_report_scores.py` to check the report, slide tables and web data against their saved sources. The supplied component and second-stage study summaries cannot be independently verified from the retained results.
+# Shillong hourly benchmark and direct 1 / 6 / 24-hour forecasts.
+Rscript scripts/experiments/run_new_dataset.R
+Rscript scripts/experiments/run_shillong_direct.R
+~~~
 
-## Presentation
+Optional shared stores:
 
-```sh
+~~~sh
+Rscript scripts/preprocessing/run_preprocess.R shillong
+Rscript scripts/preprocessing/run_decomp.R mra_haar_J5 --skip-screen --skip-diag
+~~~
+
+The decomposition command uses the shared paper store and config/decomp.yaml. It does not replace the isolated cleaned-CPCB decomposition.
+
+### Cached versus fresh runs
+
+Some runners skip completed fits. A fast successful run can simply mean a cache was loaded. Before refitting, copy the relevant result folder outside the repository and record the commit and package versions. Main reusable files include forecast_cache.rds, hparams.rds, filter_cache.rds, and extension_cache.rds in their respective folders. Inspect the runner before renaming a cache; there is no universal force-refit flag.
+
+Keep recorded outputs separate from new runs. Data changes, settings, package versions, and CatBoost fallback can change the numbers.
+
+### Results that cannot be refitted here
+
+The imported 14-design Shillong study retains its report and aggregate CSVs under results/shillong/architecture/. Its original runner, configuration, and some second-stage code were already missing. Those results can be inspected but cannot be reproduced end to end. The historical audit also documents periodic-wavelet and overlapping-window limitations of the original benchmark.
+
+## 6. Refresh plots, report assets, and apps
+
+~~~sh
 Rscript scripts/figures/make_slide_figs.R
 Rscript scripts/figures/make_conformal_figs.R
 Rscript scripts/figures/make_shillong_arch_figs.R
-```
+python scripts/figures/make_report_figs.py
+~~~
 
-Compile `presentation/main.tex` from the `presentation/` directory with a Beamer-capable LaTeX installation, for example `latexmk -pdf main.tex` or `tectonic main.tex`. The current PDF was rebuilt from this source with uniform Latin Modern fonts and automatic page numbering.
+These read saved results. The R conformal figure script draws the presentation's descriptive bands. The Python report script draws the separate recorded calibrated intervals, filter bar plots, and cleaned-CPCB metric plot. Its RDS reader uses base R only and does not load modelling packages.
 
-## Checks
+When R is not on PATH:
 
-```sh
+~~~powershell
+python scripts/figures/make_report_figs.py --rscript "C:/Program Files/R/R-4.6.1/bin/Rscript.exe"
+~~~
+
+Report PDFs go under report/figures/; diagnostic CSVs go under report/. Compile ATS_Final_Report.tex from the accompanying Overleaf ZIP to build the report. Git intentionally ignores all non-PDF files under report/.
+
+Compile the current Beamer presentation from presentation/, for example with latexmk -pdf main.tex.
+
+To run the current Lab:
+
+~~~sh
+Rscript scripts/figures/export_lab_assets.R
+cd lab
+npm ci
+npm run dev
+~~~
+
+Use npm run build inside lab/ to write lab/dist/. The earlier static viewer is in presentation/webapp/. It keeps its recorded exports; use the current Lab exporters for new app data.
+
+## 7. Run checks
+
+~~~sh
 Rscript scripts/validation/smoke_test.R
-Rscript tests/phase1a/run_all.R
-Rscript tests/phase1b/run_all.R
-```
+Rscript tests/preprocessing/run_all.R
+Rscript tests/decomposition/run_all.R
+python scripts/validation/check_report_scores.py
+Rscript scripts/validation/check_result_caches.R
+~~~
 
-The historical audit and diagnostics are in `docs/audit/`. Its report documents the earlier implementation and includes line numbers from that version.
+Cleaned-experiment checks run in phases 2 and 3. Test folders formerly named phase1a and phase1b now describe their purpose. Historical audit documents retain old paths and line numbers because they describe that earlier implementation.
+
+## Publish the interactive R report
+
+Run from the project root in the RStudio console:
+
+~~~r
+install.packages("rsconnect")  # Once, if needed.
+source("scripts/publish_analysis.R")
+~~~
+
+The publishing script checks helper syntax and resource discovery before uploading. It bundles the report helpers and saved results, rather than training modules and their optional dependencies. The report uses `R/reporting/load_report.R`; experiment runners use `R/load_all.R`.
+
+The default destination is the existing `charan-435` Connect Cloud report. Sign into that account through RStudio first. To publish to another existing report, set `options(ats.publish.account = "your-account", ats.publish.app_id = "your-content-id")`. Local `rsconnect/` records are ignored. To inspect the bundle without publishing, set `options(ats.publish.dry_run = TRUE)`; reset it to `FALSE` before deploying.
+
+Retired Learn exporters and one-time cache/PowerPoint migration scripts have been removed. The scripts retained here prepare inputs, reproduce experiments, generate current figures/app data, validate results, or publish the report. Saved results and processed inputs stay versioned because the interactive report uses them.

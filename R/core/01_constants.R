@@ -18,7 +18,7 @@ POLLUTANTS <- c("NO2", "O3", "CO", "SO2", "PM2.5", "PM10")
 # Four pollutants used for IMODWT actual-vs-predicted panels.
 FOUR_POLLUTANTS <- c("PM2.5", "PM10", "NO2", "O3")
 # CPCB / ID1 are the letter's already-hourly files (skip quality/imputation).
-# The Shillong group are 15-min CAAQMS and run Phase 1a preprocess.
+# The Shillong station group contains 15-minute CAAQMS records and needs preprocessing.
 SENSORS_PAPER <- c("CPCB", "ID1")
 NEW_SENSOR <- "SHILLONG"
 SENSORS_SHILLONG <- c("Lumpyngngad", "JN_Stadium")

@@ -14,7 +14,7 @@ if (length(file_arg)) setwd(normalizePath(file.path(dirname(normalizePath(sub("^
 if (!file.exists("R/load_all.R")) stop("Run from the project root.")
 
 args <- commandArgs(trailingOnly = TRUE)
-if (!length(args)) stop("Give a phase: phase1 | phase2 | verify | guard | audit | preprocess | decompose | test-data")
+if (!length(args)) stop("Give a phase: phase1 | phase2 | phase3 | phase4 | verify; see README.md for the run order.")
 
 suppressMessages(source("R/load_all.R"))
 for (f in sort(list.files("R/preprocessed_experiment", pattern = "\\.R$", full.names = TRUE))) source(f)
@@ -24,6 +24,8 @@ cfg <- pe_cfg()
 pe_redirect_shared_logs(cfg)
 set.seed(cfg$seed)
 
+# Each phase leaves an inspectable checkpoint before the next expensive step.
+# Start again at phase1 after changing project files: it owns the integrity snapshot.
 steps <- switch(args[1],
   phase1 = c("guard", "audit", "preprocess", "verify"),
   phase2 = c("decompose", "test-data", "verify"),

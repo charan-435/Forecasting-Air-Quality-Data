@@ -1,4 +1,4 @@
-source("tests/phase1b/_lib.R")
+source("tests/decomposition/_lib.R")
 sv <- .p1b_synth_sv(400L)
 cfg <- .p1b_cfg(64L)
 .GlobalEnv$.DECOMP_CFG <- cfg

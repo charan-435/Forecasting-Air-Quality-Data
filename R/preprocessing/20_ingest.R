@@ -18,7 +18,9 @@ pp_cfg <- function(path = NULL) {
   if (is.null(path)) path <- file.path(PROJECT_ROOT, "config", "preprocess.yaml")
   if (!requireNamespace("yaml", quietly = TRUE))
     stop("Package 'yaml' is required.")
-  cfg <- yaml::read_yaml(path)
+  # Mark UTF-8 text without converting it through the server locale.
+  text <- paste(readLines(path, encoding = "UTF-8", warn = FALSE), collapse = "\n")
+  cfg <- yaml::yaml.load(text, error.label = path)
   .GlobalEnv$.PP_CFG <- cfg
   cfg
 }

@@ -1,4 +1,4 @@
-source("tests/phase1b/_lib.R")
+source("tests/decomposition/_lib.R")
 cfg <- .p1b_cfg(64L)
 .GlobalEnv$.DECOMP_CFG <- cfg
 entries <- Filter(function(m) m$id %in% c("coef_haar_J10", "coef_d4_J9", "coef_la8_J8",

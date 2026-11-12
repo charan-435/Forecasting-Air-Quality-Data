@@ -1,4 +1,4 @@
-# Phase 3: features for B0, A1, B1, B2, B3.
+# Build direct-forecast inputs for the five cleaned-CPCB architectures.
 # Origin t = latest hour used. lag1 = y_t, lag24 = y_{t-23}.
 # Covariates (A1/B2/B3) = other pollutants at t only. Target = y_{t+h}.
 
@@ -35,8 +35,8 @@ pe_model_data <- function(cfg, dataset = c("clean", "unmasked")) {
   el <- pe_eligibility(cfg, cl, W)
   stopifnot(identical(el$origin_idx, seq_len(n - h)))
   pol <- decomp_policy()
-  # Training rows: kaisen training rule on the cleaned target (clean) or every warm
-  # origin (unmasked control, as the original pipeline would train).
+  # Clean fits require valid observed targets and acceptable input-fill coverage.
+  # The control keeps original training values, but evaluation still uses clean truth.
   if (dataset == "clean") {
     fit_ok <- el$warm & el$target_scorable &
       el$frac_filled_24h <= as.numeric(pol$exclude_training_row_if_frac_filled_24h_gt)
