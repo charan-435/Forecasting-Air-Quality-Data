@@ -12,3 +12,5 @@ CSV files are easiest to inspect. RDS files preserve richer objects such as fore
 Filter paper/scores.csv to CPCB and ID1 for the report's original-data summary. Do not include its additional SHILLONG group in that average. The old audit's conformal diagnostic is historical; the later one-step interval arrays are in paper/conformal.rds.
 
 Copy recorded outputs before refitting. Some runners update results and others skip completed fits. Reproduction commands are in the root [README](../README.md).
+
+`archive/audit/` preserves historical provenance and the archived forecast cache. Old paths inside recorded metadata describe the original runs. `figures/comparison/` contains regenerated report figure PDFs and diagnostic CSVs.

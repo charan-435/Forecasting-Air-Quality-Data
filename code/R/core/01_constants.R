@@ -1,0 +1,53 @@
+# Paths, pollutants, horizons, and modelling defaults.
+
+# Find the repository even when knitr starts inside code/.
+PROJECT_ROOT <- local({
+  candidate <- normalizePath(getwd(), winslash = "/", mustWork = TRUE)
+  repeat {
+    if (dir.exists(file.path(candidate, "code", "R")) &&
+        dir.exists(file.path(candidate, "data", "raw"))) return(candidate)
+    parent <- dirname(candidate)
+    if (identical(parent, candidate)) stop("Cannot locate code/ and data/raw/.")
+    candidate <- parent
+  }
+})
+
+RAW_DIR <- file.path(PROJECT_ROOT, "data", "raw")
+PROC_DIR <- file.path(PROJECT_ROOT, "data", "processed")
+RES_DIR <- file.path(PROJECT_ROOT, "results", "paper")
+EXT_RES_DIR <- file.path(PROJECT_ROOT, "results", "extensions")
+
+POLLUTANTS <- c("NO2", "O3", "CO", "SO2", "PM2.5", "PM10")
+# Four pollutants used for IMODWT actual-vs-predicted panels.
+FOUR_POLLUTANTS <- c("PM2.5", "PM10", "NO2", "O3")
+# CPCB / ID1 are the letter's already-hourly files (skip quality/imputation).
+# The Shillong station group contains 15-minute CAAQMS records and needs preprocessing.
+SENSORS_PAPER <- c("CPCB", "ID1")
+NEW_SENSOR <- "SHILLONG"
+SENSORS_SHILLONG <- c("Lumpyngngad", "JN_Stadium")
+SENSORS <- c(SENSORS_PAPER, NEW_SENSOR, SENSORS_SHILLONG)
+SEASONALITY <- 24L  # hourly data, daily cycle
+VAL_HOURS <- 14L * 24L  # last 14 days of the pre-test window; early stopping only
+
+HORIZONS <- list(
+  `1d`  = 24L,
+  `7d`  = 168L,
+  `14d` = 336L,
+  `31d` = 744L
+)
+
+# NAAQS / WHO guides used only for the extra decision-rule layer (not in the paper).
+# India NAAQS 24-h: PM2.5 = 60 ug/m3, PM10 = 100 ug/m3.
+# WHO 2021 24-h: PM2.5 = 15, PM10 = 45.
+ALERT_THRESHOLDS <- list(
+  `PM2.5` = list(who = 15, naaqs = 60, unit = "ug/m3"),
+  PM10    = list(who = 45, naaqs = 100, unit = "ug/m3"),
+  NO2     = list(who = 25, naaqs = 80, unit = "ug/m3"),
+  O3      = list(who = 100, naaqs = 100, unit = "ug/m3"),
+  SO2     = list(who = 40, naaqs = 80, unit = "ug/m3"),
+  CO      = list(who = 4000, naaqs = 2000, unit = "ug/m3")
+)
+
+dir.create(PROC_DIR, recursive = TRUE, showWarnings = FALSE)
+dir.create(RES_DIR, recursive = TRUE, showWarnings = FALSE)
+dir.create(EXT_RES_DIR, recursive = TRUE, showWarnings = FALSE)
