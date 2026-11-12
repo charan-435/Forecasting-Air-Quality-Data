@@ -49,3 +49,8 @@ results/**/run_log.txt
 
 # Regenerated preprocessing cache fingerprints
 **/.preprocess_hash
+
+# Non-dependent directories (figure-generation scripts and config YAMLs
+# for the separate code/ pipeline — not needed to run the main project)
+code/figures/
+code/config/
