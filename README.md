@@ -30,7 +30,6 @@ results/
   extensions/                   Filter, Fourier and EMD experiment results
   shillong/                     Direct forecasts and imported architecture evidence
   preprocessed_experiment/      Cleaned CPCB predictions and comparisons
-  illustrative/                 Extrapolated values for report Section 8.3
 presentation/                   Current PDF, LaTeX, bibliography and figures
 docs/                           Reference paper and historical audit
 tests/                          Preprocessing, decomposition and cleaned-CPCB checks
@@ -82,7 +81,7 @@ The Q&A's supplied second-stage summaries are recorded explanations and are not 
 
 ### Score sources
 
-Sections 8.3 and 9 use measured recursive scores from `results/paper/scores.csv` (also mirrored in `scores.rds`). The older extrapolated `results/illustrative/` files are retained as historical examples and are not displayed in the report. Sections 8.1–8.2 use the separate rolling one-step `paper_protocol.rds` cache; their scores are not interchangeable with recursive scores.
+Sections 8.3 and 9 use measured recursive scores from `results/paper/scores.csv` (also mirrored in `scores.rds`). Sections 8.1–8.2 use the separate rolling one-step `paper_protocol.rds` cache; their scores are not interchangeable with recursive scores.
 
 The root `ATSA_Presentation.pptx` retains the older paper-overview layout, but its results table now uses the same recorded project scores. Its explicitly labelled published-paper figures remain reference material. Refresh its native table with `python scripts/figures/sync_pptx_scores.py`. The current project deck is `presentation/main.pdf`, built from `presentation/main.tex`.
 

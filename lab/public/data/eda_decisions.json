@@ -1,0 +1,22 @@
+[
+  {
+    "EDA_finding": "Hour-of-day amplitude dominates day-of-week amplitude on CPCB PM2.5",
+    "Pipeline_choice": "Set seasonal period S = 24 for seasonal-naive, SARIMA, and MASE scaling (not S = 168)"
+  },
+  {
+    "EDA_finding": "ACF remains high at lag 1 and elevated at lag 24",
+    "Pipeline_choice": "Include lag-1 persistence and the daily lag-24 cycle in the feature window"
+  },
+  {
+    "EDA_finding": "PACF stays outside the noise band out to several dozen hours",
+    "Pipeline_choice": "Compare lag windows p = 24 and p = 48 under validation MASE"
+  },
+  {
+    "EDA_finding": "Seasonal-naive residuals keep large ACF(1) and substantial residual sd",
+    "Pipeline_choice": "Go beyond seasonal-naive: gradient trees, optionally one model per MODWT band"
+  },
+  {
+    "EDA_finding": "Haar MRA energy is concentrated in the smooth S_K, with smaller but nonzero detail shares",
+    "Pipeline_choice": "Use MODWT; forecast each D_j and S_K, then sum to reconstruct Y"
+  }
+]

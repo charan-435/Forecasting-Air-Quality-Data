@@ -716,9 +716,15 @@ Moving to $K=9$ therefore adds about **67% more component fits and recursive tre
 
 # 8. Forecasts and conformal intervals
 
-Section 8.1–8.2 follow the paper notebook protocol: Haar MODWT on the series, CatBoost on each band ($K=9$, lags 24, 1000 trees), rolling **1-step** forecasts, then IMODWT. Plots use a **7-day** test window. Run `Rscript scripts/experiments/run_paper_protocol.R` if panels are empty.
+## Prediction intervals
 
-Reported intervals here use the **paper residual PI** on that window (95\% quantile of $|Y-\widehat Y|$, $\alpha=0.05$).
+The paper's uncertainty idea first measures a forecast's absolute residual relative to a positive scale estimate. A quantile of recent scaled errors is then multiplied by the scale estimate at the new origin to obtain the interval's half-width. In symbols, a simplified form is
+
+$$[\widehat y_{t+h}-q\widehat U_t,\;\widehat y_{t+h}+q\widehat U_t].$$
+
+The quantile $q$ must be estimated before seeing the test targets. The project includes both a separate calibration experiment and older plots whose bands are based on test residuals. We treat the latter as descriptive plots, not valid prospective uncertainty estimates.
+
+Sections 8.1–8.2 are those descriptive plots. They follow the paper notebook protocol: Haar MODWT on the series, CatBoost on each band ($K=9$, lags 24, 1000 trees), rolling **1-step** forecasts, then IMODWT, on a **7-day** test window. The shaded band is the 95\% quantile of $|Y-\widehat Y|$ on that same window. Run `Rscript scripts/experiments/run_paper_protocol.R` if panels are empty. The separate calibration experiment is `Rscript scripts/experiments/run_conformal.R`.
 
 ## 8.1 WaveCatBoost vs test (horizon = 7 days)
 
@@ -800,7 +806,7 @@ output$s8_four <- renderPlotly({
 
 ## 8.2 Conformal intervals — PM2.5, horizon = 7 days
 
-**What this shows.** One plot per station (CPCB, ID1, SHILLONG). Black = actual PM2.5. Orange = WaveCatBoost rolling 1-step. Shaded band = **paper residual 95\% PI** on this **7-day** window (`results/paper/paper_protocol.rds`). Run `Rscript scripts/experiments/run_paper_protocol.R` if panels are empty.
+**What this shows.** One plot per station (CPCB, ID1, SHILLONG). Black = actual PM2.5. Orange = WaveCatBoost rolling 1-step. The shaded band is a **descriptive** 95\% residual plot: its quantile is computed from residuals on this same **7-day** window (`results/paper/paper_protocol.rds`), so it is not a prospective prediction interval. Run `Rscript scripts/experiments/run_paper_protocol.R` if panels are empty.
 
 ```{r s8-conf-ui, echo=FALSE}
 uiOutput("s8_conf_a_slot")

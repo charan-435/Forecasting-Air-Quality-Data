@@ -275,10 +275,11 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{Do the intervals work? (7-day test)}
+\begin{frame}{Descriptive residual bands (7-day window)}
   {\footnotesize
-  \textbf{Purpose:} paper-style 7-day PM$_{2.5}$ band --- does truth sit inside the
-  95\% window around WaveCatBoost?
+  \textbf{Purpose:} paper-style 7-day PM$_{2.5}$ band.
+  The quantile is taken from residuals on this same window, so the band is
+  descriptive. It is not a prospective interval: $q$ has already seen the test targets.
   }
   \vspace{0.3em}
   \centering
@@ -287,15 +288,15 @@
   {\footnotesize
   \begin{itemize}\setlength\itemsep{0.12em}
     \item \textbf{Black} $=$ actual;\ \textbf{orange} $=$ WaveCatBoost;\
-          \textbf{shaded} $=$ 95\% residual PI $[L_t,U_t]$
+          \textbf{shaded} $=$ descriptive residual band $[L_t,U_t]$
           (same colours as Rmd §8.2).
-    \item Paper residual PI on this window: CPCB / ID1 coverage $\approx 95\%$
-          (widths $\approx 12.0$ / $11.7$).
+    \item Coverage on this window is $\approx 95\%$ because $q$ is fit on the plotted residuals
+          (widths $\approx 12.0$ / $11.7$). That coverage is not a calibration result.
   \end{itemize}
   }
 \end{frame}
 
-\begin{frame}{7-day paper residual PI --- summary}
+\begin{frame}{7-day residual bands --- descriptive summary}
   {\footnotesize
   \centering
   \begin{tabular}{lccc}
@@ -312,5 +313,7 @@
   \begin{exampleblock}{Protocol}
     Rolling 1-step WaveCatBoost (paper notebook) + 95\% quantile of
     $|Y-\widehat Y|$ on the plotted 7-day window ($\alpha=0.05$).
+    Descriptive only: $q$ is not estimated before the test targets.
+    Prospective intervals use the separate calibration experiment.
   \end{exampleblock}
 \end{frame}
