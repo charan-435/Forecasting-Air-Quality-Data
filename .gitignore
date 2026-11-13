@@ -36,3 +36,7 @@ data/raw/vonter/
 # Regenerable runtime metadata
 results/**/run_log.txt
 data/processed/*_group_series.rds
+
+# Oversized generated result bundles kept outside Git
+results_package.zip
+results/second_stage/report/PREDICTIONS_SEED_MEAN.parquet
