@@ -14,6 +14,8 @@ Filter paper/scores.csv to CPCB and ID1 for the report's original-data summary. 
 
 Copy recorded outputs before refitting. Some runners update results and others skip completed fits. Reproduction commands are in the root [README](../README.md).
 
-`archive/audit/` preserves historical provenance and the archived forecast cache. Old paths inside recorded metadata describe the original runs. `figures/comparison/` contains regenerated report figure PDFs and diagnostic CSVs.
+figures/comparison/ contains the report figures and comparison tables.
 
-The restored study folders contain selected summaries, not every cached fit. Source code came from `lalit` commit `a6dad69`. New runs write their own audit, smoke, and model outputs. Back up saved evidence before refitting. The experiment report stages create result summaries, not the final report PDF.
+To inspect results, start with the CSVs listed in the root README. Check the station, pollutant, horizon, split, and model before comparing rows. Use matching observations and predictions to recompute errors. The README includes a short R example. See [FILE_GUIDE.md](../FILE_GUIDE.md) for the role of each saved file.
+
+The study folders contain selected summaries, not every cached fit. New runs write their own audit, smoke, and model outputs. Back up saved evidence before refitting. The experiment report stages create result summaries, not the final report PDF.

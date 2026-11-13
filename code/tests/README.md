@@ -11,4 +11,4 @@
 
 The first two folders were previously named phase1a and phase1b. Internal assertion IDs retain that history. Each runner resolves the project root when launched by its absolute path. Tests need the dependencies used by the shared R loader.
 
-For recorded-table checks rather than model/data tests, use code/validation/.
+These tests exercise the models and data rules. The experiment runners use them before fitting. For inspecting scores and matching predictions, follow the root README.

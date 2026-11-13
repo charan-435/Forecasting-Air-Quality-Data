@@ -1,5 +1,0 @@
-horizon,n_train,n_val,n_test,val_end,test_start,val_overlaps_test
-1d,8521,336,24,8857,8858,FALSE
-7d,8377,336,168,8713,8714,FALSE
-14d,8209,336,336,8545,8546,FALSE
-31d,7801,336,744,8137,8138,FALSE

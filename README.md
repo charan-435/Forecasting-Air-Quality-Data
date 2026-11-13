@@ -11,18 +11,20 @@ WaveCatBoost splits a pollutant series into wavelet components. It fits one mode
 3. Inspect the saved CSVs before fitting models.
 4. Use the reproduction commands for a new run.
 
-The repo explains the main CPCB pipeline. It also includes the app and the Shillong studies. The multivariate, Shillong architecture, and second-stage code was restored from the `lalit` branch at commit `a6dad69`. These modules now use the current folders.
+See [FILE_GUIDE.md](FILE_GUIDE.md) for the role of every retained file and folder. It includes the source code, app files, inputs, saved outputs, and final documents.
+
+The project includes the original CPCB benchmark, the cleaned-CPCB experiment, and the Shillong studies. These compare raw inputs, wavelet components, shared models, weather inputs, and prediction intervals.
 
 ## Folder guide
 
 | Folder | What it contains |
 |---|---|
-| [code/](code/README.md) | Model code, experiment runners, checks, and the app. |
+| [code/](code/README.md) | Model code, experiment runners, model tests, and the app. |
 | [results/](results/README.md) | Saved scores, predictions, plots, and study notes. |
 | [docs/](docs/) | Three PDFs: report, presentation, and research paper. |
 | [data/](data/README.md) | Raw readings, prepared hourly data, and stored components. |
 
-The app is in code/app/. Scratch files, local package folders, and app builds are ignored. Report and presentation generators are not needed to run the project.
+The app is in code/app/. It displays the saved model results and explains the method.
 
 ## How the pipeline works
 
@@ -55,7 +57,7 @@ The setup installs missing CRAN packages. It also tries the Windows CatBoost pac
 
 CatBoost must be available for its recorded model. The code can fall back to XGBoost. That fallback is a different experiment. Check CATBOOST_AVAILABLE before fitting.
 
-Python checks use the packages listed here:
+Python app-data tools use the packages listed here:
 
 ~~~sh
 python -m pip install -r code/requirements-python.txt
@@ -66,18 +68,24 @@ The app has an npm lockfile. The historical R fits do not have a full package lo
 All commands below start at the repo root. If Rscript is not on PATH, use its full path. For example:
 
 ~~~powershell
-& "C:/Program Files/R/R-4.6.1/bin/Rscript.exe" code/validation/check_result_caches.R
+& "C:/Program Files/R/R-4.6.1/bin/Rscript.exe" code/experiments/run_experiments.R quick
 ~~~
 
 Run this in PowerShell, not at the R prompt. Change the version in the path to match your installation.
 
 ## 2. Inspect saved results
 
-These checks do not fit models:
+Open a CSV in RStudio or a spreadsheet. Read an RDS file in R. These commands show saved results without fitting models:
 
-~~~sh
-python code/validation/check_results.py
-Rscript code/validation/check_result_caches.R
+~~~r
+scores <- read.csv("results/paper/scores.csv")
+subset(scores, sensor %in% c("CPCB", "ID1") & pollutant == "PM2.5")
+
+clean <- read.csv("results/preprocessed_experiment/comparisons/metrics_pollutant_level.csv")
+head(clean)
+
+intervals <- readRDS("results/paper/conformal.rds")
+str(intervals, max.level = 1)
 ~~~
 
 | Question | Read this file | What it measures |
@@ -166,9 +174,9 @@ Rscript code/preprocessing/run_decomp.R mra_haar_J5 --skip-screen --skip-diag
 
 The decomposition command reads the shared paper store. It is separate from the cleaned CPCB store.
 
-### Restored studies from Lalit's branch
+### Multivariate and Shillong studies
 
-The restored code keeps the study's model settings. Paths now follow this repo. Install the extra R packages before running these studies:
+The multivariate and Shillong studies use their own settings. Install these extra R packages before running them:
 
 ~~~r
 install.packages(c("data.table", "glmnet", "pls"))
@@ -219,7 +227,7 @@ Rscript code/experiments/run_second_stage.R --stage=report
 
 These are long runs. Start with one cell, for example `--station=Lumpyngngad --horizons=24 --archs=A2`. The second-stage runner also accepts `--pca=none,0.9`. Check the runner header for each option.
 
-The repo includes selected saved summaries from these studies. It does not copy all fitted model caches from Lalit's branch. A new full run must create its own fits and pass its own checks. Old metadata keeps the paths and hashes from the original run.
+Each runner writes metrics and predictions under its configured output directory. A full run prepares the data, passes its model tests, fits the models, and summarizes the predictions. Run metadata records the settings and source hashes for that experiment.
 
 ### Saved runs and fresh runs
 
@@ -261,24 +269,46 @@ Saved plots are under results/figures/. They cover data checks, forecasts, model
 
 The repo keeps the final documents. It does not need document-generation or publishing tools to explain the method.
 
-## 7. Run checks
+## 7. Check the models and inspect new results
+
+The model tests remain because the experiment runners use them. Run these from the repo root:
 
 ~~~sh
-Rscript code/validation/smoke_test.R
 Rscript code/tests/preprocessing/run_all.R
 Rscript code/tests/decomposition/run_all.R
-python code/validation/check_results.py
-Rscript code/validation/check_result_caches.R
+Rscript code/tests/multivariate/run_tests.R
+Rscript code/tests/multivariate/run_tests_phase2.R
 ~~~
 
 The cleaned experiment runs data and model checks in phases 2 and 3. Some tests write temporary synthetic stores.
 
-During this integration, all 22 multivariate Phase 1 tests passed. The Shillong audit passed 28 checks and 34 tests. The Phase 2 suite passed 13 of 18 tests. The other five need the missing glmnet or pls packages. Install both before running that full suite. All 99 R files parsed successfully. The full studies and the second-stage fits were not rerun.
+For Shillong, use the audit stage shown above. It checks the station data and model inputs. The second-stage tests run after the original architecture study. Install glmnet and pls before running the full multivariate suite.
+
+After a new fit:
+
+1. Find its output folder in the run log or settings file.
+2. Open its metric CSV. Check the station, target, horizon, and test dates.
+3. Compare models on the same target timestamps and valid rows.
+4. Read the matching predictions. Recompute MAE and RMSE if both observations and forecasts are saved.
+5. For intervals, check test coverage and mean width. A wide band can have good coverage but be less useful.
+
+For example, this reads one available prediction entry from the paper cache. Run it in R. It does not train a model:
+
+~~~r
+cache <- readRDS("results/paper/forecast_cache.rds")
+available <- vapply(cache, function(z) isTRUE(z$prediction_available), logical(1))
+if (!any(available)) stop("This cache has no matching prediction arrays.")
+z <- cache[[which(available)[1]]]
+
+c(MAE = mean(abs(z$y_test - z$yhat)),
+  RMSE = sqrt(mean((z$y_test - z$yhat)^2)))
+z$scores[c("MAE", "RMSE")]
+~~~
+
+The computed values should match that entry's saved scores, apart from rounding. Many historical entries do not have matching prediction arrays. Do not use an unrelated cache to check them.
 
 ## What is complete?
 
 The repo is enough to follow the main method and the cleaned CPCB pipeline. The inputs, settings, model functions, runners, and saved outputs are present.
 
-The restored code now shows the larger Shillong and second-stage pipelines too. Restoring source files does not prove that every old score can be matched. The old fits lack a complete R package lockfile. Some archived scores have no matching prediction arrays. The restored full studies have not been refitted during this update.
-
-Keep code/config/ in the repo. The runners read its YAML files. The historical audit under results/archive/ keeps old paths because it describes earlier runs.
+The larger Shillong and second-stage pipelines are included. Exact old scores can depend on package versions and saved fits. Some historical scores have no matching prediction arrays. Keep the settings and new predictions together when fitting again.

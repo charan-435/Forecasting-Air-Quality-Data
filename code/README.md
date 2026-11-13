@@ -15,9 +15,7 @@ Run commands from the repository root. Start with the root README for run order,
 | config/ | Input paths, quality rules, decomposition settings, splits and tuning grid. |
 | experiments/ | Runnable model/evaluation entrypoints. |
 | preprocessing/ | Runnable hourly-store and decomposition entrypoints. |
-| figures/ | Optional local plot tools. This folder is ignored by Git. |
-| validation/ | Check recorded values, app assets, cache consistency and a small model fit. |
-| tests/ | Preprocessing, decomposition and cleaned-experiment tests. |
+| tests/ | Model and data tests used by the experiment runners. |
 | app/ | React/TypeScript implementation and committed browser data. |
 | app/data_tools/ | Refresh app assets from the recorded experiment outputs. |
 
@@ -25,6 +23,6 @@ Run commands from the repository root. Start with the root README for run order,
 
 Read data loading and preprocessing first. Then follow decomposition, lag creation, model fitting, and evaluation. Comments explain the main choices. Inputs may be filled, but targets must be valid. Calibration comes before testing. Cached summaries may come from a different run.
 
-Publishing utilities, document source and one-time migration scripts are intentionally excluded. Completed PDFs live in docs/; saved experiment evidence lives in results/.
+The multivariate and Shillong runners load their own module lists. Their YAML settings control the data splits, model grids, and output paths. Result-summary stages compute metrics and compare the fitted models.
 
-The three added module folders were restored from the `lalit` branch at commit `a6dad69`. Their runners are in experiments/. Their YAML files are in config/. New runs record hashes for the updated paths and files. Result-summary stages remain with the experiments because they evaluate fitted models.
+See [the file guide](../FILE_GUIDE.md) for the role of every shared file. The root README gives the run order and explains how to compare scores with matching predictions.
