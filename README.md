@@ -15,6 +15,8 @@ See [FILE_GUIDE.md](FILE_GUIDE.md) for the role of every retained file and folde
 
 The project includes the original CPCB benchmark, the cleaned-CPCB experiment, and the Shillong studies. These compare raw inputs, wavelet components, shared models, weather inputs, and prediction intervals.
 
+For interactive exploration, open [code/analysis.Rmd](code/analysis.Rmd) in RStudio and choose **Run Document**. From the repository root, you can also run `rmarkdown::run("code/analysis.Rmd")`. Install `rmarkdown` and `knitr` first if needed. The document reads saved results through the helpers in `code/R/reporting/`.
+
 ## Folder guide
 
 | Folder | What it contains |

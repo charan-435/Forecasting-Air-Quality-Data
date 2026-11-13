@@ -59,3 +59,8 @@ code/figures/
 
 # Generated model-check outputs can be recreated by their experiment runners.
 /results/multivariate/phase2/check/
+
+# Generated previews of the interactive analysis
+/code/analysis.html
+/code/analysis_files/
+/code/analysis_cache/

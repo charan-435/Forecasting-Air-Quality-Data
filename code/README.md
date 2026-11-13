@@ -12,6 +12,8 @@ Run commands from the repository root. Start with the root README for run order,
 | R/multivariate/ | Direct CPCB models with one or several input pollutants. |
 | R/shillong_architecture/ | Separate and shared component models for the two Shillong stations. |
 | R/second_stage/ | Train-only PCA and direct, recursive, and hybrid Shillong forecasts. |
+| analysis.Rmd | Interactive analysis of the saved forecasts, scores and diagnostics. |
+| R/reporting/ | Display-only package loader, tables, plots and stylesheet for the analysis document. |
 | config/ | Input paths, quality rules, decomposition settings, splits and tuning grid. |
 | experiments/ | Runnable model/evaluation entrypoints. |
 | preprocessing/ | Runnable hourly-store and decomposition entrypoints. |

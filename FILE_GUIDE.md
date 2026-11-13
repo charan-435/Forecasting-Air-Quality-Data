@@ -18,6 +18,11 @@ Model tests exercise data alignment, causality, feature construction, and model 
 
 | File | Use |
 |---|---|
+| [code/analysis.Rmd](code/analysis.Rmd) | Interactive R Markdown analysis; open with Run Document in RStudio. |
+| [code/R/reporting/load_report.R](code/R/reporting/load_report.R) | Loads display packages and shared data helpers without training models. |
+| [code/R/reporting/result_tables.R](code/R/reporting/result_tables.R) | Formats result tables and highlights the best comparable scores. |
+| [code/R/reporting/shillong_plots.R](code/R/reporting/shillong_plots.R) | Draws Shillong comparisons from saved validation/test tables. |
+| [code/R/reporting/report.css](code/R/reporting/report.css) | Styles tables and plot containers in the interactive document. |
 | [code/R/README.md](code/R/README.md) | Explains this folder and how to use its contents. |
 | [code/R/core/00_packages.R](code/R/core/00_packages.R) | Loads R packages. Installs missing packages when enabled. |
 | [code/R/core/01_constants.R](code/R/core/01_constants.R) | Defines paths, pollutants, horizons, and model defaults. |
