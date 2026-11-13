@@ -1,0 +1,29 @@
+"check","pass"
+"finite after fill Lumpyngngad PM2.5",TRUE
+"components complete after warmup Lumpyngngad PM2.5",TRUE
+"additivity Lumpyngngad PM2.5",TRUE
+"finite after fill Lumpyngngad SO2",TRUE
+"components complete after warmup Lumpyngngad SO2",TRUE
+"additivity Lumpyngngad SO2",TRUE
+"finite after fill Lumpyngngad CO",TRUE
+"components complete after warmup Lumpyngngad CO",TRUE
+"additivity Lumpyngngad CO",TRUE
+"finite after fill JN_Stadium PM2.5",TRUE
+"components complete after warmup JN_Stadium PM2.5",TRUE
+"additivity JN_Stadium PM2.5",TRUE
+"finite after fill JN_Stadium PM10",TRUE
+"components complete after warmup JN_Stadium PM10",TRUE
+"additivity JN_Stadium PM10",TRUE
+"finite after fill JN_Stadium NO2",TRUE
+"components complete after warmup JN_Stadium NO2",TRUE
+"additivity JN_Stadium NO2",TRUE
+"finite after fill JN_Stadium SO2",TRUE
+"components complete after warmup JN_Stadium SO2",TRUE
+"additivity JN_Stadium SO2",TRUE
+"finite after fill JN_Stadium CO",TRUE
+"components complete after warmup JN_Stadium CO",TRUE
+"additivity JN_Stadium CO",TRUE
+"contiguous hourly grid",TRUE
+"no duplicate station-hours",TRUE
+"all variables every hour",TRUE
+"every primary cell has samples in each block",TRUE

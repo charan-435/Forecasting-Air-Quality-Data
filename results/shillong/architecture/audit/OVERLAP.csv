@@ -1,0 +1,7 @@
+"station","block","hours","all_selected_pollutants_scorable","pct","pollutants"
+"Lumpyngngad","train",5087,3715,73,"PM2.5,SO2,CO"
+"Lumpyngngad","validation",1464,1299,88.7,"PM2.5,SO2,CO"
+"Lumpyngngad","test",2209,1791,81.1,"PM2.5,SO2,CO"
+"JN_Stadium","train",1560,1288,82.6,"PM2.5,PM10,NO2,SO2,CO"
+"JN_Stadium","validation",744,525,70.6,"PM2.5,PM10,NO2,SO2,CO"
+"JN_Stadium","test",1465,898,61.3,"PM2.5,PM10,NO2,SO2,CO"

@@ -5,7 +5,8 @@
 | paper/ | Original forecasts, settings, scores, rolling panels, conformal arrays | Recursive and rolling one-step predictions are different tasks. |
 | extensions/ | Filter, Fourier, and EMD comparisons | Coverage varies by learner, sensor, and pollutant. |
 | preprocessed_experiment/ | Audit, clean/unmasked fits, predictions, and paired comparisons | Direct 24-hour forecasts on common valid targets; start with REPORT.md. |
-| shillong/ | Short-horizon direct scores and imported architecture evidence | The imported study lacks its original training code; start with architecture/REPORT.md. |
+| shillong/ | Short-horizon scores, architecture evidence, and second-stage summaries | Start with architecture/REPORT.md and second_stage/REPORT.md. The study code is restored under code/R/. |
+| multivariate/ | Selected raw-CPCB study summaries and the quality-mask audit | This is an older unmasked study. It differs from preprocessed_experiment/. |
 
 CSV files are easiest to inspect. RDS files preserve richer objects such as forecasts and fitting settings. A CSV summary and an arbitrary cached prediction array need not come from the same run.
 
@@ -14,3 +15,5 @@ Filter paper/scores.csv to CPCB and ID1 for the report's original-data summary. 
 Copy recorded outputs before refitting. Some runners update results and others skip completed fits. Reproduction commands are in the root [README](../README.md).
 
 `archive/audit/` preserves historical provenance and the archived forecast cache. Old paths inside recorded metadata describe the original runs. `figures/comparison/` contains regenerated report figure PDFs and diagnostic CSVs.
+
+The restored study folders contain selected summaries, not every cached fit. Source code came from `lalit` commit `a6dad69`. New runs write their own audit, smoke, and model outputs. Back up saved evidence before refitting. The experiment report stages create result summaries, not the final report PDF.
