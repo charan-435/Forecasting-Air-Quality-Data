@@ -1,3 +1,5 @@
+# Checks whether each hour has enough valid source readings to be accepted.
+
 source("code/tests/preprocessing/_lib.R")
 tz <- "Asia/Kolkata"
 base <- as.POSIXct("2023-01-01 00:00:00", tz = tz)

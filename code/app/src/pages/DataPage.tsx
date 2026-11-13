@@ -1,3 +1,5 @@
+// Displays the data page in the app.
+
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import Detail from "../components/Detail";

@@ -1,7 +1,14 @@
+# A prediction row identifies a station, architecture, strategy, and target hour.
+# sm contains seed-averaged forecasts; met contains their error measures.
+# Validation rows support model choices. Test rows describe held-out performance.
+# The output is experiment tables and plots, not the final PDF.
+
 # Second-stage report: metrics, validation-based selections, paired
 # comparisons (moving-block bootstrap + Diebold-Mariano, as in R/55) and plots.
 # Reads results/shillong/second_stage/runs and, read only, the original Shillong runs.
 
+# Reads second-stage run objects and records whether each file contains direct, recursive,
+# or hybrid forecasts.
 ss_read_runs <- function(out) {
   files <- list.files(file.path(out, "runs"), pattern = "[.]rds$", recursive = TRUE, full.names = TRUE)
   rr <- lapply(files, readRDS)
@@ -9,6 +16,8 @@ ss_read_runs <- function(out) {
   list(files = files, runs = rr, kind = kind)
 }
 
+# Averages forecasts only within identical experiment and target-time keys. Retains the
+# number of seeds behind each averaged value.
 ss_seed_mean <- function(pred) {
   keys <- intersect(c("station", "target", "arch", "pca", "kind", "structure", "strategy", "switch_h",
                       "horizon_h", "component", "block", "origin_idx", "target_idx"), names(pred))
@@ -18,6 +27,8 @@ ss_seed_mean <- function(pred) {
 # Paired comparisons a vs b on identical target hours (seed-mean forecasts).
 # `pairs` is a data.table with key columns + id_a / id_b (strings of the form
 # arch|pca|strategy|switch) and a question label.
+# Aligns two strategy choices on the same target hours and computes paired error
+# comparisons. Labels a clear difference only when the ratio interval excludes one.
 ss_pair_rows <- function(sm, pairs, bcfg, blocks = c("validation", "test")) {
   sm <- sm[component == "LEVEL"]
   sm[, id := paste(arch, pca, strategy, switch_h, sep = "|")]
@@ -46,6 +57,7 @@ ss_pair_rows <- function(sm, pairs, bcfg, blocks = c("validation", "test")) {
   r[]
 }
 
+# Sets the common appearance for second-stage result plots.
 ss_theme <- function() ggplot2::theme_minimal(base_size = 10) +
   ggplot2::theme(panel.grid.minor = ggplot2::element_blank(), legend.position = "bottom",
                  strip.text = ggplot2::element_text(face = "bold"))
@@ -53,6 +65,8 @@ ss_theme <- function() ggplot2::theme_minimal(base_size = 10) +
 ss_strategy_pal <- c(direct = "#2a78d6", recursive = "#d64545", hybrid = "#1f9e6e")
 ss_pca_pal <- c(none = "#20242a", pca90 = "#e3a21a", pca95 = "#9a6fd1", pca99 = "#2a9fd6")
 
+# Combines strategy forecasts with original direct runs and simple references. Writes
+# error, PCA, runtime, and selection summaries for the second-stage study.
 ss_stage_report <- function(cfg, scfg, out, say, load_station) {
   library(ggplot2)
   rdir <- file.path(out, "report"); pdir <- file.path(rdir, "plots")
@@ -61,6 +75,7 @@ ss_stage_report <- function(cfg, scfg, out, say, load_station) {
   R <- ss_read_runs(out)
   say("report: ", length(R$files), " run files")
   pred <- data.table::rbindlist(lapply(R$runs, `[[`, "pred"), fill = TRUE)
+  # Training errors do not describe performance on later, unseen targets.
   pred <- pred[block != "train"]
   sm <- ss_seed_mean(pred)
 
@@ -198,6 +213,7 @@ ss_stage_report <- function(cfg, scfg, out, say, load_station) {
   ps <- w[, .SD[which.min(MAE_validation)], by = .(station, arch, strategy, horizon_h)][
     , .(station, arch, strategy, horizon_h, pca_sel = pca, val_MAE_sel = MAE_validation, test_MAE_sel = MAE_test)]
   pn <- w[pca == "none", .(station, arch, strategy, horizon_h, val_MAE_none = MAE_validation, test_MAE_none = MAE_test)]
+  # This test-best choice is a hindsight diagnostic, not the validation-selected model.
   pb <- w[, .SD[which.min(MAE_test)], by = .(station, arch, strategy, horizon_h)][
     , .(station, arch, strategy, horizon_h, pca_test_best = pca)]
   pcs <- Reduce(function(a, b) merge(a, b, by = c("station", "arch", "strategy", "horizon_h")), list(ps, pn, pb))
@@ -320,6 +336,8 @@ ss_stage_report <- function(cfg, scfg, out, say, load_station) {
   say("report written to ", rdir)
 }
 
+# Draws strategy comparisons from the summary tables; no models are trained by this
+# function.
 ss_report_plots <- function(w, met, pp, curves, kk, rt, cfg, pdir) {
   library(ggplot2)
   save <- function(p, f, wd = 11, ht = 7) ggsave(file.path(pdir, f), p, width = wd, height = ht, dpi = 150, bg = "white")

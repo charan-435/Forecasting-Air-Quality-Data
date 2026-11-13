@@ -1,3 +1,5 @@
+# Checks that a stopped component run can resume from its saved checkpoint.
+
 source("code/tests/decomposition/_lib.R")
 old_root <- PROJECT_ROOT
 tmp <- tempfile("p1b_resume")

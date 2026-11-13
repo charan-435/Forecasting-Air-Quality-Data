@@ -1,3 +1,8 @@
+# S bundles one station panel, its time splits, and available inputs.
+# smp lists forecast origins and their target rows; ds holds model matrices.
+# A unit is one fitted level model, component model, or shared component model.
+# st is the rolling history at a virtual origin after k predicted hours.
+
 # Second-stage Shillong experiments: PCA inputs and direct / recursive / hybrid
 # strategies. Reuses the Shillong panel, samples, feature sets and model
 # interface (R/50-53, R/43-48) unchanged; nothing here writes outside the
@@ -22,22 +27,30 @@
 #               training folds (purged around the fold), never from models that
 #               saw those hours.
 
+# Returns the history length needed for lag inputs plus the Haar warmup. Cross-fit purging
+# uses this length.
 ss_back <- function(panel) SH_LOOKBACK + (2L^panel$J - 1L)
+# Returns how many recent pollutant values the rolling forecast state must keep.
 ss_win <- function(panel) max(SH_LOOKBACK, 2L^panel$J)   # level window kept in the state
 
 # ---- PCA ---------------------------------------------------------------------------------
 # Columns that enter PCA: pollutant or component lags (the own-component slot of
 # shared models included). Covariates, calendar fields and comp_id pass through.
+# Selects only lag columns for PCA. Calendar fields, weather fields, and component
+# identifiers keep their original meaning.
 ss_pca_cols <- function(fn) !(fn == "comp_id" | grepl("^cov_", fn) | grepl("^cal_", fn))
 
 # Train-only PCA: standardize with training statistics, keep the fewest
 # components whose cumulative training variance reaches `thr`.
+# Learns centering, scaling, and PCA directions from training rows. Returns a frozen
+# transform that applies those same choices to later rows.
 ss_pca_fit <- function(X_train, thr) {
   fn <- colnames(X_train)
   pc_cols <- fn[ss_pca_cols(fn)]
   pass <- fn[!ss_pca_cols(fn)]
   Z <- X_train[, pc_cols, drop = FALSE]
   if (!all(is.finite(Z))) stop("PCA inputs must be finite")
+  # Later periods reuse these training statistics instead of learning their own scale.
   mu <- colMeans(Z)
   sdv <- apply(Z, 2, stats::sd)
   sdv[!is.finite(sdv) | sdv == 0] <- 1
@@ -58,11 +71,14 @@ ss_pca_fit <- function(X_train, thr) {
        })
 }
 
+# Turns the PCA choice into a stable label used in result names.
 ss_pca_label <- function(pca) if (identical(pca, "none")) "none" else sprintf("pca%02d", round(100 * as.numeric(pca)))
 
 # Transform for one model: identity or the train-only PCA. The returned object
 # ignores the rows it is "fitted" on, so mv_select_and_refit()'s train +
 # validation refit applies the training PCA unchanged.
+# Wraps the chosen training PCA, or an unchanged-input transform, in the interface used by
+# the shared learner code.
 ss_transform <- function(X_train, pca) {
   obj <- if (identical(pca, "none"))
     list(name = "none", info = NULL, apply = function(X) X) else ss_pca_fit(X_train, as.numeric(pca))
@@ -72,6 +88,8 @@ ss_transform <- function(X_train, pca) {
 # ---- fitting ------------------------------------------------------------------------------
 # sh_fit_ds() with an explicit transform; with pca = "none" it is the original
 # Shillong fit (identical candidates, tuning, seeds and refit).
+# Tunes one dataset on validation error and fits the requested seeds. Returns predictions,
+# iteration choices, tuning records, and optionally the fitted models.
 ss_fit_ds <- function(cfg, ds, tf, seeds, tune_seed, keep_models = FALSE) {
   shared <- "comp_id" %in% ds$feature_names
   cands <- sh_candidates(cfg, "lightgbm", shared)
@@ -99,6 +117,8 @@ ss_fit_ds <- function(cfg, ds, tf, seeds, tune_seed, keep_models = FALSE) {
 
 # Reconstructed level of a decomposed run: sum of component forecasts per
 # (seed, block, origin); the level truth is the observed target value.
+# Sums every component prediction for the same seed, block, origin, and target. Adds a
+# LEVEL row so reconstructed forecasts can be scored against the pollutant.
 ss_reconstruct <- function(pred, panel, target) {
   lev <- pred[, .(yhat = sum(yhat), n_comp = .N), by = .(seed, block, origin_idx, target_idx)]
   stopifnot(all(lev$n_comp == length(panel$components)))
@@ -111,6 +131,8 @@ ss_reconstruct <- function(pred, panel, target) {
 
 # Fit a list of datasets (one per unit: the level, a component, or the stacked
 # shared set) with one PCA setting; reconstruct the level for decomposed archs.
+# Fits the required level or component datasets for one architecture and PCA choice.
+# Combines their records and reconstructs the pollutant when needed.
 ss_run_units <- function(cfg, panel, arch, target, ds_list, pca, seeds, tune_seed) {
   t0 <- proc.time()[["elapsed"]]
   res <- lapply(ds_list, function(ds) {
@@ -133,10 +155,13 @@ ss_run_units <- function(cfg, panel, arch, target, ds_list, pca, seeds, tune_see
        elapsed_s = proc.time()[["elapsed"]] - t0)
 }
 
+# Separate component architectures need one dataset per component. Raw-level and shared
+# architectures need one dataset.
 ss_units <- function(panel, arch) {
   if (arch$kind == "decomp" && arch$structure == "separate") as.list(panel$components) else list(NULL)
 }
 
+# Builds the horizon-specific datasets and fits a direct forecast of the later target.
 ss_run_direct <- function(cfg, S, smp, target, h, arch, pca, seeds, tune_seed) {
   ds_list <- lapply(ss_units(S$panel, arch), function(cp)
     sh_dataset(S$panel, arch, smp, target, h, S$avail, S$splits, component = cp))
@@ -150,11 +175,15 @@ ss_run_direct <- function(cfg, S, smp, target, h, arch, pca, seeds, tune_seed) {
 # the panel; everything after it is a model prediction.
 
 # Series the architecture reads (and the recursion must therefore forecast).
+# Lists every pollutant that must be predicted to keep this architecture supplied with
+# recursive inputs.
 ss_state_pols <- function(arch, target, avail) {
   if (arch$hist %in% c("all", "all_comp_all_pol")) avail$pollutants else target
 }
 
 # Causal Haar filter: the components at t are a fixed linear map of x[t-2^J+1 .. t].
+# Builds a fixed matrix that maps the recent pollutant window to its current Haar
+# components.
 ss_haar_filter <- function(J) {
   L <- 2L^J
   Fm <- t(vapply(seq_len(L), function(i) {
@@ -165,11 +194,14 @@ ss_haar_filter <- function(J) {
   Fm
 }
 
+# Copies the measured history ending at each forecast origin into a rolling state. Later
+# state updates append model predictions, not later observations.
 ss_state_init <- function(S, arch, target, origins) {
   panel <- S$panel
   n <- length(origins)
   W <- ss_win(panel)
   pols <- ss_state_pols(arch, target, S$avail)
+  # Each row is one origin. Columns run from the oldest value to the newest.
   idx <- outer(origins, seq_len(W) - W, "+")          # times o-W+1 .. o
   idl <- outer(origins, seq_len(SH_LOOKBACK) - SH_LOOKBACK, "+")
   lev <- list(); comps <- list()
@@ -187,6 +219,7 @@ ss_state_init <- function(S, arch, target, origins) {
        decomp = arch$kind == "decomp")
 }
 
+# Keeps selected forecast origins and the matching rows of every state matrix.
 ss_state_subset <- function(st, rows) {
   st$origins <- st$origins[rows]
   st$lev <- lapply(st$lev, function(M) M[rows, , drop = FALSE])
@@ -195,6 +228,8 @@ ss_state_subset <- function(st, rows) {
   st
 }
 
+# Combines two batches of forecast origins while preserving their pollutant, component,
+# and weather rows.
 ss_state_rbind <- function(a, b) {
   a$origins <- c(a$origins, b$origins)
   for (v in names(a$lev)) a$lev[[v]] <- rbind(a$lev[[v]], b$lev[[v]])
@@ -206,6 +241,8 @@ ss_state_rbind <- function(a, b) {
 
 # Append one predicted hour. `lev_new` is a named list of level predictions;
 # components of the extended level series are recomputed with the Haar filter.
+# Drops the oldest value and appends one predicted hour. Recomputes Haar components from
+# the extended pollutant history to keep them consistent.
 ss_state_push <- function(st, lev_new, Fm) {
   for (v in names(lev_new)) {
     M <- cbind(st$lev[[v]][, -1L, drop = FALSE], lev_new[[v]])
@@ -222,16 +259,21 @@ ss_state_push <- function(st, lev_new, Fm) {
 }
 
 # Lag block of a window matrix: lag 1 = last column (the virtual origin).
+# Reads each rolling window from newest to oldest and names the lag columns expected by
+# the models.
 ss_lags <- function(M, prefix) {
   X <- M[, ncol(M) - seq_len(SH_LOOKBACK) + 1L, drop = FALSE]
   colnames(X) <- sprintf("%s_l%02d", prefix, seq_len(SH_LOOKBACK))
   X
 }
 
+# Combines the requested pollutant and component lag windows into one input matrix.
 ss_comp_block <- function(st, pols, comps) do.call(cbind, lapply(pols, function(v)
   do.call(cbind, lapply(comps, function(cp) ss_lags(st$comps[[v]][[cp]], paste(v, cp, sep = "_"))))))
 
 # Covariates at the true origin + calendar of the target hour origin + k + hh.
+# Uses weather measured at the true forecast origin and the calendar of the future target.
+# Future observed weather is not read here.
 ss_state_cov <- function(st, panel, hh) {
   tt <- panel$timestamps[1] + 3600 * (st$origins + st$k + hh - 1L)
   cbind(st$met, cal_hour = lubridate::hour(tt), cal_dow = lubridate::wday(tt, week_start = 1))
@@ -239,6 +281,8 @@ ss_state_cov <- function(st, panel, hh) {
 
 # Features of the architecture at the state's virtual origin for a model of
 # pollutant v (component cp) with horizon hh; same columns as sh_features().
+# Builds the architecture-specific input columns from the rolling state for a level or
+# separate component model.
 ss_state_X <- function(st, panel, arch, v, cp, hh, avail) {
   X <- switch(arch$hist,
     own = ss_lags(st$lev[[v]], v),
@@ -253,6 +297,8 @@ ss_state_X <- function(st, panel, arch, v, cp, hh, avail) {
 
 # Shared-model rows for component j (as in sh_dataset): comp_id, the
 # standardized own-component slot, then the architecture's other inputs.
+# Builds a row for the shared component model. Applies the stored component scaling and
+# includes the component identifier.
 ss_state_X_shared <- function(st, panel, arch, v, j, hh, avail, stats) {
   cp <- panel$components[j]
   own <- (ss_lags(st$comps[[v]][[cp]], "own") - stats$mean[j]) / stats$sd[j]
@@ -264,12 +310,15 @@ ss_state_X_shared <- function(st, panel, arch, v, j, hh, avail, stats) {
 
 # ---- one-step models ---------------------------------------------------------------------
 
+# Gets the LightGBM interface used by the second-stage experiments.
 ss_fam <- function() mv_family("lightgbm")
 
 # One unit per forecast series: (pollutant, level) for undecomposed archs,
 # (pollutant, component) for separate decomposed archs, (pollutant, all
 # components stacked) for shared ones. Each is fitted like a direct model at
 # h = 1 on that pollutant's own sample rule; models are kept for the recursion.
+# Fits the one-hour-ahead models needed to predict every input series during recursion.
+# Keeps the fitted models for repeated state updates.
 ss_fit_onestep <- function(cfg, S, arch, target, pca, seeds, tune_seed, say = function(...) NULL) {
   panel <- S$panel
   units <- list()
@@ -303,6 +352,7 @@ ss_fit_onestep <- function(cfg, S, arch, target, pca, seeds, tune_seed, say = fu
 
 # Predict one unit on a state (mean over seeds of `version` models). Returns a
 # vector (level / one component) or an n x components matrix (shared).
+# Predicts one unit by averaging seeds from the requested fitted-model version.
 ss_unit_predict <- function(u, st, panel, arch, hh, avail, version) {
   fam <- ss_fam()
   fits <- lapply(u$models, function(m) m[[version]])
@@ -320,12 +370,15 @@ ss_unit_predict <- function(u, st, panel, arch, hh, avail, version) {
 # Run the recursion for `origins` to step need[i]. Records the target's level
 # and (decomposed) component forecasts at the steps in `record`, and snapshots
 # of the state at the steps in `snap`.
+# Advances the forecast state one predicted hour at a time. Records requested horizon
+# forecasts and optional state snapshots for the hybrid stage.
 ss_recurse <- function(S, arch, target, units, origins, need, version, record, snap = integer(0)) {
   panel <- S$panel
   Fm <- ss_haar_filter(panel$J)
   st <- ss_state_init(S, arch, target, origins)
   out <- list(); snaps <- list()
   for (k in seq_len(max(need))) {
+    # Stop carrying an origin once its requested forecast horizon is complete.
     keep <- need >= k
     if (!all(keep)) { st <- ss_state_subset(st, which(keep)); need <- need[keep] }
     lev_new <- list(); comp_tgt <- NULL
@@ -349,6 +402,7 @@ ss_recurse <- function(S, arch, target, units, origins, need, version, record, s
         data.table::data.table(origin_idx = st$origins, step = k, component = cp, yhat = comp_tgt[, cp]))))
       out[[as.character(k)]] <- d
     }
+    # Feed this hour's predictions back into the next input window.
     st <- ss_state_push(st, lev_new, Fm)
     if (k %in% snap) snaps[[as.character(k)]] <- st
   }
@@ -361,12 +415,15 @@ ss_recurse <- function(S, arch, target, units, origins, need, version, record, s
 # does not touch [lo_f - back, hi_f + s_max]; same tuned parameters and the
 # selection fit's iteration count for each seed (no early stopping, no
 # validation rows).
+# Divides training origins into contiguous folds for the hybrid training inputs.
 ss_folds <- function(origins, K) {
   o <- sort(unique(origins))
   f <- cut(seq_along(o), K, labels = FALSE)
   lapply(seq_len(K), function(i) o[f == i])
 }
 
+# Fits one-step models while excluding a fold and nearby overlapping windows. These models
+# create hybrid training inputs for origins they did not fit.
 ss_crossfit_units <- function(units, folds, back, s_max) {
   fam <- ss_fam()
   for (nm in names(units)) {
@@ -393,6 +450,8 @@ ss_crossfit_units <- function(units, folds, back, s_max) {
 # Dataset in sh_dataset()'s shape whose features are built from recursion
 # snapshots at step s (state per block: train = cross-fitted, validation =
 # selection models, test = refit models), for horizon h - s.
+# Builds direct-model training rows from recursive state snapshots. The target stays at
+# the original horizon while the remaining direct lead is shorter.
 ss_hybrid_ds <- function(S, arch, target, h, s, smp, snaps, component = NULL) {
   panel <- S$panel
   comps_all <- panel$components

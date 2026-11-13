@@ -1,3 +1,7 @@
+// Shows how the interval width changes when the reader changes the coverage slider. This
+// page uses errors from the displayed data; the separate calibrated experiment is run in
+// R.
+
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Detail from "../components/Detail";
@@ -7,6 +11,7 @@ import { COLORS, plotLayout } from "../lib/plotlyTheme";
 import { useData } from "../state/DataContext";
 
 function quantile(arr: number[], p: number) {
+  // Sort a copy so this calculation does not change the saved residual order.
   const a = arr.filter(Number.isFinite).slice().sort((u, v) => u - v);
   if (!a.length) return 0;
   const i = (a.length - 1) * p;
@@ -22,6 +27,7 @@ export default function ConformalPage() {
 
   const view = useMemo(() => {
     if (!conformal?.y?.length || !conformal.yhat?.length) return null;
+    // This display uses the plotted errors. It is not a held-out calibration experiment.
     const resid = conformal.y.map((yi, i) => Math.abs(yi - conformal.yhat[i]));
     const win = 24;
     const u = resid.map((_, i) => {
@@ -30,6 +36,7 @@ export default function ConformalPage() {
       for (let k = lo; k <= i; k++) s += resid[k];
       return Math.max(s / (i - lo + 1), 1e-6);
     });
+    // Scale errors by their recent size, then use the chosen quantile to set the band.
     const cs = resid.map((r, i) => r / u[i]);
     const cq = quantile(cs, pct);
     const half = u.map((ui) => cq * ui);

@@ -1,3 +1,5 @@
+// Displays the modwt page in the app.
+
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Detail from "../components/Detail";

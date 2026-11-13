@@ -1,3 +1,5 @@
+# Uses a small test decomposition to check the method registry and storage path.
+
 source("code/tests/decomposition/_lib.R")
 old_root <- PROJECT_ROOT
 tmp <- tempfile("p1b_dummy")

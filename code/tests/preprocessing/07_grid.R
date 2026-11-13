@@ -1,3 +1,5 @@
+# Checks that hourly preparation produces the expected timestamp grid.
+
 source("code/tests/preprocessing/_lib.R")
 path <- file.path(PROJECT_ROOT, "data", "processed", "store", "clean", "series.parquet")
 need_rebuild <- TRUE

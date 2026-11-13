@@ -1,3 +1,6 @@
+// Displays saved wavelet-filter and decomposition comparisons. Selection controls choose
+// which recorded scores to show.
+
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Detail from "../components/Detail";

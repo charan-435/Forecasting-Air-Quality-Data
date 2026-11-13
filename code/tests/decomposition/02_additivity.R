@@ -1,3 +1,5 @@
+# Checks that the components add back to the original pollutant series.
+
 source("code/tests/decomposition/_lib.R")
 set.seed(3)
 sv <- .p1b_synth_sv(512L)

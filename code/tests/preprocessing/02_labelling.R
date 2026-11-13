@@ -1,3 +1,5 @@
+# Checks how sub-hour readings are assigned to hourly time labels.
+
 source("code/tests/preprocessing/_lib.R")
 tz <- "Asia/Kolkata"
 # 15-min start-labelled: 00:00, 00:15, 00:30, 00:45 have values 1,2,3,4

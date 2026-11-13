@@ -1,3 +1,5 @@
+// Loads shared app data and exposes it to pages.
+
 import {
   createContext,
   useCallback,

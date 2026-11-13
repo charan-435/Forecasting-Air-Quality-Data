@@ -1,3 +1,6 @@
+// Provides the navigation and shared page frame. The selected route renders inside this
+// frame.
+
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import Logo from "./Logo";
 import PageTransition from "./PageTransition";

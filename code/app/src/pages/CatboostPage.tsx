@@ -1,3 +1,6 @@
+// Explains how ordered boosting builds a forecast from lag features. Controls update the
+// teaching display; model training is done by the R runners.
+
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Detail from "../components/Detail";

@@ -1,3 +1,5 @@
+# Checks which component rows are usable after warmup and filled-input rules.
+
 source("code/tests/decomposition/_lib.R")
 sv <- .p1b_synth_sv(200L)
 sv$fill_method[50:80] <- "M1"

@@ -1,3 +1,5 @@
+// Introduces the pipeline and links the reader to its data, wavelet, and model pages.
+
 import { Link } from "react-router-dom";
 import Logo from "../components/Logo";
 import { useData } from "../state/DataContext";

@@ -1,3 +1,5 @@
+// Defines shared chart styling.
+
 export const plotLayout = (extra: Record<string, unknown> = {}) => ({
   margin: { t: 36, r: 18, b: 40, l: 48 },
   paper_bgcolor: "rgba(0,0,0,0)",

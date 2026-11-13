@@ -1,3 +1,8 @@
+# Read with run_mv_experiments.R, which supplies the study objects.
+# cfg is the base data setup; E is the experiment setup; H lists horizons.
+# panel holds hourly pollutant values. OUT is the result folder.
+# Each comparison joins matching targets before measuring a difference.
+
 # Phase 2 stages that build on the model stage: featsel (Stage C), targets
 # (six pollutants, separate vs shared) and report. Sourced by
 # code/experiments/run_mv_experiments.R, which defines E, cfg, panel, fill, scales, OUT, L, SEEDS.
@@ -5,6 +10,7 @@
 MV_COLORS <- c(B0 = "#2a78d6", B1 = "#eb6834", ref = "#8a8a85")   # categorical slots 1, 2; neutral
 MV_FAMILY_ORDER <- c("lightgbm", "xgboost", "catboost", "ridge", "lasso", "elasticnet")
 
+# Uses the same labels, grid, and legend style across the multivariate result plots.
 mv_theme <- function() {
   ggplot2::theme_minimal(base_size = 10) +
     ggplot2::theme(panel.grid.minor = ggplot2::element_blank(),
@@ -12,11 +18,14 @@ mv_theme <- function() {
                    legend.position = "top", strip.text = ggplot2::element_text(face = "bold"))
 }
 
+# Creates the output folder and saves a result plot at the requested size.
 mv_save_plot <- function(p, path, w = 9, h = 5.5) {
   dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
   ggplot2::ggsave(path, p, width = w, height = h, dpi = 150, bg = "white")
 }
 
+# Combines saved prediction tables into one common column layout. Returns NULL when no
+# prediction files are present.
 mv_load_preds <- function(dir) {
   fs <- list.files(dir, pattern = "^predictions\\.rds$", recursive = TRUE, full.names = TRUE)
   if (!length(fs)) return(NULL)
@@ -33,6 +42,8 @@ mv_load_preds <- function(dir) {
 # Reference forecasts (no fitting beyond block means): seasonal naive, overall
 # climatology and hour-of-day climatology. Climatology uses train hours for
 # train/validation and train + validation hours for test (mirrors the refit).
+# Builds simple reference forecasts on the same sample rows as the learned models.
+# Training and validation means use training hours; test means use the refit period.
 mv_reference_preds <- function(target = "PM2.5", horizons = H) {
   bl <- mv_blocks(cfg, panel$times)
   hod <- as.integer(format(panel$times, "%H", tz = panel$tz))
@@ -58,6 +69,8 @@ mv_reference_preds <- function(target = "PM2.5", horizons = H) {
 }
 
 # Paired comparison of two designs/variants on identical samples, for seed-mean predictions.
+# Matches two model selections on the same forecast targets before comparing errors. The
+# result includes paired uncertainty estimates for each requested group.
 mv_pair_table <- function(pm, a_filter, b_filter, label, by = c("family", "target", "horizon_h", "block"),
                           blocks = c("validation", "test"),
                           groups_keep = c("all", "constant_fill_target", "non_fill_target"),
@@ -69,6 +82,7 @@ mv_pair_table <- function(pm, a_filter, b_filter, label, by = c("family", "targe
   for (k in intersect(names(keyA), names(keyB))) {
     a <- keyA[[k]]; b <- keyB[[k]]
     a <- a[order(a$origin_idx), ]; b <- b[order(b$origin_idx), ]
+    # A lower error is meaningful only when both models faced the same targets.
     if (!identical(a$origin_idx, b$origin_idx) || !identical(a$y, b$y))
       stop("paired comparison on different samples: ", k)
     h <- a$horizon_h[1]
@@ -92,6 +106,8 @@ mv_pair_table <- function(pm, a_filter, b_filter, label, by = c("family", "targe
 }
 
 # Per-seed paired differences (stability of the sign across seeds).
+# Repeats the B1 versus B0 comparison for each random seed, so variation between fits is
+# visible.
 mv_seed_pairs <- function(pr, by = c("family", "target", "horizon_h", "block")) {
   s <- pr[pr$seed != "mean" & pr$block %in% c("validation", "test"), ]
   agg <- stats::aggregate(list(MAE = abs(s$yhat - s$y)), s[c(by, "design", "seed")], mean)
@@ -102,6 +118,8 @@ mv_seed_pairs <- function(pr, by = c("family", "target", "horizon_h", "block")) 
 }
 
 # ------------------------------------------------------------------------------------------
+# Reads completed model runs, adds simple references, and writes comparison tables and
+# plots. This stage reads existing predictions rather than training new models.
 mv_stage_report <- function() {
   d <- file.path(OUT, "report"); dir.create(file.path(d, "plots"), recursive = TRUE, showWarnings = FALSE)
   pr <- mv_load_preds(file.path(OUT, "models"))
@@ -266,6 +284,7 @@ mv_stage_report <- function() {
   log_line("report written to ", d)
 }
 
+# Collects all copies of one result-table filename below a study folder.
 mv_read_all <- function(dir, file) {
   fs <- list.files(dir, paste0("^", gsub(".", "\\.", file, fixed = TRUE), "$"), recursive = TRUE, full.names = TRUE)
   if (!length(fs)) return(NULL)
@@ -274,6 +293,8 @@ mv_read_all <- function(dir, file) {
 }
 
 # Stage C: every variant against B1 (all 144 lags) and B0, same learner family where possible.
+# Combines feature-selection outputs and compares them with the raw-input models. Writes
+# the selected columns, transform choices, and paired score summaries.
 mv_report_featsel <- function(d, pm_seed) {
   fp <- mv_load_preds(file.path(OUT, "featsel"))
   if (is.null(fp)) return(invisible())
@@ -368,6 +389,8 @@ mv_report_featsel <- function(d, pm_seed) {
 }
 
 # Six targets: separate (one model per target) vs shared (one pooled model).
+# Summarizes forecasts for the additional pollutant targets, including separate and pooled
+# models.
 mv_report_targets <- function(d) {
   tp <- mv_load_preds(file.path(OUT, "targets"))
   if (is.null(tp)) return(invisible())
@@ -410,6 +433,8 @@ mv_report_targets <- function(d) {
 
 # ---- shared helpers for Stage C / targets -------------------------------------------------
 
+# Reads the model settings already selected for one learner, design, and horizon. Stops if
+# the selection row is missing or ambiguous.
 mv_selected_params <- function(family, design, h) {
   s <- utils::read.csv(file.path(OUT, "models", family, "SELECTED.csv"), stringsAsFactors = FALSE)
   s <- s[s$design == design & s$horizon_h == h, ]
@@ -417,11 +442,14 @@ mv_selected_params <- function(family, design, h) {
   jsonlite::fromJSON(s$params, simplifyVector = TRUE)
 }
 
+# Expands a small tuning grid around an existing set of model settings.
 mv_retune_candidates <- function(params, grid) {
   mv_candidates(list(base = params, grid = grid))
 }
 
 # Validation MAE of the train-only fit for each transform candidate (fixed params).
+# Fits each transform on training rows and scores it on validation rows. Returns a table
+# used to choose the transform before final refitting.
 mv_tune_transforms <- function(family, ds, tfs, params, seed) {
   fam <- mv_family(family)
   tr <- ds$blocks$train; va <- ds$blocks$validation
@@ -439,6 +467,8 @@ mv_tune_transforms <- function(family, ds, tfs, params, seed) {
 
 # Recursive feature elimination with train-only fits: drop the lowest-gain
 # drop_frac of the remaining columns each step; validation MAE scores each step.
+# Fits a model, removes its least important inputs, and repeats. The returned columns come
+# from the step with the lowest validation error.
 mv_rfe <- function(family, ds, params, seed, drop_frac, min_features) {
   fam <- mv_family(family)
   tr <- ds$blocks$train; va <- ds$blocks$validation
@@ -466,6 +496,8 @@ mv_rfe <- function(family, ds, params, seed, drop_frac, min_features) {
 }
 
 # Pick a transform on validation, retune the tree grid at that choice, run all seeds.
+# Chooses a transform, optionally retunes the learner, and runs the final seeds. Returns
+# predictions together with the selection records needed to explain the fit.
 mv_featsel_variant <- function(name, group, family, ds, tfs, params, retune_grid, seeds) {
   tun <- mv_tune_transforms(family, ds, tfs, params, as.integer(E$tuning_seed))
   k <- tun$candidate[which.min(tun$val_MAE)]
@@ -488,6 +520,8 @@ mv_featsel_variant <- function(name, group, family, ds, tfs, params, retune_grid
          features_refit = paste(sel$refit, collapse = " "), stringsAsFactors = FALSE) else NULL)
 }
 
+# Runs the configured feature-selection alternatives using the earlier model selections as
+# starting points.
 mv_stage_featsel <- function() {
   require_check()
   FS <- E$featsel; fam <- FS$tree_family
@@ -560,6 +594,8 @@ mv_stage_featsel <- function() {
 
 # ---- six targets: separate vs shared -------------------------------------------------------
 
+# Fits each additional target separately and in the pooled design. Keeps their sample
+# definitions aligned for later comparisons.
 mv_stage_targets <- function() {
   require_check()
   TG <- E$targets; fam <- TG$family
@@ -597,6 +633,7 @@ mv_stage_targets <- function() {
   }
 }
 
+# Dispatches the requested summary, feature-selection, or other-target stage.
 mv_run_stage <- function(stage) {
   switch(stage,
          report = mv_stage_report(),

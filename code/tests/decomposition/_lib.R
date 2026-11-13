@@ -1,3 +1,6 @@
+# Loads shared decomposition test helpers once. Builds synthetic hourly data and small
+# settings so tests can run without fitting a full study.
+
 if (!isTRUE(get0(".P1B_LIB", ifnotfound = FALSE))) {
   if (!file.exists("code/R/load_all.R")) stop("Run the test from the repository root.")
   source("code/R/load_all.R")

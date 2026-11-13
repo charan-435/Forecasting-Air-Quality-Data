@@ -1,3 +1,5 @@
+# Checks that tuning targets do not cross the screening period or selection cutoff.
+
 source("code/tests/decomposition/_lib.R")
 sv <- .p1b_synth_sv(400L)
 cfg <- .p1b_cfg(64L)

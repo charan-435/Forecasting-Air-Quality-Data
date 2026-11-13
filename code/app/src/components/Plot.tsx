@@ -1,3 +1,5 @@
+// Reusable plot display component.
+
 import createPlotlyComponent from "react-plotly.js/factory";
 import Plotly from "plotly.js-basic-dist-min";
 import { plotConfig } from "../lib/plotlyTheme";

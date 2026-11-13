@@ -1,3 +1,6 @@
+// Filters the saved score table by station, pollutant, and horizon. The charts compare
+// recorded results rather than fitting new models.
+
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Detail from "../components/Detail";

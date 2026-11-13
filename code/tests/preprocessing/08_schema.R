@@ -1,3 +1,5 @@
+# Checks the required columns and data types of the prepared hourly store.
+
 source("code/tests/preprocessing/_lib.R")
 path <- file.path(PROJECT_ROOT, "data", "processed", "store", "clean", "series.parquet")
 if (!file.exists(path)) run_preprocess(active = "paper", force = TRUE)

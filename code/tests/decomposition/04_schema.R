@@ -1,3 +1,6 @@
+# Checks the columns written to a component file and its manifest. A temporary store keeps
+# the test separate from the experiment data.
+
 source("code/tests/decomposition/_lib.R")
 old_root <- PROJECT_ROOT
 tmp <- tempfile("p1b_schema")

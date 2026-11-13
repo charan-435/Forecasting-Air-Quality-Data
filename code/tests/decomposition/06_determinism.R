@@ -1,3 +1,5 @@
+# Checks that repeating the same decomposition produces the same values.
+
 source("code/tests/decomposition/_lib.R")
 old_root <- PROJECT_ROOT
 tmp <- tempfile("p1b_det")

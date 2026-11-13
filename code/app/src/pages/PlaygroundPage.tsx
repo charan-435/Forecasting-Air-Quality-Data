@@ -1,3 +1,5 @@
+// Displays the playground page in the app.
+
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import Detail from "../components/Detail";

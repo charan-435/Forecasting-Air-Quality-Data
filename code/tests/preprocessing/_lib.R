@@ -1,3 +1,6 @@
+# Loads shared preprocessing test helpers once. Defines small quality and filling
+# settings, then records each assertion as a pass or failure.
+
 if (!isTRUE(get0(".P1A_LIB", ifnotfound = FALSE))) {
   if (!file.exists("code/R/load_all.R")) stop("Run the test from the repository root.")
   source("code/R/load_all.R")

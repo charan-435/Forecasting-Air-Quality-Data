@@ -1,3 +1,5 @@
+# Checks that filling a gap does not use observations from later hours.
+
 source("code/tests/preprocessing/_lib.R")
 set.seed(7)
 tz <- "Asia/Kolkata"

@@ -1,3 +1,5 @@
+// Displays the credits page in the app.
+
 import { useData } from "../state/DataContext";
 
 const TEAM = [

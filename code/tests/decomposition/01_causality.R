@@ -1,3 +1,5 @@
+# Changes later values and checks that earlier causal components do not move.
+
 source("code/tests/decomposition/_lib.R")
 cfg <- .p1b_cfg(64L)
 .GlobalEnv$.DECOMP_CFG <- cfg

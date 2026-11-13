@@ -1,3 +1,5 @@
+// Reusable katex display component.
+
 import katex from "katex";
 
 /** Renders TeX as HTML only (no MathML twin that overlaps in some browsers). */

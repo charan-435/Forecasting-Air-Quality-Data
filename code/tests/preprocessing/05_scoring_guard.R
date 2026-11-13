@@ -1,3 +1,5 @@
+# Checks that a filled or invalid observation is not accepted as a measured target.
+
 source("code/tests/preprocessing/_lib.R")
 path <- file.path(PROJECT_ROOT, "data", "processed", "store", "clean", "series.parquet")
 if (!file.exists(path)) {

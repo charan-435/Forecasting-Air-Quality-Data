@@ -1,3 +1,6 @@
+// Defines the shapes of saved data used by the app. These types help pages agree on field
+// names; they do not load or change data.
+
 export type ManifestSeriesMeta = {
   sensor: string;
   pollutant: string;

@@ -1,3 +1,5 @@
+# Runs the preprocessing steps together on synthetic station data.
+
 source("code/tests/preprocessing/_lib.R")
 
 tz <- "Asia/Kolkata"

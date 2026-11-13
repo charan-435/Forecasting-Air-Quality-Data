@@ -1,3 +1,6 @@
+// Connects each URL to its page. DataProvider shares the saved data, and Layout supplies
+// the common navigation around every page.
+
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import { DataProvider } from "./state/DataContext";

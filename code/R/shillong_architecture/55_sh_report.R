@@ -1,3 +1,8 @@
+# Run objects contain prediction rows and fitting records.
+# sm means predictions averaged over seeds for the same target hour.
+# A block is a training, validation, or test time period.
+# The report stage writes experiment tables and plots, not the final PDF.
+
 # Shillong architecture study: report tables, paired comparisons and plots.
 # Reads results/shillong/architecture/{runs,sensitivity}; writes results/shillong/architecture/report.
 
@@ -27,6 +32,8 @@ SH_PAIRS <- list(
 sh_palette <- c(level = "#2a78d6", decomp_sep = "#eb6834", decomp_sh = "#1baa7a",
                 reference = "#7d8590")
 
+# Reads architecture run files and combines their predictions, settings, importance,
+# schemas, and timing records.
 sh_read_runs <- function(dir) {
   files <- list.files(dir, pattern = "\\.rds$", recursive = TRUE, full.names = TRUE)
   rs <- lapply(files, readRDS)
@@ -37,6 +44,8 @@ sh_read_runs <- function(dir) {
                                                                        arch, family)][, s := r$elapsed_s])))
 }
 
+# Assigns each architecture to a plot group: raw level, separate components, shared
+# components, or a reference model.
 sh_arch_group <- function(arch) {
   ifelse(grepl("^A", arch), "level",
          ifelse(arch %in% c("B1", "B3") | grepl("_sh$", arch), "decomp_sh",
@@ -45,6 +54,8 @@ sh_arch_group <- function(arch) {
 }
 
 # Seed-mean metrics with MASE for one or many (station, target) cells.
+# Computes errors for seed-averaged predictions. Joins the matching station, target, and
+# component scale before computing MASE.
 sh_metric_frame <- function(sm, scales) {
   m <- sm[, .(n = .N, MAE = mean(abs(yhat - y)), RMSE = sqrt(mean((yhat - y)^2))),
           by = .(station, target, horizon_h, arch, family, component, block)]
@@ -53,6 +64,8 @@ sh_metric_frame <- function(sm, scales) {
   m[]
 }
 
+# Joins the two architectures by target time, then compares their errors. Unequal target
+# sets stop the comparison rather than silently dropping rows.
 sh_pair_rows <- function(sm, pairs, by, bcfg, blocks = c("validation", "test"), sens = TRUE) {
   out <- list()
   cells <- unique(sm[, by, with = FALSE])
@@ -62,6 +75,7 @@ sh_pair_rows <- function(sm, pairs, by, bcfg, blocks = c("validation", "test"), 
     for (p in pairs) for (b in blocks) {
       a <- d[arch == p[1] & block == b]; r <- d[arch == p[2] & block == b]
       if (!nrow(a) || !nrow(r)) next
+      # Match target hours before measuring which architecture has lower error.
       m <- merge(a[, .(target_idx, origin_idx, y, ya = yhat)], r[, .(target_idx, yb = yhat)],
                  by = "target_idx")
       if (nrow(m) != nrow(a) || nrow(m) != nrow(r)) stop("paired samples differ: ", paste(p, collapse = " vs "))
@@ -84,6 +98,8 @@ sh_pair_rows <- function(sm, pairs, by, bcfg, blocks = c("validation", "test"), 
 
 # Clean / imputed-input split: an origin is "clean" when no input pollutant has
 # a filled hour in its lag window (lookback + decomposition warmup).
+# Marks forecast origins whose input history contains filled values. The history length
+# includes both the lag window and wavelet warmup.
 sh_input_fill_flag <- function(panel, pollutants, origin_idx) {
   back <- SH_LOOKBACK + (2L^panel$J - 1L)
   any_fill <- rep(FALSE, length(panel$timestamps))
@@ -92,6 +108,8 @@ sh_input_fill_flag <- function(panel, pollutants, origin_idx) {
   (cs[origin_idx] - c(0L, cs)[origin_idx - back + 1L]) > 0L
 }
 
+# Builds station references, scores, matched comparisons, and summary plots from completed
+# architecture runs. Validation and test rows remain separate throughout the summaries.
 sh_stage_report <- function(cfg, out, say, load_station) {
   rdir <- file.path(out, "report"); pdir <- file.path(rdir, "plots")
   dir.create(pdir, recursive = TRUE, showWarnings = FALSE)
@@ -278,6 +296,7 @@ sh_stage_report <- function(cfg, out, say, load_station) {
   say("report done in ", round(as.numeric(difftime(Sys.time(), t0, units = "secs"))), " s")
 }
 
+# Sets a common appearance for the architecture comparison plots.
 sh_theme <- function() {
   ggplot2::theme_minimal(base_size = 11) +
     ggplot2::theme(panel.grid.minor = ggplot2::element_blank(),
@@ -286,6 +305,8 @@ sh_theme <- function() {
                    plot.title.position = "plot")
 }
 
+# Draws the architecture, component, and paired-comparison plots from the computed metric
+# tables.
 sh_report_plots <- function(cfg, met, comp, pairs, rdir, pdir) {
   library(ggplot2)
   save <- function(p, f, w = 10, h = 6) ggsave(file.path(pdir, f), p, width = w, height = h, dpi = 150, bg = "white")

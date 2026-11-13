@@ -1,3 +1,5 @@
+# Checks that the quality rules flag invalid and suspicious readings.
+
 source("code/tests/preprocessing/_lib.R")
 tz <- "Asia/Kolkata"
 n <- 80L
