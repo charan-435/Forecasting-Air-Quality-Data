@@ -1,0 +1,118 @@
+# Shillong architecture comparison (direct fixed-horizon, no deep learning).
+#   Rscript code/experiments/run_shillong_arch.R --stage=<preprocess|audit|smoke|full|families|targets|sensitivity|report>
+# Stations are separate datasets; observations are never combined.
+
+store_dir: data/processed/store/shillong          # clean/ = Phase 1a causal preprocess output
+raw_path: data/raw/shillong/shillong_15min_2023.parquet
+output_dir: results/shillong/architecture
+stations: [Lumpyngngad, JN_Stadium]
+pollutants: [PM2.5, PM10, NO2, SO2, O3, CO]
+primary_target: PM2.5
+horizons: [24, 168, 336, 744]
+min_subhour_coverage: 0.75         # same rule as code/config/preprocess.yaml
+
+# A pollutant (input or target) or covariate is used at a station only if it is
+# scorable / available on >= min_pct of hours in each of train, validation, test.
+availability:
+  min_pct: 50
+  max_leading_gap_pct: 10        # first observation within the first 10% of the train block
+
+# Store policy (data/processed/store/shillong/clean/policy.yaml), applied to the target pollutant.
+origin_policy:
+  max_frac_filled_24h: 0.25        # and the origin must not be inside a long gap
+
+# Causal additive Haar pyramid (decomp_coef_haar): x = D1 + ... + DJ + SJ.
+decomp:
+  method: coef_haar
+  J: 5
+
+# Chronological blocks by TARGET timestamp (inclusive, IST). Test starts at the
+# preprocess selection_end (2023-10-01), so imputation models never saw test hours.
+splits:
+  Lumpyngngad:
+    train: ["2023-01-01 01:00", "2023-07-31 23:00"]
+    validation: ["2023-08-01 00:00", "2023-09-30 23:00"]
+    test: ["2023-10-01 00:00", "2024-01-01 00:00"]
+  JN_Stadium:                      # no data before 2023-07-26 (PM2.5 from 07-27 12:00)
+    train: ["2023-07-28 00:00", "2023-09-30 23:00"]
+    validation: ["2023-10-01 00:00", "2023-10-31 23:00"]
+    test: ["2023-11-01 00:00", "2024-01-01 00:00"]
+
+seeds: [2026, 2027, 2028]
+tune_seed: 2026
+
+architectures: [A0, A1, A2, A3, B0, B1, B2, B3, C1_sep, C1_sh, C2_sep, C2_sh, C3_sep, C3_sh]
+
+families:
+  lightgbm:
+    base:
+      objective: regression
+      learning_rate: 0.05
+      feature_fraction: 0.8
+      bagging_fraction: 0.8
+      bagging_freq: 1
+      lambda_l2: 1.0
+      num_iterations: 2000
+      early_stopping_rounds: 100
+    grid:
+      num_leaves: [15, 31]
+      min_data_in_leaf: [20, 100]
+  xgboost:
+    base:
+      eta: 0.05
+      subsample: 0.8
+      colsample_bytree: 0.8
+      min_child_weight: 5
+      lambda: 1.0
+      num_iterations: 2000
+      early_stopping_rounds: 100
+    grid:
+      max_depth: [4, 6]
+  catboost:
+    base:
+      learning_rate: 0.05
+      l2_leaf_reg: 3
+      num_iterations: 2000
+      early_stopping_rounds: 100
+    grid:
+      depth: [4, 6]
+  ridge:
+    base: {alpha: 0, nlambda: 100, lambda_min_ratio: 1.0e-4}
+  lasso:
+    base: {alpha: 1, nlambda: 100, lambda_min_ratio: 1.0e-4}
+  elasticnet:
+    base: {nlambda: 100, lambda_min_ratio: 1.0e-4}
+    grid:
+      alpha: [0.1, 0.5, 0.9]
+
+smoke:
+  horizon: 24
+  lightgbm:
+    base: {objective: regression, learning_rate: 0.1, num_leaves: 15, min_data_in_leaf: 50,
+           feature_fraction: 0.8, num_iterations: 300, early_stopping_rounds: 30}
+
+# Stage 2: families run only on architectures shortlisted from LightGBM
+# validation MAE (PM2.5): per station, the best `per_kind` undecomposed and
+# decomposed architectures plus A0 and B0 as baselines.
+stage2:
+  families: [xgboost, catboost, ridge, lasso, elasticnet]
+  per_kind: 1
+# Other targets: every available pollutant, LightGBM, shortlisted architectures.
+targets_stage:
+  archs_fixed: [A0, A2, B0]
+
+bootstrap:
+  reps: 999
+  seed: 7
+  min_block_h: 24
+  min_blocks: 5
+  sensitivity_blocks: [24, 168]
+
+# Explicit exclusions after the audit (audit/MONTHLY_LEVELS.csv). Lumpyngngad O3
+# reads 0.6-1.0 ug/m3 (monthly median) Jan-Oct, then ~47 (max 93) from late
+# November: a sensor/calibration regime change inside the test block that the
+# bounds, stuck and coverage rules cannot see. Runs made before this exclusion
+# are kept in results/shillong/architecture/archive_o3_included/.
+exclude_pollutants:
+  Lumpyngngad:
+    O3: "calibration regime change in the test block (monthly median 0.6-1.0 -> ~47 ug/m3)"

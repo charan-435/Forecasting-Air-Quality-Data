@@ -1,0 +1,41 @@
+{
+  "stage": "audit",
+  "time": "2026-11-13 10:45:34",
+  "git": "ef96ee9fefea1820b405fdf47da54b828e172f20",
+  "packages": {
+    "R": "4.6.1",
+    "lightgbm": "4.7.0",
+    "xgboost": "3.2.1.1",
+    "catboost": "1.2.8",
+    "glmnet": "not installed",
+    "pls": "not installed",
+    "arrow": "26.0.0",
+    "data.table": "1.18.6.1",
+    "yaml": "2.3.12",
+    "digest": "0.6.39",
+    "jsonlite": "2.0.0",
+    "ggplot2": "4.0.3"
+  },
+  "args": "--stage=audit",
+  "sha256": {
+    "code/config/shillong_arch.yaml": "ebf3e73fb7ace62085bc6e7cb7df9518bfb56cde27f8a448ff6b1082dbb1c89d",
+    "code/experiments/run_shillong_arch.R": "1c365abc7610ec22fc3f2191fc8265cb492366836221e056335c6ae276b20f41",
+    "code/R/multivariate/40_mv_data.R": "b5f10887766f389f87a1f0f901186376be020f3798332dd7f0360edbe90c5ce3",
+    "code/R/multivariate/41_mv_features.R": "3976b76855b18572ba157339b2434a914ca34680193838cc7066ad42b3c5da52",
+    "code/R/multivariate/43_mv_models.R": "0d04de5568f1471f93ddfc685d1f28e42beabc2e35a22189100b0b59834e3f23",
+    "code/R/multivariate/44_mv_metrics.R": "933a48d5a5b1811556637bba81ea43d4a0dc0b50a08621572a75f3cab053176d",
+    "code/R/multivariate/45_mv_families.R": "f7f7c2f4ac505c7536023f90205eec20b7823a3b7e57fb1b60a05614fe16b380",
+    "code/R/multivariate/46_mv_featsel.R": "175eacb63b64e204ef847d86476e2b220a76f17297e4b3483a438251a46f20f7",
+    "code/R/multivariate/47_mv_eval.R": "32a1e6bddc480cda5cf3cba36e00fb08c34512cd48f6e716b43ba83dc3684ce8",
+    "code/R/multivariate/48_mv_runner.R": "c1f4383404e6bf3f906d46747a69e322a2b31811913ef1b621ecba76f94694da",
+    "code/R/multivariate/49_mv_stages.R": "cafe41a5df1285d29797d6955fda7403436e03435ee28ccb5b053dab547221be",
+    "code/R/preprocessed_experiment/40_features.R": "0189a3c68cec7340f271dc9fed7a73e0fd08011be5475d4766995af7e924909f",
+    "code/R/preprocessed_experiment/50_models.R": "faac7028c5cde8ab404a2cb3653328015f5160c71f1cfe861a9ae5df8edb4cd9",
+    "code/R/shillong_architecture/50_sh_data.R": "f3c428560a5bc7086857bdfe17424adb803801bc6d4edadd974ba6a0eca6326a",
+    "code/R/shillong_architecture/51_sh_features.R": "c62ca85993e9774e6f2ed7c3260991631bbabdbdfb5950dd4bb135b46b3bda42",
+    "code/R/shillong_architecture/52_sh_audit.R": "b6da42e530840fa890467c7805cfac131869338f7d81047e7f7dc58126a91b24",
+    "code/R/shillong_architecture/53_sh_experiments.R": "2665b8a07731d4132590b7c32c7d28c0bb73744f3e0d36752feca6953a214069",
+    "code/R/shillong_architecture/54_sh_stages.R": "70a4ec64d7ae9afffc9a31e1da375017ecf0282a285ab36003b163da0fe45dc2",
+    "code/R/shillong_architecture/55_sh_report.R": "063635febb10d2ac469bc65ecf1555beba2b5e490c5943f5cf2f5a62e811fc19"
+  }
+}

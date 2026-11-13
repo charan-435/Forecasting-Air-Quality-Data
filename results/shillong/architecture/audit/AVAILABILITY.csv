@@ -1,0 +1,3 @@
+"station","pollutants_used","pollutants_dropped","covariates_used","covariates_dropped"
+"Lumpyngngad","PM2.5,SO2,CO","PM10,NO2,O3","RH,WS,WD_sin,WD_cos,RF","AT,SR,BP"
+"JN_Stadium","PM2.5,PM10,NO2,SO2,CO","O3","AT,RH,WS,WD_sin,WD_cos,RF,SR,BP",""

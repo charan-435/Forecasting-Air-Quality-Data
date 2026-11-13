@@ -1,0 +1,29 @@
+# Second-stage Shillong experiments: PCA inputs and direct / recursive / hybrid
+# strategies. The station data, samples, splits, architectures, model family,
+# tuning grid, seeds, metrics and bootstrap all come from base_config unchanged.
+#   Rscript code/experiments/run_second_stage.R --stage=<tests|smoke|run|report>
+
+base_config: code/config/shillong_arch.yaml
+output_dir: results/shillong/second_stage
+original_output_dir: results/shillong/architecture      # read only
+family: lightgbm                                # the Stage-1 family of the original study
+
+primary_architectures: [A2, C2_sep, A3]
+# run only after the primary cells pass (same code path; shared models stack
+# components with comp_id exactly as in the original study)
+extension_architectures: [A0, A1, B0, B1, B2, B3, C1_sep, C1_sh, C2_sh, C3_sep, C3_sh]
+
+# "none" = the original features. Thresholds = cumulative explained variance of
+# the train-only PCA on the pollutant / component lag block.
+pca: [none, 0.90, 0.95, 0.99]
+
+hybrid:
+  switch_points: [24, 48, 72]                   # recursive block length; only s < h is run
+  crossfit_folds: 4                             # training-origin folds for the direct stage's inputs
+
+smoke:
+  station: Lumpyngngad
+  architectures: [A2, C2_sep, A3]
+  horizons: [24, 168]
+  pca: [none, 0.95]
+  switch_points: [24, 72]
