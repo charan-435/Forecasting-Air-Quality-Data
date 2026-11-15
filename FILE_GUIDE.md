@@ -281,7 +281,8 @@ Model tests exercise data alignment, causality, feature construction, and model 
 | File | Use |
 |---|---|
 | [docs/presentation.pdf](docs/presentation.pdf) | Final presentation slides. |
-| [docs/report.pdf](docs/report.pdf) | Final eight-page project report. |
+| [docs/Group_8_project_report.pdf](docs/Group_8_project_report.pdf) | Final eight-page project report. |
+| [docs/Group_8_Supplementary_Material.pdf](docs/Group_8_Supplementary_Material.pdf) | Supplementary methods and results. |
 | [docs/research_paper.pdf](docs/research_paper.pdf) | Assigned research paper. |
 
 ## Saved results
