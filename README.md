@@ -6,7 +6,7 @@ WaveCatBoost splits a pollutant series into wavelet components. It fits one mode
 
 ## Start here
 
-1. Read [docs/report.pdf](docs/report.pdf) for the method and findings.
+1. Read [docs/Group_8_project_report.pdf](docs/Group_8_project_report.pdf) for the method and findings. The [supplement](docs/Group_8_Supplementary_Material.pdf) contains derivations and detailed study results.
 2. Follow the pipeline map below to find the code.
 3. Inspect the saved CSVs before fitting models.
 4. Use the reproduction commands for a new run.
@@ -23,7 +23,7 @@ For interactive exploration, open [code/analysis.Rmd](code/analysis.Rmd) in RStu
 |---|---|
 | [code/](code/README.md) | Model code, experiment runners, model tests, and the app. |
 | [results/](results/README.md) | Saved scores, predictions, plots, and study notes. |
-| [docs/](docs/) | Three PDFs: report, presentation, and research paper. |
+| [docs/](docs/) | Project report, supplement, presentation, and assigned paper. |
 | [data/](data/README.md) | Raw readings, prepared hourly data, and stored components. |
 
 The app is in code/app/. It displays the saved model results and explains the method.
@@ -265,11 +265,9 @@ python code/app/data_tools/export_app_series.py
 
 ## 6. Read the plots and documents
 
-The final report is docs/report.pdf. The talk is docs/presentation.pdf. The assigned paper is docs/research_paper.pdf.
+The final report is docs/Group_8_project_report.pdf. The talk is docs/presentation.pdf. The assigned paper is docs/research_paper.pdf.
 
 Saved plots are under results/figures/. They cover data checks, forecasts, model comparisons, and intervals. Check each caption before comparing plots. A one-day test window does not always mean a direct 24-hour forecast.
-
-The repo keeps the final documents. It does not need document-generation or publishing tools to explain the method.
 
 ## 7. Check the models and inspect new results
 
